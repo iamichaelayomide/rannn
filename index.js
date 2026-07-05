@@ -1,8 +1,10 @@
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 // lenis smooth scroll instance
 const lenis = new Lenis({
-  duration: 1.2,
+  duration: prefersReducedMotion ? 0 : 1.2,
   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  smoothWheel: true
+  smoothWheel: !prefersReducedMotion
 });
 
 function raf(time) {
@@ -15,6 +17,7 @@ requestAnimationFrame(raf);
 let backdropScene, backdropCamera, backdropRenderer, backdropParticles;
 
 const initBackdropWebGL = () => {
+  if (prefersReducedMotion) return;
   const canvas = document.getElementById('bg-webgl-canvas');
   if (!canvas) return;
 
@@ -60,6 +63,7 @@ const initBackdropWebGL = () => {
 };
 
 const animateBackdrop = () => {
+  if (prefersReducedMotion) return;
   requestAnimationFrame(animateBackdrop);
   if (backdropParticles) {
     backdropParticles.rotation.y += 0.0012;
@@ -152,7 +156,10 @@ const initCapabilitiesStack = () => {
 
   const updateDeckLayout = (animate = true) => {
     const rect = container.getBoundingClientRect();
-    const isMobile = window.innerWidth < 768;
+    const isCompact = window.innerWidth < 1024;
+    const cardWidth = Math.min(280, Math.max(240, rect.width - 48));
+    const compactX = Math.max(0, (rect.width - cardWidth) / 2);
+    container.style.minHeight = isCompact && isCapabilitiesDealt ? `${cards.length * 380}px` : '';
 
     cards.forEach((card, idx) => {
       // Clear expansions
@@ -180,7 +187,7 @@ const initCapabilitiesStack = () => {
         }
         
         gsap.to(card, {
-          x: isMobile ? (rect.width / 2 - 140) : 50,
+          x: isCompact ? compactX : 50,
           y: ty,
           rotation: rotation,
           scale: 0.94 + (idx * 0.02),
@@ -199,13 +206,13 @@ const initCapabilitiesStack = () => {
           });
         }
 
-        if (isMobile) {
+        if (isCompact) {
           // Vertical layout stack - drop from top on deal
           if (animate) {
             gsap.fromTo(card,
               { y: -350, opacity: 0 },
               {
-                x: rect.width / 2 - 140,
+                x: compactX,
                 y: idx * 380,
                 rotation: 0,
                 scale: 1,
@@ -218,7 +225,7 @@ const initCapabilitiesStack = () => {
             );
           } else {
             gsap.to(card, {
-              x: rect.width / 2 - 140,
+              x: compactX,
               y: idx * 380,
               rotation: 0,
               scale: 1,
@@ -230,9 +237,8 @@ const initCapabilitiesStack = () => {
         } else {
           // Horizontal distributed layout
           const containerWidth = rect.width;
-          const cardWidth = 280;
           const totalCardsWidth = 4 * cardWidth;
-          const gap = (containerWidth - totalCardsWidth) / 3;
+          const gap = Math.max(18, (containerWidth - totalCardsWidth) / 3);
           const xPos = idx * (cardWidth + gap);
 
           gsap.to(card, {
@@ -305,13 +311,13 @@ const initCapabilitiesStack = () => {
     card.addEventListener('click', (e) => {
       if (e.target.closest('a')) return;
 
-      const isMobile = window.innerWidth < 768;
+      const isCompact = window.innerWidth < 1024;
 
       if (!isCapabilitiesDealt) {
         isCapabilitiesDealt = true;
         updateDeckLayout(true);
       } else {
-        if (isMobile) {
+        if (isCompact) {
           // Mobile touch support: First tap reveals, second tap navigates
           if (!card.classList.contains('mobile-active')) {
             cards.forEach(c => c.classList.remove('mobile-active'));
@@ -1009,18 +1015,24 @@ const initSPARouter = () => {
         globalModules.style.display = 'none';
       } else {
         globalModules.style.display = '';
-        const isLimited = (pageId === 'about' || pageId === 'contact');
-        const marketingIds = [
-          'homepage-whychooseus-section',
-          'homepage-process-section',
-          'homepage-manifesto-section',
-          'portfolio-slider-section',
-          'scale-block'
-        ];
-        marketingIds.forEach(id => {
+        
+        const modulesVisibility = {
+          'homepage-whychooseus-section': ['home', 'services'],
+          'homepage-process-section': ['home', 'services'],
+          'homepage-manifesto-section': ['home', 'services'],
+          'portfolio-slider-section': ['home', 'services'],
+          'scale-block': ['home', 'services', 'portfolio'],
+          'partners-section': ['home', 'services', 'about', 'contact'],
+          'testimonials-section': ['home', 'services', 'about', 'contact'],
+          'faq-section': ['home', 'services', 'about', 'contact'],
+          'global-prefooter-banner': ['home', 'services', 'portfolio', 'about', 'contact']
+        };
+
+        Object.keys(modulesVisibility).forEach(id => {
           const el = document.getElementById(id);
           if (el) {
-            el.style.display = isLimited ? 'none' : '';
+            const allowedPages = modulesVisibility[id];
+            el.style.display = allowedPages.includes(pageId) ? '' : 'none';
           }
         });
       }
@@ -1138,25 +1150,35 @@ const initHeroLiquidWarp = () => {
 const initMobileDrawer = () => {
   const burgerBtn = document.getElementById('mobile-hamburger-btn');
   const drawer = document.getElementById('mobile-nav-drawer');
-  const burgerIcon = document.getElementById('hamburger-icon-node');
-  if (!burgerBtn || !drawer || !burgerIcon) return;
+  if (!burgerBtn || !drawer) return;
+
+  const setDrawerState = (open) => {
+    drawer.classList.toggle('drawer-active', open);
+    burgerBtn.classList.toggle('is-active', open);
+    burgerBtn.setAttribute('aria-expanded', String(open));
+    drawer.setAttribute('aria-hidden', String(!open));
+    document.body.classList.toggle('mobile-menu-open', open);
+    if (open) {
+      lenis.stop();
+      gsap.fromTo('.mobile-nav-link', { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.08, duration: prefersReducedMotion ? 0 : 0.4, ease: 'power2.out' });
+    } else {
+      lenis.start();
+    }
+  };
   
   burgerBtn.addEventListener('click', () => {
-    const isActive = drawer.classList.toggle('drawer-active');
-    if (isActive) {
-      burgerIcon.setAttribute('icon', 'solar:close-circle-bold-duotone');
-      gsap.fromTo('.mobile-nav-link', { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.08, duration: 0.4, ease: 'power2.out' });
-    } else {
-      burgerIcon.setAttribute('icon', 'solar:menu-hamburger-bold-duotone');
-    }
+    setDrawerState(!drawer.classList.contains('drawer-active'));
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setDrawerState(false);
   });
   
   // Close drawer on link click
   const links = drawer.querySelectorAll('.mobile-nav-link');
   links.forEach(link => {
     link.addEventListener('click', () => {
-      drawer.classList.remove('drawer-active');
-      burgerIcon.setAttribute('icon', 'solar:menu-hamburger-bold-duotone');
+      setDrawerState(false);
     });
   });
 };

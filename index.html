@@ -59,7 +59,7 @@
       </a>
 
       <!-- Center navigation Links (SPA triggers) -->
-      <nav class="hidden md:flex items-center gap-8">
+      <nav class="hidden lg:flex items-center gap-8">
         <a href="#home" class="nav-link text-sm font-semibold tracking-wide text-white uppercase active" data-page="home">Home</a>
         <a href="#services" class="nav-link text-sm font-semibold tracking-wide text-neutral-400 hover:text-white uppercase" data-page="services">Services</a>
         <a href="#portfolio" class="nav-link text-sm font-semibold tracking-wide text-neutral-400 hover:text-white uppercase" data-page="portfolio">Portfolio</a>
@@ -69,12 +69,12 @@
 
       <!-- Right CTA button -->
       <div class="flex items-center gap-4">
-        <a href="#book" class="hidden md:inline-flex items-center justify-center bg-gold-gradient text-neutral-950 text-xs md:text-sm font-bold px-6 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)] spa-nav-link" data-page="book">
+        <a href="#book" class="hidden lg:inline-flex items-center justify-center bg-gold-gradient text-neutral-950 text-xs md:text-sm font-bold px-6 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)] spa-nav-link" data-page="book">
           Book Now
         </a>
         
         <!-- Mobile Hamburger Menu Button -->
-        <button id="mobile-hamburger-btn" class="md:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white flex flex-col gap-1 items-center justify-center hover:bg-white/10 active:scale-95 transition-all" aria-label="Toggle Navigation Menu">
+        <button id="mobile-hamburger-btn" class="lg:hidden w-11 h-11 rounded-xl bg-white/5 border border-white/10 text-white flex flex-col gap-1 items-center justify-center hover:bg-white/10 active:scale-95 transition-all" aria-label="Toggle Navigation Menu" aria-controls="mobile-nav-drawer" aria-expanded="false">
           <span class="w-5 h-0.5 bg-amber-400 transition-transform duration-300 burger-line-top"></span>
           <span class="w-5 h-0.5 bg-amber-400 transition-opacity duration-300 burger-line-mid"></span>
           <span class="w-5 h-0.5 bg-amber-400 transition-transform duration-300 burger-line-bot"></span>
@@ -84,7 +84,7 @@
   </header>
 
   <!-- Mobile Navigation Drawer Overlay -->
-  <div id="mobile-nav-drawer" class="fixed inset-0 bg-neutral-950/98 z-40 backdrop-blur-2xl flex flex-col justify-center items-center gap-8 transition-transform duration-500 translate-y-[-100%] pointer-events-none md:hidden">
+  <div id="mobile-nav-drawer" class="fixed inset-0 bg-neutral-950/98 z-40 backdrop-blur-2xl flex flex-col justify-center items-center gap-8 transition-transform duration-500 translate-y-[-100%] pointer-events-none lg:hidden" aria-hidden="true">
     <nav class="flex flex-col items-center gap-6">
       <a href="#home" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-colors" data-page="home">Home</a>
       <a href="#services" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-colors" data-page="services">Services</a>
@@ -102,7 +102,7 @@
     <section id="page-home" class="spa-page active">
       
       <!-- Hero Section -->
-      <div class="max-w-7xl mx-auto px-6 py-24 md:py-36 text-center flex flex-col items-center relative">
+      <div class="max-w-7xl mx-auto px-6 py-16 sm:py-20 lg:py-36 text-center flex flex-col items-center relative">
         <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
         <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.3em] mb-6 block font-mono">Premium Media House</span>
@@ -112,7 +112,7 @@
           <span class="text-gold-gradient">The Future</span>
         </h1>
 
-        <p class="text-neutral-400 text-base md:text-lg max-w-2xl font-light leading-relaxed mb-12">
+        <p class="text-neutral-400 text-base md:text-lg max-w-2xl font-light leading-relaxed mb-8 sm:mb-12">
           We shape digital narratives, design interactive digital systems, and capture high-fidelity media for global brands.
         </p>
 
@@ -139,27 +139,27 @@
 
       <!-- Trust Bar / Stats -->
       <div class="border-y border-white/5 bg-neutral-950/40 backdrop-blur-md py-12" id="trust-stats-section">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-8 text-center">
           <div class="flex flex-col items-center">
-            <span class="text-4xl md:text-5xl font-extrabold text-gold-gradient font-display flex items-center justify-center">
+            <span class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gold-gradient font-display flex items-center justify-center">
               <span class="stat-roll-number" data-target="1.2" data-decimals="1">0</span>M+
             </span>
             <span class="text-xs text-neutral-400 uppercase tracking-widest mt-2 font-mono">Media Views</span>
           </div>
           <div class="flex flex-col items-center">
-            <span class="text-4xl md:text-5xl font-extrabold text-white font-display flex items-center justify-center">
+            <span class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-display flex items-center justify-center">
               <span class="stat-roll-number" data-target="240" data-decimals="0">0</span>+
             </span>
             <span class="text-xs text-neutral-400 uppercase tracking-widest mt-2 font-mono">Projects Delivered</span>
           </div>
           <div class="flex flex-col items-center">
-            <span class="text-4xl md:text-5xl font-extrabold text-white font-display flex items-center justify-center">
+            <span class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-display flex items-center justify-center">
               <span class="stat-roll-number" data-target="99.8" data-decimals="1">0</span>%
             </span>
             <span class="text-xs text-neutral-400 uppercase tracking-widest mt-2 font-mono">Client Success</span>
           </div>
           <div class="flex flex-col items-center">
-            <span class="text-4xl md:text-5xl font-extrabold text-gold-gradient font-display flex items-center justify-center">
+            <span class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gold-gradient font-display flex items-center justify-center">
               <span class="stat-roll-number" data-target="15" data-decimals="0">0</span>+
             </span>
             <span class="text-xs text-neutral-400 uppercase tracking-widest mt-2 font-mono">Global Awards</span>
@@ -168,7 +168,7 @@
       </div>
 
       <!-- Capabilities Card Stack section (deals cards out on click) -->
-      <div class="max-w-7xl mx-auto px-6 py-24">
+      <div class="max-w-7xl mx-auto px-6 py-16 lg:py-24">
         <div class="mb-16 relative">
           <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Creative Pillars</span>
           <h2 class="h2-editorial font-extrabold uppercase text-white mt-3">Capabilities</h2>
@@ -1007,7 +1007,7 @@
         <div class="grid grid-cols-12 gap-6 max-w-6xl mx-auto">
           
           <!-- Item 1: Large (2 cols wide) -->
-          <div class="col-span-12 md:col-span-8 bg-neutral-900/50 border border-white/5 rounded-3xl p-8 flex flex-col justify-between h-[300px] hover:border-amber-400/20 transition-all duration-300 relative overflow-hidden group">
+          <div class="col-span-12 lg:col-span-8 bg-neutral-900/50 border border-white/5 rounded-3xl p-6 sm:p-8 flex flex-col justify-between min-h-[300px] hover:border-amber-400/20 transition-all duration-300 relative overflow-hidden group">
             <div>
               <iconify-icon icon="solar:videocamera-record-bold-duotone" class="text-amber-400 text-4xl mb-4 block"></iconify-icon>
               <h4 class="text-2xl font-bold uppercase text-white font-display mb-2">Cinema-Grade Media Production</h4>
@@ -1019,7 +1019,7 @@
           </div>
 
           <!-- Item 2: Small (1 col wide) -->
-          <div class="col-span-12 md:col-span-4 bg-neutral-900/50 border border-white/5 rounded-3xl p-8 flex flex-col justify-between h-[300px] hover:border-amber-400/20 transition-all duration-300 relative overflow-hidden group">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4 bg-neutral-900/50 border border-white/5 rounded-3xl p-6 sm:p-8 flex flex-col justify-between min-h-[300px] hover:border-amber-400/20 transition-all duration-300 relative overflow-hidden group">
             <div>
               <iconify-icon icon="solar:programming-bold-duotone" class="text-amber-400 text-4xl mb-4 block"></iconify-icon>
               <h4 class="text-xl font-bold uppercase text-white font-display mb-2">Zero-Latency Code</h4>
@@ -1031,7 +1031,7 @@
           </div>
 
           <!-- Item 3: Small (1 col wide) -->
-          <div class="col-span-12 md:col-span-4 bg-neutral-900/50 border border-white/5 rounded-3xl p-8 flex flex-col justify-between h-[300px] hover:border-amber-400/20 transition-all duration-300 relative overflow-hidden group">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4 bg-neutral-900/50 border border-white/5 rounded-3xl p-6 sm:p-8 flex flex-col justify-between min-h-[300px] hover:border-amber-400/20 transition-all duration-300 relative overflow-hidden group">
             <div>
               <iconify-icon icon="solar:globus-bold-duotone" class="text-amber-400 text-4xl mb-4 block"></iconify-icon>
               <h4 class="text-xl font-bold uppercase text-white font-display mb-2">Global Operations</h4>
@@ -1043,7 +1043,7 @@
           </div>
 
           <!-- Item 4: Large (2 cols wide) -->
-          <div class="col-span-12 md:col-span-8 bg-neutral-900/50 border border-white/5 rounded-3xl p-8 flex flex-col justify-between h-[300px] hover:border-amber-400/20 transition-all duration-300 relative overflow-hidden group">
+          <div class="col-span-12 lg:col-span-8 bg-neutral-900/50 border border-white/5 rounded-3xl p-6 sm:p-8 flex flex-col justify-between min-h-[300px] hover:border-amber-400/20 transition-all duration-300 relative overflow-hidden group">
             <div>
               <iconify-icon icon="solar:medal-ribbon-star-bold-duotone" class="text-amber-400 text-4xl mb-4 block"></iconify-icon>
               <h4 class="text-2xl font-bold uppercase text-white font-display mb-2">End-to-End Cohesive Execution</h4>
