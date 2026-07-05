@@ -1005,7 +1005,25 @@ const initSPARouter = () => {
     // Toggle global persistent marketing modules
     const globalModules = document.getElementById('global-persistent-modules');
     if (globalModules) {
-      globalModules.style.display = (pageId !== 'book') ? '' : 'none';
+      if (pageId === 'book') {
+        globalModules.style.display = 'none';
+      } else {
+        globalModules.style.display = '';
+        const isLimited = (pageId === 'about' || pageId === 'contact');
+        const marketingIds = [
+          'homepage-whychooseus-section',
+          'homepage-process-section',
+          'homepage-manifesto-section',
+          'portfolio-slider-section',
+          'scale-block'
+        ];
+        marketingIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.style.display = isLimited ? 'none' : '';
+          }
+        });
+      }
     }
 
     // Update nav links indicator
