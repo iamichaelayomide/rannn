@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Olympus Studio — Premium Creative Media House</title>
+  <meta name="description" content="Olympus Studio is a premium dark-themed media house and design agency delivering high-fidelity web, graphic branding, video production, and content storytelling.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Syne', 'sans-serif'],
+          },
+          colors: {
+            neutral: {
+              950: '#050505',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="index.css">
+
+  <!-- Iconify Icon CDN -->
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+
+  <!-- Animation dependencies -->
+  <!-- GSAP Core & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
+  <!-- Lenis (Smooth Scroll) -->
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+  <!-- Three.js (WebGL Backdrop & Shader Slider) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="bg-neutral-950 text-white antialiased selection:bg-yellow-500 selection:text-black overflow-x-hidden">
+
+  <!-- Fixed WebGL Backdrop Canvas -->
+  <canvas id="bg-webgl-canvas"></canvas>
+
+  <!-- Navigation (Sticky glass-nav, z-50) -->
+  <header class="fixed top-0 left-0 right-0 z-50 w-full glass-nav">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#home" class="flex items-center gap-3 group spa-nav-link">
+        <iconify-icon icon="solar:star-fall-minimalistic-2-bold-duotone" class="text-gold-gradient text-3xl group-hover:rotate-12 transition-transform duration-300"></iconify-icon>
+        <span class="text-xl font-bold tracking-tight text-white font-display uppercase group-hover:text-amber-200 transition-colors">Olympus</span>
+      </a>
+
+      <!-- Center navigation Links (SPA triggers) -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="#home" class="nav-link text-sm font-semibold tracking-wide text-white uppercase active" data-page="home">Home</a>
+        <a href="#services" class="nav-link text-sm font-semibold tracking-wide text-neutral-400 hover:text-white uppercase" data-page="services">Services</a>
+        <a href="#portfolio" class="nav-link text-sm font-semibold tracking-wide text-neutral-400 hover:text-white uppercase" data-page="portfolio">Portfolio</a>
+        <a href="#about" class="nav-link text-sm font-semibold tracking-wide text-neutral-400 hover:text-white uppercase" data-page="about">About</a>
+        <a href="#contact" class="nav-link text-sm font-semibold tracking-wide text-neutral-400 hover:text-white uppercase" data-page="contact">Contact</a>
+      </nav>
+
+      <!-- Right CTA button -->
+      <div class="flex items-center gap-4">
+        <a href="#book" class="hidden md:inline-flex items-center justify-center bg-gold-gradient text-neutral-950 text-xs md:text-sm font-bold px-6 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)] spa-nav-link" data-page="book">
+          Book Now
+        </a>
+        
+        <!-- Mobile Hamburger Menu Button -->
+        <button id="mobile-hamburger-btn" class="md:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white flex flex-col gap-1 items-center justify-center hover:bg-white/10 active:scale-95 transition-all" aria-label="Toggle Navigation Menu">
+          <span class="w-5 h-0.5 bg-amber-400 transition-transform duration-300 burger-line-top"></span>
+          <span class="w-5 h-0.5 bg-amber-400 transition-opacity duration-300 burger-line-mid"></span>
+          <span class="w-5 h-0.5 bg-amber-400 transition-transform duration-300 burger-line-bot"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div id="mobile-nav-drawer" class="fixed inset-0 bg-neutral-950/98 z-40 backdrop-blur-2xl flex flex-col justify-center items-center gap-8 transition-transform duration-500 translate-y-[-100%] pointer-events-none md:hidden">
+    <nav class="flex flex-col items-center gap-6">
+      <a href="#home" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-colors" data-page="home">Home</a>
+      <a href="#services" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-colors" data-page="services">Services</a>
+      <a href="#portfolio" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-colors" data-page="portfolio">Portfolio</a>
+      <a href="#about" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-colors" data-page="about">About</a>
+      <a href="#contact" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-colors" data-page="contact">Contact</a>
+      <a href="#book" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-gold-gradient transition-colors" data-page="book">Book Session</a>
+    </nav>
+  </div>
+
+  <!-- Content Wrapper -->
+  <div class="relative z-10 pt-20">
+
+    <!-- PAGE 1: HOME -->
+    <section id="page-home" class="spa-page active">
+      
+      <!-- Hero Section -->
+      <div class="max-w-7xl mx-auto px-6 py-24 md:py-36 text-center flex flex-col items-center relative">
+        <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.3em] mb-6 block font-mono">Premium Media House</span>
+        
+        <h1 class="h1-editorial font-extrabold uppercase tracking-tighter text-white max-w-4xl mb-8 flex flex-col liquid-hero-text cursor-pointer">
+          <span>Let's Create</span>
+          <span class="text-gold-gradient">The Future</span>
+        </h1>
+
+        <p class="text-neutral-400 text-base md:text-lg max-w-2xl font-light leading-relaxed mb-12">
+          We shape digital narratives, design interactive digital systems, and capture high-fidelity media for global brands.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+          <a href="#book" class="w-full sm:w-auto inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-8 py-4 rounded-full transition-transform duration-300 hover:-translate-y-0.5 shadow-lg shadow-amber-500/10 spa-nav-link" data-page="book">
+            Start A Project
+          </a>
+          <a href="#services" class="w-full sm:w-auto inline-flex items-center justify-center glass-card text-white font-semibold px-8 py-4 rounded-full hover:bg-white/5 transition-transform duration-300 hover:-translate-y-0.5 border-gold-gradient spa-nav-link" data-page="services">
+            Our Services
+          </a>
+        </div>
+      </div>
+
+      <!-- Center Statement Block (Image 1 style) -->
+      <div class="max-w-4xl mx-auto px-6 py-16 text-center border-t border-white/5">
+        <div class="flex items-center justify-center gap-2 mb-6">
+          <span class="w-2.5 h-2.5 bg-amber-400 rounded-sm"></span>
+          <span class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400 font-mono">Our Vision</span>
+        </div>
+        <p id="word-reveal-paragraph" class="text-xl md:text-3xl font-medium tracking-tight leading-relaxed text-neutral-300 font-display">
+          Olympus works with founders, developers, and creative brands to transform innovative ideas into scalable systems. Through strategic positioning, high-fidelity media production, interactive design, and content storytelling, we help builders reach global adoption.
+        </p>
+      </div>
+
+      <!-- Trust Bar / Stats -->
+      <div class="border-y border-white/5 bg-neutral-950/40 backdrop-blur-md py-12" id="trust-stats-section">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div class="flex flex-col items-center">
+            <span class="text-4xl md:text-5xl font-extrabold text-gold-gradient font-display flex items-center justify-center">
+              <span class="stat-roll-number" data-target="1.2" data-decimals="1">0</span>M+
+            </span>
+            <span class="text-xs text-neutral-400 uppercase tracking-widest mt-2 font-mono">Media Views</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-4xl md:text-5xl font-extrabold text-white font-display flex items-center justify-center">
+              <span class="stat-roll-number" data-target="240" data-decimals="0">0</span>+
+            </span>
+            <span class="text-xs text-neutral-400 uppercase tracking-widest mt-2 font-mono">Projects Delivered</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-4xl md:text-5xl font-extrabold text-white font-display flex items-center justify-center">
+              <span class="stat-roll-number" data-target="99.8" data-decimals="1">0</span>%
+            </span>
+            <span class="text-xs text-neutral-400 uppercase tracking-widest mt-2 font-mono">Client Success</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-4xl md:text-5xl font-extrabold text-gold-gradient font-display flex items-center justify-center">
+              <span class="stat-roll-number" data-target="15" data-decimals="0">0</span>+
+            </span>
+            <span class="text-xs text-neutral-400 uppercase tracking-widest mt-2 font-mono">Global Awards</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Capabilities Card Stack section (deals cards out on click) -->
+      <div class="max-w-7xl mx-auto px-6 py-24">
+        <div class="mb-16 relative">
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Creative Pillars</span>
+          <h2 class="h2-editorial font-extrabold uppercase text-white mt-3">Capabilities</h2>
+        </div>
+
+        <div class="relative w-full min-h-[460px] mt-12" id="capabilities-deck-container">
+          <!-- Reset Stack button on top right -->
+          <button id="restack-deck-btn" class="absolute top-[-60px] right-0 bg-white/5 border border-white/10 hover:border-white/20 text-neutral-400 hover:text-white px-4 py-2 rounded-xl text-xs font-semibold tracking-wider uppercase transition-all duration-300 flex items-center gap-2 hidden">
+            <iconify-icon icon="solar:round-transfer-horizontal-bold" class="text-sm"></iconify-icon>
+            <span>Restack Deck</span>
+          </button>          <!-- Card 1 -->
+          <div class="capabilities-card bg-blur-gradient-1 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="0">
+            <!-- Diagonal sweep shine overlay -->
+            <div class="sweep-shine"></div>
+            <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
+
+            <!-- Top-right hover icon -->
+            <div class="hover-icon-topright text-gold-gradient">
+              <iconify-icon icon="solar:camera-bold-duotone" class="text-xl"></iconify-icon>
+            </div>
+            
+            <div class="card-content-wrapper h-full flex flex-col justify-between relative z-10 w-full transition-opacity duration-300">
+              <div class="overflow-hidden">
+                <!-- Icon (moves and fades out on hover) -->
+                <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gold-gradient mb-6 card-icon-wrapper">
+                  <iconify-icon icon="solar:camera-bold-duotone" class="text-xl"></iconify-icon>
+                </div>
+
+                <!-- Combined Slide Container -->
+                <div class="relative h-[200px] overflow-hidden">
+                  <!-- Primary Content Block (slides up & fades out on hover) -->
+                  <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Photography & Video</h3>
+                    <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
+                      Capturing events, weddings, and commercial assets with raw, stylized editorial cinematography.
+                    </p>
+                  </div>
+
+                  <!-- Deliverables Block (slides up & fades in on hover) -->
+                  <div class="deliverables-content-block absolute inset-0 translate-y-[100px] opacity-0 transition-all duration-500 flex flex-col justify-center space-y-3">
+                    <span class="text-[9px] font-mono text-gold-gradient uppercase tracking-widest">Pillar Deliverables:</span>
+                    <ul class="space-y-2 text-[10px] font-mono text-neutral-300">
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Event Cinematography</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Bespoke Color Grading</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>High-Res Deliveries</li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+              <div class="flex justify-between items-center mt-4 border-t border-white/5 pt-4">
+                <a href="#services?tab=photo" class="text-xs font-bold text-gold-gradient uppercase tracking-widest flex items-center gap-1.5 spa-nav-link" data-page="services" data-sub="photo">
+                  Learn More <iconify-icon icon="solar:arrow-right-linear" class="text-xs"></iconify-icon>
+                </a>
+                <span class="text-[9px] font-mono text-neutral-500 uppercase select-none text-right">Pillar 01</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="capabilities-card bg-blur-gradient-2 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="1">
+            <!-- Diagonal sweep shine overlay -->
+            <div class="sweep-shine"></div>
+            <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
+
+            <!-- Top-right hover icon -->
+            <div class="hover-icon-topright text-gold-gradient">
+              <iconify-icon icon="solar:palette-bold-duotone" class="text-xl"></iconify-icon>
+            </div>
+
+            <div class="card-content-wrapper h-full flex flex-col justify-between relative z-10 w-full transition-opacity duration-300">
+              <div class="overflow-hidden">
+                <!-- Icon -->
+                <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gold-gradient mb-6 card-icon-wrapper">
+                  <iconify-icon icon="solar:palette-bold-duotone" class="text-xl"></iconify-icon>
+                </div>
+
+                <!-- Combined Slide Container -->
+                <div class="relative h-[200px] overflow-hidden">
+                  <!-- Primary Content Block -->
+                  <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display font-display">Graphic & Branding</h3>
+                    <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
+                      Developing visual assets, brand identity books, style guides, print layouts, and digital icons.
+                    </p>
+                  </div>
+
+                  <!-- Deliverables Block -->
+                  <div class="deliverables-content-block absolute inset-0 translate-y-[100px] opacity-0 transition-all duration-500 flex flex-col justify-center space-y-3">
+                    <span class="text-[9px] font-mono text-gold-gradient uppercase tracking-widest">Pillar Deliverables:</span>
+                    <ul class="space-y-2 text-[10px] font-mono text-neutral-300">
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Logo & Vector Paths</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Visual Style Sheets</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Layout & Packaging</li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+              <div class="flex justify-between items-center mt-4 border-t border-white/5 pt-4">
+                <a href="#services?tab=graphic" class="text-xs font-bold text-gold-gradient uppercase tracking-widest flex items-center gap-1.5 spa-nav-link" data-page="services" data-sub="graphic">
+                  Learn More <iconify-icon icon="solar:arrow-right-linear" class="text-xs"></iconify-icon>
+                </a>
+                <span class="text-[9px] font-mono text-neutral-500 uppercase select-none text-right">Pillar 02</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="capabilities-card bg-blur-gradient-3 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="2">
+            <!-- Diagonal sweep shine overlay -->
+            <div class="sweep-shine"></div>
+            <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
+
+            <!-- Top-right hover icon -->
+            <div class="hover-icon-topright text-gold-gradient">
+              <iconify-icon icon="solar:code-bold-duotone" class="text-xl"></iconify-icon>
+            </div>
+
+            <div class="card-content-wrapper h-full flex flex-col justify-between relative z-10 w-full transition-opacity duration-300">
+              <div class="overflow-hidden">
+                <!-- Icon -->
+                <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gold-gradient mb-6 card-icon-wrapper">
+                  <iconify-icon icon="solar:code-bold-duotone" class="text-xl"></iconify-icon>
+                </div>
+
+                <!-- Combined Slide Container -->
+                <div class="relative h-[200px] overflow-hidden">
+                  <!-- Primary Content Block -->
+                  <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Web Design & Dev</h3>
+                    <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
+                      Engineering highly interactive platforms with custom web animations, WebGL frameworks, and clean code.
+                    </p>
+                  </div>
+
+                  <!-- Deliverables Block -->
+                  <div class="deliverables-content-block absolute inset-0 translate-y-[100px] opacity-0 transition-all duration-500 flex flex-col justify-center space-y-3">
+                    <span class="text-[9px] font-mono text-gold-gradient uppercase tracking-widest">Pillar Deliverables:</span>
+                    <ul class="space-y-2 text-[10px] font-mono text-neutral-300">
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>WebGL / Shader Canvas</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>GSAP Animation Rigs</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Responsive Scale CSS</li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+              <div class="flex justify-between items-center mt-4 border-t border-white/5 pt-4">
+                <a href="#services?tab=web" class="text-xs font-bold text-gold-gradient uppercase tracking-widest flex items-center gap-1.5 spa-nav-link" data-page="services" data-sub="web">
+                  Learn More <iconify-icon icon="solar:arrow-right-linear" class="text-xs"></iconify-icon>
+                </a>
+                <span class="text-[9px] font-mono text-neutral-500 uppercase select-none text-right">Pillar 03</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="capabilities-card bg-blur-gradient-4 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="3">
+            <!-- Diagonal sweep shine overlay -->
+            <div class="sweep-shine"></div>
+            <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
+
+            <!-- Top-right hover icon -->
+            <div class="hover-icon-topright text-gold-gradient">
+              <iconify-icon icon="solar:chat-round-line-bold-duotone" class="text-xl"></iconify-icon>
+            </div>
+
+            <div class="card-content-wrapper h-full flex flex-col justify-between relative z-10 w-full transition-opacity duration-300">
+              <div class="overflow-hidden">
+                <!-- Icon -->
+                <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gold-gradient mb-6 card-icon-wrapper">
+                  <iconify-icon icon="solar:chat-round-line-bold-duotone" class="text-xl"></iconify-icon>
+                </div>
+
+                <!-- Combined Slide Container -->
+                <div class="relative h-[200px] overflow-hidden">
+                  <!-- Primary Content Block -->
+                  <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Storytelling</h3>
+                    <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
+                      Shaping commercial campaigns, digital copywriting, short-form reels scripts, and social layouts.
+                    </p>
+                  </div>
+
+                  <!-- Deliverables Block -->
+                  <div class="deliverables-content-block absolute inset-0 translate-y-[100px] opacity-0 transition-all duration-500 flex flex-col justify-center space-y-3">
+                    <span class="text-[9px] font-mono text-gold-gradient uppercase tracking-widest">Pillar Deliverables:</span>
+                    <ul class="space-y-2 text-[10px] font-mono text-neutral-300">
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Campaign Script Hooks</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Short-Form Copywriting</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Publishing Calendars</li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+              <div class="flex justify-between items-center mt-4 border-t border-white/5 pt-4">
+                <a href="#services?tab=story" class="text-xs font-bold text-gold-gradient uppercase tracking-widest flex items-center gap-1.5 spa-nav-link" data-page="services" data-sub="story">
+                  Learn More <iconify-icon icon="solar:arrow-right-linear" class="text-xs"></iconify-icon>
+                </a>
+                <span class="text-[9px] font-mono text-neutral-500 uppercase select-none text-right">Pillar 04</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </section>
+
+    <!-- PAGE 2: SERVICES (Interactive Sticky Scroll Page) -->
+    <section id="page-services" class="spa-page">
+      
+      <div class="max-w-7xl mx-auto px-6 py-16">
+        
+        <div class="text-center mb-16">
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Expertise</span>
+          <h2 class="h2-editorial font-extrabold uppercase text-white mt-3">Our Services</h2>
+          <p class="text-neutral-400 text-sm md:text-base mt-2 max-w-xl mx-auto font-light">Explore our dynamic pillars, process, and deliverables.</p>
+        </div>
+
+        <!-- Sticky Scroll Component (Image 5 & Image 3 style) -->
+        <div class="grid grid-cols-12 gap-8 items-start relative mb-24">
+          
+          <!-- Sticky Left side: Image Frame with absolute layers -->
+          <div class="col-span-12 lg:col-span-5 sticky-panel-left border-gold-gradient border border-white/5 h-[340px] md:h-[480px]">
+            
+            <!-- Layer 1: Photo -->
+            <div class="sticky-image-layer active" id="sticky-img-photo">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/357cb3d1-9f65-4810-884b-f0072a65193d_1600w.webp" alt="Photography Visual" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-neutral-950/20"></div>
+            </div>
+
+            <!-- Layer 2: Graphic -->
+            <div class="sticky-image-layer" id="sticky-img-graphic">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2f999a94-8031-4c3e-b64e-836c1b4f5be0_320w.webp" alt="Graphic Visual" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-neutral-950/20"></div>
+            </div>
+
+            <!-- Layer 3: Web -->
+            <div class="sticky-image-layer" id="sticky-img-web">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/d25a1767-0ea8-4aac-b981-6afd67dc79a6_800w.webp" alt="Web Visual" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-neutral-950/20"></div>
+            </div>
+
+            <!-- Layer 4: Storytelling -->
+            <div class="sticky-image-layer" id="sticky-img-story">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/61cab6ed-0aeb-4671-824c-5b8a0cf236ca_320w.webp" alt="Storytelling Visual" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-neutral-950/20"></div>
+            </div>
+
+          </div>
+
+          <!-- Scrollable Right side: stacked service pillars -->
+          <div class="col-span-12 lg:col-span-7 space-y-24 pb-20 pl-0 md:pl-8">
+            
+            <!-- Section 1: Photo & Video -->
+            <div class="scroll-service-section space-y-6" id="scroll-sec-photo" data-service-index="photo">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-gold-gradient font-mono tracking-widest bg-amber-400/10 px-3 py-1 rounded-full">01</span>
+                <span class="text-xs uppercase font-semibold text-neutral-400 tracking-[0.2em]">Pillar One</span>
+              </div>
+              <h3 class="text-2xl md:text-3xl font-extrabold uppercase text-white">Photography & Videography</h3>
+              
+              <!-- Responsive Mobile Inline Image -->
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/357cb3d1-9f65-4810-884b-f0072a65193d_1600w.webp" alt="Photography" class="lg:hidden w-full h-[220px] object-cover rounded-2xl mb-4 border border-white/5 shadow-lg">
+
+              <p class="text-neutral-400 text-sm md:text-base font-light leading-relaxed">
+                Capturing events, commercial brand campaigns, and weddings with cinema-grade depth and high-end color grading.
+              </p>
+              
+              <!-- Timeline -->
+              <div class="space-y-6 pt-4">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-300 font-mono">Our Process</h4>
+                <div class="relative pl-8 py-2">
+                  <div class="process-connector"><div class="process-connector-fill"></div></div>
+                  
+                  <div class="relative pb-6 scroll-process-step process-step-active">
+                    <span class="process-indicator-dot">01</span>
+                    <h5 class="text-xs font-bold text-white uppercase ml-1">Discovery & Styling</h5>
+                    <p class="text-neutral-500 text-xs mt-1 ml-1">Aligning on themes, vectors, locations, and references.</p>
+                  </div>
+                  <div class="relative pb-6 scroll-process-step">
+                    <span class="process-indicator-dot">02</span>
+                    <h5 class="text-xs font-bold text-white uppercase ml-1">On-Site Capture</h5>
+                    <p class="text-neutral-500 text-xs mt-1 ml-1">Direct shooting under specialized lighting setups.</p>
+                  </div>
+                  <div class="relative scroll-process-step">
+                    <span class="process-indicator-dot">03</span>
+                    <h5 class="text-xs font-bold text-white uppercase ml-1">Master & Grade</h5>
+                    <p class="text-neutral-500 text-xs mt-1 ml-1">Delivering high-res digital files and commercial licenses.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 flex items-center gap-4">
+                <a href="#book" class="inline-flex items-center justify-center bg-gold-gradient text-neutral-950 text-xs font-bold px-6 py-3 rounded-full hover:scale-105 transition-all duration-300 spa-nav-link" data-page="book" data-service-select="photo">
+                  Book This Service
+                </a>
+              </div>
+            </div>
+
+            <!-- Section 2: Graphic & Branding -->
+            <div class="scroll-service-section space-y-6" id="scroll-sec-graphic" data-service-index="graphic">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-gold-gradient font-mono tracking-widest bg-amber-400/10 px-3 py-1 rounded-full">02</span>
+                <span class="text-xs uppercase font-semibold text-neutral-400 tracking-[0.2em]">Pillar Two</span>
+              </div>
+              <h3 class="text-2xl md:text-3xl font-extrabold uppercase text-white">Graphic Design & Branding</h3>
+              
+              <!-- Responsive Mobile Inline Image -->
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2f999a94-8031-4c3e-b64e-836c1b4f5be0_320w.webp" alt="Graphic Design" class="lg:hidden w-full h-[220px] object-cover rounded-2xl mb-4 border border-white/5 shadow-lg">
+
+              <p class="text-neutral-400 text-sm md:text-base font-light leading-relaxed">
+                Developing visual assets, comprehensive brand identities, vector libraries, print packaging, and custom typography frameworks.
+              </p>
+
+              <!-- Timeline -->
+              <div class="space-y-6 pt-4">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-300 font-mono">Our Process</h4>
+                <div class="relative pl-8 py-2">
+                  <div class="process-connector"><div class="process-connector-fill"></div></div>
+                  
+                  <div class="relative pb-6 scroll-process-step process-step-active">
+                    <span class="process-indicator-dot">01</span>
+                    <h5 class="text-xs font-bold text-white uppercase ml-1">Archetype Research</h5>
+                    <p class="text-neutral-500 text-xs mt-1 ml-1">Mapping competitors, visual anchors, and color systems.</p>
+                  </div>
+                  <div class="relative pb-6 scroll-process-step">
+                    <span class="process-indicator-dot">02</span>
+                    <h5 class="text-xs font-bold text-white uppercase ml-1">Vector Ideation</h5>
+                    <p class="text-neutral-500 text-xs mt-1 ml-1">Creating layouts, lettermarks, and digital icons.</p>
+                  </div>
+                  <div class="relative scroll-process-step">
+                    <span class="process-indicator-dot">03</span>
+                    <h5 class="text-xs font-bold text-white uppercase ml-1">Identity Release</h5>
+                    <p class="text-neutral-500 text-xs mt-1 ml-1">Exporting brand guides, layout books, and print templates.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 flex items-center gap-4">
+                <a href="#book" class="inline-flex items-center justify-center bg-gold-gradient text-neutral-950 text-xs font-bold px-6 py-3 rounded-full hover:scale-105 transition-all duration-300 spa-nav-link" data-page="book" data-service-select="design">
+                  Book This Service
+                </a>
+              </div>
+            </div>
+
+            <!-- Section 3: Web Design/Dev -->
+            <div class="scroll-service-section space-y-6" id="scroll-sec-web" data-service-index="web">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-gold-gradient font-mono tracking-widest bg-amber-400/10 px-3 py-1 rounded-full">03</span>
+                <span class="text-xs uppercase font-semibold text-neutral-400 tracking-[0.2em]">Pillar Three</span>
+              </div>
+              <h3 class="text-2xl md:text-3xl font-extrabold uppercase text-white">Web Design & Development</h3>
+              
+              <!-- Responsive Mobile Inline Image -->
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/d25a1767-0ea8-4aac-b981-6afd67dc79a6_800w.webp" alt="Web Design" class="lg:hidden w-full h-[220px] object-cover rounded-2xl mb-4 border border-white/5 shadow-lg">
+
+              <p class="text-neutral-400 text-sm md:text-base font-light leading-relaxed">
+                Building custom layout engines, high-fidelity UI structures, interactive WebGL scenes, and responsive styling.
+              </p>
+
+              <!-- Timeline -->
+              <div class="space-y-6 pt-4">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-300 font-mono">Our Process</h4>
+                <div class="relative pl-8 py-2">
+                  <div class="process-connector"><div class="process-connector-fill"></div></div>
+                  
+                  <div class="relative pb-6 scroll-process-step process-step-active">
+                    <span class="process-indicator-dot">01</span>
+                    <h5 class="text-xs font-bold text-white uppercase ml-1">UI Mockups</h5>
+                    <p class="text-neutral-500 text-xs mt-1 ml-1">Designing visual layouts, screen transitions, and component models.</p>
+                  </div>
+                  <div class="relative pb-6 scroll-process-step">
+                    <span class="process-indicator-dot">02</span>
+                    <h5 class="text-xs font-bold text-white uppercase ml-1">Motion Coding</h5>
+                    <p class="text-neutral-500 text-xs mt-1 ml-1">Integrating GSAP triggers, WebGL points, and smooth scrolling.</p>
+                  </div>
+                  <div class="relative scroll-process-step">
+                    <span class="process-indicator-dot">03</span>
+                    <h5 class="text-xs font-bold text-white uppercase ml-1">Responsive Deployment</h5>
+                    <p class="text-neutral-500 text-xs mt-1 ml-1">Testing cross-browser scales, search structures, and staging build.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 flex items-center gap-4">
+                <a href="#book" class="inline-flex items-center justify-center bg-gold-gradient text-neutral-950 text-xs font-bold px-6 py-3 rounded-full hover:scale-105 transition-all duration-300 spa-nav-link" data-page="book" data-service-select="web">
+                  Book This Service
+                </a>
+              </div>
+            </div>
+
+            <!-- Section 4: Storytelling -->
+            <div class="scroll-service-section space-y-6" id="scroll-sec-story" data-service-index="story">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-gold-gradient font-mono tracking-widest bg-amber-400/10 px-3 py-1 rounded-full">04</span>
+                <span class="text-xs uppercase font-semibold text-neutral-400 tracking-[0.2em]">Pillar Four</span>
+              </div>
+              <h3 class="text-2xl md:text-3xl font-extrabold uppercase text-white">Digital Content & Storytelling</h3>
+              
+              <!-- Responsive Mobile Inline Image -->
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/61cab6ed-0aeb-4671-824c-5b8a0cf236ca_320w.webp" alt="Storytelling" class="lg:hidden w-full h-[220px] object-cover rounded-2xl mb-4 border border-white/5 shadow-lg">
+
+              <p class="text-neutral-400 text-sm md:text-base font-light leading-relaxed">
+                Shaping reels structures, digital campaigns scripting, editorial copywriting, and publishing plans.
+              </p>
+
+              <!-- Timeline -->
+              <div class="space-y-6 pt-4">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-300 font-mono">Our Process</h4>
+                <div class="relative pl-8 py-2">
+                  <div class="process-connector"><div class="process-connector-fill"></div></div>
+                  
+                  <div class="relative pb-6 scroll-process-step process-step-active">
+                    <span class="process-indicator-dot">01</span>
+                    <h5 class="text-xs font-bold text-white uppercase ml-1">Pillar Setup</h5>
+                    <p class="text-neutral-500 text-xs mt-1 ml-1">Defining monthly hooks, tags, and audience demographics.</p>
+                  </div>
+                  <div class="relative pb-6 scroll-process-step">
+                    <span class="process-indicator-dot">02</span>
+                    <h5 class="text-xs font-bold text-white uppercase ml-1">Script & Copy</h5>
+                    <p class="text-neutral-500 text-xs mt-1 ml-1">Drafting scripts, captions, and brand descriptions.</p>
+                  </div>
+                  <div class="relative scroll-process-step">
+                    <span class="process-indicator-dot">03</span>
+                    <h5 class="text-xs font-bold text-white uppercase ml-1">Schedule & Audit</h5>
+                    <p class="text-neutral-500 text-xs mt-1 ml-1">Publishing optimized campaigns and auditing analytics views.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 flex items-center gap-4">
+                <a href="#book" class="inline-flex items-center justify-center bg-gold-gradient text-neutral-950 text-xs font-bold px-6 py-3 rounded-full hover:scale-105 transition-all duration-300 spa-nav-link" data-page="book" data-service-select="story">
+                  Book This Service
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PAGE 3: PORTFOLIO (Image 6 style Selected Work Layout) -->
+    <section id="page-portfolio" class="spa-page">
+      
+      <div class="max-w-7xl mx-auto px-6 py-16">
+        
+        <div class="text-left mb-12">
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Selected Archives</span>
+          <h2 class="selected-work-title text-white mt-4">selected work</h2>
+        </div>
+
+        <!-- Lowercase filter tags -->
+        <div class="flex justify-start flex-wrap gap-x-6 gap-y-3 mb-16 text-sm border-b border-white/5 pb-6">
+          <button class="portfolio-filter-btn selected-work-filter-btn font-medium uppercase text-white transition-all duration-300" data-filter="all">all</button>
+          <button class="portfolio-filter-btn selected-work-filter-btn font-medium uppercase text-neutral-500 hover:text-white transition-all duration-300" data-filter="photo">photography</button>
+          <button class="portfolio-filter-btn selected-work-filter-btn font-medium uppercase text-neutral-500 hover:text-white transition-all duration-300" data-filter="video">video</button>
+          <button class="portfolio-filter-btn selected-work-filter-btn font-medium uppercase text-neutral-500 hover:text-white transition-all duration-300" data-filter="graphic">graphics</button>
+          <button class="portfolio-filter-btn selected-work-filter-btn font-medium uppercase text-neutral-500 hover:text-white transition-all duration-300" data-filter="web">web dev</button>
+          <button class="portfolio-filter-btn selected-work-filter-btn font-medium uppercase text-neutral-500 hover:text-white transition-all duration-300" data-filter="branding">branding</button>
+        </div>
+
+        <!-- Filterable Grid (Masonry grid) -->
+        <div id="portfolio-grid" class="grid grid-cols-12 gap-6 relative min-h-[600px]">
+          
+          <!-- Item 1: Photo -->
+          <div class="portfolio-item col-span-12 md:col-span-6 lg:col-span-4 cursor-pointer" data-category="photo" data-idx="0">
+            <div class="group border border-white/10 rounded-2xl overflow-hidden relative aspect-[4/5] shadow-2xl">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/61cab6ed-0aeb-4671-824c-5b8a0cf236ca_320w.webp" alt="Editorial Shoot Portfolio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent flex flex-col justify-end p-6">
+                <span class="text-[10px] font-mono text-gold-gradient uppercase tracking-widest">Photography</span>
+                <h4 class="text-xl font-bold text-white mt-1.5">Grace & Ethereal</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2: Web -->
+          <div class="portfolio-item col-span-12 md:col-span-6 lg:col-span-4 cursor-pointer" data-category="web" data-idx="1">
+            <div class="group border border-white/10 rounded-2xl overflow-hidden relative aspect-[4/5] shadow-2xl">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/d25a1767-0ea8-4aac-b981-6afd67dc79a6_800w.webp" alt="Interactive Web Dev Portfolio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent flex flex-col justify-end p-6">
+                <span class="text-[10px] font-mono text-gold-gradient uppercase tracking-widest">Web Development</span>
+                <h4 class="text-xl font-bold text-white mt-1.5">Universal Matrix platform</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3: Video -->
+          <div class="portfolio-item col-span-12 md:col-span-6 lg:col-span-4 cursor-pointer" data-category="video" data-idx="2">
+            <div class="group border border-white/10 rounded-2xl overflow-hidden relative aspect-[4/5] shadow-2xl">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/357cb3d1-9f65-4810-884b-f0072a65193d_1600w.webp" alt="Documentary Campaign Portfolio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent flex flex-col justify-end p-6">
+                <span class="text-[10px] font-mono text-gold-gradient uppercase tracking-widest">Video Production</span>
+                <h4 class="text-xl font-bold text-white mt-1.5">Co-working Space Campaign</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4: Graphic -->
+          <div class="portfolio-item col-span-12 md:col-span-6 lg:col-span-4 cursor-pointer" data-category="graphic" data-idx="3">
+            <div class="group border border-white/10 rounded-2xl overflow-hidden relative aspect-[4/5] shadow-2xl">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2f999a94-8031-4c3e-b64e-836c1b4f5be0_320w.webp" alt="Editorial Logo Design Portfolio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent flex flex-col justify-end p-6">
+                <span class="text-[10px] font-mono text-gold-gradient uppercase tracking-widest">Graphic Design</span>
+                <h4 class="text-xl font-bold text-white mt-1.5">Corporate Style Guide</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 5: Branding -->
+          <div class="portfolio-item col-span-12 md:col-span-6 lg:col-span-4 cursor-pointer" data-category="branding" data-idx="4">
+            <div class="group border border-white/10 rounded-2xl overflow-hidden relative aspect-[4/5] shadow-2xl">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/08b00610-61b2-45b5-b8fc-e9305c15b460_320w.webp" alt="Visual Branding Portfolio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent flex flex-col justify-end p-6">
+                <span class="text-[10px] font-mono text-gold-gradient uppercase tracking-widest">Branding Identity</span>
+                <h4 class="text-xl font-bold text-white mt-1.5">Premium Ledger Core</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 6: Photo 2 -->
+          <div class="portfolio-item col-span-12 md:col-span-6 lg:col-span-4 cursor-pointer" data-category="photo" data-idx="5">
+            <div class="group border border-white/10 rounded-2xl overflow-hidden relative aspect-[4/5] shadow-2xl">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/4c9aa348-4474-47a8-8f1e-3fe52ac8d2b9_320w.webp" alt="Editorial Fashion Shoot Portfolio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent flex flex-col justify-end p-6">
+                <span class="text-[10px] font-mono text-gold-gradient uppercase tracking-widest">Photography</span>
+                <h4 class="text-xl font-bold text-white mt-1.5">Studio Light Silhouette</h4>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PAGE 4: ABOUT (Image 7 style Founder Profile Layout) -->
+    <section id="page-about" class="spa-page">
+      
+      <div class="max-w-7xl mx-auto px-6 py-16">
+        
+        <div class="text-center mb-16">
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Agency</span>
+          <h2 class="h2-editorial font-extrabold uppercase text-white mt-3">The Studio</h2>
+          <p class="text-neutral-400 text-sm md:text-base mt-2 max-w-xl mx-auto font-light">We are a multi-disciplinary creative media house operating globally.</p>
+        </div>
+
+        <div class="grid grid-cols-12 gap-8 items-center mb-24">
+          <div class="col-span-12 lg:col-span-6">
+            <h3 class="text-3xl font-extrabold uppercase text-white mb-6">Our Vision & Scope</h3>
+            <p class="text-neutral-400 text-sm md:text-base font-light leading-relaxed mb-6">
+              Olympus Studio operates at the intersection of media production, visual design, and software engineering. We don't just photograph moments—we design the comprehensive digital platforms, books, branding vectors, and campaigns that shape how audiences view your company.
+            </p>
+            <p class="text-neutral-400 text-sm md:text-base font-light leading-relaxed">
+              Formed as a collaborative media house, our team brings together years of experience in film production, digital art direction, front-end development, and narrative copywriting to build cohesive digital landmarks.
+            </p>
+          </div>
+
+          <div class="col-span-12 lg:col-span-6">
+            <div class="border-gradient rounded-3xl overflow-hidden shadow-2xl relative group h-[380px] border border-white/10">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/357cb3d1-9f65-4810-884b-f0072a65193d_1600w.webp" alt="About Studio Visual" class="w-full h-full object-cover">
+            </div>
+          </div>
+        </div>
+
+        <!-- FOUNDER PROFILE SECTION (Image 7 style) -->
+        <div class="border-t border-white/5 pt-24 mb-16">
+          <div class="grid grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Portrait: Black and White, High Contrast -->
+            <div class="col-span-12 lg:col-span-5">
+              <span class="text-xs font-bold text-neutral-400 uppercase tracking-widest block mb-4 font-mono">Founder Profile</span>
+              <div class="rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative h-[480px] group bg-neutral-900">
+                <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/61cab6ed-0aeb-4671-824c-5b8a0cf236ca_320w.webp" alt="Sarah Chen CEO Portrait" class="w-full h-full object-cover ceo-portrait absolute inset-0">
+                <div class="absolute bottom-6 left-6 z-10 bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg border border-white/5">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-gold-gradient">Creative Architect</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Profile Info -->
+            <div class="col-span-12 lg:col-span-7 space-y-6 lg:pl-10">
+              <h3 class="text-4xl font-extrabold uppercase text-white font-display">Sarah Chen</h3>
+              <span class="text-xs text-gold-gradient font-mono uppercase tracking-[0.2em] block">Founder & Chief Executive Officer</span>
+              
+              <div class="h-px bg-white/5 w-full"></div>
+
+              <div class="space-y-6 text-neutral-300 text-sm font-light leading-relaxed">
+                <p>
+                  Renowned for my <strong class="text-white font-medium">innovative approach</strong> to visual storytelling and media design, I began my career capturing weddings, film sets, and visual campaigns. Quickly establishing my <strong class="text-white font-medium">distinctive design</strong> style, my creative success propelled me to <strong class="text-white font-medium">lead teams</strong> globally, driving significant <strong class="text-white font-medium">brand transformations</strong> for digital start-ups.
+                </p>
+                <p>
+                  Currently, I continue to innovate and work with brands through <strong class="text-white font-medium">contract-based campaigns</strong> and interactive web design, consistently pushing the boundaries of <strong class="text-white font-medium">digital production, typography scaling, and WebGL animation</strong>.
+                </p>
+              </div>
+
+              <div class="h-px bg-white/5 w-full"></div>
+
+              <!-- Location, Clock, and Links -->
+              <div class="space-y-4 pt-2">
+                <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-mono text-neutral-400">
+                  <div class="flex items-center gap-2">
+                    <iconify-icon icon="solar:global-bold" class="text-amber-400 text-base"></iconify-icon>
+                    <span>Based and work in London, UK 🇬🇧</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <iconify-icon icon="solar:clock-circle-bold" class="text-amber-400 text-base"></iconify-icon>
+                    <span id="london-time" class="text-white font-bold">12:00:00</span>
+                    <span>(GMT)</span>
+                  </div>
+                </div>
+
+                <!-- Social grid -->
+                <div class="flex gap-3 pt-2">
+                  <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-colors">
+                    <iconify-icon icon="ri:twitter-x-fill" class="text-sm"></iconify-icon>
+                  </a>
+                  <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-colors">
+                    <iconify-icon icon="ri:instagram-fill" class="text-sm"></iconify-icon>
+                  </a>
+                  <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-colors">
+                    <iconify-icon icon="ri:youtube-fill" class="text-sm"></iconify-icon>
+                  </a>
+                  <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-colors">
+                    <iconify-icon icon="ri:linkedin-fill" class="text-sm"></iconify-icon>
+                  </a>
+                </div>
+
+                <div class="pt-4">
+                  <a href="#portfolio" class="text-xs font-bold tracking-widest text-gold-gradient uppercase border-b border-amber-400/30 pb-1 hover:border-amber-400 transition-colors spa-nav-link" data-page="portfolio">
+                    RESUMÉ / PORTFOLIO <iconify-icon icon="solar:arrow-right-linear" class="align-middle ml-1"></iconify-icon>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PAGE 5: BOOK NOW (Service Picker and Paths) -->
+    <section id="page-book" class="spa-page">
+      
+      <div class="max-w-3xl mx-auto px-6 py-16">
+        
+        <div class="text-center mb-12">
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Scheduler</span>
+          <h2 class="h2-editorial font-extrabold uppercase text-white mt-3">Book A Session</h2>
+          <p class="text-neutral-400 text-sm mt-2 font-light">Tell us what you are building. Select your service category below to start.</p>
+        </div>
+
+        <div class="glass-card border-gold-gradient p-8 rounded-3xl">
+          
+          <!-- Category Picker Dropdown -->
+          <div class="mb-8">
+            <label for="booking-category" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-3 font-mono">Select Category First</label>
+            <select id="booking-category" class="w-full glass-input px-4 py-4 rounded-xl text-sm font-semibold focus:border-amber-400 cursor-pointer">
+              <option value="" disabled selected>-- Select category (Photography, Design, Web) --</option>
+              <option value="photo">Photography & Videography (Calendar Path)</option>
+              <option value="design">Graphic Design & Branding (Quote Path)</option>
+              <option value="web">Web Design & Development (Quote Path)</option>
+              <option value="story">Digital Content & Storytelling (Quote Path)</option>
+            </select>
+          </div>
+
+          <!-- DYNAMIC PATHS CONTAINER -->
+          <div id="booking-paths-wrapper" class="relative">
+
+            <!-- Placeholder warning -->
+            <div id="path-warning" class="text-center py-8 text-neutral-500 text-sm font-light">
+              <iconify-icon icon="solar:info-circle-linear" class="text-3xl text-neutral-600 mb-2"></iconify-icon>
+              <p>Please select a category dropdown option above to load the appropriate booking path flow.</p>
+            </div>
+
+            <!-- Path A: Calendar-based (Book a Shoot) -->
+            <div id="path-calendar" class="space-y-6 hidden">
+              <div class="bg-emerald-500/10 border border-emerald-500/25 p-4 rounded-xl flex items-center gap-3 text-xs text-emerald-400 font-medium">
+                <iconify-icon icon="solar:calendar-bold-duotone" class="text-xl"></iconify-icon>
+                <span>Calendar Booking Active: Photography & Videography Sessions</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Select Shoot Date</label>
+                  <input type="date" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm" required>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Select Time Slot</label>
+                  
+                  <!-- Custom select select-hours-booking -->
+                  <div class="relative custom-select" id="select-hours-booking-container">
+                    <input type="hidden" id="booking-time-slot" value="09:00">
+                    <button type="button" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm text-left flex items-center justify-between select-trigger">
+                      <span class="select-label">09:00 AM - 12:00 PM</span>
+                      <iconify-icon icon="solar:alt-arrow-down-linear" class="select-arrow transition-transform duration-300"></iconify-icon>
+                    </button>
+                    <div class="absolute left-0 right-0 mt-2 glass-card rounded-xl border border-white/8 z-50 py-2 hidden select-options-list">
+                      <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="09:00">09:00 AM - 12:00 PM</div>
+                      <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="13:00">01:00 PM - 04:00 PM</div>
+                      <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="17:00">05:00 PM - 08:00 PM</div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Shoot Details / Brief</label>
+                <textarea rows="4" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="Describe the location, event details, styling preference, and duration..." required></textarea>
+              </div>
+
+              <button type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] transition-transform duration-300 shadow-lg shadow-amber-500/10">
+                Confirm Calendar Session
+              </button>
+            </div>
+
+            <!-- Path B: Brief/Quote Request (Start a Project) -->
+            <div id="path-quote" class="space-y-6 hidden">
+              <div class="bg-blue-500/10 border border-blue-500/25 p-4 rounded-xl flex items-center gap-3 text-xs text-blue-400 font-medium">
+                <iconify-icon icon="solar:clipboard-list-bold-duotone" class="text-xl"></iconify-icon>
+                <span>Project Brief Request Active: Graphic, Branding, or Web Design</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Project Title / Goal</label>
+                <input type="text" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. Rebranding Platform for SaaS company" required>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Estimated Budget (Type Amount)</label>
+                  <input type="text" id="booking-budget-type" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. $5,000">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Timeline</label>
+                  
+                  <!-- Custom select timeline booking -->
+                  <div class="relative custom-select" id="select-timeline-booking-container">
+                    <input type="hidden" id="booking-timeline" value="normal">
+                    <button type="button" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm text-left flex items-center justify-between select-trigger">
+                      <span class="select-label">3 - 6 Weeks (Standard)</span>
+                      <iconify-icon icon="solar:alt-arrow-down-linear" class="select-arrow transition-transform duration-300"></iconify-icon>
+                    </button>
+                    <div class="absolute left-0 right-0 mt-2 glass-card rounded-xl border border-white/8 z-50 py-2 hidden select-options-list">
+                      <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="fast">1 - 3 Weeks</div>
+                      <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="normal">3 - 6 Weeks (Standard)</div>
+                      <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="flexible">Flexible / Long term</div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Brief Description / Requirements</label>
+                <textarea rows="4" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="Provide details about pages, branding guides, existing logo, and target audience..." required></textarea>
+              </div>
+
+              <button type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] transition-transform duration-300 shadow-lg shadow-amber-500/10">
+                Submit Project Brief for Quote
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PAGE 6: CONTACT (Send a Message form only) -->
+    <section id="page-contact" class="spa-page">
+      
+      <div class="max-w-4xl mx-auto px-6 py-16">
+        
+        <div class="text-center mb-16">
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Get in Touch</span>
+          <h2 class="h2-editorial font-extrabold uppercase text-white mt-3">Contact</h2>
+          <p class="text-neutral-400 text-sm mt-2 max-w-xl mx-auto font-light">Reach out directly to start a conversation.</p>
+        </div>
+
+        <div class="glass-card border-gold-gradient p-8 rounded-3xl max-w-2xl mx-auto">
+          <h3 class="text-2xl font-bold uppercase text-white mb-6 text-center">Send A Message</h3>
+          
+          <form id="contact-form" class="space-y-6">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Full Name</label>
+              <input type="text" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. John Doe" required>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Email Address</label>
+              <input type="email" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. john@example.com" required>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Message</label>
+              <textarea rows="5" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="Your questions, inquiries, or notes here..." required></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] transition-transform duration-300 shadow-lg shadow-amber-500/10">
+              Send Message
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- GLOBAL PERSISTENT MARKETING MODULES (Rendered dynamically on home, services, portfolio, about, contact) -->
+    <div id="global-persistent-modules">
+
+      <!-- Why Choose Us Bento Grid Section -->
+      <div class="max-w-7xl mx-auto px-6 py-24 border-t border-white/5" id="homepage-whychooseus-section">
+        <div class="text-center mb-16">
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Advantage</span>
+          <h3 class="text-3xl font-extrabold uppercase text-white mt-3">Why Choose Us</h3>
+          <p class="text-neutral-400 text-xs md:text-sm mt-2 max-w-md mx-auto font-light">We combine cinema-grade production with high-fidelity frontend code under a single strategic roof.</p>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6 max-w-6xl mx-auto">
+          
+          <!-- Item 1: Large (2 cols wide) -->
+          <div class="col-span-12 md:col-span-8 bg-neutral-900/50 border border-white/5 rounded-3xl p-8 flex flex-col justify-between h-[300px] hover:border-amber-400/20 transition-all duration-300 relative overflow-hidden group">
+            <div>
+              <iconify-icon icon="solar:videocamera-record-bold-duotone" class="text-amber-400 text-4xl mb-4 block"></iconify-icon>
+              <h4 class="text-2xl font-bold uppercase text-white font-display mb-2">Cinema-Grade Media Production</h4>
+              <p class="text-neutral-400 text-xs md:text-sm font-light leading-relaxed max-w-xl">
+                We don't shoot generic videos. We capture brand campaigns and commercial assets using cinema-grade cameras, custom styled environments, and DaVinci Resolve color grading paths to make your digital image feel premium and look world-class.
+              </p>
+            </div>
+            <span class="text-[10px] font-mono text-neutral-600 uppercase tracking-widest">01 / PRODUCTION FIDELITY</span>
+          </div>
+
+          <!-- Item 2: Small (1 col wide) -->
+          <div class="col-span-12 md:col-span-4 bg-neutral-900/50 border border-white/5 rounded-3xl p-8 flex flex-col justify-between h-[300px] hover:border-amber-400/20 transition-all duration-300 relative overflow-hidden group">
+            <div>
+              <iconify-icon icon="solar:programming-bold-duotone" class="text-amber-400 text-4xl mb-4 block"></iconify-icon>
+              <h4 class="text-xl font-bold uppercase text-white font-display mb-2">Zero-Latency Code</h4>
+              <p class="text-neutral-400 text-xs font-light leading-relaxed">
+                We build custom layout engines, high-fidelity UI structures, interactive WebGL scenes, and responsive styling. Your site will load instantly and feel alive.
+              </p>
+            </div>
+            <span class="text-[10px] font-mono text-neutral-600 uppercase tracking-widest">02 / CODE QUALITY</span>
+          </div>
+
+          <!-- Item 3: Small (1 col wide) -->
+          <div class="col-span-12 md:col-span-4 bg-neutral-900/50 border border-white/5 rounded-3xl p-8 flex flex-col justify-between h-[300px] hover:border-amber-400/20 transition-all duration-300 relative overflow-hidden group">
+            <div>
+              <iconify-icon icon="solar:globus-bold-duotone" class="text-amber-400 text-4xl mb-4 block"></iconify-icon>
+              <h4 class="text-xl font-bold uppercase text-white font-display mb-2">Global Operations</h4>
+              <p class="text-neutral-400 text-xs font-light leading-relaxed">
+                Operating globally from London, we deliver strategic positioning, custom creative vectors, and localized media campaigns for international agencies.
+              </p>
+            </div>
+            <span class="text-[10px] font-mono text-neutral-600 uppercase tracking-widest">03 / INTERNATIONAL REACH</span>
+          </div>
+
+          <!-- Item 4: Large (2 cols wide) -->
+          <div class="col-span-12 md:col-span-8 bg-neutral-900/50 border border-white/5 rounded-3xl p-8 flex flex-col justify-between h-[300px] hover:border-amber-400/20 transition-all duration-300 relative overflow-hidden group">
+            <div>
+              <iconify-icon icon="solar:medal-ribbon-star-bold-duotone" class="text-amber-400 text-4xl mb-4 block"></iconify-icon>
+              <h4 class="text-2xl font-bold uppercase text-white font-display mb-2">End-to-End Cohesive Execution</h4>
+              <p class="text-neutral-400 text-xs md:text-sm font-light leading-relaxed max-w-xl">
+                By handling strategy, typography design, content scripting, and frontend development under a single unified agency, we eliminate disjointed client handoffs and deliver cohesive digital landmarks that resonate.
+              </p>
+            </div>
+            <span class="text-[10px] font-mono text-neutral-600 uppercase tracking-widest">04 / STRATEGIC SYNERGY</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Migrated 2x2 Interactive Engagement Process (Image 8 style) -->
+      <div class="max-w-7xl mx-auto px-6 py-24 border-t border-white/5" id="homepage-process-section">
+        <div class="text-center mb-16">
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Workflow</span>
+          <h3 class="text-3xl font-extrabold uppercase text-white mt-3">Engagement Process</h3>
+          <p class="text-neutral-400 text-xs md:text-sm mt-2 max-w-md mx-auto font-light">We translate strategies into premium creative production through four systematic checks.</p>
+        </div>
+
+        <div class="process-grid-2x2">
+          
+          <!-- Step 1: Discovery & Strategy -->
+          <div class="process-grid-card p-8 rounded-3xl flex flex-col justify-between shadow-2xl">
+            <div class="space-y-4">
+              <span class="text-xs font-bold text-gold-gradient uppercase tracking-widest font-mono">Step 1</span>
+              <h4 class="text-xl font-bold uppercase text-white font-display">Discovery & Strategy</h4>
+              <p class="text-neutral-400 text-xs font-light leading-relaxed">
+                We understand your creative goals, target audience metrics, and brand scope to structure the strategic parameters.
+              </p>
+            </div>
+
+            <!-- Animated SVG: Radar Scanner -->
+            <div class="relative w-full h-36 flex items-center justify-center bg-neutral-950/40 rounded-2xl border border-white/5 mt-6 overflow-hidden group/svg">
+              <div class="absolute inset-0 bg-gradient-to-t from-amber-400/5 to-transparent opacity-0 group-hover/svg:opacity-100 transition-opacity duration-500"></div>
+              <svg class="w-24 h-24 text-neutral-800" viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="0.75" stroke-dasharray="2 3" />
+                <circle cx="50" cy="50" r="25" stroke="currentColor" stroke-width="0.75" />
+                <circle cx="50" cy="50" r="10" stroke="currentColor" stroke-width="0.75" />
+                <line x1="50" y1="5" x2="50" y2="95" stroke="currentColor" stroke-width="0.5" stroke-dasharray="4 4" />
+                <line x1="5" y1="50" x2="95" y2="50" stroke="currentColor" stroke-width="0.5" stroke-dasharray="4 4" />
+                <line class="radar-line origin-center" x1="50" y1="50" x2="50" y2="10" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" style="transform-origin: 50px 50px; animation: spin 4s linear infinite;" />
+                <circle class="animate-pulse" cx="30" cy="35" r="2.5" fill="#D4AF37" style="animation-delay: 0.5s;" />
+                <circle class="animate-pulse" cx="70" cy="65" r="2" fill="#D4AF37" style="animation-delay: 1.2s;" />
+                <circle cx="50" cy="50" r="3.5" fill="#ffffff" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Step 2: Ideation & Conceptualization -->
+          <div class="process-grid-card p-8 rounded-3xl flex flex-col justify-between shadow-2xl">
+            <div class="space-y-4">
+              <span class="text-xs font-bold text-gold-gradient uppercase tracking-widest font-mono">Step 2</span>
+              <h4 class="text-xl font-bold uppercase text-white font-display">Ideation & Conceptualization</h4>
+              <p class="text-neutral-400 text-xs font-light leading-relaxed">
+                Our team formulates visual mood boards, custom typography guidelines, cinematic palettes, and mockups.
+              </p>
+            </div>
+
+            <!-- Animated SVG: Vector Pen Tool Drawing -->
+            <div class="relative w-full h-36 flex items-center justify-center bg-neutral-950/40 rounded-2xl border border-white/5 mt-6 overflow-hidden group/svg">
+              <div class="absolute inset-0 bg-gradient-to-t from-amber-400/5 to-transparent opacity-0 group-hover/svg:opacity-100 transition-opacity duration-500"></div>
+              <svg class="w-24 h-24" viewBox="0 0 100 100" fill="none">
+                <line x1="10" y1="20" x2="90" y2="20" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+                <line x1="10" y1="40" x2="90" y2="40" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+                <line x1="10" y1="60" x2="90" y2="60" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+                <line x1="10" y1="80" x2="90" y2="80" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+                <path d="M 20 60 C 40 10, 60 90, 80 40" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" stroke-dasharray="4 4" />
+                <path d="M 20 60 C 40 10, 60 90, 80 40" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" class="drawing-path" style="stroke-dasharray: 200; stroke-dashoffset: 200; animation: draw 4s ease-in-out infinite;" />
+                <rect x="18" y="58" width="4" height="4" fill="#ffffff" stroke="#D4AF37" stroke-width="1" />
+                <rect x="78" y="38" width="4" height="4" fill="#ffffff" stroke="#D4AF37" stroke-width="1" />
+                <g class="pen-stylus" style="animation: floatPen 4s ease-in-out infinite;">
+                  <path d="M 46 46 L 50 34 L 54 46 Z" fill="#ffffff" />
+                  <line x1="50" y1="34" x2="50" y2="20" stroke="#D4AF37" stroke-width="1" />
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Step 3: Execution & Refinement -->
+          <div class="process-grid-card p-8 rounded-3xl flex flex-col justify-between shadow-2xl">
+            <div class="space-y-4">
+              <span class="text-xs font-bold text-gold-gradient uppercase tracking-widest font-mono">Step 3</span>
+              <h4 class="text-xl font-bold uppercase text-white font-display">Execution & Refinement</h4>
+              <p class="text-neutral-400 text-xs font-light leading-relaxed">
+                We engineer the layouts, color grade high-end visual clips, and animate front-end systems with pixel accuracy.
+              </p>
+            </div>
+
+            <!-- Animated SVG: 3D Wireframe Cube Rotating -->
+            <div class="relative w-full h-36 flex items-center justify-center bg-neutral-950/40 rounded-2xl border border-white/5 mt-6 overflow-hidden group/svg">
+              <div class="absolute inset-0 bg-gradient-to-t from-amber-400/5 to-transparent opacity-0 group-hover/svg:opacity-100 transition-opacity duration-500"></div>
+              <svg class="w-24 h-24" viewBox="0 0 100 100" fill="none">
+                <text x="10" y="56" fill="rgba(255, 255, 255, 0.15)" font-family="monospace" font-size="16" font-weight="bold">&lt;</text>
+                <text x="76" y="56" fill="rgba(255, 255, 255, 0.15)" font-family="monospace" font-size="16" font-weight="bold">&gt;</text>
+                <g class="rotating-cube origin-center" style="transform-origin: 50px 50px; animation: spinCube 6s linear infinite;">
+                  <rect x="35" y="35" width="30" height="30" stroke="#D4AF37" stroke-width="1" fill="rgba(212, 175, 55, 0.04)" />
+                  <rect x="42" y="42" width="30" height="30" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" fill="none" />
+                  <line x1="35" y1="35" x2="42" y2="42" stroke="#D4AF37" stroke-width="0.75" />
+                  <line x1="65" y1="35" x2="72" y2="42" stroke="#D4AF37" stroke-width="0.75" />
+                  <line x1="35" y1="65" x2="42" y2="72" stroke="#D4AF37" stroke-width="0.75" />
+                  <line x1="65" y1="65" x2="72" y2="72" stroke="#D4AF37" stroke-width="0.75" />
+                </g>
+                <line x1="15" y1="78" x2="85" y2="78" stroke="#D4AF37" stroke-width="0.75" stroke-dasharray="1 3" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Step 4: Delivery & Post-Launch -->
+          <div class="process-grid-card p-8 rounded-3xl flex flex-col justify-between shadow-2xl">
+            <div class="space-y-4">
+              <span class="text-xs font-bold text-gold-gradient uppercase tracking-widest font-mono">Step 4</span>
+              <h4 class="text-xl font-bold uppercase text-white font-display">Delivery & Post-Launch</h4>
+              <p class="text-neutral-400 text-xs font-light leading-relaxed">
+                We deploy your production layers to the cloud, audit SEO search configurations, and audit asset growth indexes.
+              </p>
+            </div>
+
+            <!-- Animated SVG: Camera Iris Aperture revealing Upward Arrow -->
+            <div class="relative w-full h-36 flex items-center justify-center bg-neutral-950/40 rounded-2xl border border-white/5 mt-6 overflow-hidden group/svg">
+              <div class="absolute inset-0 bg-gradient-to-t from-amber-400/5 to-transparent opacity-0 group-hover/svg:opacity-100 transition-opacity duration-500"></div>
+              <svg class="w-24 h-24" viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="50" r="30" stroke="rgba(255,255,255,0.06)" stroke-width="1" />
+                <g class="iris-blades origin-center" style="transform-origin: 50px 50px; transition: transform 0.6s ease;">
+                  <line x1="20" y1="50" x2="50" y2="20" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+                  <line x1="50" y1="20" x2="80" y2="50" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+                  <line x1="80" y1="50" x2="50" y2="80" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+                  <line x1="50" y1="80" x2="20" y2="50" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+                </g>
+                <path d="M 30 70 L 48 52 L 58 60 L 72 38" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="drawing-path" style="stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw 3.5s ease-in-out infinite; animation-delay: 0.5s;" />
+                <path d="M 66 38 L 72 38 L 72 44" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="72" cy="38" r="3.5" fill="#ffffff" class="animate-ping" style="animation-duration: 2s;" />
+              </svg>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Our Manifesto Section (Image 1 style Editorial Statement) -->
+      <div class="max-w-4xl mx-auto px-6 py-24 text-center border-t border-white/5" id="homepage-manifesto-section">
+        <div class="flex items-center justify-center gap-2 mb-6">
+          <span class="w-2.5 h-2.5 bg-amber-400 rounded-sm"></span>
+          <span class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400 font-mono">Our Manifesto</span>
+        </div>
+        <h3 class="text-3xl md:text-5xl font-extrabold uppercase text-white font-display mb-8">We build digital landmarks.</h3>
+        <p id="manifesto-word-reveal" class="text-xl md:text-3xl font-medium tracking-tight leading-relaxed text-neutral-300 font-display max-w-3xl mx-auto">
+          We reject the template. We reject uninspired placeholders and unoriginal ideas. Olympus exists to build digital landmarks that endure—combining cinema-grade media, high-end design typography, and high-fidelity code to make your brand look premium and operate at scale.
+        </p>
+      </div>
+
+      <!-- Interactive Showcase: Liquid 3-Card Carousel Slider -->
+      <div class="max-w-7xl mx-auto px-6 py-24 border-y border-white/5 relative" id="portfolio-slider-section">
+        <div class="text-center mb-12">
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Interactive Showcase</span>
+          <h2 class="h2-editorial font-extrabold uppercase text-white mt-2">Liquid Showcase</h2>
+        </div>
+
+        <!-- 3-Card Slider Track Wrapper -->
+        <div class="relative w-full h-[500px] overflow-hidden flex items-center justify-center">
+          
+          <!-- Left/Right Faded Edge Overlays to signal more work exists -->
+          <div class="absolute left-0 top-0 bottom-0 w-24 md:w-32 bg-gradient-to-r from-neutral-950 via-neutral-950/70 to-transparent z-20 pointer-events-none"></div>
+          <div class="absolute right-0 top-0 bottom-0 w-24 md:w-32 bg-gradient-to-l from-neutral-950 via-neutral-950/70 to-transparent z-20 pointer-events-none"></div>
+
+          <!-- Carousel Track -->
+          <div class="relative w-full h-[450px] flex items-center justify-center" id="carousel-track">
+            
+            <!-- Left Card -->
+            <div class="carousel-card absolute w-[260px] md:w-[480px] h-[300px] md:h-[380px] rounded-3xl overflow-hidden border border-white/5 transition-all duration-500 scale-90 opacity-40 z-10 cursor-pointer pointer-events-auto" id="card-left">
+              <img src="" class="w-full h-full object-cover filter brightness-50" id="img-left">
+              <div class="absolute inset-0 bg-neutral-950/30"></div>
+            </div>
+
+            <!-- Center Card (WebGL Canvas with ripple effects, focal point) -->
+            <div class="carousel-card absolute w-[300px] md:w-[560px] h-[340px] md:h-[430px] rounded-3xl overflow-hidden border border-amber-400/20 shadow-[0_0_50px_rgba(0,0,0,0.8)] transition-all duration-500 scale-100 opacity-100 z-30 cursor-pointer" id="card-center">
+              <canvas id="liquid-slider-canvas" class="w-full h-full object-cover"></canvas>
+              
+              <!-- Center Card details overlay -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent flex flex-col justify-end p-6 pointer-events-none">
+                <span class="text-xs font-mono text-gold-gradient uppercase tracking-widest" id="slider-project-category">Photography</span>
+                <h3 class="text-2xl md:text-3xl font-extrabold uppercase text-white mt-1" id="slider-project-title">Ethereal Capture</h3>
+                <p class="text-neutral-400 text-[10px] md:text-xs font-light max-w-sm mt-1" id="slider-project-desc">
+                  Stylized editorial campaign shot with cinema-grade high-contrast lighting.
+                </p>
+              </div>
+
+              <!-- Click to enlarge indicator -->
+              <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[9px] font-mono uppercase tracking-widest text-neutral-400 flex items-center gap-1.5 pointer-events-none">
+                <iconify-icon icon="solar:maximize-linear" class="text-xs text-amber-400"></iconify-icon>
+                <span>Click to view</span>
+              </div>
+            </div>
+
+            <!-- Right Card -->
+            <div class="carousel-card absolute w-[260px] md:w-[480px] h-[300px] md:h-[380px] rounded-3xl overflow-hidden border border-white/5 transition-all duration-500 scale-90 opacity-40 z-10 cursor-pointer pointer-events-auto" id="card-right">
+              <img src="" class="w-full h-full object-cover filter brightness-50" id="img-right">
+              <div class="absolute inset-0 bg-neutral-950/30"></div>
+            </div>
+
+          </div>
+
+          <!-- Navigation Arrows -->
+          <button id="slider-prev-btn" class="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full glass-card border border-white/10 hover:border-amber-400/40 text-white flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 z-40 focus:outline-none">
+            <iconify-icon icon="solar:arrow-left-linear" class="text-xl"></iconify-icon>
+          </button>
+          <button id="slider-next-btn" class="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full glass-card border border-white/10 hover:border-amber-400/40 text-white flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 z-40 focus:outline-none">
+            <iconify-icon icon="solar:arrow-right-linear" class="text-xl"></iconify-icon>
+          </button>
+        </div>
+
+        <!-- View Gallery Button -->
+        <div class="text-center mt-8">
+          <a href="#portfolio" class="inline-flex items-center justify-center bg-white/5 border border-white/10 hover:border-amber-400/40 text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105 spa-nav-link" data-page="portfolio">
+            <span>Explore full gallery</span>
+            <iconify-icon icon="solar:arrow-right-linear" class="text-sm ml-2 text-gold-gradient"></iconify-icon>
+          </a>
+        </div>
+      </div>
+
+      <!-- Ready to Scale? proposal block -->
+      <div class="max-w-7xl mx-auto px-6 py-20" id="scale-block">
+        <div class="glass-card border-gold-gradient rounded-3xl p-8 md:p-12 relative overflow-hidden">
+          
+          <div class="grid grid-cols-12 gap-8 items-start relative z-10">
+            <!-- Left Info -->
+            <div class="col-span-12 lg:col-span-5 space-y-6">
+              <h2 class="h2-editorial font-extrabold uppercase text-white">Ready to scale?</h2>
+              <p class="text-neutral-400 text-sm font-light leading-relaxed">
+                Tell us about your project. We typically respond within 24 hours to schedule a discovery call and provide a detailed proposal.
+              </p>
+              
+              <!-- Checklist -->
+              <ul class="space-y-4 text-xs md:text-sm text-neutral-300">
+                <li class="flex items-center gap-3">
+                  <span class="w-5 h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-amber-400">
+                    <iconify-icon icon="solar:check-circle-bold-duotone" class="text-md"></iconify-icon>
+                  </span>
+                  <span>Direct access to senior developers & strategists</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="w-5 h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-amber-400">
+                    <iconify-icon icon="solar:check-circle-bold-duotone" class="text-md"></iconify-icon>
+                  </span>
+                  <span>Transparent pricing and timeline estimates</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="w-5 h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-amber-400">
+                    <iconify-icon icon="solar:check-circle-bold-duotone" class="text-md"></iconify-icon>
+                  </span>
+                  <span>No commitment required for initial consultation</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Right Form with Double-CTA Selector -->
+            <div class="col-span-12 lg:col-span-7 bg-neutral-950/40 p-6 md:p-8 rounded-2xl border border-white/5 space-y-6">
+              
+              <!-- Toggle buttons -->
+              <div class="flex gap-4">
+                <button type="button" id="toggle-path-event" class="flex-1 py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider text-center cta-tab-btn active flex items-center justify-center gap-2">
+                  <iconify-icon icon="solar:calendar-bold" class="text-sm"></iconify-icon>
+                  <span>Book Event Call</span>
+                </button>
+                <button type="button" id="toggle-path-project" class="flex-1 py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider text-center cta-tab-btn flex items-center justify-center gap-2">
+                  <iconify-icon icon="solar:clipboard-list-bold" class="text-sm"></iconify-icon>
+                  <span>Start Design Project</span>
+                </button>
+              </div>
+
+              <form id="scale-proposal-form" class="space-y-4">
+                
+                <!-- Shared details -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Name</label>
+                    <input type="text" id="proposal-name" class="w-full glass-input px-4 py-3 rounded-xl text-sm placeholder-neutral-600" placeholder="John Doe" required>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Work Email</label>
+                    <input type="email" id="proposal-email" class="w-full glass-input px-4 py-3 rounded-xl text-sm placeholder-neutral-600" placeholder="john@company.com" required>
+                  </div>
+                </div>
+
+                <!-- DYNAMIC PORTION A: EVENT CALL FIELDS -->
+                <div id="form-block-event" class="space-y-4">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Shoot / Event Date</label>
+                      <input type="date" id="event-date" class="w-full glass-input px-4 py-3 rounded-xl text-sm placeholder-neutral-600">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Required Hours</label>
+                      
+                      <!-- Custom select dropdown -->
+                      <div class="relative custom-select" id="select-hours-container">
+                        <input type="hidden" id="event-hours" value="8">
+                        <button type="button" class="w-full glass-input px-4 py-3 rounded-xl text-sm text-left flex items-center justify-between select-trigger">
+                          <span class="select-label">8 Hours (Full Day)</span>
+                          <iconify-icon icon="solar:alt-arrow-down-linear" class="select-arrow transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="absolute left-0 right-0 mt-2 glass-card rounded-xl border border-white/8 z-50 py-2 hidden select-options-list bg-[#0a0a0a]">
+                          <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="4">4 Hours (Half Day)</div>
+                          <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="8">8 Hours (Full Day)</div>
+                          <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="multi">Multiple Days Session</div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Event Location / Venue</label>
+                    <input type="text" id="event-location" class="w-full glass-input px-4 py-3 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. London, UK or St. Paul Cathedral">
+                  </div>
+                </div>
+
+                <!-- DYNAMIC PORTION B: DESIGN PROJECT FIELDS (hidden by default) -->
+                <div id="form-block-project" class="space-y-4 hidden">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono font-mono">Project Budget (Type Amount)</label>
+                      <input type="text" id="project-budget" class="w-full glass-input px-4 py-3 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. $5,000">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Expected Timeline</label>
+                      
+                      <!-- Custom select Expected Timeline -->
+                      <div class="relative custom-select" id="select-timeline-container">
+                        <input type="hidden" id="project-timeline" value="normal">
+                        <button type="button" class="w-full glass-input px-4 py-3 rounded-xl text-sm text-left flex items-center justify-between select-trigger">
+                          <span class="select-label">3 - 6 Weeks (Standard)</span>
+                          <iconify-icon icon="solar:alt-arrow-down-linear" class="select-arrow transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="absolute left-0 right-0 mt-2 glass-card rounded-xl border border-white/8 z-50 py-2 hidden select-options-list bg-[#0a0a0a]">
+                          <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="fast">1 - 3 Weeks</div>
+                          <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="normal">3 - 6 Weeks (Standard)</div>
+                          <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="flexible">Flexible / Long Term</div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Project Area</label>
+                    
+                    <!-- Custom select Project Area -->
+                    <div class="relative custom-select" id="select-area-container">
+                      <input type="hidden" id="project-area" value="design">
+                      <button type="button" class="w-full glass-input px-4 py-3 rounded-xl text-sm text-left flex items-center justify-between select-trigger">
+                        <span class="select-label">Graphic Design & Branding</span>
+                        <iconify-icon icon="solar:alt-arrow-down-linear" class="select-arrow transition-transform duration-300"></iconify-icon>
+                      </button>
+                      <div class="absolute left-0 right-0 mt-2 glass-card rounded-xl border border-white/8 z-50 py-2 hidden select-options-list bg-[#0a0a0a]">
+                        <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="design">Graphic Design & Branding</div>
+                        <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="web">Web Design & Development</div>
+                        <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="story">Digital Content & Storytelling</div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Brief Details</label>
+                  <textarea id="proposal-details" rows="4" class="w-full glass-input px-4 py-3 rounded-xl text-sm placeholder-neutral-600" placeholder="Tell us about your goals and current challenges..." required></textarea>
+                </div>
+
+                <button type="submit" id="proposal-submit-btn" class="w-full bg-[#f3f4f6] text-[#050505] font-semibold py-3.5 rounded-xl hover:bg-white active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 opacity-40 cursor-not-allowed" disabled>
+                  <span id="submit-btn-text">Book Call</span>
+                  <iconify-icon icon="solar:paper-plane-bold" class="text-sm"></iconify-icon>
+                </button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    <!-- GLOBALPERSISTENT MODULES WRAPPER -->
+    <div id="global-persistent-modules">
+    
+    <!-- Partners Grid Section (Magnetic Icon Lift) -->
+    <section id="partners-section" class="max-w-7xl mx-auto px-6 py-20 border-t border-white/5 relative z-10">
+      <div class="text-center mb-12">
+        <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">COLLABORATORS</span>
+        <h3 class="text-2xl md:text-3xl font-extrabold uppercase text-white mt-2">Trusted by Global Brands</h3>
+      </div>
+      
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 max-w-5xl mx-auto items-center justify-items-center" id="partners-magnetic-container">
+        
+        <!-- Partner 1 -->
+        <div class="w-36 h-20 bg-neutral-950 border border-white/5 rounded-2xl flex items-center justify-center cursor-pointer hover:border-amber-400/20 transition-all duration-300 magnetic-logo-wrap">
+          <iconify-icon icon="ri:youtube-fill" class="text-3xl text-neutral-400 pointer-events-none transition-colors duration-300 hover-target-icon"></iconify-icon>
+        </div>
+
+        <!-- Partner 2 -->
+        <div class="w-36 h-20 bg-neutral-950 border border-white/5 rounded-2xl flex items-center justify-center cursor-pointer hover:border-amber-400/20 transition-all duration-300 magnetic-logo-wrap">
+          <iconify-icon icon="ri:instagram-fill" class="text-3xl text-neutral-400 pointer-events-none transition-colors duration-300 hover-target-icon"></iconify-icon>
+        </div>
+
+        <!-- Partner 3 -->
+        <div class="w-36 h-20 bg-neutral-950 border border-white/5 rounded-2xl flex items-center justify-center cursor-pointer hover:border-amber-400/20 transition-all duration-300 magnetic-logo-wrap">
+          <iconify-icon icon="ri:linkedin-fill" class="text-3xl text-neutral-400 pointer-events-none transition-colors duration-300 hover-target-icon"></iconify-icon>
+        </div>
+
+        <!-- Partner 4 -->
+        <div class="w-36 h-20 bg-neutral-950 border border-white/5 rounded-2xl flex items-center justify-center cursor-pointer hover:border-amber-400/20 transition-all duration-300 magnetic-logo-wrap">
+          <iconify-icon icon="ri:vimeo-fill" class="text-3xl text-neutral-400 pointer-events-none transition-colors duration-300 hover-target-icon"></iconify-icon>
+        </div>
+
+        <!-- Partner 5 -->
+        <div class="w-36 h-20 bg-neutral-950 border border-white/5 rounded-2xl flex items-center justify-center cursor-pointer hover:border-amber-400/20 transition-all duration-300 magnetic-logo-wrap">
+          <iconify-icon icon="ri:behance-fill" class="text-3xl text-neutral-400 pointer-events-none transition-colors duration-300 hover-target-icon"></iconify-icon>
+        </div>
+
+        <!-- Partner 6 -->
+        <div class="w-36 h-20 bg-neutral-950 border border-white/5 rounded-2xl flex items-center justify-center cursor-pointer hover:border-amber-400/20 transition-all duration-300 magnetic-logo-wrap">
+          <iconify-icon icon="ri:dribbble-fill" class="text-3xl text-neutral-400 pointer-events-none transition-colors duration-300 hover-target-icon"></iconify-icon>
+        </div>
+
+        <!-- Partner 7 -->
+        <div class="w-36 h-20 bg-neutral-950 border border-white/5 rounded-2xl flex items-center justify-center cursor-pointer hover:border-amber-400/20 transition-all duration-300 magnetic-logo-wrap">
+          <iconify-icon icon="ri:spotify-fill" class="text-3xl text-neutral-400 pointer-events-none transition-colors duration-300 hover-target-icon"></iconify-icon>
+        </div>
+
+        <!-- Partner 8 -->
+        <div class="w-36 h-20 bg-neutral-950 border border-white/5 rounded-2xl flex items-center justify-center cursor-pointer hover:border-amber-400/20 transition-all duration-300 magnetic-logo-wrap">
+          <iconify-icon icon="ri:twitch-fill" class="text-3xl text-neutral-400 pointer-events-none transition-colors duration-300 hover-target-icon"></iconify-icon>
+        </div>
+
+        <!-- Partner 9 -->
+        <div class="w-36 h-20 bg-neutral-950 border border-white/5 rounded-2xl flex items-center justify-center cursor-pointer hover:border-amber-400/20 transition-all duration-300 magnetic-logo-wrap">
+          <iconify-icon icon="ri:unsplash-fill" class="text-3xl text-neutral-400 pointer-events-none transition-colors duration-300 hover-target-icon"></iconify-icon>
+        </div>
+
+        <!-- Partner 10 -->
+        <div class="w-36 h-20 bg-neutral-950 border border-white/5 rounded-2xl flex items-center justify-center cursor-pointer hover:border-amber-400/20 transition-all duration-300 magnetic-logo-wrap">
+          <iconify-icon icon="ri:pinterest-fill" class="text-3xl text-neutral-400 pointer-events-none transition-colors duration-300 hover-target-icon"></iconify-icon>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Testimonials - Infinite Vertical Scroll Ticker (dynamic motion display) -->
+    <div class="max-w-7xl mx-auto px-6 py-24 border-t border-white/5 relative z-10" id="global-testimonials-section">
+      <div class="text-center mb-16">
+        <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Endorsements</span>
+        <h2 class="h2-editorial font-extrabold uppercase text-white mt-3">What Our Partners Say</h2>
+      </div>
+
+      <div class="testimonial-ticker-container">
+        
+        <!-- Column 1 (Scroll Up) -->
+        <div class="testimonial-ticker-column ticker-col-up">
+          
+          <!-- Card 1 -->
+          <div class="glass-card border-gold-gradient p-6 rounded-2xl testimonial-card">
+            <div class="flex items-center gap-1 mb-4 text-amber-400">
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+            </div>
+            <p class="text-neutral-300 font-light text-xs md:text-sm leading-relaxed mb-6">
+              "Olympus completely re-packaged our brand identity and interactive web layer. The team's ability to sync photography campaigns with modern CSS layouts exceeded our wildest specifications."
+            </p>
+            <div class="flex items-center gap-3">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/08b00610-61b2-45b5-b8fc-e9305c15b460_320w.webp" alt="Elena" class="w-8 h-8 rounded-full object-cover">
+              <div>
+                <h5 class="text-xs font-bold text-white">Elena Rostova</h5>
+                <span class="text-[9px] text-neutral-500 uppercase font-mono">Director, Ledge</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="glass-card border-gold-gradient p-6 rounded-2xl testimonial-card">
+            <div class="flex items-center gap-1 mb-4 text-amber-400">
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+            </div>
+            <p class="text-neutral-300 font-light text-xs md:text-sm leading-relaxed mb-6">
+              "Their video campaign captures exactly the raw intensity of our designs. The editorial poster design sets the benchmark for media output in our industry."
+            </p>
+            <div class="flex items-center gap-3">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/4c9aa348-4474-47a8-8f1e-3fe52ac8d2b9_320w.webp" alt="David" class="w-8 h-8 rounded-full object-cover">
+              <div>
+                <h5 class="text-xs font-bold text-white">David Miller</h5>
+                <span class="text-[9px] text-neutral-500 uppercase font-mono">Brand Lead, SynthDev</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Repeats for infinite scroll -->
+          <div class="glass-card border-gold-gradient p-6 rounded-2xl testimonial-card">
+            <div class="flex items-center gap-1 mb-4 text-amber-400">
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+            </div>
+            <p class="text-neutral-300 font-light text-xs md:text-sm leading-relaxed mb-6">
+              "Olympus completely re-packaged our brand identity and interactive web layer."
+            </p>
+            <div class="flex items-center gap-3">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/08b00610-61b2-45b5-b8fc-e9305c15b460_320w.webp" alt="Elena" class="w-8 h-8 rounded-full object-cover">
+              <div>
+                <h5 class="text-xs font-bold text-white">Elena Rostova</h5>
+                <span class="text-[9px] text-neutral-500 uppercase font-mono">Director, Ledge</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Column 2 (Scroll Down) -->
+        <div class="testimonial-ticker-column ticker-col-down">
+          
+          <!-- Card 3 -->
+          <div class="glass-card border-gold-gradient p-6 rounded-2xl testimonial-card">
+            <div class="flex items-center gap-1 mb-4 text-amber-400">
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+            </div>
+            <p class="text-neutral-300 font-light text-xs md:text-sm leading-relaxed mb-6">
+              "The customized WebGL sliders and Three.js canvas systems built by Olympus increased our website page conversions by over 40% in just two months."
+            </p>
+            <div class="flex items-center gap-3">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2f999a94-8031-4c3e-b64e-836c1b4f5be0_320w.webp" alt="Marcus" class="w-8 h-8 rounded-full object-cover">
+              <div>
+                <h5 class="text-xs font-bold text-white">Marcus Thorne</h5>
+                <span class="text-[9px] text-neutral-500 uppercase font-mono">CTO, Apex Systems</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="glass-card border-gold-gradient p-6 rounded-2xl testimonial-card">
+            <div class="flex items-center gap-1 mb-4 text-amber-400">
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+            </div>
+            <p class="text-neutral-300 font-light text-xs md:text-sm leading-relaxed mb-6">
+              "Their editorial design layouts are beautiful. The typography scales are perfectly implemented, reflecting a classy, glassy aesthetic that commands attention."
+            </p>
+            <div class="flex items-center gap-3">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/61cab6ed-0aeb-4671-824c-5b8a0cf236ca_320w.webp" alt="Clara" class="w-8 h-8 rounded-full object-cover">
+              <div>
+                <h5 class="text-xs font-bold text-white">Clara Oswald</h5>
+                <span class="text-[9px] text-neutral-500 uppercase font-mono">Visual Lead, Zephyr</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Repeats for infinite scroll -->
+          <div class="glass-card border-gold-gradient p-6 rounded-2xl testimonial-card">
+            <div class="flex items-center gap-1 mb-4 text-amber-400">
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+            </div>
+            <p class="text-neutral-300 font-light text-xs md:text-sm leading-relaxed mb-6">
+              "The customized WebGL sliders and Three.js canvas systems built by Olympus increased our website page conversions."
+            </p>
+            <div class="flex items-center gap-3">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2f999a94-8031-4c3e-b64e-836c1b4f5be0_320w.webp" alt="Marcus" class="w-8 h-8 rounded-full object-cover">
+              <div>
+                <h5 class="text-xs font-bold text-white">Marcus Thorne</h5>
+                <span class="text-[9px] text-neutral-500 uppercase font-mono">CTO, Apex Systems</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Column 3 (Scroll Up) -->
+        <div class="testimonial-ticker-column ticker-col-up">
+          
+          <!-- Card 5 -->
+          <div class="glass-card border-gold-gradient p-6 rounded-2xl testimonial-card">
+            <div class="flex items-center gap-1 mb-4 text-amber-400">
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+            </div>
+            <p class="text-neutral-300 font-light text-xs md:text-sm leading-relaxed mb-6">
+              "Sarah's direct creative direction and frontend capability delivered a site that feels alive. They understand coding, typography, and visual assets equally."
+            </p>
+            <div class="flex items-center gap-3">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/08b00610-61b2-45b5-b8fc-e9305c15b460_320w.webp" alt="Liam" class="w-8 h-8 rounded-full object-cover">
+              <div>
+                <h5 class="text-xs font-bold text-white">Liam Neale</h5>
+                <span class="text-[9px] text-neutral-500 uppercase font-mono">Founding Partner, Vektor</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="glass-card border-gold-gradient p-6 rounded-2xl testimonial-card">
+            <div class="flex items-center gap-1 mb-4 text-amber-400">
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+            </div>
+            <p class="text-neutral-300 font-light text-xs md:text-sm leading-relaxed mb-6">
+              "Outstanding communication and delivery timelines. They structured our photography brief and web launch with strict professionalism. Highly recommended."
+            </p>
+            <div class="flex items-center gap-3">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/4c9aa348-4474-47a8-8f1e-3fe52ac8d2b9_320w.webp" alt="Sophia" class="w-8 h-8 rounded-full object-cover">
+              <div>
+                <h5 class="text-xs font-bold text-white">Sophia Vance</h5>
+                <span class="text-[9px] text-neutral-500 uppercase font-mono">Manager, Kroma Agency</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Repeats for infinite scroll -->
+          <div class="glass-card border-gold-gradient p-6 rounded-2xl testimonial-card">
+            <div class="flex items-center gap-1 mb-4 text-amber-400">
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+              <iconify-icon icon="solar:star-bold" class="text-sm"></iconify-icon>
+            </div>
+            <p class="text-neutral-300 font-light text-xs md:text-sm leading-relaxed mb-6">
+              "Sarah's direct creative direction and frontend capability delivered a site that feels alive."
+            </p>
+            <div class="flex items-center gap-3">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/08b00610-61b2-45b5-b8fc-e9305c15b460_320w.webp" alt="Liam" class="w-8 h-8 rounded-full object-cover">
+              <div>
+                <h5 class="text-xs font-bold text-white">Liam Neale</h5>
+                <span class="text-[9px] text-neutral-500 uppercase font-mono">Founding Partner, Vektor</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GLOBAL FAQS (Image 5 style, rendered globally for all pages) -->
+    <section id="global-faqs" class="max-w-4xl mx-auto px-6 py-16 border-t border-white/5 relative z-10">
+      <div class="text-center mb-12">
+        <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Help Center</span>
+        <h3 class="text-2xl md:text-3xl font-extrabold uppercase text-white mt-2">Frequently Asked Questions</h3>
+      </div>
+
+      <div class="space-y-4">
+        
+        <!-- Accordion 1 -->
+        <div class="glass-card border-gold-gradient rounded-2xl overflow-hidden faq-item">
+          <button class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none faq-btn">
+            <span class="text-sm font-bold uppercase text-white">Do you travel for shoot sessions?</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-amber-400 text-lg transition-transform duration-300 faq-icon"></iconify-icon>
+          </button>
+          <div class="max-h-0 overflow-hidden transition-all duration-300 faq-content">
+            <div class="px-6 pb-5 text-xs md:text-sm text-neutral-400 font-light leading-relaxed">
+              Yes, our media crew travels globally for brand campaigns, weddings, and commercial documentary captures. Travel logs and logistics fees are structured into project quotes.
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion 2 -->
+        <div class="glass-card border-gold-gradient rounded-2xl overflow-hidden faq-item">
+          <button class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none faq-btn">
+            <span class="text-sm font-bold uppercase text-white">How long does a web design project take?</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-amber-400 text-lg transition-transform duration-300 faq-icon"></iconify-icon>
+          </button>
+          <div class="max-h-0 overflow-hidden transition-all duration-300 faq-content">
+            <div class="px-6 pb-5 text-xs md:text-sm text-neutral-400 font-light leading-relaxed">
+              Typically, bespoke interactive layout engineering takes 3 to 6 weeks depending on page density, animative scope (GSAP/ScrollTrigger), and asset production.
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion 3 -->
+        <div class="glass-card border-gold-gradient rounded-2xl overflow-hidden faq-item">
+          <button class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none faq-btn">
+            <span class="text-sm font-bold uppercase text-white">What formats do you deliver logo assets in?</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-amber-400 text-lg transition-transform duration-300 faq-icon"></iconify-icon>
+          </button>
+          <div class="max-h-0 overflow-hidden transition-all duration-300 faq-content">
+            <div class="px-6 pb-5 text-xs md:text-sm text-neutral-400 font-light leading-relaxed">
+              We deliver completely scalable vector paths (SVG, EPS, PDF) along with high-res raster formats (PNG, WebP) structured in folders matching light/dark configurations.
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion 4 -->
+        <div class="glass-card border-gold-gradient rounded-2xl overflow-hidden faq-item">
+          <button class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none faq-btn">
+            <span class="text-sm font-bold uppercase text-white">Can we book custom monthly packages?</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-amber-400 text-lg transition-transform duration-300 faq-icon"></iconify-icon>
+          </button>
+          <div class="max-h-0 overflow-hidden transition-all duration-300 faq-content">
+            <div class="px-6 pb-5 text-xs md:text-sm text-neutral-400 font-light leading-relaxed">
+              Absolutely. We offer recurring credit packages for brands needing continuous graphic styling, video shorts, social storytelling scripting, or site updates.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PRE-FOOTER CTA BANNER (Image 4 style, Framer scroll-zoom style) -->
+    <div class="w-full h-[400px] border-t border-white/5 relative overflow-hidden group" id="global-prefooter-banner">
+      <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/357cb3d1-9f65-4810-884b-f0072a65193d_1600w.webp" alt="Prefooter Background" class="w-full h-[140%] object-cover absolute top-0 left-0 filter brightness-[0.25] saturate-[0.8] scale-110 transition-transform duration-1000 group-hover:scale-[1.03] pointer-events-none" id="prefooter-bg-img">
+      
+      <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10 space-y-8">
+        <h2 class="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-white font-display max-w-2xl leading-none">
+          LET'S CREATE SOMETHING AMAZING TOGETHER.
+        </h2>
+        <a href="#book" class="inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-8 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.25)] spa-nav-link" data-page="book">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+    </div>
+
+  </div>
+
+  <!-- Fullscreen Lightbox Modal (z-50) -->
+  <div id="lightbox-modal" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <!-- Close Button -->
+    <button id="lightbox-close-btn" class="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 flex items-center justify-center transition-colors">
+      <iconify-icon icon="solar:close-circle-linear" class="text-2xl"></iconify-icon>
+    </button>
+
+    <!-- Navigation Arrows -->
+    <button id="lightbox-prev-btn" class="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 flex items-center justify-center transition-colors">
+      <iconify-icon icon="solar:arrow-left-linear" class="text-xl"></iconify-icon>
+    </button>
+    <button id="lightbox-next-btn" class="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 flex items-center justify-center transition-colors">
+      <iconify-icon icon="solar:arrow-right-linear" class="text-xl"></iconify-icon>
+    </button>
+
+    <!-- Main Content Frame (dynamic image or video) -->
+    <div class="max-w-[90vw] max-h-[85vh] flex flex-col items-center justify-center relative" id="lightbox-content-frame">
+      <img src="" id="lightbox-img" class="max-h-[75vh] max-w-[85vw] object-contain rounded-2xl border border-white/10 hidden shadow-2xl">
+      <video src="" id="lightbox-video" class="max-h-[75vh] max-w-[85vw] object-contain rounded-2xl border border-white/10 hidden" controls autoplay loop></video>
+      <div class="mt-4 text-center">
+        <span class="text-[10px] font-mono text-gold-gradient uppercase tracking-widest" id="lightbox-category">Photography</span>
+        <h4 class="text-lg font-bold text-white uppercase mt-1" id="lightbox-title">Grace & Ethereal</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/5 bg-neutral-950 py-16 relative z-10">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="grid grid-cols-12 gap-8 mb-12">
+        
+        <!-- Col 1: Brand Info -->
+        <div class="col-span-12 md:col-span-4">
+          <a href="#home" class="flex items-center gap-3 mb-6 spa-nav-link">
+            <iconify-icon icon="solar:star-fall-minimalistic-2-bold-duotone" class="text-gold-gradient text-3xl"></iconify-icon>
+            <span class="text-xl font-bold tracking-tight text-white font-display uppercase">Olympus</span>
+          </a>
+          <p class="text-neutral-400 text-xs md:text-sm font-light leading-relaxed max-w-sm">
+            Bespoke design studio & media house constructing premium digital landmarks, commercial videography, visual vector assets, and storytelling frameworks.
+          </p>
+        </div>
+
+        <!-- Col 2: Services -->
+        <div class="col-span-6 md:col-span-2">
+          <h5 class="text-xs font-bold uppercase tracking-wider text-neutral-300 mb-5 font-mono">Expertise</h5>
+          <ul class="space-y-3 text-xs md:text-sm text-neutral-400">
+            <li><a href="#services?tab=photo" class="hover:text-white transition-colors spa-nav-link" data-page="services" data-sub="photo">Photography</a></li>
+            <li><a href="#services?tab=graphic" class="hover:text-white transition-colors spa-nav-link" data-page="services" data-sub="graphic">Branding Packs</a></li>
+            <li><a href="#services?tab=web" class="hover:text-white transition-colors spa-nav-link" data-page="services" data-sub="web">Web Engineering</a></li>
+            <li><a href="#services?tab=story" class="hover:text-white transition-colors spa-nav-link" data-page="services" data-sub="story">Storytelling</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Navigation -->
+        <div class="col-span-6 md:col-span-2">
+          <h5 class="text-xs font-bold uppercase tracking-wider text-neutral-300 mb-5 font-mono">Studio</h5>
+          <ul class="space-y-3 text-xs md:text-sm text-neutral-400">
+            <li><a href="#home" class="hover:text-white transition-colors spa-nav-link" data-page="home">Home</a></li>
+            <li><a href="#services" class="hover:text-white transition-colors spa-nav-link" data-page="services">Services</a></li>
+            <li><a href="#portfolio" class="hover:text-white transition-colors spa-nav-link" data-page="portfolio">Portfolio</a></li>
+            <li><a href="#about" class="hover:text-white transition-colors spa-nav-link" data-page="about">About Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Connect & Socials -->
+        <div class="col-span-12 md:col-span-4">
+          <h5 class="text-xs font-bold uppercase tracking-wider text-neutral-300 mb-5 font-mono">Connect</h5>
+          
+          <div class="flex gap-4 mb-6">
+            <a href="#" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:border-white/20 text-neutral-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110">
+              <iconify-icon icon="ri:twitter-x-fill" class="text-sm"></iconify-icon>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:border-white/20 text-neutral-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110">
+              <iconify-icon icon="ri:github-fill" class="text-sm"></iconify-icon>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:border-white/20 text-neutral-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110">
+              <iconify-icon icon="ri:linkedin-fill" class="text-sm"></iconify-icon>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:border-white/20 text-neutral-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110">
+              <iconify-icon icon="ri:instagram-fill" class="text-sm"></iconify-icon>
+            </a>
+          </div>
+
+          <p class="text-[11px] text-neutral-500 font-mono">
+            &copy; 2026 Olympus Studio. All rights reserved.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Legal footer -->
+      <div class="border-t border-white/5 pt-6 flex flex-col md:flex-row items-center justify-between text-[11px] text-neutral-500 font-mono gap-4">
+        <div class="flex gap-4">
+          <a href="#" class="hover:text-neutral-400">Privacy Policy</a>
+          <a href="#" class="hover:text-neutral-400">Terms of Service</a>
+        </div>
+        <span>Designed with premium golden textures.</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- SVG Hero Displacement Filter -->
+  <svg class="hidden">
+    <defs>
+      <filter id="liquid-hero-filter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="3" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" id="hero-displacement-map" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Main JavaScript File -->
+  <script src="index.js"></script>
+</body>
+</html>

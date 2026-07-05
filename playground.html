@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Olympus Studio — Design & Animation Playground</title>
+  
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Syne', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Syne:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Iconify Icons -->
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+
+  <!-- GSAP for animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <!-- ThreeJS library for shader options -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    body {
+      background-color: #050505;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    .font-display { font-family: 'Syne', sans-serif; }
+    .font-mono { font-family: 'Space Mono', sans-serif; }
+
+    /* Custom Glassmorphism */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(16px);
+    }
+    .playground-tab-btn.active {
+      background: linear-gradient(135deg, #f3f4f6 0%, #D4AF37 100%);
+      color: #050505;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.25);
+    }
+
+    /* Option 1C: Liquid text filter keyframes */
+    .liquid-txt {
+      filter: url(#liquid-filter);
+    }
+
+    /* Option 2B: Grade sweep mask */
+    .grade-sweep-container {
+      position: relative;
+      overflow: hidden;
+    }
+    .grade-sweep-overlay {
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.4), transparent);
+      transform: skewX(-25deg);
+      transition: left 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .grade-sweep-container:hover .grade-sweep-overlay {
+      left: 150%;
+    }
+
+    /* Option 3B: Continuous Ticker */
+    @keyframes tickerScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: tickerScroll 25s linear infinite;
+    }
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
+
+    /* Option 3C: Refraction Sweep */
+    .sweep-shine {
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.12), transparent);
+      transform: skewX(-25deg);
+      transition: left 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .sweep-trigger:hover .sweep-shine {
+      left: 150%;
+    }
+
+    /* CSS blueprint outlines */
+    .blueprint-draw {
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+      transition: stroke-dashoffset 0.8s ease;
+    }
+    .blueprint-card:hover .blueprint-draw {
+      stroke-dashoffset: 0;
+    }
+  </style>
+</head>
+<body class="min-h-screen py-16 px-6 relative">
+
+  <!-- SVG Liquid Text Filter (Option 1C) -->
+  <svg class="hidden">
+    <defs>
+      <filter id="liquid-filter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" id="displacement-map" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Header -->
+  <div class="max-w-7xl mx-auto text-center mb-12 space-y-4">
+    <span class="text-xs font-mono uppercase tracking-[0.3em] text-amber-400">Interactive Lab</span>
+    <h1 class="text-4xl md:text-5xl font-extrabold uppercase tracking-tight font-display">Homepage Sections Playground</h1>
+    <p class="text-neutral-400 text-sm max-w-2xl mx-auto font-light leading-relaxed">
+      Test all 7 proposed sections. Click through the tabs below to explore their 4 interactive animation options in isolation.
+    </p>
+    <div class="pt-4 flex justify-center gap-4">
+      <a href="/" class="inline-flex items-center justify-center bg-white/5 border border-white/10 hover:border-amber-400 text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300">
+        <iconify-icon icon="solar:alt-arrow-left-linear" class="mr-2 text-sm text-amber-400"></iconify-icon>
+        Back to Live Site
+      </a>
+    </div>
+  </div>
+
+  <!-- Section Selector Tabs -->
+  <div class="max-w-7xl mx-auto flex flex-wrap justify-center gap-3 mb-16 border-b border-white/5 pb-8">
+    <button class="playground-tab-btn px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider text-neutral-400 hover:text-white glass-card active transition-all duration-300" data-section="1">1. Manifesto</button>
+    <button class="playground-tab-btn px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider text-neutral-400 hover:text-white glass-card transition-all duration-300" data-section="2">2. Core Crew</button>
+    <button class="playground-tab-btn px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider text-neutral-400 hover:text-white glass-card transition-all duration-300" data-section="3">3. Tech Stack</button>
+    <button class="playground-tab-btn px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider text-neutral-400 hover:text-white glass-card transition-all duration-300" data-section="4">4. Studio Stats</button>
+    <button class="playground-tab-btn px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider text-neutral-400 hover:text-white glass-card transition-all duration-300" data-section="5">5. Pricing Estimator</button>
+    <button class="playground-tab-btn px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider text-neutral-400 hover:text-white glass-card transition-all duration-300" data-section="6">6. Partner Logos</button>
+    <button class="playground-tab-btn px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider text-neutral-400 hover:text-white glass-card transition-all duration-300" data-section="7">7. Global Map</button>
+  </div>
+
+  <!-- Sections Wrapper -->
+  <div class="max-w-7xl mx-auto min-h-[500px]">
+
+    <!-- TAB 1: MANIFESTO -->
+    <div class="playground-section-content active hidden space-y-12" id="sec-1">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold uppercase text-white font-display">Manifesto & Vision Statement Options</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Option A: Scroll-Highlight -->
+        <div class="glass-card p-8 rounded-3xl space-y-6">
+          <span class="text-xs font-mono text-amber-400">Option A: Scroll-Highlight (Simulated container scroll)</span>
+          <div class="h-48 overflow-y-scroll border border-white/5 rounded-2xl p-6 bg-neutral-950/40 relative" id="scroll-manifesto-container">
+            <p id="scroll-manifesto-text" class="text-lg font-medium leading-relaxed text-neutral-500 font-display">
+              Olympus Studio operates at the boundary of creative media production, graphic branding, and high-fidelity web engineering, constructing premium digital systems that command market authority.
+            </p>
+            <div class="text-[9px] text-neutral-600 font-mono absolute bottom-2 right-4">Scroll up & down to highlight words</div>
+          </div>
+        </div>
+
+        <!-- Option B: Diagonal Mask Slide -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 group/mask cursor-pointer">
+          <span class="text-xs font-mono text-amber-400">Option B: Diagonal Mask Slide (Hover to reveal)</span>
+          <div class="space-y-4 py-8">
+            <div class="overflow-hidden relative h-10">
+              <h4 class="text-2xl font-extrabold uppercase font-display text-white transition-all duration-500 translate-y-full group-hover/mask:translate-y-0">We build the code.</h4>
+            </div>
+            <div class="overflow-hidden relative h-10">
+              <h4 class="text-2xl font-extrabold uppercase font-display text-gold-gradient transition-all duration-500 translate-y-full group-hover/mask:translate-y-0 delay-100">We grade the visuals.</h4>
+            </div>
+            <div class="overflow-hidden relative h-10">
+              <h4 class="text-2xl font-extrabold uppercase font-display text-white transition-all duration-500 translate-y-full group-hover/mask:translate-y-0 delay-200">We scale the brand.</h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option C: Liquid Type Warp -->
+        <div class="glass-card p-8 rounded-3xl space-y-6" id="card-liquid-text">
+          <span class="text-xs font-mono text-amber-400">Option C: Liquid Type Warp (Hover text to ripple)</span>
+          <div class="py-8 text-center cursor-pointer">
+            <h3 class="text-4xl font-extrabold uppercase font-display text-white liquid-txt transition-all tracking-wider" id="liquid-warp-h3">OLYMPUS</h3>
+            <p class="text-xs text-neutral-500 font-mono mt-4">Hover over text to distort vectors</p>
+          </div>
+        </div>
+
+        <!-- Option D: 3D Columns Lift -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 cursor-pointer" id="card-columns-lift">
+          <span class="text-xs font-mono text-amber-400">Option D: 3D Columns Lift (Hover to tilt & lift)</span>
+          <div class="grid grid-cols-3 gap-4 py-4 items-end min-h-[160px]" id="columns-lift-grid">
+            <div class="bg-neutral-900 border border-white/5 p-4 rounded-xl text-center lift-col transition-all duration-500" style="height: 100px;">
+              <span class="text-xl font-bold text-white">01</span>
+            </div>
+            <div class="bg-neutral-900 border border-white/5 p-4 rounded-xl text-center lift-col transition-all duration-500" style="height: 140px;">
+              <span class="text-xl font-bold text-amber-400">02</span>
+            </div>
+            <div class="bg-neutral-900 border border-white/5 p-4 rounded-xl text-center lift-col transition-all duration-500" style="height: 120px;">
+              <span class="text-xl font-bold text-white">03</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: CORE CREW -->
+    <div class="playground-section-content hidden space-y-12" id="sec-2">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold uppercase text-white font-display">Core Crew Profile Options</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Option A: Holographic Portrait Tilt -->
+        <div class="glass-card p-8 rounded-3xl space-y-6">
+          <span class="text-xs font-mono text-amber-400">Option A: Holographic Portrait Tilt (Move mouse over card)</span>
+          <div class="w-[280px] h-[340px] rounded-2xl bg-neutral-900 border border-white/5 mx-auto relative overflow-hidden cursor-pointer flex flex-col justify-end p-6 group/tilt shadow-2xl" id="crew-card-tilt">
+            <div class="absolute inset-0 bg-[linear-gradient(rgba(212,175,55,0.05)_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none crew-mesh transition-transform"></div>
+            <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/61cab6ed-0aeb-4671-824c-5b8a0cf236ca_320w.webp" alt="Profile" class="absolute inset-0 w-full h-full object-cover filter brightness-50 contrast-125 crew-img">
+            <div class="relative z-10">
+              <h4 class="text-lg font-bold uppercase text-white font-display">Sarah Chen</h4>
+              <span class="text-[10px] text-amber-400 font-mono">Founder & CEO</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option B: Grade Sweep -->
+        <div class="glass-card p-8 rounded-3xl space-y-6">
+          <span class="text-xs font-mono text-amber-400">Option B: Grade Sweep (Hover over card)</span>
+          <div class="grade-sweep-container w-[280px] h-[340px] rounded-2xl bg-neutral-900 border border-white/5 mx-auto relative overflow-hidden cursor-pointer flex flex-col justify-end p-6 group/sweep shadow-2xl">
+            <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/61cab6ed-0aeb-4671-824c-5b8a0cf236ca_320w.webp" alt="Profile" class="absolute inset-0 w-full h-full object-cover filter grayscale group-hover/sweep:grayscale-0 transition-all duration-700">
+            <div class="grade-sweep-overlay"></div>
+            <div class="relative z-10 bg-black/40 p-3 rounded-xl border border-white/5">
+              <h4 class="text-lg font-bold uppercase text-white font-display">Sarah Chen</h4>
+              <span class="text-[10px] text-amber-400 font-mono">Founder & CEO</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option C: Split Details Reveal -->
+        <div class="glass-card p-8 rounded-3xl space-y-6">
+          <span class="text-xs font-mono text-amber-400">Option C: Split Details Reveal (Hover over card)</span>
+          <div class="group/splits w-[280px] h-[340px] rounded-2xl bg-neutral-900 border border-white/5 mx-auto relative overflow-hidden cursor-pointer shadow-2xl flex items-center justify-center">
+            <!-- Left Half -->
+            <div class="absolute left-0 top-0 w-1/2 h-full border-r border-white/5 bg-neutral-900 transition-transform duration-500 group-hover/splits:-translate-x-full overflow-hidden z-20">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/61cab6ed-0aeb-4671-824c-5b8a0cf236ca_320w.webp" alt="Profile" class="w-[280px] h-full object-cover absolute left-0 filter brightness-70">
+            </div>
+            <!-- Right Half -->
+            <div class="absolute right-0 top-0 w-1/2 h-full bg-neutral-900 transition-transform duration-500 group-hover/splits:translate-x-full overflow-hidden z-20">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/61cab6ed-0aeb-4671-824c-5b8a0cf236ca_320w.webp" alt="Profile" class="w-[280px] h-full object-cover absolute right-0 filter brightness-70">
+            </div>
+            <!-- Inner Details -->
+            <div class="text-center p-6 space-y-4">
+              <h4 class="text-xl font-bold uppercase text-white font-display">Sarah Chen</h4>
+              <span class="text-xs text-amber-400 font-mono uppercase">CEO & Director</span>
+              <p class="text-neutral-500 text-[10px] leading-relaxed">Years Active: 8+<br>Locations: London / NY</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option D: Liquid Portrait Warp -->
+        <div class="glass-card p-8 rounded-3xl space-y-6">
+          <span class="text-xs font-mono text-amber-400">Option D: Liquid Portrait Warp (Hover to distort image)</span>
+          <div class="w-[280px] h-[340px] rounded-2xl bg-neutral-950 border border-white/5 mx-auto relative overflow-hidden cursor-pointer shadow-2xl" id="portrait-shader-container">
+            <canvas id="portrait-shader-canvas" class="w-full h-full object-cover"></canvas>
+            <div class="absolute bottom-6 left-6 z-10">
+              <h4 class="text-lg font-bold uppercase text-white font-display">Sarah Chen</h4>
+              <span class="text-[10px] text-amber-400 font-mono">Founder & CEO</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: TECH STACK -->
+    <div class="playground-section-content hidden space-y-12" id="sec-3">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold uppercase text-white font-display">Tech Stack & Gear Options</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Option A: Vector Blueprint Draw-In -->
+        <div class="blueprint-card glass-card p-8 rounded-3xl space-y-6 cursor-pointer flex flex-col justify-between min-h-[300px]">
+          <!-- Outline animations borders -->
+          <div class="blueprint-line line-top"></div>
+          <div class="blueprint-line line-bottom"></div>
+          <div class="blueprint-line line-left"></div>
+          <div class="blueprint-line line-right"></div>
+
+          <div class="space-y-4">
+            <span class="text-xs font-mono text-amber-400">Option A: Blueprint Draw-In (Hover to draw SVG blueprint)</span>
+            
+            <div class="w-24 h-24 mx-auto flex items-center justify-center bg-neutral-950/40 border border-white/5 rounded-2xl">
+              <svg class="w-16 h-16 text-amber-400" viewBox="0 0 100 100" fill="none">
+                <!-- Camera Outline -->
+                <rect class="blueprint-draw" x="15" y="30" width="70" height="45" rx="5" stroke="currentColor" stroke-width="1.5" />
+                <path class="blueprint-draw" d="M 35 30 L 40 20 L 60 20 L 65 30 Z" stroke="currentColor" stroke-width="1.5" />
+                <circle class="blueprint-draw" cx="50" cy="52" r="16" stroke="currentColor" stroke-width="1.5" />
+                <circle cx="50" cy="52" r="6" fill="currentColor" class="animate-pulse" />
+              </svg>
+            </div>
+          </div>
+          <h4 class="text-lg font-bold text-center uppercase font-display text-white">RED V-RAPTOR 8K</h4>
+        </div>
+
+        <!-- Option B: Logo Ticker -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 flex flex-col justify-center min-h-[300px]">
+          <span class="text-xs font-mono text-amber-400 mb-4 block">Option B: Logo Ticker (Infinite scrolling grid)</span>
+          <div class="w-full overflow-hidden border-y border-white/5 py-6 bg-neutral-950/40 relative rounded-xl">
+            <!-- Left/Right fades -->
+            <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-neutral-950 to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-neutral-950 to-transparent z-10 pointer-events-none"></div>
+            
+            <div class="ticker-track flex gap-12 text-sm font-mono text-amber-400 uppercase tracking-widest">
+              <span>RED CAMERA</span>
+              <span>•</span>
+              <span>SONY FX6</span>
+              <span>•</span>
+              <span>THREE.JS</span>
+              <span>•</span>
+              <span>GSAP</span>
+              <span>•</span>
+              <span>Framer Motion</span>
+              <span>•</span>
+              <span>RED CAMERA</span>
+              <span>•</span>
+              <span>SONY FX6</span>
+              <span>•</span>
+              <span>THREE.JS</span>
+              <span>•</span>
+              <span>GSAP</span>
+              <span>•</span>
+              <span>Framer Motion</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option C: Refraction Sweep -->
+        <div class="sweep-trigger glass-card p-8 rounded-3xl space-y-6 cursor-pointer overflow-hidden relative flex flex-col justify-between min-h-[300px]">
+          <div class="sweep-shine"></div>
+          <span class="text-xs font-mono text-amber-400">Option C: Refraction Sweep (Hover to sweep gloss)</span>
+          
+          <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-amber-400 mx-auto">
+            <iconify-icon icon="solar:server-square-bold" class="text-3xl"></iconify-icon>
+          </div>
+          <h4 class="text-lg font-bold text-center uppercase font-display text-white">Three.js WebGL Engine</h4>
+        </div>
+
+        <!-- Option D: Specifications Scale -->
+        <div class="group/spec glass-card p-8 rounded-3xl space-y-6 cursor-pointer flex flex-col justify-between min-h-[300px] hover:border-amber-400/20 transition-all duration-300">
+          <span class="text-xs font-mono text-amber-400">Option D: Specifications Scale (Hover to zoom tech details)</span>
+          <div class="relative h-20 overflow-hidden">
+            <div class="absolute inset-0 transition-transform duration-500 group-hover/spec:-translate-y-12">
+              <h4 class="text-xl font-bold uppercase font-display text-white">Sony FX6 Cine</h4>
+              <p class="text-neutral-500 text-xs mt-1">Primary commercial workhorse.</p>
+            </div>
+            <div class="absolute inset-0 translate-y-12 transition-transform duration-500 group-hover/spec:translate-y-0 text-xs font-mono text-amber-400 space-y-1">
+              <div>Sensor: Full-Frame 4K CMOS</div>
+              <div>ISO: Dual Native 800/12800</div>
+              <div>Dynamic Range: 15+ Stops</div>
+            </div>
+          </div>
+          <span class="text-[9px] font-mono text-neutral-600 uppercase">Specs Reveal</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: STUDIO STATS -->
+    <div class="playground-section-content hidden space-y-12" id="sec-4">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold uppercase text-white font-display">Studio Statistics Options</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Option A: Pulsing Radar Pin -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 flex flex-col items-center justify-center min-h-[300px]">
+          <span class="text-xs font-mono text-amber-400 mb-6">Option A: Pulsing Radar Pin</span>
+          <div class="relative w-36 h-36 flex items-center justify-center border border-white/5 rounded-full bg-neutral-950/40">
+            <!-- Pulsing Radar circle -->
+            <div class="absolute w-24 h-24 border border-amber-400/30 rounded-full animate-ping" style="animation-duration: 2.5s;"></div>
+            <div class="absolute w-32 h-32 border border-amber-400/10 rounded-full animate-ping" style="animation-duration: 4s;"></div>
+            <div class="relative z-10 text-center">
+              <span class="text-3xl font-extrabold font-display text-gold-gradient">240+</span>
+              <p class="text-[9px] font-mono text-neutral-500 uppercase mt-1">Delivered</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option B: GSAP Count-Up -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 flex flex-col items-center justify-center min-h-[300px]">
+          <span class="text-xs font-mono text-amber-400">Option B: GSAP Count-Up (Click button to trigger roll)</span>
+          <div class="text-center space-y-4">
+            <span class="text-5xl font-extrabold text-white font-display" id="countup-target-val">0</span>
+            <div class="pt-4">
+              <button id="trigger-countup-btn" class="bg-amber-400 text-neutral-950 text-xs font-bold px-6 py-2 rounded-full uppercase tracking-wider hover:scale-105 active:scale-95 transition-transform">
+                Trigger Count-up
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option C: SVG Path Draw -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 flex flex-col justify-between min-h-[300px]">
+          <span class="text-xs font-mono text-amber-400">Option C: SVG Path Draw (Continuous chart render)</span>
+          <div class="w-full h-32 bg-neutral-950/40 border border-white/5 rounded-2xl relative flex items-end p-4 overflow-hidden">
+            <svg class="w-full h-24 text-amber-400" viewBox="0 0 200 100" fill="none">
+              <!-- Drawing chart line -->
+              <path class="drawing-path" d="M 10 90 L 40 70 L 80 80 L 120 40 L 160 50 L 190 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="stroke-dasharray: 400; stroke-dashoffset: 400; animation: draw 4s ease-in-out infinite;" />
+              <circle cx="190" cy="10" r="3" fill="#ffffff" class="animate-ping" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Option D: Staggered Column Fill -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 flex flex-col justify-between min-h-[300px] cursor-pointer group/fill">
+          <span class="text-xs font-mono text-amber-400">Option D: Staggered Column Fill (Hover to fill metrics)</span>
+          <div class="grid grid-cols-4 gap-4 items-end h-32 bg-neutral-950/40 border border-white/5 rounded-2xl p-4">
+            <div class="w-full bg-neutral-900 border border-white/5 rounded-lg overflow-hidden h-full flex flex-col justify-end">
+              <div class="w-full bg-amber-400/20 group-hover/fill:bg-amber-400 transition-all duration-700 h-0 group-hover/fill:h-[40%]"></div>
+            </div>
+            <div class="w-full bg-neutral-900 border border-white/5 rounded-lg overflow-hidden h-full flex flex-col justify-end">
+              <div class="w-full bg-amber-400/20 group-hover/fill:bg-amber-400 transition-all duration-700 h-0 group-hover/fill:h-[80%] delay-75"></div>
+            </div>
+            <div class="w-full bg-neutral-900 border border-white/5 rounded-lg overflow-hidden h-full flex flex-col justify-end">
+              <div class="w-full bg-amber-400/20 group-hover/fill:bg-amber-400 transition-all duration-700 h-0 group-hover/fill:h-[60%] delay-150"></div>
+            </div>
+            <div class="w-full bg-neutral-900 border border-white/5 rounded-lg overflow-hidden h-full flex flex-col justify-end">
+              <div class="w-full bg-amber-400/20 group-hover/fill:bg-amber-400 transition-all duration-700 h-0 group-hover/fill:h-[95%] delay-225"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: PRICING ESTIMATOR -->
+    <div class="playground-section-content hidden space-y-12" id="sec-5">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold uppercase text-white font-display">Pricing Estimator Options</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Option A & D Combined: Elastic Slider & Rolling Estimate Count -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 col-span-2">
+          <span class="text-xs font-mono text-amber-400">Option A & D: Elastic Slider with Rolling Estimates</span>
+          <div class="max-w-xl mx-auto space-y-8 py-6">
+            <!-- Rolling Value display -->
+            <div class="text-center">
+              <span class="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">Calculated Estimate:</span>
+              <h3 class="text-5xl font-extrabold text-white font-display mt-2" id="estimate-rolling-total">$3,500</h3>
+            </div>
+
+            <!-- Slider Range -->
+            <div class="space-y-4 relative">
+              <input type="range" id="estimator-range-slider" min="1000" max="15000" step="500" value="3500" class="w-full h-1.5 bg-white/5 rounded-lg appearance-none cursor-pointer accent-amber-400">
+              
+              <!-- Elastic Waving Path Canvas -->
+              <canvas id="elastic-slider-canvas" class="w-full h-8 pointer-events-none opacity-40"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option B: GSAP Tab Switcher -->
+        <div class="glass-card p-8 rounded-3xl space-y-6">
+          <span class="text-xs font-mono text-amber-400">Option B: GSAP Tab Switcher (Smooth focus sliders)</span>
+          <div class="flex gap-2 p-1.5 bg-neutral-950 border border-white/5 rounded-full relative max-w-md mx-auto" id="gsap-tabs-wrapper">
+            <!-- Sliding background panel -->
+            <div class="absolute top-1.5 bottom-1.5 left-1.5 w-[31%] bg-amber-400 rounded-full transition-all duration-500 ease-out z-0" id="tabs-active-slider"></div>
+            
+            <button class="flex-1 py-2 text-center text-xs font-semibold uppercase relative z-10 text-neutral-950 active" onclick="moveTabSlider(0, this)">1 Day</button>
+            <button class="flex-1 py-2 text-center text-xs font-semibold uppercase relative z-10 text-neutral-400" onclick="moveTabSlider(1, this)">3 Days</button>
+            <button class="flex-1 py-2 text-center text-xs font-semibold uppercase relative z-10 text-neutral-400" onclick="moveTabSlider(2, this)">Campaign</button>
+          </div>
+        </div>
+
+        <!-- Option C: Staggered Quote Checkbox -->
+        <div class="glass-card p-8 rounded-3xl space-y-6">
+          <span class="text-xs font-mono text-amber-400">Option C: Staggered Checkbox (Select options to stagger details)</span>
+          <div class="max-w-md mx-auto space-y-4">
+            <label class="flex items-center gap-3 cursor-pointer p-4 rounded-xl bg-neutral-950/40 border border-white/5 hover:border-amber-400/25 transition-all">
+              <input type="checkbox" id="check-reveal-trigger" class="w-4 h-4 rounded accent-amber-400 cursor-pointer">
+              <span class="text-xs font-semibold uppercase tracking-wider">Include Post-Production Grade</span>
+            </label>
+
+            <!-- Stagger list reveal -->
+            <div class="stagger-reveal-box hidden space-y-2 pl-6">
+              <div class="text-[10px] font-mono text-amber-400 flex items-center gap-2 check-stagger-item"><iconify-icon icon="solar:check-circle-bold"></iconify-icon>Davinci Resolve Color mastering</div>
+              <div class="text-[10px] font-mono text-amber-400 flex items-center gap-2 check-stagger-item"><iconify-icon icon="solar:check-circle-bold"></iconify-icon>Commercial Grade Licenses</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: PARTNER LOGOS -->
+    <div class="playground-section-content hidden space-y-12" id="sec-6">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold uppercase text-white font-display">Partner Logo Grid Options</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Option A: Grayscale to Gold Fade -->
+        <div class="glass-card p-8 rounded-3xl space-y-6">
+          <span class="text-xs font-mono text-amber-400">Option A: Grayscale to Gold Fade (Hover over logo)</span>
+          <div class="flex justify-center items-center py-12">
+            <div class="group/logo w-32 h-16 bg-neutral-900 border border-white/5 rounded-xl flex items-center justify-center cursor-pointer hover:border-amber-400/20 transition-all duration-300">
+              <iconify-icon icon="ri:youtube-fill" class="text-3xl text-neutral-500 group-hover/logo:text-amber-400 transition-colors duration-500"></iconify-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option B: Magnetic Icon Lift -->
+        <div class="glass-card p-8 rounded-3xl space-y-6">
+          <span class="text-xs font-mono text-amber-400">Option B: Magnetic Icon Lift (Move cursor near logo)</span>
+          <div class="flex justify-center items-center py-12" id="magnetic-logo-wrap">
+            <div class="w-32 h-16 bg-neutral-950 border border-white/5 rounded-xl flex items-center justify-center cursor-pointer hover:border-amber-400/20 transition-all duration-300" id="logo-mag-el">
+              <iconify-icon icon="ri:instagram-fill" class="text-3xl text-amber-400 pointer-events-none"></iconify-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option C: Gloss Sweep Reflection -->
+        <div class="glass-card p-8 rounded-3xl space-y-6">
+          <span class="text-xs font-mono text-amber-400">Option C: Gloss Sweep Reflection (Hover over logo)</span>
+          <div class="flex justify-center items-center py-12">
+            <div class="sweep-trigger w-32 h-16 bg-neutral-900 border border-white/5 rounded-xl flex items-center justify-center cursor-pointer overflow-hidden relative hover:border-amber-400/20 transition-all duration-300">
+              <div class="sweep-shine"></div>
+              <iconify-icon icon="ri:linkedin-fill" class="text-3xl text-white"></iconify-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option D: Staggered Scroll Fade -->
+        <div class="glass-card p-8 rounded-3xl space-y-6">
+          <span class="text-xs font-mono text-amber-400">Option D: Staggered Scroll Fade (Simulated screen scroll entrance)</span>
+          <div class="h-44 overflow-y-scroll border border-white/5 rounded-2xl p-6 bg-neutral-950/40 relative space-y-4" id="scroll-logos-container">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-neutral-900 p-4 rounded-xl text-center font-bold text-neutral-500 logo-scroll-item opacity-10">PARTNER 01</div>
+              <div class="bg-neutral-900 p-4 rounded-xl text-center font-bold text-neutral-500 logo-scroll-item opacity-10">PARTNER 02</div>
+              <div class="bg-neutral-900 p-4 rounded-xl text-center font-bold text-neutral-500 logo-scroll-item opacity-10">PARTNER 03</div>
+              <div class="bg-neutral-900 p-4 rounded-xl text-center font-bold text-neutral-500 logo-scroll-item opacity-10">PARTNER 04</div>
+            </div>
+            <div class="text-[9px] text-neutral-600 font-mono text-center">Scroll container to reveal cards sequentially</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 7: GLOBAL MAP -->
+    <div class="playground-section-content hidden space-y-12" id="sec-7">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold uppercase text-white font-display">Global Shoot Map Options</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Option A: Radar World Pins -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 flex flex-col justify-between min-h-[340px]">
+          <span class="text-xs font-mono text-amber-400">Option A: Radar World Pins (Glowing coordinate beacons)</span>
+          
+          <div class="w-full h-48 bg-neutral-950/40 border border-white/5 rounded-2xl relative flex items-center justify-center overflow-hidden">
+            <!-- Simulated grid map -->
+            <div class="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.02)_1px,transparent_1px)] [background-size:12px_12px] opacity-40"></div>
+            
+            <!-- Pulsing Pin 1 (London) -->
+            <div class="absolute top-[30%] left-[45%]">
+              <div class="w-3 h-3 bg-amber-400 rounded-full animate-ping absolute"></div>
+              <div class="w-3 h-3 bg-white border border-amber-400 rounded-full relative z-10"></div>
+              <span class="text-[8px] font-mono text-white absolute top-4 left-0">LONDON</span>
+            </div>
+
+            <!-- Pulsing Pin 2 (New York) -->
+            <div class="absolute top-[40%] left-[20%]">
+              <div class="w-3 h-3 bg-amber-400 rounded-full animate-ping absolute"></div>
+              <div class="w-3 h-3 bg-white border border-amber-400 rounded-full relative z-10"></div>
+              <span class="text-[8px] font-mono text-white absolute top-4 left-0">NEW YORK</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option B: Vector Connection Trace -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 flex flex-col justify-between min-h-[340px]">
+          <span class="text-xs font-mono text-amber-400">Option B: Vector Connection Trace (Trace connection lines)</span>
+          <div class="w-full h-48 bg-neutral-950/40 border border-white/5 rounded-2xl relative flex items-center justify-center overflow-hidden">
+            <svg class="w-full h-full text-amber-400" viewBox="0 0 200 100">
+              <!-- London hub dot -->
+              <circle cx="100" cy="50" r="3" fill="#ffffff" stroke="#D4AF37" stroke-width="1" />
+              <text x="106" y="53" fill="#ffffff" font-family="monospace" font-size="8">LDN Hub</text>
+
+              <!-- Connection line to NY -->
+              <path class="drawing-path" d="M 100 50 Q 70 30, 40 45" stroke="currentColor" stroke-width="1.25" stroke-dasharray="100" stroke-dashoffset="100" style="animation: draw 4s ease-in-out infinite;" />
+              <circle cx="40" cy="45" r="2.5" fill="currentColor" />
+
+              <!-- Connection line to Tokyo -->
+              <path class="drawing-path" d="M 100 50 Q 130 30, 160 40" stroke="currentColor" stroke-width="1.25" stroke-dasharray="100" stroke-dashoffset="100" style="animation: draw 4s ease-in-out infinite; animation-delay: 1.5s;" />
+              <circle cx="160" cy="40" r="2.5" fill="currentColor" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Option C: 3D Map Tilt -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 flex flex-col justify-between min-h-[340px]">
+          <span class="text-xs font-mono text-amber-400">Option C: 3D Map Tilt (Move mouse over map frame)</span>
+          <div class="w-full h-48 bg-neutral-900 border border-white/5 rounded-2xl relative flex items-center justify-center overflow-hidden cursor-pointer shadow-inner" id="map-tilt-frame">
+            <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none opacity-45"></div>
+            <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-amber-400 pointer-events-none map-center-compass">
+              <iconify-icon icon="solar:global-bold" class="text-4xl"></iconify-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option D: Staggered Location Cards -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 flex flex-col justify-between min-h-[340px] cursor-pointer group/loc">
+          <span class="text-xs font-mono text-amber-400">Option D: Staggered Location Cards (Hover to slide cards)</span>
+          <div class="relative w-full h-40 overflow-hidden flex items-center justify-center">
+            <!-- Card NY -->
+            <div class="absolute w-40 h-24 bg-neutral-900 border border-white/5 rounded-xl p-4 shadow-2xl transition-all duration-500 translate-x-[-30px] rotate-[-5deg] group-hover/loc:translate-x-[-60px] group-hover/loc:rotate-[-12deg] z-10">
+              <h5 class="text-xs font-bold text-white font-display">NEW YORK</h5>
+              <span class="text-[9px] font-mono text-amber-400">Commercial shoot</span>
+            </div>
+            <!-- Card LDN -->
+            <div class="absolute w-40 h-24 bg-neutral-950 border border-amber-400/20 rounded-xl p-4 shadow-[0_0_20px_rgba(0,0,0,0.8)] transition-all duration-500 z-20">
+              <h5 class="text-xs font-bold text-white font-display">LONDON HQ</h5>
+              <span class="text-[9px] font-mono text-amber-400">Production Studio</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Tab switching routing
+    const tabBtns = document.querySelectorAll('.playground-tab-btn');
+    const sections = document.querySelectorAll('.playground-section-content');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const secId = btn.getAttribute('data-section');
+        
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        sections.forEach(sec => {
+          if (sec.id === `sec-${secId}`) {
+            sec.classList.remove('hidden');
+            gsap.fromTo(sec, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+          } else {
+            sec.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+
+    // TAB 1 - Option A: Scroll Highlight simulator
+    const scrollContainer = document.getElementById('scroll-manifesto-container');
+    const scrollText = document.getElementById('scroll-manifesto-text');
+    if (scrollContainer && scrollText) {
+      // Split text into word spans
+      const words = scrollText.textContent.trim().split(/\s+/);
+      scrollText.innerHTML = words.map(w => `<span class="scroll-word transition-all duration-300 opacity-20 text-neutral-400">${w}</span>`).join(' ');
+      const spans = scrollText.querySelectorAll('.scroll-word');
+
+      scrollContainer.addEventListener('scroll', () => {
+        const scrollPercent = scrollContainer.scrollTop / (scrollContainer.scrollHeight - scrollContainer.clientHeight);
+        const activeCount = Math.floor(scrollPercent * spans.length);
+
+        spans.forEach((span, idx) => {
+          if (idx <= activeCount) {
+            span.style.opacity = '1';
+            span.style.color = '#D4AF37';
+          } else {
+            span.style.opacity = '0.2';
+            span.style.color = '#a3a3a3';
+          }
+        });
+      });
+    }
+
+    // TAB 1 - Option C: Liquid text warp trigger
+    const liquidCard = document.getElementById('card-liquid-text');
+    const dispMap = document.getElementById('displacement-map');
+    if (liquidCard && dispMap) {
+      liquidCard.addEventListener('mousemove', (e) => {
+        gsap.to(dispMap, { attr: { scale: 12 }, duration: 0.3 });
+      });
+      liquidCard.addEventListener('mouseleave', () => {
+        gsap.to(dispMap, { attr: { scale: 0 }, duration: 0.5 });
+      });
+    }
+
+    // TAB 1 - Option D: 3D Columns Lift
+    const columnsCard = document.getElementById('card-columns-lift');
+    const columnsGrid = document.getElementById('columns-lift-grid');
+    const columns = columnsGrid.querySelectorAll('.lift-col');
+    if (columnsCard) {
+      columnsCard.addEventListener('mousemove', (e) => {
+        const rect = columnsCard.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const xc = rect.width / 2;
+        const yc = rect.height / 2;
+
+        gsap.to(columnsGrid, { rotateX: (yc - y) / 10, rotateY: (x - xc) / 10, duration: 0.4 });
+        columns.forEach((col, idx) => {
+          gsap.to(col, { y: -15 - (idx * 6), duration: 0.4, delay: idx * 0.04 });
+        });
+      });
+
+      columnsCard.addEventListener('mouseleave', () => {
+        gsap.to(columnsGrid, { rotateX: 0, rotateY: 0, duration: 0.5 });
+        columns.forEach(col => gsap.to(col, { y: 0, duration: 0.5 }));
+      });
+    }
+
+
+    // TAB 2 - Option A: Crew Card Tilt
+    const crewCard = document.getElementById('crew-card-tilt');
+    const crewMesh = crewCard.querySelector('.crew-mesh');
+    const crewImg = crewCard.querySelector('.crew-img');
+
+    crewCard.addEventListener('mousemove', (e) => {
+      const rect = crewCard.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const xc = rect.width / 2;
+      const yc = rect.height / 2;
+
+      gsap.to(crewCard, { rotateX: (yc - y) / 8, rotateY: (x - xc) / 8, duration: 0.4 });
+      gsap.to(crewMesh, { x: (x - xc) / 12, y: (y - yc) / 12, duration: 0.4 });
+      gsap.to(crewImg, { scale: 1.05, duration: 0.4 });
+    });
+
+    crewCard.addEventListener('mouseleave', () => {
+      gsap.to(crewCard, { rotateX: 0, rotateY: 0, duration: 0.5 });
+      gsap.to(crewMesh, { x: 0, y: 0, duration: 0.5 });
+      gsap.to(crewImg, { scale: 1.0, duration: 0.5 });
+    });
+
+
+    // TAB 2 - Option D: Liquid portrait shader
+    const initPortraitShader = () => {
+      const canvas = document.getElementById('portrait-shader-canvas');
+      const container = document.getElementById('portrait-shader-container');
+      if (!canvas || !container) return;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+
+      const loader = new THREE.TextureLoader();
+      const portraitTexture = loader.load('https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/61cab6ed-0aeb-4671-824c-5b8a0cf236ca_320w.webp');
+
+      const vertexShader = `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position, 1.0);
+        }
+      `;
+
+      const fragmentShader = `
+        varying vec2 vUv;
+        uniform sampler2D textureMap;
+        uniform float time;
+        uniform float hover;
+
+        void main() {
+          vec2 uv = vUv;
+          float distortion = sin(uv.y * 10.0 + time * 2.0) * 0.03 * hover;
+          vec2 distortedUv = vec2(uv.x + distortion, uv.y);
+          vec4 color = texture2D(textureMap, distortedUv);
+          // Mute colors a bit
+          vec3 gray = vec3(dot(color.rgb, vec3(0.299, 0.587, 0.114)));
+          gl_FragColor = vec4(mix(gray * 0.8, color.rgb, hover * 0.4), 1.0);
+        }
+      `;
+
+      const uniforms = {
+        textureMap: { value: portraitTexture },
+        time: { value: 0 },
+        hover: { value: 0 }
+      };
+
+      const material = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms });
+      const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+      scene.add(plane);
+
+      const clock = new THREE.Clock();
+      const animate = () => {
+        requestAnimationFrame(animate);
+        uniforms.time.value = clock.getElapsedTime();
+        renderer.render(scene, camera);
+      };
+      animate();
+
+      container.addEventListener('mouseenter', () => gsap.to(uniforms.hover, { value: 1.0, duration: 0.6 }));
+      container.addEventListener('mouseleave', () => gsap.to(uniforms.hover, { value: 0.0, duration: 0.6 }));
+
+      window.addEventListener('resize', () => {
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+    };
+    window.addEventListener('load', initPortraitShader);
+
+
+    // TAB 4 - Option B: GSAP Count Up
+    const countupVal = document.getElementById('countup-target-val');
+    const countupBtn = document.getElementById('trigger-countup-btn');
+    if (countupBtn) {
+      countupBtn.addEventListener('click', () => {
+        const valObj = { value: 0 };
+        gsap.to(valObj, {
+          value: 240,
+          duration: 2.0,
+          ease: 'power3.out',
+          onUpdate: () => {
+            countupVal.textContent = Math.floor(valObj.value) + "+";
+          }
+        });
+      });
+    }
+
+
+    // TAB 5 - Options A, D & Elastic Slider lines
+    const slider = document.getElementById('estimator-range-slider');
+    const estimateTotal = document.getElementById('estimate-rolling-total');
+    const elasticCanvas = document.getElementById('elastic-slider-canvas');
+
+    if (slider && estimateTotal && elasticCanvas) {
+      let isDragging = false;
+      let lastX = 0;
+      let waveProgress = 0;
+
+      slider.addEventListener('input', () => {
+        const total = parseInt(slider.value);
+        estimateTotal.textContent = "$" + total.toLocaleString();
+        isDragging = true;
+        waveProgress = 0.8;
+      });
+
+      slider.addEventListener('change', () => {
+        isDragging = false;
+      });
+
+      const ctx = elasticCanvas.getContext('2d');
+      const renderWave = () => {
+        requestAnimationFrame(renderWave);
+        ctx.clearRect(0, 0, elasticCanvas.width, elasticCanvas.height);
+        
+        ctx.beginPath();
+        ctx.strokeStyle = '#D4AF37';
+        ctx.lineWidth = 2;
+
+        const w = elasticCanvas.width;
+        const h = elasticCanvas.height;
+        
+        ctx.moveTo(0, h/2);
+        
+        if (isDragging) {
+          // Render elastic sine wave under track
+          ctx.bezierCurveTo(w/3, h/2 + Math.sin(Date.now() * 0.02) * 12 * waveProgress, w*2/3, h/2 - Math.sin(Date.now() * 0.02) * 12 * waveProgress, w, h/2);
+        } else {
+          // Calm line
+          ctx.lineTo(w, h/2);
+        }
+        ctx.stroke();
+
+        if (!isDragging && waveProgress > 0) {
+          waveProgress -= 0.02; // dampening
+        }
+      };
+      elasticCanvas.width = elasticCanvas.parentElement.clientWidth;
+      renderWave();
+
+      window.addEventListener('resize', () => {
+        elasticCanvas.width = elasticCanvas.parentElement.clientWidth;
+      });
+    }
+
+    // Tab switcher slide logic
+    const moveTabSlider = (index, btn) => {
+      const activeSlider = document.getElementById('tabs-active-slider');
+      const tabWidth = 100 / 3;
+      activeSlider.style.left = `calc(${index * tabWidth}% + 6px)`;
+      
+      const btns = btn.parentElement.querySelectorAll('button');
+      btns.forEach(b => {
+        b.classList.remove('text-neutral-950');
+        b.classList.add('text-neutral-400');
+      });
+      btn.classList.add('text-neutral-950');
+      btn.classList.remove('text-neutral-400');
+    };
+
+    // Stagger Checkbox trigger
+    const checkTrigger = document.getElementById('check-reveal-trigger');
+    const revealBox = document.querySelector('.stagger-reveal-box');
+    if (checkTrigger && revealBox) {
+      checkTrigger.addEventListener('change', () => {
+        if (checkTrigger.checked) {
+          revealBox.classList.remove('hidden');
+          const items = revealBox.querySelectorAll('.check-stagger-item');
+          gsap.fromTo(items, { opacity: 0, y: 10 }, { opacity: 1, y: 0, stagger: 0.15, duration: 0.4 });
+        } else {
+          revealBox.classList.add('hidden');
+        }
+      });
+    }
+
+
+    // TAB 6 - Option B: Magnetic Logo Pull
+    const magWrap = document.getElementById('magnetic-logo-wrap');
+    const magEl = document.getElementById('logo-mag-el');
+    if (magWrap && magEl) {
+      magWrap.addEventListener('mousemove', (e) => {
+        const rect = magWrap.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const xc = rect.width / 2;
+        const yc = rect.height / 2;
+
+        gsap.to(magEl, { x: (x - xc) / 3, y: (y - yc) / 3, duration: 0.3 });
+      });
+
+      magWrap.addEventListener('mouseleave', () => {
+        gsap.to(magEl, { x: 0, y: 0, duration: 0.5, ease: 'power2.out' });
+      });
+    }
+
+    // TAB 6 - Option D: Scroll reveal simulator
+    const scrollLogos = document.getElementById('scroll-logos-container');
+    if (scrollLogos) {
+      scrollLogos.addEventListener('scroll', () => {
+        const items = scrollLogos.querySelectorAll('.logo-scroll-item');
+        const scrollPercent = scrollLogos.scrollTop / (scrollLogos.scrollHeight - scrollLogos.clientHeight);
+        
+        items.forEach((item, idx) => {
+          const triggerPoint = idx / items.length;
+          if (scrollPercent >= triggerPoint - 0.25) {
+            item.style.opacity = '1';
+            item.style.transform = 'translateY(0)';
+            item.style.color = '#ffffff';
+          } else {
+            item.style.opacity = '0.1';
+            item.style.transform = 'translateY(10px)';
+            item.style.color = '#737373';
+          }
+        });
+      });
+    }
+
+
+    // TAB 7 - Option C: Map Tilt
+    const mapFrame = document.getElementById('map-tilt-frame');
+    const mapCompass = mapFrame.querySelector('.map-center-compass');
+    if (mapFrame && mapCompass) {
+      mapFrame.addEventListener('mousemove', (e) => {
+        const rect = mapFrame.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const xc = rect.width / 2;
+        const yc = rect.height / 2;
+
+        gsap.to(mapFrame, { rotateX: (yc - y) / 8, rotateY: (x - xc) / 8, duration: 0.4 });
+        gsap.to(mapCompass, { scale: 1.1, duration: 0.4 });
+      });
+
+      mapFrame.addEventListener('mouseleave', () => {
+        gsap.to(mapFrame, { rotateX: 0, rotateY: 0, duration: 0.5 });
+        gsap.to(mapCompass, { scale: 1.0, duration: 0.5 });
+      });
+    }
+  </script>
+</body>
+</html>
