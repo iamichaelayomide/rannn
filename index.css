@@ -11,7 +11,7 @@
 html {
   font-size: 15px;
   scroll-padding-top: 6rem;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -20,7 +20,7 @@ body {
   color: #ffffff;
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body.mobile-menu-open {
