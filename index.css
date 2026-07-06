@@ -1,5 +1,5 @@
-/* Import Syne (editorial display font) and Inter (body copy) */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap');
+/* Import Space Grotesk (soft geometric display font) and Inter (body copy) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 /* Reset and base variables */
 :root {
@@ -33,19 +33,19 @@ section,
 }
 
 h1, .h1-editorial {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(2.35rem, 7.2vw, 4.55rem) !important;
   line-height: 1.1;
 }
 
 h2, .h2-editorial {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(1.95rem, 5.4vw, 3.55rem) !important;
   line-height: 1.15;
 }
 
 h3, h4, .font-display {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 /* Glassmorphism Styles */
@@ -281,7 +281,7 @@ html.lenis {
 
 /* Image 6 style: selected work titles (lowercase, giant display) */
 .selected-work-title {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(2.45rem, 6.2vw, 5rem) !important;
   text-transform: lowercase;
   letter-spacing: -0.04em;
@@ -842,5 +842,322 @@ html.lenis {
 
   .liquid-hero-text {
     filter: none;
+  }
+}
+
+/* Final responsive polish pass: softer display typography, compact menu, booking controls, and overflow guards. */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+img, video, canvas, svg {
+  max-width: 100%;
+}
+
+h1, h2, h3, h4,
+.h1-editorial,
+.h2-editorial,
+.font-display,
+.selected-work-title,
+#slider-project-title,
+#lightbox-title {
+  font-family: 'Space Grotesk', sans-serif !important;
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+}
+
+h1, .h1-editorial {
+  font-size: clamp(2.25rem, 6.2vw, 4.15rem) !important;
+  line-height: 1.02 !important;
+}
+
+h2, .h2-editorial {
+  font-size: clamp(1.85rem, 4.65vw, 3.2rem) !important;
+  line-height: 1.04 !important;
+}
+
+.site-logo-link {
+  min-width: 0;
+}
+
+.site-logo-img {
+  display: block;
+  width: clamp(8.8rem, 18vw, 11rem);
+  height: auto;
+  max-height: 2.35rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px rgba(212, 175, 55, 0.24));
+}
+
+.site-logo-img-footer {
+  width: 10rem;
+  max-height: 2.5rem;
+}
+
+#mobile-nav-drawer {
+  inset: 4.85rem 1rem auto 1rem !important;
+  width: auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0.9rem !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 0 !important;
+  border: 1px solid rgba(255, 224, 130, 0.12);
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 224, 130, 0.1), transparent 48%),
+    rgba(8, 8, 8, 0.94) !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(255,255,255,0.05);
+  transform: translateY(-0.8rem) scale(0.98) !important;
+  opacity: 0;
+}
+
+#mobile-nav-drawer.drawer-active {
+  transform: translateY(0) scale(1) !important;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#mobile-nav-drawer nav {
+  width: 100% !important;
+  max-width: none !important;
+  gap: 0.55rem !important;
+}
+
+#mobile-nav-drawer .mobile-nav-link {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.72rem 0.95rem !important;
+  border-radius: 0.9rem !important;
+  font-size: 1rem !important;
+  font-weight: 650 !important;
+  text-transform: none !important;
+  letter-spacing: 0.02em !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  color: rgba(255,255,255,0.72) !important;
+}
+
+#mobile-nav-drawer .mobile-nav-link:hover,
+#mobile-nav-drawer .mobile-nav-link:focus-visible {
+  color: #fff !important;
+  border-color: rgba(255, 224, 130, 0.22) !important;
+}
+
+#mobile-nav-drawer .mobile-nav-link.text-gold-gradient {
+  color: #050505 !important;
+  -webkit-text-fill-color: #050505 !important;
+  background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold-mid), var(--color-gold-dark)) !important;
+  border-color: rgba(255, 224, 130, 0.42) !important;
+}
+
+.custom-select .select-trigger {
+  min-height: 48px;
+  gap: 0.75rem;
+}
+
+.custom-select .select-label {
+  min-width: 0;
+  white-space: normal;
+  line-height: 1.25;
+}
+
+.select-options-list {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 224, 130, 0.08), transparent 45%),
+    rgba(7, 7, 7, 0.98) !important;
+  border: 1px solid rgba(255, 224, 130, 0.18) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.82), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+  padding: 0.45rem !important;
+  overflow-x: hidden;
+  max-height: min(17rem, 48vh);
+}
+
+.select-options-list [data-value] {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  color: rgba(255,255,255,0.78);
+  border-radius: 0.72rem;
+  font-size: 0.86rem !important;
+  line-height: 1.25;
+}
+
+.select-options-list [data-value]:hover,
+.select-options-list [data-value]:focus {
+  background: rgba(212, 175, 55, 0.12) !important;
+  color: #fff;
+}
+
+#homepage-manifesto-section {
+  padding-top: clamp(3.5rem, 8vw, 6rem) !important;
+  padding-bottom: clamp(3.5rem, 8vw, 6rem) !important;
+}
+
+#homepage-manifesto-section h3 {
+  font-size: clamp(1.75rem, 5vw, 3rem) !important;
+  line-height: 1.08 !important;
+}
+
+#word-reveal-paragraph,
+#manifesto-word-reveal {
+  font-size: clamp(1.08rem, 2.7vw, 1.95rem) !important;
+  line-height: 1.45 !important;
+}
+
+#portfolio-slider-section {
+  padding-top: clamp(3.25rem, 7vw, 5rem) !important;
+  padding-bottom: clamp(3.25rem, 7vw, 5rem) !important;
+}
+
+#portfolio-slider-section h2 {
+  max-width: 46rem;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: clamp(2rem, 4.7vw, 3.25rem) !important;
+  line-height: 1 !important;
+}
+
+#slider-project-title {
+  font-size: clamp(1.35rem, 3vw, 2.05rem) !important;
+  line-height: 1.05 !important;
+}
+
+#scale-block {
+  overflow: hidden;
+}
+
+#scale-block .h2-editorial {
+  font-size: clamp(2rem, 4.6vw, 3.15rem) !important;
+}
+
+#scale-block .cta-tab-btn {
+  text-transform: none !important;
+  letter-spacing: 0.02em !important;
+}
+
+#global-prefooter-banner h2 {
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+  font-size: clamp(2rem, 5vw, 3.35rem) !important;
+  line-height: 1.02 !important;
+}
+
+@media (max-width: 1023px) {
+  #page-services .grid.grid-cols-12 {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  #page-services .scroll-service-section {
+    padding: 1.25rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 1.25rem;
+    background: rgba(255,255,255,0.018);
+  }
+}
+
+@media (max-width: 639px) {
+  html {
+    font-size: 14.5px;
+  }
+
+  header .max-w-7xl {
+    height: 4.6rem;
+  }
+
+  .site-logo-img {
+    width: 8.65rem;
+    max-height: 2.1rem;
+  }
+
+  h1, .h1-editorial {
+    font-size: clamp(2rem, 8.6vw, 2.45rem) !important;
+    line-height: 1.02 !important;
+  }
+
+  h2, .h2-editorial {
+    font-size: clamp(1.72rem, 8.2vw, 2.38rem) !important;
+    line-height: 1.06 !important;
+  }
+
+  #page-home > div:first-of-type {
+    padding-top: 3.6rem !important;
+    padding-bottom: 3.8rem !important;
+  }
+
+  #page-home > div:first-of-type p {
+    font-size: 0.98rem !important;
+  }
+
+  #portfolio-slider-section {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  #portfolio-slider-section h2 {
+    font-size: clamp(1.85rem, 9vw, 2.28rem) !important;
+    max-width: 19rem;
+  }
+
+  #portfolio-slider-section .relative.w-full.h-\[500px\] {
+    height: 410px !important;
+  }
+
+  #carousel-track {
+    height: 370px !important;
+  }
+
+  #card-center {
+    width: min(82vw, 300px) !important;
+    height: 315px !important;
+  }
+
+  #card-left,
+  #card-right {
+    width: min(68vw, 245px) !important;
+    height: 270px !important;
+    opacity: 0.24 !important;
+  }
+
+  #slider-prev-btn {
+    left: 0.65rem !important;
+  }
+
+  #slider-next-btn {
+    right: 0.65rem !important;
+  }
+
+  #scale-block .h2-editorial {
+    font-size: clamp(1.85rem, 8.4vw, 2.4rem) !important;
+    overflow-wrap: normal;
+  }
+
+  #scale-block .glass-card {
+    max-width: 100%;
+  }
+
+  #page-book .glass-card,
+  #page-contact .glass-card {
+    padding: 1.25rem !important;
+    border-radius: 1.25rem !important;
+  }
+
+  #page-book .grid.grid-cols-2,
+  #path-calendar .grid.grid-cols-2,
+  #path-quote .grid.grid-cols-2 {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  #global-prefooter-banner {
+    height: 315px !important;
+  }
+
+  #global-prefooter-banner h2 {
+    max-width: min(100%, 18.5rem) !important;
+    font-size: clamp(1.95rem, 8.6vw, 2.35rem) !important;
+    line-height: 1.04 !important;
+    overflow-wrap: normal;
   }
 }

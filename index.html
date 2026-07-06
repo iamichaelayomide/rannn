@@ -14,7 +14,7 @@
         extend: {
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
-            display: ['Syne', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
           },
           colors: {
             neutral: {
@@ -53,9 +53,8 @@
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
       
       <!-- Brand Logo -->
-      <a href="#home" class="flex items-center gap-3 group spa-nav-link">
-        <iconify-icon icon="solar:star-fall-minimalistic-2-bold-duotone" class="text-gold-gradient text-3xl group-hover:rotate-12 transition-transform duration-300"></iconify-icon>
-        <span class="text-xl font-bold tracking-tight text-white font-display uppercase group-hover:text-amber-200 transition-colors">Olympus</span>
+      <a href="#home" class="site-logo-link flex items-center group spa-nav-link" aria-label="Olympus home">
+        <img src="assets/olympus-logo.svg" alt="Olympus" class="site-logo-img">
       </a>
 
       <!-- Center navigation Links (SPA triggers) -->
@@ -396,7 +395,7 @@
         <div class="grid grid-cols-12 gap-8 items-start relative mb-24">
           
           <!-- Sticky Left side: Image Frame with absolute layers -->
-          <div class="col-span-12 lg:col-span-5 sticky-panel-left border-gold-gradient border border-white/5 h-[340px] md:h-[480px]">
+          <div class="hidden lg:block col-span-12 lg:col-span-5 sticky-panel-left border-gold-gradient border border-white/5 h-[340px] md:h-[480px]">
             
             <!-- Layer 1: Photo -->
             <div class="sticky-image-layer active" id="sticky-img-photo">
@@ -838,13 +837,19 @@
           <!-- Category Picker Dropdown -->
           <div class="mb-8">
             <label for="booking-category" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-3 font-mono">Select Category First</label>
-            <select id="booking-category" class="w-full glass-input px-4 py-4 rounded-xl text-sm font-semibold focus:border-amber-400 cursor-pointer">
-              <option value="" disabled selected>-- Select category (Photography, Design, Web) --</option>
-              <option value="photo">Photography & Videography (Calendar Path)</option>
-              <option value="design">Graphic Design & Branding (Quote Path)</option>
-              <option value="web">Web Design & Development (Quote Path)</option>
-              <option value="story">Digital Content & Storytelling (Quote Path)</option>
-            </select>
+            <div class="relative custom-select booking-category-select" id="booking-category-container">
+              <input type="hidden" id="booking-category" value="">
+              <button type="button" class="w-full glass-input px-4 py-4 rounded-xl text-sm font-semibold text-left flex items-center justify-between select-trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="select-label">Choose a service path</span>
+                <iconify-icon icon="solar:alt-arrow-down-linear" class="select-arrow transition-transform duration-300"></iconify-icon>
+              </button>
+              <div class="absolute left-0 right-0 mt-2 glass-card rounded-xl border border-white/8 z-50 py-2 hidden select-options-list" role="listbox">
+                <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="photo" role="option">Photography & Videography - calendar booking</div>
+                <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="design" role="option">Graphic Design & Branding - project quote</div>
+                <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="web" role="option">Web Design & Development - project quote</div>
+                <div class="px-4 py-2 hover:bg-white/5 cursor-pointer text-xs font-semibold" data-value="story" role="option">Digital Content & Storytelling - project quote</div>
+              </div>
+            </div>
           </div>
 
           <!-- DYNAMIC PATHS CONTAINER -->
@@ -1272,9 +1277,9 @@
           <div class="grid grid-cols-12 gap-8 items-start relative z-10">
             <!-- Left Info -->
             <div class="col-span-12 lg:col-span-5 space-y-6">
-              <h2 class="h2-editorial font-extrabold uppercase text-white">Ready to scale?</h2>
-              <p class="text-neutral-400 text-sm font-light leading-relaxed">
-                Tell us about your project. We typically respond within 24 hours to schedule a discovery call and provide a detailed proposal.
+              <h2 id="scale-copy-title" class="h2-editorial font-extrabold uppercase text-white">Ready to book your event?</h2>
+              <p id="scale-copy-body" class="text-neutral-400 text-sm font-light leading-relaxed">
+                Tell us about the date, venue, and coverage you need. We will respond within 24 hours with availability and the cleanest next step.
               </p>
               
               <!-- Checklist -->
@@ -1283,19 +1288,19 @@
                   <span class="w-5 h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-amber-400">
                     <iconify-icon icon="solar:check-circle-bold-duotone" class="text-md"></iconify-icon>
                   </span>
-                  <span>Direct access to senior developers & strategists</span>
+                  <span id="scale-benefit-one">Direct access to senior creatives and event planners</span>
                 </li>
                 <li class="flex items-center gap-3">
                   <span class="w-5 h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-amber-400">
                     <iconify-icon icon="solar:check-circle-bold-duotone" class="text-md"></iconify-icon>
                   </span>
-                  <span>Transparent pricing and timeline estimates</span>
+                  <span id="scale-benefit-two">Clear coverage, pricing, and delivery expectations</span>
                 </li>
                 <li class="flex items-center gap-3">
                   <span class="w-5 h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-amber-400">
                     <iconify-icon icon="solar:check-circle-bold-duotone" class="text-md"></iconify-icon>
                   </span>
-                  <span>No commitment required for initial consultation</span>
+                  <span id="scale-benefit-three">No commitment required for the first consultation</span>
                 </li>
               </ul>
             </div>
@@ -1773,7 +1778,7 @@
       
       <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10 space-y-8">
         <h2 class="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-white font-display max-w-2xl leading-none">
-          LET'S CREATE SOMETHING AMAZING TOGETHER.
+          Let's create something amazing together.
         </h2>
         <a href="#book" class="inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-8 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.25)] spa-nav-link" data-page="book">
           Get in Touch
@@ -1818,9 +1823,8 @@
         
         <!-- Col 1: Brand Info -->
         <div class="col-span-12 md:col-span-4">
-          <a href="#home" class="flex items-center gap-3 mb-6 spa-nav-link">
-            <iconify-icon icon="solar:star-fall-minimalistic-2-bold-duotone" class="text-gold-gradient text-3xl"></iconify-icon>
-            <span class="text-xl font-bold tracking-tight text-white font-display uppercase">Olympus</span>
+          <a href="#home" class="site-logo-link flex items-center mb-6 spa-nav-link" aria-label="Olympus home">
+            <img src="assets/olympus-logo.svg" alt="Olympus" class="site-logo-img site-logo-img-footer">
           </a>
           <p class="text-neutral-400 text-xs md:text-sm font-light leading-relaxed max-w-sm">
             Bespoke design studio & media house constructing premium digital landmarks, commercial videography, visual vector assets, and storytelling frameworks.

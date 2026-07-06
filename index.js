@@ -88,20 +88,24 @@ const initWordReveal = () => {
 
     gsap.registerPlugin(ScrollTrigger);
 
+    const isMobileReveal = window.matchMedia('(max-width: 639px)').matches;
     gsap.timeline({
       scrollTrigger: {
         trigger: paragraph,
-        start: 'top 85%',
-        end: 'bottom 40%',
-        scrub: 0.4
+        start: isMobileReveal ? 'top 94%' : 'top 85%',
+        end: isMobileReveal ? 'top 58%' : 'bottom 40%',
+        scrub: isMobileReveal ? 0.12 : 0.4,
+        invalidateOnRefresh: true
       }
     }).to(spans, {
       opacity: 1,
       y: 0,
-      stagger: 0.04,
+      stagger: isMobileReveal ? 0.025 : 0.04,
       ease: 'power1.out',
       className: 'word-reveal-span revealed'
     });
+
+    ScrollTrigger.refresh();
   });
 };
 
@@ -713,9 +717,11 @@ const initCustomSelects = () => {
       const isClosed = list.classList.contains('hidden');
       if (isClosed) {
         list.classList.remove('hidden');
+        trigger.setAttribute('aria-expanded', 'true');
         trigger.querySelector('.select-arrow').style.transform = 'rotate(180deg)';
       } else {
         list.classList.add('hidden');
+        trigger.setAttribute('aria-expanded', 'false');
         trigger.querySelector('.select-arrow').style.transform = 'rotate(0deg)';
       }
     });
@@ -726,10 +732,14 @@ const initCustomSelects = () => {
         const val = opt.getAttribute('data-value');
         const txt = opt.textContent;
 
-        if (input) input.value = val;
-        if (label) label.textContent = txt;
+        if (input) {
+          input.value = val;
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        if (label) label.textContent = txt.trim();
 
         list.classList.add('hidden');
+        trigger.setAttribute('aria-expanded', 'false');
         trigger.querySelector('.select-arrow').style.transform = 'rotate(0deg)';
 
         // Trigger input validation check
@@ -741,6 +751,7 @@ const initCustomSelects = () => {
   // Clicking outside collapses selects
   document.addEventListener('click', () => {
     document.querySelectorAll('.select-options-list').forEach(l => l.classList.add('hidden'));
+    document.querySelectorAll('.select-trigger').forEach(t => t.setAttribute('aria-expanded', 'false'));
     document.querySelectorAll('.select-arrow').forEach(a => a.style.transform = 'rotate(0deg)');
   });
 };
@@ -754,6 +765,45 @@ const initScaleFormToggler = () => {
   const blockEvent = document.getElementById('form-block-event');
   const blockProject = document.getElementById('form-block-project');
   const submitText = document.getElementById('submit-btn-text');
+  const copyTitle = document.getElementById('scale-copy-title');
+  const copyBody = document.getElementById('scale-copy-body');
+  const benefitOne = document.getElementById('scale-benefit-one');
+  const benefitTwo = document.getElementById('scale-benefit-two');
+  const benefitThree = document.getElementById('scale-benefit-three');
+
+  const copy = {
+    event: {
+      title: 'Ready to book your event?',
+      body: 'Tell us about the date, venue, and coverage you need. We will respond within 24 hours with availability and the cleanest next step.',
+      benefits: [
+        'Direct access to senior creatives and event planners',
+        'Clear coverage, pricing, and delivery expectations',
+        'No commitment required for the first consultation'
+      ],
+      submit: 'Book Event Call'
+    },
+    project: {
+      title: 'Ready to start your project?',
+      body: 'Tell us what you are building. We will review the scope, shape the right creative path, and send a detailed proposal within 24 hours.',
+      benefits: [
+        'Direct access to senior developers and strategists',
+        'Transparent pricing and timeline estimates',
+        'No commitment required for initial consultation'
+      ],
+      submit: 'Start Project'
+    }
+  };
+
+  const applyPathCopy = (path) => {
+    const content = copy[path];
+    if (!content) return;
+    if (copyTitle) copyTitle.textContent = content.title;
+    if (copyBody) copyBody.textContent = content.body;
+    if (benefitOne) benefitOne.textContent = content.benefits[0];
+    if (benefitTwo) benefitTwo.textContent = content.benefits[1];
+    if (benefitThree) benefitThree.textContent = content.benefits[2];
+    if (submitText) submitText.textContent = content.submit;
+  };
 
   if (!btnEvent || !btnProject) return;
 
@@ -763,7 +813,7 @@ const initScaleFormToggler = () => {
     btnProject.classList.remove('active');
     blockEvent.classList.remove('hidden');
     blockProject.classList.add('hidden');
-    submitText.textContent = "Book Call";
+    applyPathCopy('event');
     validateScaleForm();
   });
 
@@ -773,9 +823,11 @@ const initScaleFormToggler = () => {
     btnEvent.classList.remove('active');
     blockProject.classList.remove('hidden');
     blockEvent.classList.add('hidden');
-    submitText.textContent = "Book Call";
+    applyPathCopy('project');
     validateScaleForm();
   });
+
+  applyPathCopy(scaleFormPath);
 };
 
 // Inactive validation trigger: enables submit CTA button when all path inputs are valid
@@ -833,7 +885,7 @@ const setupFormValidationListeners = () => {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    alert("Session successfully scheduled! Olympus will respond within 24 hours.");
+    alert(scaleFormPath === "event" ? "Event call request received. Olympus will respond within 24 hours." : "Project brief received. Olympus will respond within 24 hours.");
     form.reset();
     validateScaleForm();
   });
@@ -1080,7 +1132,11 @@ const initSPARouter = () => {
       const categorySelect = document.getElementById('booking-category');
       if (categorySelect) {
         categorySelect.value = val;
-        categorySelect.dispatchEvent(new Event('change'));
+        const bookingSelect = document.getElementById('booking-category-container');
+        const bookingLabel = bookingSelect ? bookingSelect.querySelector('.select-label') : null;
+        const option = bookingSelect ? bookingSelect.querySelector(`[data-value="${val}"]`) : null;
+        if (bookingLabel && option) bookingLabel.textContent = option.textContent.trim();
+        categorySelect.dispatchEvent(new Event('change', { bubbles: true }));
       }
     }
   });
