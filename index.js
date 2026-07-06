@@ -1322,34 +1322,38 @@ const initExtraParallaxScroll = () => {
     });
   }
 
-  // 2. Process cards vertical scroll parallax
+  // 2. Process cards vertical scroll parallax (Desktop only: >= 768px to prevent vertical overlapping when stacked)
   const processCards = document.querySelectorAll('.process-grid-card');
-  processCards.forEach((card, idx) => {
-    gsap.to(card, {
-      y: (idx % 2 === 0) ? -25 : 25,
-      scrollTrigger: {
-        trigger: card,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1
-      }
+  if (window.innerWidth >= 768) {
+    processCards.forEach((card, idx) => {
+      gsap.to(card, {
+        y: (idx % 2 === 0) ? -25 : 25,
+        scrollTrigger: {
+          trigger: card,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1
+        }
+      });
     });
-  });
+  }
 
-  // 3. Testimonials columns vertical parallax
+  // 3. Testimonials columns vertical parallax (Desktop only: >= 1024px to avoid vertical shift on mobile horizontal slider)
   const columns = document.querySelectorAll('.testimonial-ticker-column');
-  columns.forEach((col, idx) => {
-    const direction = (idx % 2 === 0) ? -60 : 60;
-    gsap.to(col, {
-      y: direction,
-      scrollTrigger: {
-        trigger: '#global-testimonials-section',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1.2
-      }
+  if (window.innerWidth >= 1024) {
+    columns.forEach((col, idx) => {
+      const direction = (idx % 2 === 0) ? -60 : 60;
+      gsap.to(col, {
+        y: direction,
+        scrollTrigger: {
+          trigger: '#global-testimonials-section',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.2
+        }
+      });
     });
-  });
+  }
 };
 
 // Initialization entry point

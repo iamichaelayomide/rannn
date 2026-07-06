@@ -310,6 +310,7 @@ html.lenis {
 @media (max-width: 768px) {
   .process-grid-2x2 {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 }
 
