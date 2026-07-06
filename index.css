@@ -129,7 +129,7 @@ h3, h4, .font-display {
 .spa-page.active {
   display: block;
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 /* lenis smooth scroll custom rules */

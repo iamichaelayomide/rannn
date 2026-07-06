@@ -1054,7 +1054,7 @@ const initSPARouter = () => {
     pages.forEach(p => {
       if (p.id === `page-${pageId}`) {
         p.classList.add('active');
-        gsap.fromTo(p, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
+        gsap.fromTo(p, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', onComplete: () => { gsap.set(p, { clearProps: 'transform' }); } });
       } else {
         p.classList.remove('active');
       }
