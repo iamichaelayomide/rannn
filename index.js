@@ -1,17 +1,21 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-// lenis smooth scroll instance
-const lenis = new Lenis({
-  duration: prefersReducedMotion ? 0 : 1.2,
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  smoothWheel: !prefersReducedMotion
-});
+// lenis smooth scroll instance (disabled on touch devices to avoid rubber-banding and scroll fight issues)
+let lenis = null;
+if (!isTouchDevice) {
+  lenis = new Lenis({
+    duration: prefersReducedMotion ? 0 : 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: !prefersReducedMotion
+  });
 
-function raf(time) {
-  lenis.raf(time);
+  const raf = (time) => {
+    if (lenis) lenis.raf(time);
+    requestAnimationFrame(raf);
+  };
   requestAnimationFrame(raf);
 }
-requestAnimationFrame(raf);
 
 // Three.js Particle Backdrop Code
 let backdropScene, backdropCamera, backdropRenderer, backdropParticles;
@@ -625,7 +629,7 @@ const initLightboxModal = () => {
 
     modal.classList.remove('hidden');
     gsap.to(modal, { opacity: 1, duration: 0.35, ease: 'power2.out' });
-    lenis.stop(); // Stop page scrolling
+    if (lenis) lenis.stop(); // Stop page scrolling
   };
 
   const closeLightbox = () => {
@@ -638,7 +642,7 @@ const initLightboxModal = () => {
         video.pause();
         video.src = "";
         img.src = "";
-        lenis.start(); // Restore scrolling
+        if (lenis) lenis.start(); // Restore scrolling
       }
     });
   };
@@ -1215,10 +1219,10 @@ const initMobileDrawer = () => {
     drawer.setAttribute('aria-hidden', String(!open));
     document.body.classList.toggle('mobile-menu-open', open);
     if (open) {
-      lenis.stop();
+      if (lenis) lenis.stop();
       gsap.fromTo('.mobile-nav-link', { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.08, duration: prefersReducedMotion ? 0 : 0.4, ease: 'power2.out' });
     } else {
-      lenis.start();
+      if (lenis) lenis.start();
     }
   };
   

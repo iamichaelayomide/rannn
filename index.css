@@ -297,8 +297,10 @@ html.lenis {
   filter: grayscale(1) contrast(1.2);
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.ceo-portrait:hover {
-  filter: grayscale(1) contrast(1.25);
+@media (hover: hover) {
+  .ceo-portrait:hover {
+    filter: grayscale(1) contrast(1.25);
+  }
 }
 
 /* Image 8 style: 2x2 grid process cards */
@@ -320,11 +322,13 @@ html.lenis {
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
 }
-.process-grid-card:hover {
-  transform: translateY(-6px);
-  background: #121210 !important;
-  border-color: rgba(212, 175, 55, 0.3) !important;
-  box-shadow: 0 16px 36px rgba(212, 175, 55, 0.05);
+@media (hover: hover) {
+  .process-grid-card:hover {
+    transform: translateY(-6px);
+    background: #121210 !important;
+    border-color: rgba(212, 175, 55, 0.3) !important;
+    box-shadow: 0 16px 36px rgba(212, 175, 55, 0.05);
+  }
 }
 
 /* Double CTA Tab Active style */
@@ -444,8 +448,10 @@ html.lenis {
   animation: scrollDown 35s linear infinite;
 }
 
-.testimonial-ticker-column:hover {
-  animation-play-state: paused;
+@media (hover: hover) {
+  .testimonial-ticker-column:hover {
+    animation-play-state: paused;
+  }
 }
 /* Capabilities Deck Stack layout */
 .capabilities-card {
@@ -458,7 +464,12 @@ html.lenis {
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, background 0.4s ease;
 }
 
-#capabilities-deck-container.dealt .capabilities-card:hover,
+@media (hover: hover) {
+  #capabilities-deck-container.dealt .capabilities-card:hover {
+    border-color: rgba(212, 175, 55, 0.25) !important;
+    background: #111111 !important;
+  }
+}
 .capabilities-card.mobile-active {
   border-color: rgba(212, 175, 55, 0.25) !important;
   background: #111111 !important;
@@ -483,7 +494,11 @@ html.lenis {
   z-index: 2;
 }
 
-#capabilities-deck-container.dealt .capabilities-card:hover .sweep-shine,
+@media (hover: hover) {
+  #capabilities-deck-container.dealt .capabilities-card:hover .sweep-shine {
+    left: 150%;
+  }
+}
 .capabilities-card.mobile-active .sweep-shine {
   left: 150%;
 }
@@ -493,7 +508,12 @@ html.lenis {
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-#capabilities-deck-container.dealt .capabilities-card:hover .card-icon-wrapper,
+@media (hover: hover) {
+  #capabilities-deck-container.dealt .capabilities-card:hover .card-icon-wrapper {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+}
 .capabilities-card.mobile-active .card-icon-wrapper {
   transform: translateY(-8px);
   opacity: 0;
@@ -503,7 +523,12 @@ html.lenis {
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-#capabilities-deck-container.dealt .capabilities-card:hover .primary-content-block,
+@media (hover: hover) {
+  #capabilities-deck-container.dealt .capabilities-card:hover .primary-content-block {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+}
 .capabilities-card.mobile-active .primary-content-block {
   transform: translateY(-100px);
   opacity: 0;
@@ -513,7 +538,12 @@ html.lenis {
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-#capabilities-deck-container.dealt .capabilities-card:hover .deliverables-content-block,
+@media (hover: hover) {
+  #capabilities-deck-container.dealt .capabilities-card:hover .deliverables-content-block {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 .capabilities-card.mobile-active .deliverables-content-block {
   transform: translateY(0);
   opacity: 1;
@@ -524,17 +554,21 @@ html.lenis {
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-#capabilities-deck-container.dealt .capabilities-card:hover .deliverables-content-block li,
+@media (hover: hover) {
+  #capabilities-deck-container.dealt .capabilities-card:hover .deliverables-content-block li {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  #capabilities-deck-container.dealt .capabilities-card:hover .stagger-1 { transition-delay: 0.1s; }
+  #capabilities-deck-container.dealt .capabilities-card:hover .stagger-2 { transition-delay: 0.18s; }
+  #capabilities-deck-container.dealt .capabilities-card:hover .stagger-3 { transition-delay: 0.26s; }
+}
 .capabilities-card.mobile-active .deliverables-content-block li {
   transform: translateY(0);
   opacity: 1;
 }
-
-#capabilities-deck-container.dealt .capabilities-card:hover .stagger-1,
 .capabilities-card.mobile-active .stagger-1 { transition-delay: 0.1s; }
-#capabilities-deck-container.dealt .capabilities-card:hover .stagger-2,
 .capabilities-card.mobile-active .stagger-2 { transition-delay: 0.18s; }
-#capabilities-deck-container.dealt .capabilities-card:hover .stagger-3,
 .capabilities-card.mobile-active .stagger-3 { transition-delay: 0.26s; }
 
 /* Top-right small gold hover-icon */
@@ -549,7 +583,12 @@ html.lenis {
   pointer-events: none;
 }
 
-#capabilities-deck-container.dealt .capabilities-card:hover .hover-icon-topright,
+@media (hover: hover) {
+  #capabilities-deck-container.dealt .capabilities-card:hover .hover-icon-topright {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .capabilities-card.mobile-active .hover-icon-topright {
   opacity: 1;
   transform: translateY(0);
