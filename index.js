@@ -364,37 +364,18 @@ let sliderScene, sliderCamera, sliderRenderer, sliderPlane, sliderMaterial;
 let currentSliderIndex = 0;
 let isSliderTransitioning = false;
 
-const sliderProjects = [
-  {
-    category: "Photography",
-    title: "Ethereal Capture",
-    desc: "Stylized editorial campaign shot with cinema-grade high-contrast lighting.",
-    img: "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/61cab6ed-0aeb-4671-824c-5b8a0cf236ca_320w.webp",
-    isVideo: false
-  },
-  {
-    category: "Web Design",
-    title: "Universal Matrix",
-    desc: "Bespoke platform layout built with performance-optimized CSS structures.",
-    img: "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/d25a1767-0ea8-4aac-b981-6afd67dc79a6_800w.webp",
-    isVideo: false
-  },
-  {
-    category: "Video Production",
-    title: "Studio Collaborative",
-    desc: "Creative documentary storytelling exploring modern workplace interactions.",
-    img: "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/357cb3d1-9f65-4810-884b-f0072a65193d_1600w.webp",
-    video: "https://assets.mixkit.co/videos/preview/mixkit-working-late-at-the-office-42354-large.mp4",
-    isVideo: true
-  },
-  {
-    category: "Graphic Design",
-    title: "Branding Editorial",
-    desc: "Clean poster visual paths, vector cards, and typography layout systems.",
-    img: "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2f999a94-8031-4c3e-b64e-836c1b4f5be0_320w.webp",
-    isVideo: false
-  }
-];
+const sliderProjects = (window.OLYMPUS_CONTENT?.portfolioItems || [])
+  .filter(project => project.featured)
+  .slice(0, 4)
+  .map(project => ({
+    id: project.id,
+    category: project.collection,
+    title: project.title,
+    desc: project.alt,
+    img: project.thumbnailSrc,
+    video: project.previewSrc,
+    isVideo: project.mediaType === 'video' && Boolean(project.previewSrc)
+  }));
 
 const initLiquidSlider = () => {
   const container = document.getElementById('card-center');
@@ -1466,12 +1447,12 @@ window.addEventListener('DOMContentLoaded', () => {
   initCeoParallax();
   initCapabilitiesStack();
   initLiquidSlider();
-  initLightboxModal();
+  // The data-driven archive owns the shared lightbox in content-app.js.
   initCustomSelects();
   initScaleFormToggler();
   setupFormValidationListeners();
   initFaqs();
-  initPortfolioFilter();
+  // The data-driven archive owns filtering and pagination in content-app.js.
   initStickyScrollServices();
   initAsymmetricalParallax();
   initPrefooterParallax();

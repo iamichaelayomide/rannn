@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1440" role="img" aria-labelledby="title desc">
+  <title id="title">Olympus Studio archive item</title>
+  <desc id="desc">Black and gold fallback artwork for an Olympus Studio portfolio item.</desc>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="30%" r="70%">
+      <stop offset="0" stop-color="#d4af37" stop-opacity=".26"/>
+      <stop offset=".55" stop-color="#17120a"/>
+      <stop offset="1" stop-color="#050505"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" x2="1">
+      <stop stop-color="#ffe082"/>
+      <stop offset=".5" stop-color="#d4af37"/>
+      <stop offset="1" stop-color="#8a641f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1440" fill="url(#glow)"/>
+  <circle cx="600" cy="570" r="250" fill="none" stroke="url(#gold)" stroke-width="3" opacity=".75"/>
+  <path d="M470 710V430h105c112 0 184 51 184 140s-72 140-184 140zm78-65h35c61 0 96-25 96-75s-35-75-96-75h-35z" fill="url(#gold)"/>
+  <text x="600" y="930" fill="#fff" font-family="Arial, sans-serif" font-size="62" font-weight="700" text-anchor="middle" letter-spacing="10">OLYMPUS</text>
+  <text x="600" y="1000" fill="#d4af37" font-family="Arial, sans-serif" font-size="25" text-anchor="middle" letter-spacing="8">STUDIO ARCHIVE</text>
+</svg>
