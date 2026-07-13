@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Olympus Studio — Film, Photography &amp; Visual Design</title>
-  <meta name="description" content="Olympus Studio creates films, photography, campaign graphics, editorial publications, motion design, and event coverage.">
+  <meta name="description" content="Olympus Studio creates films, photography, campaign graphics, editorial publications, motion design, event coverage, and responsive websites.">
+  <link rel="icon" href="assets/olympus-logo.svg" type="image/svg+xml">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -126,6 +127,10 @@
             Our Services
           </a>
         </div>
+        <button type="button" id="view-cac-certificate" aria-label="See our CAC registration certificate" aria-controls="lightbox-modal" class="mt-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-300 hover:text-amber-400 transition-colors">
+          <iconify-icon icon="solar:verified-check-bold-duotone" class="text-lg text-amber-400"></iconify-icon>
+          CAC registered - See our certificate
+        </button>
       </div>
 
       <!-- Center Statement Block (Image 1 style) -->
@@ -393,10 +398,10 @@
         </div>
         <div id="service-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-live="polite"></div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-14" aria-label="Olympus service showcase">
-          <figure class="service-showcase-card md:col-span-2"><img src="assets/media/africa-summit-audience.webp" alt="Conference audience covered by Olympus Studio" loading="lazy"><figcaption>Events &amp; conferences</figcaption></figure>
+          <figure class="service-showcase-card md:col-span-2"><img src="assets/portfolio/1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO.webp" alt="Conference guest speaking during Olympus Studio green-carpet coverage" loading="lazy"><figcaption>Events &amp; conferences</figcaption></figure>
           <figure class="service-showcase-card"><img src="assets/portfolio/1gJbVwUYB-8oPStbqAwxZ6Ja4nZmvvIY5.webp" alt="Campaign graphic designed by Olympus Studio" loading="lazy"><figcaption>Campaign graphics</figcaption></figure>
           <figure class="service-showcase-card"><img src="assets/team/photographer.webp" alt="Olympus Studio photographer" loading="lazy"><figcaption>Photography</figcaption></figure>
-          <figure class="service-showcase-card md:col-span-2"><img src="assets/media/africa-summit-people.webp" alt="Africa Summit film production by Olympus Studio" loading="lazy"><figcaption>Film &amp; storytelling</figcaption></figure>
+          <figure class="service-showcase-card md:col-span-2"><img src="assets/portfolio/1UWRIR8lmqtK_068iXv5AqqaowjnUjDNO.webp" alt="Conference interview filmed by Olympus Studio" loading="lazy"><figcaption>Film &amp; storytelling</figcaption></figure>
         </div>
       </div>
     </section>
@@ -430,9 +435,9 @@
           </div>
           <p class="lg:col-span-5 text-neutral-400 leading-relaxed">Olympus Studio brings creative direction, photography, cinematography, editing, visual design, motion, and editorial production into one collaborative workflow.</p>
         </div>
-        <div id="team-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6" aria-label="Olympus Studio team"></div>
+        <div id="team-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" aria-label="Olympus Studio team"></div>
         <div class="glass-card border-gold-gradient rounded-3xl p-8 md:p-12 mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div class="lg:col-span-5 aspect-[4/3] rounded-2xl overflow-hidden"><img src="assets/media/africa-summit-delegates.webp" alt="Olympus Studio covering a professional conference" class="w-full h-full object-cover" loading="lazy"></div>
+          <div class="lg:col-span-5 aspect-[4/3] rounded-2xl overflow-hidden"><img src="assets/media/prefooter-stage.webp" alt="A professional conference stage covered by Olympus Studio" class="w-full h-full object-cover" loading="lazy"></div>
           <div class="lg:col-span-7">
             <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">How we work</span>
             <h3 class="text-3xl md:text-4xl font-bold text-white mt-3">One visual language, from concept to delivery.</h3>
@@ -1077,7 +1082,7 @@
 
     <!-- PRE-FOOTER CTA BANNER (Image 4 style, Framer scroll-zoom style) -->
     <div class="w-full h-[400px] border-t border-white/5 relative overflow-hidden group" id="global-prefooter-banner">
-      <img src="assets/media/africa-summit-audience.webp" alt="Prefooter Background" class="w-full h-[140%] object-cover absolute top-0 left-0 filter brightness-[0.25] saturate-[0.8] scale-110 transition-transform duration-1000 group-hover:scale-[1.03] pointer-events-none" id="prefooter-bg-img">
+      <img src="assets/media/prefooter-stage.webp" alt="Olympus Studio conference stage coverage" class="w-full h-[140%] object-cover absolute top-0 left-0 filter brightness-[0.25] saturate-[0.8] scale-110 transition-transform duration-1000 group-hover:scale-[1.03] pointer-events-none" id="prefooter-bg-img">
       
       <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10 space-y-8">
         <h2 class="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-white font-display max-w-2xl leading-none">
@@ -1095,15 +1100,15 @@
   <!-- Fullscreen Lightbox Modal (z-50) -->
   <div id="lightbox-modal" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
     <!-- Close Button -->
-    <button id="lightbox-close-btn" aria-label="Close portfolio viewer" aria-label="Close portfolio viewer" class="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 flex items-center justify-center transition-colors">
+    <button id="lightbox-close-btn" aria-label="Close portfolio viewer" class="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 flex items-center justify-center transition-colors">
       <iconify-icon icon="solar:close-circle-linear" class="text-2xl"></iconify-icon>
     </button>
 
     <!-- Navigation Arrows -->
-    <button id="lightbox-prev-btn" aria-label="Previous portfolio item" aria-label="Previous portfolio item" class="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 flex items-center justify-center transition-colors">
+    <button id="lightbox-prev-btn" aria-label="Previous portfolio item" class="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 flex items-center justify-center transition-colors">
       <iconify-icon icon="solar:arrow-left-linear" class="text-xl"></iconify-icon>
     </button>
-    <button id="lightbox-next-btn" aria-label="Next portfolio item" aria-label="Next portfolio item" class="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 flex items-center justify-center transition-colors">
+    <button id="lightbox-next-btn" aria-label="Next portfolio item" class="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 flex items-center justify-center transition-colors">
       <iconify-icon icon="solar:arrow-right-linear" class="text-xl"></iconify-icon>
     </button>
 
@@ -1111,6 +1116,7 @@
     <div class="max-w-[90vw] max-h-[85vh] flex flex-col items-center justify-center relative" id="lightbox-content-frame">
       <img src="" id="lightbox-img" class="max-h-[75vh] max-w-[85vw] object-contain rounded-2xl border border-white/10 hidden shadow-2xl">
       <video src="" id="lightbox-video" class="max-h-[75vh] max-w-[85vw] object-contain rounded-2xl border border-white/10 hidden" controls autoplay loop></video>
+      <iframe id="lightbox-drive-frame" class="lightbox-drive-frame rounded-2xl border border-white/10 hidden shadow-2xl" title="Portfolio media viewer" tabindex="0" allow="autoplay; fullscreen"></iframe>
       <div class="mt-4 text-center">
         <span class="text-[10px] font-mono text-gold-gradient uppercase tracking-widest" id="lightbox-category">Photography</span>
         <h4 class="text-lg font-bold text-white uppercase mt-1" id="lightbox-title">Grace & Ethereal</h4>
@@ -1131,7 +1137,7 @@
             <img src="assets/olympus-logo.svg" alt="Olympus" class="site-logo-img site-logo-img-footer">
           </a>
           <p class="text-neutral-400 text-xs md:text-sm font-light leading-relaxed max-w-sm">
-            A creative media studio for film, photography, campaign graphics, editorial publications, motion design, and event coverage.
+            A creative studio for film, photography, campaign graphics, editorial publications, motion design, event coverage, and website development.
           </p>
         </div>
 

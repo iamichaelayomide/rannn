@@ -364,9 +364,13 @@ let sliderScene, sliderCamera, sliderRenderer, sliderPlane, sliderMaterial;
 let currentSliderIndex = 0;
 let isSliderTransitioning = false;
 
-const sliderProjects = (window.OLYMPUS_CONTENT?.portfolioItems || [])
-  .filter(project => project.featured)
-  .slice(0, 4)
+const allPortfolioProjects = window.OLYMPUS_CONTENT?.portfolioItems || [];
+const homeFeaturedIds = window.OLYMPUS_CONTENT?.homeFeaturedIds || [];
+const sliderProjectSource = homeFeaturedIds.length
+  ? homeFeaturedIds.map(id => allPortfolioProjects.find(project => project.id === id)).filter(Boolean)
+  : allPortfolioProjects.filter(project => project.featured).slice(0, 4);
+
+const sliderProjects = sliderProjectSource
   .map(project => ({
     id: project.id,
     category: project.collection,

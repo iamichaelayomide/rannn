@@ -1086,6 +1086,18 @@ textarea.form-control {
   justify-content: center;
 }
 
+.lightbox-drive-frame {
+  width: min(85vw, 1100px);
+  height: min(70vh, 760px);
+  background: #111;
+}
+
+#view-cac-certificate:focus-visible,
+.lightbox-drive-frame:focus-visible {
+  outline: 2px solid #f5c542;
+  outline-offset: 4px;
+}
+
 @media (max-width: 639px) {
   .service-showcase-card,
   .service-showcase-card img {
@@ -1101,6 +1113,11 @@ textarea.form-control {
 
   #lightbox-prev-btn { left: 1rem !important; }
   #lightbox-next-btn { right: 1rem !important; }
+
+  .lightbox-drive-frame {
+    width: 92vw;
+    height: 66vh;
+  }
 }
 
 /* Final responsive polish pass: softer display typography, compact menu, booking controls, and overflow guards. */

@@ -24,10 +24,10 @@ services = '''<!-- PAGE 2: SERVICES -->
         </div>
         <div id="service-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-live="polite"></div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-14" aria-label="Olympus service showcase">
-          <figure class="service-showcase-card md:col-span-2"><img src="assets/media/africa-summit-audience.webp" alt="Conference audience covered by Olympus Studio" loading="lazy"><figcaption>Events &amp; conferences</figcaption></figure>
+          <figure class="service-showcase-card md:col-span-2"><img src="assets/portfolio/1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO.webp" alt="Conference guest speaking during Olympus Studio green-carpet coverage" loading="lazy"><figcaption>Events &amp; conferences</figcaption></figure>
           <figure class="service-showcase-card"><img src="assets/portfolio/1gJbVwUYB-8oPStbqAwxZ6Ja4nZmvvIY5.webp" alt="Campaign graphic designed by Olympus Studio" loading="lazy"><figcaption>Campaign graphics</figcaption></figure>
           <figure class="service-showcase-card"><img src="assets/team/photographer.webp" alt="Olympus Studio photographer" loading="lazy"><figcaption>Photography</figcaption></figure>
-          <figure class="service-showcase-card md:col-span-2"><img src="assets/media/africa-summit-people.webp" alt="Africa Summit film production by Olympus Studio" loading="lazy"><figcaption>Film &amp; storytelling</figcaption></figure>
+          <figure class="service-showcase-card md:col-span-2"><img src="assets/portfolio/1UWRIR8lmqtK_068iXv5AqqaowjnUjDNO.webp" alt="Conference interview filmed by Olympus Studio" loading="lazy"><figcaption>Film &amp; storytelling</figcaption></figure>
         </div>
       </div>
     </section>'''
@@ -65,7 +65,7 @@ about = '''<!-- PAGE 4: ABOUT -->
         </div>
         <div id="team-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6" aria-label="Olympus Studio team"></div>
         <div class="glass-card border-gold-gradient rounded-3xl p-8 md:p-12 mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div class="lg:col-span-5 aspect-[4/3] rounded-2xl overflow-hidden"><img src="assets/media/africa-summit-delegates.webp" alt="Olympus Studio covering a professional conference" class="w-full h-full object-cover" loading="lazy"></div>
+          <div class="lg:col-span-5 aspect-[4/3] rounded-2xl overflow-hidden"><img src="assets/media/prefooter-stage.webp" alt="A professional conference stage covered by Olympus Studio" class="w-full h-full object-cover" loading="lazy"></div>
           <div class="lg:col-span-7">
             <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">How we work</span>
             <h3 class="text-3xl md:text-4xl font-bold text-white mt-3">One visual language, from concept to delivery.</h3>
@@ -127,7 +127,7 @@ text = text.replace(
 )
 
 asset_replacements = {
-    "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/357cb3d1-9f65-4810-884b-f0072a65193d_1600w.webp": "assets/media/africa-summit-audience.webp",
+    "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/357cb3d1-9f65-4810-884b-f0072a65193d_1600w.webp": "assets/media/prefooter-stage.webp",
     "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2f999a94-8031-4c3e-b64e-836c1b4f5be0_320w.webp": "assets/portfolio/1gJbVwUYB-8oPStbqAwxZ6Ja4nZmvvIY5.webp",
     "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/d25a1767-0ea8-4aac-b981-6afd67dc79a6_800w.webp": "assets/portfolio/1qHAdquNAFo3xzKceDPG8qW0H8UdTwFh5.webp",
     "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/61cab6ed-0aeb-4671-824c-5b8a0cf236ca_320w.webp": "assets/team/john.webp",

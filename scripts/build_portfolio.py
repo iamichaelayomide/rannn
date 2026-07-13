@@ -140,60 +140,76 @@ def main() -> int:
         if not successes.get(item["id"]):
             item["thumbnailSrc"] = "assets/portfolio-fallback.svg"
 
+    # Use four distinct public Drive films from the conference green carpet.
     local_video_items = [
         {
-            "id": "local-africa-summit-people",
-            "title": "Africa Summit — People & Perspectives",
+            "id": "1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO",
+            "title": "Chuks Ezimadu - Green Carpet Interview",
             "category": "events",
-            "collection": "Africa Summit",
+            "collection": "CIoD Conference Green Carpet",
             "mediaType": "video",
-            "thumbnailSrc": "assets/media/africa-summit-people.webp",
-            "previewSrc": "assets/media/africa-summit-people.mp4",
-            "originalUrl": None,
-            "alt": "Africa Summit attendee portrait captured by Olympus Studio",
-            "year": "2026",
+            "thumbnailSrc": "assets/portfolio/1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO.webp",
+            "previewSrc": None,
+            "originalUrl": "https://drive.google.com/file/d/1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO/view",
+            "alt": "Chuks Ezimadu speaking during a CIoD conference green carpet interview",
+            "year": "2025",
             "featured": True,
         },
         {
-            "id": "local-africa-summit-venue",
-            "title": "Africa Summit — Venue & Stage",
+            "id": "1xv2SiAylmGIp9SgiRlK_pQ_zv-enBjoU",
+            "title": "Franca Eqwuekwe - Green Carpet Interview",
             "category": "events",
-            "collection": "Africa Summit",
+            "collection": "CIoD Conference Green Carpet",
             "mediaType": "video",
-            "thumbnailSrc": "assets/media/africa-summit-venue.webp",
-            "previewSrc": "assets/media/africa-summit-venue.mp4",
-            "originalUrl": None,
-            "alt": "Africa Summit stage and venue production captured by Olympus Studio",
-            "year": "2026",
-            "featured": True,
+            "thumbnailSrc": "assets/portfolio/1xv2SiAylmGIp9SgiRlK_pQ_zv-enBjoU.webp",
+            "previewSrc": None,
+            "originalUrl": "https://drive.google.com/file/d/1xv2SiAylmGIp9SgiRlK_pQ_zv-enBjoU/view",
+            "alt": "Franca Eqwuekwe in conversation during a CIoD conference green carpet interview",
+            "year": "2025",
+            "featured": False,
         },
         {
-            "id": "local-africa-summit-delegates",
-            "title": "Africa Summit — Delegate Story",
-            "category": "film",
-            "collection": "Conference Film",
+            "id": "1Af5MhIV-76LJdx106s1RLbSWBu9H4lrR",
+            "title": "Olukemi Peter - Green Carpet Interview",
+            "category": "events",
+            "collection": "CIoD Conference Green Carpet",
             "mediaType": "video",
-            "thumbnailSrc": "assets/media/africa-summit-delegates.webp",
-            "previewSrc": "assets/media/africa-summit-delegates.mp4",
-            "originalUrl": None,
-            "alt": "Conference delegates documented by Olympus Studio",
-            "year": "2026",
-            "featured": True,
+            "thumbnailSrc": "assets/portfolio/1Af5MhIV-76LJdx106s1RLbSWBu9H4lrR.webp",
+            "previewSrc": None,
+            "originalUrl": "https://drive.google.com/file/d/1Af5MhIV-76LJdx106s1RLbSWBu9H4lrR/view",
+            "alt": "Olukemi Peter speaking during a CIoD conference green carpet interview",
+            "year": "2025",
+            "featured": False,
         },
         {
-            "id": "local-africa-summit-audience",
-            "title": "Africa Summit — Audience & Atmosphere",
-            "category": "film",
-            "collection": "Conference Film",
+            "id": "1UWRIR8lmqtK_068iXv5AqqaowjnUjDNO",
+            "title": "Oladipo Sadibo - Green Carpet Interview",
+            "category": "events",
+            "collection": "CIoD Conference Green Carpet",
             "mediaType": "video",
-            "thumbnailSrc": "assets/media/africa-summit-audience.webp",
-            "previewSrc": "assets/media/africa-summit-audience.mp4",
-            "originalUrl": None,
-            "alt": "Africa Summit audience and atmosphere captured by Olympus Studio",
-            "year": "2026",
-            "featured": True,
+            "thumbnailSrc": "assets/portfolio/1UWRIR8lmqtK_068iXv5AqqaowjnUjDNO.webp",
+            "previewSrc": None,
+            "originalUrl": "https://drive.google.com/file/d/1UWRIR8lmqtK_068iXv5AqqaowjnUjDNO/view",
+            "alt": "Oladipo Sadibo speaking during a CIoD conference green carpet interview",
+            "year": "2025",
+            "featured": False,
         },
     ]
+
+    magazine_previews = {
+        "1L-nzRD_Q77Vcz8KTxuvTePu4K-KkLHHu": "2024",
+        "15Z1Hj69nZFdDDGWbDX5_YUZ3NIBq1OUX": "2025",
+        "199tVx4cR2m23wKG-JDhXe4KKuQtZixKm": "2026",
+    }
+    for item in drive_items:
+        if item["id"] in magazine_previews:
+            year = magazine_previews[item["id"]]
+            item["thumbnailSrc"] = f"assets/portfolio/{item['id']}.webp"
+            item["previewSrc"] = f"assets/documents/ulaps-{year}-web.pdf"
+            item["downloadUrl"] = (
+                f"https://drive.usercontent.google.com/download?id={item['id']}"
+                "&export=download&confirm=t"
+            )
 
     for index in [0, 1, 2, 4, 5, 8, 9, 12]:
         if index < len(drive_items):
@@ -215,11 +231,13 @@ def main() -> int:
             {"id": "editorial", "title": "Editorial & Magazine Design", "summary": "Long-form publications, magazine systems, certificates, and print-ready layouts."},
             {"id": "motion", "title": "Motion Design", "summary": "Animated brand moments, launch visuals, explainers, and digital motion assets."},
             {"id": "events", "title": "Events & Conferences", "summary": "End-to-end coverage for summits, celebrations, panels, and corporate gatherings."},
+            {"id": "web", "title": "Website Design & Development", "summary": "Responsive portfolio, campaign, and business websites designed to feel distinctive and perform reliably."},
         ],
         "teamMembers": [
             {"name": "John", "role": "Creative Lead", "image": "assets/team/john.webp", "bio": "John leads Olympus Studio's creative direction, shaping cohesive concepts across film, photography, design, and editorial production."},
             {"name": "Name coming soon", "role": "Photographer", "image": "assets/team/photographer.webp", "bio": "Focused on people, events, and editorial moments with an energetic, human point of view."},
             {"name": "Name coming soon", "role": "Cinematographer / Editor / Visual Designer", "image": "assets/team/cinematographer-editor.webp", "bio": "Builds visual narratives from camera through post-production, motion, and final design delivery."},
+            {"name": "Ayomide", "role": "Website Designer", "image": "assets/team/ayomide.webp", "bio": "Designs and develops responsive digital experiences that extend Olympus Studio's visual direction onto the web."},
         ],
         "socialProof": {
             "placeholder": True,
@@ -245,6 +263,12 @@ def main() -> int:
             {"id": "graphics", "label": "Graphics"},
             {"id": "editorial", "label": "Editorial"},
             {"id": "motion", "label": "Motion"},
+        ],
+        "homeFeaturedIds": [
+            "1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO",
+            "199tVx4cR2m23wKG-JDhXe4KKuQtZixKm",
+            "1A9JkTR6Avafm3yZzqPleNlTXmql4i88-",
+            "1qHAdquNAFo3xzKceDPG8qW0H8UdTwFh5",
         ],
         "portfolioItems": local_video_items + drive_items,
     }

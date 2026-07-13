@@ -8,14 +8,16 @@
     'solar:palette-bold-duotone',
     'solar:notebook-bold-duotone',
     'solar:videocamera-record-bold-duotone',
-    'solar:calendar-bold-duotone'
+    'solar:calendar-bold-duotone',
+    'solar:code-square-bold-duotone'
   ];
   const deliverables = [
     ['Editorial photography', 'Interview & campaign film', 'Colour-graded delivery'],
     ['Campaign design systems', 'Social & event posters', 'Brand-ready exports'],
     ['Magazine systems', 'Print-ready layouts', 'Certificates & publications'],
     ['Animated visual assets', 'Launch & brand motion', 'Platform-ready exports'],
-    ['Conference coverage', 'Event highlight films', 'People & atmosphere']
+    ['Conference coverage', 'Event highlight films', 'People & atmosphere'],
+    ['Responsive interface design', 'Frontend development', 'Performance & launch support']
   ];
 
   const escapeHtml = value => String(value ?? '')
@@ -74,12 +76,12 @@
     if (heroBody) heroBody.textContent = 'We direct, capture, edit, and design visual stories for events, institutions, campaigns, and ambitious brands.';
 
     const vision = document.getElementById('word-reveal-paragraph');
-    if (vision) vision.textContent = 'Olympus Studio brings film, photography, visual design, motion, and editorial production into one focused creative practice. We turn real moments and clear ideas into work built to travel across screens, spaces, campaigns, and publications.';
+    if (vision) vision.textContent = 'Olympus Studio brings film, photography, visual design, motion, editorial production, and website development into one focused creative practice. We turn real moments and clear ideas into work built to travel across screens, spaces, campaigns, and publications.';
 
     const manifesto = document.getElementById('manifesto-word-reveal');
     if (manifesto) manifesto.textContent = 'We reject forgettable creative. Olympus exists to make moments feel intentional—combining strong direction, human photography, cinematic film, disciplined layouts, and thoughtful post-production into work that endures.';
 
-    const capabilityIndexes = [0, 1, 2, 4];
+    const capabilityIndexes = [0, 1, 2, 5];
     document.querySelectorAll('.capabilities-card').forEach((card, cardIndex) => {
       const serviceIndex = capabilityIndexes[cardIndex] ?? cardIndex;
       const service = content.services[serviceIndex];
@@ -97,7 +99,7 @@
     const whyCards = document.querySelectorAll('#homepage-whychooseus-section h4');
     const whyCopy = [
       ['Production-led thinking', 'Creative direction and capture are planned together, so every frame has a clear purpose.'],
-      ['One visual system', 'Film, photography, motion, graphics, and editorial layouts stay coherent across every delivery.'],
+      ['One visual system', 'Film, photography, motion, graphics, editorial layouts, and websites stay coherent across every delivery.'],
       ['Built around real moments', 'We preserve the people, atmosphere, and detail that make events and campaigns feel credible.'],
       ['From brief to final export', 'A compact team manages production and post without fragmented creative handoffs.']
     ];
@@ -158,13 +160,14 @@
     const modal = document.getElementById('lightbox-modal');
     const image = document.getElementById('lightbox-img');
     const video = document.getElementById('lightbox-video');
+    const driveFrame = document.getElementById('lightbox-drive-frame');
     const closeButton = document.getElementById('lightbox-close-btn');
     const previousButton = document.getElementById('lightbox-prev-btn');
     const nextButton = document.getElementById('lightbox-next-btn');
     const title = document.getElementById('lightbox-title');
     const category = document.getElementById('lightbox-category');
     const original = document.getElementById('lightbox-original-link');
-    if (!modal || !image || !video || !closeButton) return;
+    if (!modal || !image || !video || !driveFrame || !closeButton) return;
 
     let activeIndex = 0;
     let previousFocus = null;
@@ -176,14 +179,34 @@
       category.textContent = `${item.collection} · ${item.year}`;
       image.classList.add('hidden');
       video.classList.add('hidden');
+      driveFrame.classList.add('hidden');
       video.pause();
       video.removeAttribute('src');
+      driveFrame.removeAttribute('src');
 
       if (item.mediaType === 'video' && item.previewSrc) {
         video.src = item.previewSrc;
         video.poster = item.thumbnailSrc;
         video.classList.remove('hidden');
         video.load();
+      } else if (item.mediaType === 'video' && item.originalUrl) {
+        const driveId = item.originalUrl.match(/\/file\/d\/([^/]+)/)?.[1];
+        if (driveId) {
+          driveFrame.src = `https://drive.google.com/file/d/${driveId}/preview`;
+          driveFrame.title = `${item.title} video player`;
+          driveFrame.classList.remove('hidden');
+        }
+      } else if (item.mediaType === 'pdf' && item.previewSrc) {
+        driveFrame.src = `${item.previewSrc}#page=1&view=FitH`;
+        driveFrame.title = `${item.title} PDF reader`;
+        driveFrame.classList.remove('hidden');
+      } else if (item.mediaType === 'pdf' && item.originalUrl) {
+        const driveId = item.originalUrl.match(/\/file\/d\/([^/]+)/)?.[1];
+        if (driveId) {
+          driveFrame.src = `https://drive.google.com/file/d/${driveId}/preview`;
+          driveFrame.title = `${item.title} PDF reader`;
+          driveFrame.classList.remove('hidden');
+        }
       } else {
         image.src = item.thumbnailSrc || fallbackImage;
         image.alt = item.alt;
@@ -192,7 +215,12 @@
       }
 
       if (item.originalUrl) {
-        original.href = item.originalUrl;
+        original.href = item.downloadUrl || item.originalUrl;
+        original.textContent = item.mediaType === 'pdf'
+          ? 'Download full PDF ↗'
+          : item.mediaType === 'video'
+            ? 'Open full video in Drive ↗'
+            : 'Open original in Drive ↗';
         original.classList.remove('hidden');
         original.classList.add('inline-flex');
       } else {
@@ -213,6 +241,7 @@
     const close = () => {
       modal.style.opacity = '0';
       video.pause();
+      driveFrame.removeAttribute('src');
       window.setTimeout(() => modal.classList.add('hidden'), 220);
       document.documentElement.style.overflow = '';
       previousFocus?.focus?.();
@@ -233,7 +262,7 @@
       if (event.key === 'ArrowLeft') showItem(activeIndex - 1);
       if (event.key === 'ArrowRight') showItem(activeIndex + 1);
       if (event.key === 'Tab') {
-        const focusable = [...modal.querySelectorAll('button:not([disabled]), a:not(.hidden), video[controls]')];
+        const focusable = [...modal.querySelectorAll('button:not([disabled]), a:not(.hidden), video[controls], iframe:not(.hidden)')];
         if (!focusable.length) return;
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
@@ -355,7 +384,7 @@
     const footer = document.querySelector('footer');
     if (!footer) return;
     const intro = footer.querySelector('p');
-    if (intro) intro.textContent = 'A creative media studio for film, photography, campaign graphics, editorial publications, motion design, and event coverage.';
+    if (intro) intro.textContent = 'A creative studio for film, photography, campaign graphics, editorial publications, motion design, event coverage, and website development.';
     const expertiseHeading = [...footer.querySelectorAll('h5')].find(item => item.textContent.trim() === 'Expertise');
     const expertiseList = expertiseHeading?.nextElementSibling;
     if (expertiseList) expertiseList.innerHTML = content.services.map(service => `<li><a href="#services" class="hover:text-white transition-colors spa-nav-link" data-page="services">${escapeHtml(service.title)}</a></li>`).join('');
@@ -372,6 +401,9 @@
     hydrateHomepage();
     hydrateSocialProof();
     renderPortfolio();
+    document.getElementById('view-cac-certificate')?.addEventListener('click', () => {
+      window.openOlympusPortfolioItem?.('157ouUK40lbUfM4xSL2Sc0E0gPQ4wnqcd');
+    });
     initWhatsAppForms();
     hydrateFooter();
   });
