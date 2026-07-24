@@ -2,6 +2,50 @@ begin;
 
 create extension if not exists pgcrypto;
 
+-- Preserve the original lightweight tables created by the first dashboard.
+-- Their shapes are incompatible with the normalized operations tables below.
+do $$
+begin
+  if to_regclass('public.projects') is not null
+    and not exists (
+      select 1
+      from information_schema.columns
+      where table_schema = 'public'
+        and table_name = 'projects'
+        and column_name = 'client_id'
+    ) then
+    alter table public.projects rename to legacy_projects;
+    if exists (
+      select 1 from pg_constraint
+      where conrelid = 'public.legacy_projects'::regclass
+        and conname = 'projects_pkey'
+    ) then
+      alter table public.legacy_projects
+        rename constraint projects_pkey to legacy_projects_pkey;
+    end if;
+  end if;
+
+  if to_regclass('public.services') is not null
+    and not exists (
+      select 1
+      from information_schema.columns
+      where table_schema = 'public'
+        and table_name = 'services'
+        and column_name = 'slug'
+    ) then
+    alter table public.services rename to legacy_services;
+    if exists (
+      select 1 from pg_constraint
+      where conrelid = 'public.legacy_services'::regclass
+        and conname = 'services_pkey'
+    ) then
+      alter table public.legacy_services
+        rename constraint services_pkey to legacy_services_pkey;
+    end if;
+  end if;
+end;
+$$;
+
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -42,6 +86,13 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
 after insert on auth.users
 for each row execute function public.handle_new_user();
+
+insert into public.profiles (id, full_name)
+select
+  id,
+  coalesce(raw_user_meta_data ->> 'full_name', '')
+from auth.users
+on conflict (id) do nothing;
 
 create or replace function public.current_app_role()
 returns text
