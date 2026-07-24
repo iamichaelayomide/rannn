@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Olympus Client Portal</title>
+  <link rel="icon" href="/assets/olympus-logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/dashboard.css">
+</head>
+<body class="portal-body">
+  <header class="portal-header">
+    <a class="brand" href="/"><img src="/assets/olympus-logo.svg" alt=""><span>Olympus</span></a>
+    <button class="text-button hidden" id="portal-sign-out">Sign out</button>
+  </header>
+  <main class="portal-main">
+    <section class="auth-card portal-auth" id="portal-auth">
+      <p class="eyebrow">Client portal</p>
+      <h1>Your project, without the email chase.</h1>
+      <p class="muted">Enter the email address invited to your project. We will send a secure sign-in link.</p>
+      <form id="portal-login" class="stack">
+        <label>Email<input name="email" type="email" autocomplete="email" required placeholder="you@company.com"></label>
+        <button class="button primary" type="submit">Email me a secure link</button>
+        <p class="form-message" id="portal-login-message" role="status"></p>
+      </form>
+    </section>
+    <section class="hidden" id="portal-app">
+      <div class="portal-welcome"><div><p class="eyebrow">Client workspace</p><h1 id="portal-greeting">Your projects</h1></div></div>
+      <div id="portal-projects" class="portal-projects"></div>
+    </section>
+  </main>
+  <div class="toast-region" id="toast-region" aria-live="polite"></div>
+  <script type="module" src="/portal.js"></script>
+</body>
+</html>

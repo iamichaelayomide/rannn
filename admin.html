@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Olympus Workspace</title>
+  <link rel="icon" href="/assets/olympus-logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/dashboard.css">
+</head>
+<body>
+  <div class="setup-banner hidden" id="setup-banner" role="status"></div>
+
+  <section class="auth-shell" id="auth-shell" aria-labelledby="auth-title">
+    <div class="auth-card">
+      <a class="brand brand-large" href="/">
+        <img src="/assets/olympus-logo.svg" alt="">
+        <span>Olympus</span>
+      </a>
+      <p class="eyebrow">Internal workspace</p>
+      <h1 id="auth-title">Run every project from one place.</h1>
+      <p class="muted">Sign in with your team account. Access is controlled by your assigned role.</p>
+      <form id="login-form" class="stack">
+        <label>Email<input required type="email" name="email" autocomplete="email" placeholder="you@olympus.studio"></label>
+        <label>Password<input required type="password" name="password" autocomplete="current-password" placeholder="••••••••"></label>
+        <button class="button primary" type="submit">Sign in</button>
+        <p class="form-message" id="login-message" role="alert"></p>
+      </form>
+    </div>
+  </section>
+
+  <div class="app hidden" id="app">
+    <aside class="sidebar">
+      <a class="brand" href="/"><img src="/assets/olympus-logo.svg" alt=""><span>Olympus</span></a>
+      <nav aria-label="Workspace">
+        <button class="nav-item active" data-view="overview"><span>Overview</span></button>
+        <button class="nav-item" data-view="inbox"><span>Inbox</span><span class="nav-count" id="inbox-count">0</span></button>
+        <button class="nav-item" data-view="projects"><span>Projects</span></button>
+        <button class="nav-item" data-view="clients"><span>Clients</span></button>
+        <button class="nav-item" data-view="invoices"><span>Invoices</span></button>
+        <button class="nav-item" data-view="website"><span>Website</span></button>
+        <button class="nav-item" data-view="team"><span>Team & access</span></button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="user-chip">
+          <span class="avatar" id="user-avatar">O</span>
+          <span><strong id="user-name">Team member</strong><small id="user-role">Contributor</small></span>
+        </div>
+        <button class="text-button" id="sign-out">Sign out</button>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <button class="menu-button" id="menu-button" aria-label="Toggle navigation">Menu</button>
+        <div>
+          <p class="eyebrow" id="view-eyebrow">Workspace</p>
+          <h1 id="view-title">Overview</h1>
+        </div>
+        <div class="top-actions">
+          <button class="button secondary" data-action="new-client">Add client</button>
+          <button class="button primary" data-action="new-project">New project</button>
+        </div>
+      </header>
+
+      <div class="content" id="content" aria-live="polite">
+        <section class="view active" data-view-panel="overview">
+          <div class="welcome-row">
+            <div><h2 id="welcome-title">Good morning.</h2><p class="muted">Here is what needs attention across the studio.</p></div>
+            <p class="date-chip" id="current-date"></p>
+          </div>
+          <div class="metric-grid" id="metrics">
+            <article class="metric"><span>Active projects</span><strong>—</strong><small>Loading</small></article>
+            <article class="metric"><span>Awaiting approval</span><strong>—</strong><small>Loading</small></article>
+            <article class="metric"><span>Outstanding invoices</span><strong>—</strong><small>Loading</small></article>
+            <article class="metric"><span>New enquiries</span><strong>—</strong><small>Loading</small></article>
+          </div>
+          <div class="dashboard-grid">
+            <section class="panel">
+              <div class="panel-head"><div><p class="eyebrow">Priority queue</p><h2>Needs attention</h2></div></div>
+              <div id="attention-list" class="list-state">Loading activity…</div>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><div><p class="eyebrow">Schedule</p><h2>Upcoming milestones</h2></div></div>
+              <div id="milestone-list" class="list-state">Loading milestones…</div>
+            </section>
+          </div>
+          <section class="panel">
+            <div class="panel-head"><div><p class="eyebrow">Portfolio</p><h2>Recent projects</h2></div><button class="text-button" data-view-jump="projects">View all</button></div>
+            <div id="recent-projects" class="list-state">Loading projects…</div>
+          </section>
+        </section>
+
+        <section class="view" data-view-panel="inbox">
+          <div class="section-tools"><input id="inbox-search" type="search" placeholder="Search enquiries"><select id="inbox-filter"><option value="">All statuses</option><option value="new">New</option><option value="reviewing">Reviewing</option><option value="converted">Converted</option><option value="archived">Archived</option></select></div>
+          <section class="panel table-wrap"><table><thead><tr><th>Enquiry</th><th>Service</th><th>Received</th><th>Status</th><th></th></tr></thead><tbody id="inbox-table"></tbody></table></section>
+        </section>
+
+        <section class="view" data-view-panel="projects">
+          <div class="section-tools"><input id="project-search" type="search" placeholder="Search projects or clients"><select id="project-filter"><option value="">All statuses</option><option value="draft">Draft</option><option value="active">Active</option><option value="on_hold">On hold</option><option value="completed">Completed</option></select><button class="button primary" data-action="new-project">New project</button></div>
+          <div class="card-grid" id="project-grid"></div>
+        </section>
+
+        <section class="view" data-view-panel="clients">
+          <div class="section-tools"><input id="client-search" type="search" placeholder="Search clients"><button class="button primary" data-action="new-client">Add client</button></div>
+          <section class="panel table-wrap"><table><thead><tr><th>Client</th><th>Contact</th><th>Company</th><th>Projects</th></tr></thead><tbody id="client-table"></tbody></table></section>
+        </section>
+
+        <section class="view" data-view-panel="invoices">
+          <div class="section-tools"><input id="invoice-search" type="search" placeholder="Search invoice or project"><select id="invoice-filter"><option value="">All statuses</option><option value="draft">Draft</option><option value="open">Open</option><option value="paid">Paid</option><option value="void">Void</option><option value="uncollectible">Uncollectible</option></select><button class="button primary" data-action="new-invoice">New invoice</button></div>
+          <section class="panel table-wrap"><table><thead><tr><th>Invoice</th><th>Project</th><th>Due</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody id="invoice-table"></tbody></table></section>
+        </section>
+
+        <section class="view" data-view-panel="website">
+          <div class="tab-row"><button class="tab active" data-content-tab="pages">Pages</button><button class="tab" data-content-tab="services">Services</button><button class="tab" data-content-tab="media">Media</button></div>
+          <div id="content-pages"></div>
+        </section>
+
+        <section class="view" data-view-panel="team">
+          <section class="panel">
+            <div class="panel-head"><div><p class="eyebrow">Permissions</p><h2>Team & client access</h2></div></div>
+            <p class="muted">Owners control roles. Project access is managed separately so clients and contributors see just the work assigned to them.</p>
+            <div class="table-wrap"><table><thead><tr><th>Person</th><th>Role</th><th>Access</th></tr></thead><tbody id="team-table"></tbody></table></div>
+          </section>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="entity-dialog">
+    <form method="dialog" class="dialog-card" id="entity-form">
+      <div class="dialog-head"><div><p class="eyebrow" id="dialog-eyebrow">Create</p><h2 id="dialog-title">New project</h2></div><button class="icon-button" value="cancel" aria-label="Close">×</button></div>
+      <div id="dialog-fields" class="form-grid"></div>
+      <p class="form-message" id="dialog-message" role="alert"></p>
+      <div class="dialog-actions"><button class="button secondary" value="cancel">Cancel</button><button class="button primary" type="submit" value="default" id="dialog-submit">Save</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="project-dialog">
+    <div class="dialog-card">
+      <div class="dialog-head"><div><p class="eyebrow">Project workspace</p><h2 id="project-dialog-title">Project</h2></div><button class="icon-button" data-close-project aria-label="Close">×</button></div>
+      <div id="project-dialog-content"></div>
+    </div>
+  </dialog>
+
+  <div class="toast-region" id="toast-region" aria-live="polite"></div>
+  <script type="module" src="/dashboard.js"></script>
+</body>
+</html>

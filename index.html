@@ -105,17 +105,17 @@
     <section id="page-home" class="spa-page active">
       
       <!-- Hero Section -->
-      <div class="max-w-7xl mx-auto px-6 py-16 sm:py-20 lg:py-36 text-center flex flex-col items-center relative">
+      <div id="managed-home-hero" class="max-w-7xl mx-auto px-6 py-16 sm:py-20 lg:py-36 text-center flex flex-col items-center relative">
         <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
-        <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.3em] mb-6 block font-mono">Premium Media House</span>
+        <span id="managed-hero-eyebrow" class="text-xs font-bold text-amber-400 uppercase tracking-[0.3em] mb-6 block font-mono">Premium Media House</span>
         
         <h1 class="h1-editorial font-extrabold uppercase tracking-tighter text-white max-w-4xl mb-8 flex flex-col liquid-hero-text cursor-pointer">
-          <span>Let's Create</span>
-          <span class="text-gold-gradient">The Future</span>
+          <span id="managed-hero-title-one">Let's Create</span>
+          <span id="managed-hero-title-two" class="text-gold-gradient">The Future</span>
         </h1>
 
-        <p class="text-neutral-400 text-base md:text-lg max-w-2xl font-light leading-relaxed mb-8 sm:mb-12">
+        <p id="managed-hero-body" class="text-neutral-400 text-base md:text-lg max-w-2xl font-light leading-relaxed mb-8 sm:mb-12">
           We direct, capture, edit, and design visual stories for events, institutions, campaigns, and ambitious brands.
         </p>
 
@@ -468,7 +468,8 @@
           <div><label for="booking-location" class="form-label">Location or venue <span class="text-neutral-600 normal-case">(optional)</span></label><input id="booking-location" name="location" type="text" class="glass-input form-control" placeholder="City, venue, or remote"></div>
           <div><label for="booking-details" class="form-label">Project brief</label><textarea id="booking-details" name="details" rows="6" class="glass-input form-control" required placeholder="Tell us what you need, who it is for, and what a successful result looks like."></textarea></div>
           <button type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] transition-transform shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2"><iconify-icon icon="logos:whatsapp-icon"></iconify-icon>Continue on WhatsApp</button>
-          <p class="text-xs text-neutral-500 text-center">Nothing is sent until you confirm it in WhatsApp.</p>
+          <p id="booking-form-status" class="text-xs text-neutral-400 text-center" role="status"></p>
+          <p class="text-xs text-neutral-500 text-center">Your enquiry is saved securely; WhatsApp opens so you can continue with the studio.</p>
         </form>
       </div>
     </section>
@@ -490,22 +491,23 @@
           <form id="contact-form" class="space-y-6">
             <div>
               <label for="contact-name" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Full Name</label>
-              <input id="contact-name" type="text" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. John Doe" required>
+              <input id="contact-name" name="name" type="text" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. John Doe" required>
             </div>
 
             <div>
               <label for="contact-email" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Email Address</label>
-              <input id="contact-email" type="email" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. john@example.com" required>
+              <input id="contact-email" name="email" type="email" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. john@example.com" required>
             </div>
 
             <div>
               <label for="contact-message" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Message</label>
-              <textarea id="contact-message" rows="5" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="Your questions, inquiries, or notes here..." required></textarea>
+              <textarea id="contact-message" name="message" rows="5" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="Your questions, inquiries, or notes here..." required></textarea>
             </div>
 
             <button type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] transition-transform duration-300 shadow-lg shadow-amber-500/10">
               Continue on WhatsApp
             </button>
+            <p id="contact-form-status" class="text-xs text-neutral-400 text-center" role="status"></p>
           </form>
         </div>
 
@@ -936,6 +938,7 @@
                   <span id="submit-btn-text">Book Call</span>
                   <iconify-icon icon="solar:paper-plane-bold" class="text-sm"></iconify-icon>
                 </button>
+                <p id="proposal-form-status" class="text-xs text-neutral-400 text-center" role="status"></p>
               </form>
             </div>
           </div>

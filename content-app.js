@@ -332,9 +332,33 @@
       serviceSelect.insertAdjacentHTML('beforeend', content.services.map(service => `<option value="${escapeHtml(service.title)}">${escapeHtml(service.title)}</option>`).join(''));
     }
 
+    const persistIntake = (payload, statusId) => {
+      const status = document.getElementById(statusId);
+      if (status) status.textContent = 'Saving your request…';
+      if (typeof submitIntake !== 'function') return;
+      submitIntake(payload)
+        .then(() => {
+          if (status) status.textContent = 'Request saved. Continue in WhatsApp to speak with the studio.';
+        })
+        .catch(error => {
+          if (status) status.textContent = error.message;
+        });
+    };
+
     document.getElementById('booking-form')?.addEventListener('submit', event => {
       event.preventDefault();
       const form = new FormData(event.currentTarget);
+      persistIntake({
+        kind: 'project',
+        name: form.get('name'),
+        email: form.get('email') || '',
+        title: `${form.get('service')} enquiry`,
+        service: form.get('service'),
+        budget: form.get('budget') || null,
+        timeline: form.get('date') || null,
+        message: form.get('details'),
+        payload: { location: form.get('location') || null }
+      }, 'booking-form-status');
       openWhatsapp([
         'Hello Olympus Studio, I would like to discuss a project.',
         '',
@@ -351,6 +375,12 @@
 
     document.getElementById('contact-form')?.addEventListener('submit', event => {
       event.preventDefault();
+      persistIntake({
+        kind: 'contact',
+        name: document.getElementById('contact-name')?.value.trim(),
+        email: document.getElementById('contact-email')?.value.trim(),
+        message: document.getElementById('contact-message')?.value.trim()
+      }, 'contact-form-status');
       openWhatsapp([
         'Hello Olympus Studio, I have an enquiry.',
         '',
@@ -376,6 +406,20 @@
         '',
         `Brief: ${document.getElementById('proposal-details')?.value.trim()}`
       ];
+      persistIntake({
+        kind: isEvent ? 'event' : 'project',
+        name: document.getElementById('proposal-name')?.value.trim(),
+        email: document.getElementById('proposal-email')?.value.trim(),
+        title: isEvent ? 'Event coverage request' : 'Design project request',
+        service: isEvent ? 'Event / production coverage' : document.getElementById('project-area')?.value,
+        budget: isEvent ? null : document.getElementById('project-budget')?.value.trim(),
+        timeline: isEvent ? document.getElementById('event-date')?.value : document.getElementById('project-timeline')?.value,
+        message: document.getElementById('proposal-details')?.value.trim(),
+        payload: isEvent ? {
+          event_hours: document.getElementById('event-hours')?.value,
+          event_location: document.getElementById('event-location')?.value.trim()
+        } : {}
+      }, 'proposal-form-status');
       openWhatsapp(details.join('\n'), event.currentTarget);
     }, true);
   };
