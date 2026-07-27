@@ -270,8 +270,37 @@ dialog::backdrop { background: #000c; backdrop-filter: blur(5px); }
 .detail-list dt { color: var(--muted); font-size: 11px; }
 .detail-list dd { margin: 0; font-size: 13px; }
 .record-tabs { position: sticky; z-index: 18; top: 94px; display: flex; gap: 6px; margin-bottom: 16px; padding: 8px; border: 1px solid var(--line); border-radius: 999px; background: #0c0d0ae8; backdrop-filter: blur(12px); overflow-x: auto; }
-.record-tabs a { border-radius: 999px; padding: 9px 14px; color: var(--muted); font-size: 11px; white-space: nowrap; }
-.record-tabs a:hover { background: var(--surface-2); color: var(--text); }
+.record-tabs button { border: 0; border-radius: 999px; padding: 9px 14px; background: transparent; color: var(--muted); font: inherit; font-size: 11px; white-space: nowrap; cursor: pointer; }
+.record-tabs button:hover, .record-tabs button:focus-visible { background: var(--surface-2); color: var(--text); }
+.record-tabs button.active { background: var(--gold); color: #14130e; font-weight: 700; }
+
+.crm-chart-panel { margin-bottom: 16px; }
+.compact-label { display: grid; gap: 6px; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+.compact-label select { min-width: 150px; }
+.crm-filters { flex-wrap: wrap; }
+.crm-filters input, .crm-filters select { min-width: 150px; }
+.crm-filters #client-search { flex: 1 1 270px; }
+.crm-filters #client-min-paid { max-width: 150px; }
+.crm-chart { display: grid; grid-template-columns: repeat(12, minmax(42px, 1fr)); gap: 8px; min-height: 220px; overflow-x: auto; }
+.crm-month { min-width: 42px; display: grid; grid-template-rows: 150px auto auto auto; gap: 4px; align-items: end; border: 0; background: transparent; color: var(--text); cursor: pointer; }
+.crm-month:hover .crm-bars, .crm-month:focus-visible .crm-bars { border-color: var(--gold); background: var(--gold-soft); }
+.crm-bars { height: 150px; display: flex; align-items: flex-end; justify-content: center; gap: 4px; padding: 6px; border: 1px solid var(--line-soft); border-radius: 12px; transition: .18s ease; }
+.crm-bars span { width: 36%; min-height: 0; border-radius: 999px 999px 3px 3px; }
+.client-bar { background: var(--gold); }
+.revenue-bar { background: #6ebf9a; }
+.crm-month strong { font-size: 12px; }
+.crm-month small { color: var(--muted); font-size: 10px; }
+.crm-month em { min-height: 18px; color: #86d8b2; font-size: 8px; font-style: normal; white-space: nowrap; }
+.crm-profile-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 8px 0 20px; }
+.crm-profile-summary article { padding: 16px; border: 1px solid var(--line-soft); border-radius: 14px; background: var(--surface); }
+.crm-profile-summary span, .crm-profile-summary strong { display: block; }
+.crm-profile-summary span { margin-bottom: 8px; color: var(--muted); font-size: 11px; }
+.crm-profile-summary strong { font-size: 15px; line-height: 1.4; }
+.tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { display: inline-flex; margin: 2px; padding: 5px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--gold); font-size: 10px; }
+.archive-banner { display: flex; gap: 12px; align-items: flex-start; margin: 8px 0 18px; padding: 16px; border: 1px solid #6b5128; border-radius: 14px; background: var(--gold-soft); color: #f0d18a; }
+.archive-banner iconify-icon { font-size: 22px; }
+.archive-banner p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
 .record-actions { display: flex; flex-wrap: wrap; gap: 9px; margin: 20px 0; }
 .compact-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 10px; margin-bottom: 18px; padding: 16px; border: 1px solid var(--line-soft); border-radius: 14px; background: #0d0e0b; }
 .compact-form .screen-message { grid-column: 1 / -1; }
@@ -375,6 +404,7 @@ dialog::backdrop { background: #000c; backdrop-filter: blur(5px); }
   .record-heading { align-items: flex-start; flex-direction: column; }
   .detail-grid { grid-template-columns: 1fr; }
   .record-tabs { top: 80px; }
+  .crm-profile-summary { grid-template-columns: repeat(2, 1fr); }
   .inline-library { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .invoice-line-item { grid-template-columns: 1fr 1fr 40px; }
   .invoice-line-item .line-description { grid-column: 1 / -1; }
@@ -394,6 +424,7 @@ dialog::backdrop { background: #000c; backdrop-filter: blur(5px); }
   .current-image { align-items: flex-start; flex-direction: column; }
   .current-image img { width: 100%; height: auto; aspect-ratio: 4 / 3; }
   .invoice-meta { grid-template-columns: 1fr; }
+  .crm-profile-summary { grid-template-columns: 1fr; }
 }
 
 @media print {

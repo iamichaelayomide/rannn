@@ -9,6 +9,8 @@ const requiredFiles = [
   "portal.js",
   "supabase/migrations/202607240001_operations_platform.sql",
   "supabase/migrations/202607270003_complete_admin_flows.sql",
+  "supabase/migrations/202607270004_crm_navigation_cms_repair.sql",
+  "supabase/migrations/202607270005_archived_project_read_only.sql",
 ];
 
 for (const file of requiredFiles) await access(file);
@@ -56,6 +58,16 @@ if (dashboard.includes("Image URL") || dashboard.includes("Logo URL")) {
 }
 if (dashboard.includes("Internal identifier") || /field\([^)]*"slug"/.test(dashboard)) {
   throw new Error("CMS slugs must stay automatic and hidden from normal editors");
+}
+const crmMigration = await readFile("supabase/migrations/202607270004_crm_navigation_cms_repair.sql", "utf8");
+for (const required of ["get_crm_dashboard", "set_project_archived", "save_sitewide_collection", "mark_page_draft_change", "mark_service_draft_change", "mark_portfolio_draft_change"]) {
+  if (!crmMigration.includes(required)) throw new Error(`CRM/CMS migration is missing ${required}`);
+}
+if (/create\s+or\s+replace\s+function\s+public\.mark_cms_draft_change/i.test(crmMigration)) {
+  throw new Error("The cross-table CMS trigger must not be recreated");
+}
+for (const required of ["?tab=${value}", "data-archive-project", "data-publish-collection"]) {
+  if (!dashboard.includes(required)) throw new Error(`Missing routed CRM/CMS interaction: ${required}`);
 }
 
 console.log("Static structure, interaction, preview, and secret-safety checks passed.");

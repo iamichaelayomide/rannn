@@ -66,13 +66,31 @@
         </section>
 
         <section class="view" data-view-panel="projects">
-          <div class="section-tools"><input id="project-search" type="search" placeholder="Search projects or clients"><select id="project-filter"><option value="">All statuses</option><option value="draft">Draft</option><option value="active">Active</option><option value="on_hold">On hold</option><option value="completed">Completed</option></select></div>
+          <div class="section-tools"><input id="project-search" type="search" placeholder="Search projects or clients"><select id="project-filter"><option value="">Active projects</option><option value="draft">Draft</option><option value="active">Active</option><option value="on_hold">On hold</option><option value="completed">Completed</option><option value="archived">Archived</option></select></div>
           <div class="card-grid" id="project-grid"></div>
         </section>
 
         <section class="view" data-view-panel="clients">
-          <div class="section-tools"><input id="client-search" type="search" placeholder="Search clients"></div>
-          <section class="panel table-wrap"><table><thead><tr><th>Client</th><th>Contact</th><th>Company</th><th>Projects</th></tr></thead><tbody id="client-table"></tbody></table></section>
+          <div class="metric-grid crm-metrics" id="crm-metrics">
+            <article class="metric skeleton-card"></article><article class="metric skeleton-card"></article>
+            <article class="metric skeleton-card"></article><article class="metric skeleton-card"></article>
+          </div>
+          <section class="panel crm-chart-panel">
+            <div class="panel-head">
+              <div><p class="eyebrow">Last 12 months</p><h2>Clients and paid revenue</h2></div>
+              <label class="compact-label">Revenue currency<select id="crm-chart-currency"></select></label>
+            </div>
+            <div id="crm-chart" class="crm-chart"></div>
+          </section>
+          <div class="section-tools crm-filters">
+            <input id="client-search" type="search" placeholder="Search clients, tags or services">
+            <select id="client-stage-filter"><option value="">All relationships</option><option value="lead">Lead</option><option value="current">Current</option><option value="past">Past</option><option value="on_hold">On hold</option></select>
+            <select id="client-smart-filter"><option value="">All active clients</option><option value="active">Active project</option><option value="repeat">Repeat clients</option><option value="outstanding">Outstanding balance</option><option value="follow_up">Follow-up due</option><option value="archived">Archived clients</option></select>
+            <select id="client-service-filter"><option value="">All services</option></select>
+            <select id="client-currency-filter"><option value="">Any currency</option></select>
+            <input id="client-min-paid" type="number" min="0" step="1" placeholder="Minimum paid">
+          </div>
+          <section class="panel table-wrap"><table><thead><tr><th>Client</th><th>Relationship</th><th>Project history</th><th>Paid</th><th>Next follow-up</th></tr></thead><tbody id="client-table"></tbody></table></section>
         </section>
 
         <section class="view" data-view-panel="invoices">
