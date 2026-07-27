@@ -28,10 +28,11 @@ export default async function handler(request, response) {
     }
 
     const content = await upstream.json();
-    response.setHeader(
-      "Cache-Control",
-      "public, max-age=0, s-maxage=60, stale-while-revalidate=300",
-    );
+    // CMS publishes must be visible on the next public refresh. Do not let the
+    // browser or Vercel's edge cache serve an older published snapshot.
+    response.setHeader("Cache-Control", "private, no-store, max-age=0, must-revalidate");
+    response.setHeader("CDN-Cache-Control", "no-store");
+    response.setHeader("Vercel-CDN-Cache-Control", "no-store");
     return response.status(200).json(content);
   } catch (error) {
     console.error("Public content service error", error instanceof Error ? error.message : error);

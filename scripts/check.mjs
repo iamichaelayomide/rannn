@@ -32,6 +32,7 @@ const dashboard = await readFile("dashboard.js", "utf8");
 const portal = await readFile("portal.js", "utf8");
 const bootstrap = await readFile("site-bootstrap.js", "utf8");
 const admin = await readFile("admin.html", "utf8");
+const publicContentApi = await readFile("api/content.js", "utf8");
 
 if (/window\.(prompt|alert|confirm)\s*\(/.test(`${dashboard}\n${portal}`)) {
   throw new Error("Native browser prompts are not allowed in the admin or client portal");
@@ -58,6 +59,12 @@ if (dashboard.includes("Image URL") || dashboard.includes("Logo URL")) {
 }
 if (dashboard.includes("Internal identifier") || /field\([^)]*"slug"/.test(dashboard)) {
   throw new Error("CMS slugs must stay automatic and hidden from normal editors");
+}
+if (/s-maxage|stale-while-revalidate/.test(publicContentApi) || !publicContentApi.includes("Vercel-CDN-Cache-Control")) {
+  throw new Error("Published CMS content must bypass stale browser and edge caches");
+}
+if (!dashboard.includes("verifyPublishedCollection")) {
+  throw new Error("Site-wide publishing must verify the public payload before reporting success");
 }
 const crmMigration = await readFile("supabase/migrations/202607270004_crm_navigation_cms_repair.sql", "utf8");
 for (const required of ["get_crm_dashboard", "set_project_archived", "save_sitewide_collection", "mark_page_draft_change", "mark_service_draft_change", "mark_portfolio_draft_change"]) {

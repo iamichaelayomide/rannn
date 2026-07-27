@@ -1004,6 +1004,21 @@ async function resolveImage(form, formData, name, title, alt) {
   return formData.get(name) || "";
 }
 
+async function verifyPublishedCollection(type, index, item) {
+  const response = await fetch(`/api/content?published=${Date.now()}`, { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error("The change was published, but the live website could not be verified. Refresh and try once more.");
+  }
+  const payload = await response.json();
+  const liveItems = payload?.pages?.global?.content?.[type] || [];
+  const liveItem = index >= 0 ? liveItems[index] : liveItems.at(-1);
+  const fields = (collectionSchemas[type] || []).map(([, name]) => name);
+  const matches = liveItem && fields.every((name) => String(liveItem[name] || "") === String(item[name] || ""));
+  if (!matches) {
+    throw new Error("The draft was saved, but the public website has not received this change yet. Please publish again.");
+  }
+}
+
 async function logActivity(projectId, action, entityType, entityId, metadata = {}) {
   await state.supabase.from("activities").insert({
     actor_id: state.profile.id, project_id: projectId || null,
@@ -1153,6 +1168,7 @@ async function saveRecordForm(form, { publishCollection = false } = {}) {
         target_publish: publishCollection,
       });
       if (error) throw error;
+      if (publishCollection) await verifyPublishedCollection(type, index, item);
       destination = index >= 0 ? `collections/${type}/${index}` : "pages";
       toast(publishCollection ? "Site-wide content published live." : "Site-wide draft saved.");
     }
