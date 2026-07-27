@@ -770,48 +770,23 @@ const submitIntake = async (payload) => {
     throw new Error(detail.message || 'We could not submit your request. Please try again.');
   }
 };
+window.submitIntake = submitIntake;
 
 const initManagedContent = async () => {
-  try {
-    const configResponse = await fetch('/api/config', { cache: 'no-store' });
-    const config = await configResponse.json().catch(() => ({}));
-    if (!configResponse.ok || !config.configured) return;
-    const headers = { apikey: config.anonKey, Authorization: `Bearer ${config.anonKey}` };
-    const [pagesResponse, servicesResponse] = await Promise.all([
-      fetch(`${config.url}/rest/v1/pages?status=eq.published&select=slug,content`, { headers }),
-      fetch(`${config.url}/rest/v1/services?status=eq.published&select=title,summary,image_url&order=position.asc`, { headers })
-    ]);
-    if (pagesResponse.ok) {
-      const pages = await pagesResponse.json();
-      const home = pages.find((page) => page.slug === 'home');
-      const hero = home?.content?.hero;
-      if (hero) {
-        if (hero.eyebrow) document.getElementById('managed-hero-eyebrow').textContent = hero.eyebrow;
-        if (hero.title_line_one) document.getElementById('managed-hero-title-one').textContent = hero.title_line_one;
-        if (hero.title_line_two) document.getElementById('managed-hero-title-two').textContent = hero.title_line_two;
-        if (hero.body) document.getElementById('managed-hero-body').textContent = hero.body;
-        if (hero.background_image) {
-          const shell = document.getElementById('managed-home-hero');
-          shell.style.backgroundImage = `linear-gradient(rgba(5,5,5,.58), rgba(5,5,5,.82)), url("${hero.background_image.replaceAll('"', '%22')}")`;
-          shell.style.backgroundSize = 'cover';
-          shell.style.backgroundPosition = 'center';
-          shell.style.borderRadius = '0 0 2rem 2rem';
-        }
-      }
+  const home = window.OLYMPUS_CONTENT?.pages?.home;
+  const hero = home?.content?.hero;
+  if (hero) {
+    if (hero.eyebrow) document.getElementById('managed-hero-eyebrow').textContent = hero.eyebrow;
+    if (hero.title_line_one) document.getElementById('managed-hero-title-one').textContent = hero.title_line_one;
+    if (hero.title_line_two) document.getElementById('managed-hero-title-two').textContent = hero.title_line_two;
+    if (hero.body) document.getElementById('managed-hero-body').textContent = hero.body;
+    if (hero.background_image) {
+      const shell = document.getElementById('managed-home-hero');
+      shell.style.backgroundImage = `linear-gradient(rgba(5,5,5,.58), rgba(5,5,5,.82)), url("${hero.background_image.replaceAll('"', '%22')}")`;
+      shell.style.backgroundSize = 'cover';
+      shell.style.backgroundPosition = 'center';
+      shell.style.borderRadius = '0 0 2rem 2rem';
     }
-    if (servicesResponse.ok) {
-      const services = await servicesResponse.json();
-      const cards = [...document.querySelectorAll('.capabilities-card')];
-      services.slice(0, cards.length).forEach((service, index) => {
-        const card = cards[index];
-        const heading = card.querySelector('h3');
-        const summary = card.querySelector('.primary-content-block p');
-        if (heading) heading.textContent = service.title;
-        if (summary && service.summary) summary.textContent = service.summary;
-      });
-    }
-  } catch {
-    // The public site keeps its built-in content when managed content is unavailable.
   }
 };
 
@@ -1503,7 +1478,7 @@ const initTestimonialsSwipe = () => {
 };
 
 // Initialization entry point
-window.addEventListener('DOMContentLoaded', () => {
+const initializeSite = () => {
   initBackdropWebGL();
   initManagedContent();
   animateBackdrop();
@@ -1530,4 +1505,10 @@ window.addEventListener('DOMContentLoaded', () => {
   initExtraParallaxScroll();
   initMilestoneRolls();
   initTestimonialsSwipe();
-});
+};
+
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', initializeSite, { once: true });
+} else {
+  initializeSite();
+}

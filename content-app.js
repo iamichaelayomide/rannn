@@ -41,12 +41,12 @@
     if (!grid) return;
     grid.innerHTML = content.services.map((service, index) => `
       <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[310px]">
-        <div class="service-card-icon"><iconify-icon icon="${iconNames[index]}"></iconify-icon></div>
+        <div class="service-card-icon"><iconify-icon icon="${iconNames[index % iconNames.length]}"></iconify-icon></div>
         <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400 mt-8">Service ${String(index + 1).padStart(2, '0')}</span>
         <h3 class="text-2xl font-bold text-white mt-3">${escapeHtml(service.title)}</h3>
         <p class="text-sm text-neutral-400 leading-relaxed mt-4">${escapeHtml(service.summary)}</p>
         <ul class="mt-6 space-y-2 text-xs text-neutral-300">
-          ${deliverables[index].map(item => `<li class="flex items-center gap-2"><span class="text-amber-400">✓</span>${escapeHtml(item)}</li>`).join('')}
+          ${(service.deliverables || deliverables[index] || []).map(item => `<li class="flex items-center gap-2"><span class="text-amber-400">✓</span>${escapeHtml(item)}</li>`).join('')}
         </ul>
         <a href="#book" data-page="book" class="spa-nav-link text-xs font-bold uppercase tracking-wider text-amber-400 mt-auto pt-7">Brief this service →</a>
       </article>
@@ -72,14 +72,15 @@
   };
 
   const hydrateHomepage = () => {
+    const homeContent = content.pages?.home?.content || {};
     const heroBody = document.querySelector('#page-home > div:first-of-type p');
-    if (heroBody) heroBody.textContent = 'We direct, capture, edit, and design visual stories for events, institutions, campaigns, and ambitious brands.';
+    if (heroBody && homeContent.hero?.body) heroBody.textContent = homeContent.hero.body;
 
     const vision = document.getElementById('word-reveal-paragraph');
-    if (vision) vision.textContent = 'Olympus Studio brings film, photography, visual design, motion, editorial production, and website development into one focused creative practice. We turn real moments and clear ideas into work built to travel across screens, spaces, campaigns, and publications.';
+    if (vision && homeContent.vision?.body) vision.textContent = homeContent.vision.body;
 
     const manifesto = document.getElementById('manifesto-word-reveal');
-    if (manifesto) manifesto.textContent = 'We reject forgettable creative. Olympus exists to make moments feel intentional—combining strong direction, human photography, cinematic film, disciplined layouts, and thoughtful post-production into work that endures.';
+    if (manifesto && homeContent.manifesto?.body) manifesto.textContent = homeContent.manifesto.body;
 
     const capabilityIndexes = [0, 1, 2, 5];
     document.querySelectorAll('.capabilities-card').forEach((card, cardIndex) => {
@@ -110,6 +111,76 @@
       const paragraph = heading.nextElementSibling;
       if (paragraph?.tagName === 'P') paragraph.textContent = pair[1];
     });
+  };
+
+  const hydratePageHeaders = () => {
+    const targets = {
+      portfolio: '#page-portfolio > div > div:first-child > div:first-child',
+      about: '#page-about > div > div:first-child > div:first-child',
+      book: '#page-book > div > div:first-child',
+      contact: '#page-contact > div > div:first-child',
+    };
+
+    Object.entries(targets).forEach(([slug, selector]) => {
+      const header = content.pages?.[slug]?.content?.header;
+      const container = document.querySelector(selector);
+      if (!header || !container) return;
+      const eyebrow = container.querySelector('span');
+      const title = container.querySelector('h2');
+      const body = container.querySelector('p');
+      if (eyebrow && header.eyebrow) eyebrow.textContent = header.eyebrow;
+      if (title && header.title) title.textContent = header.title;
+      if (body && header.body) body.textContent = header.body;
+
+      if (slug === 'about' && header.image) {
+        const image = document.querySelector('#page-about img');
+        if (image) image.src = header.image;
+      }
+    });
+  };
+
+  const hydrateFaqs = () => {
+    if (!Array.isArray(content.faqs) || !content.faqs.length) return;
+    const list = document.querySelector('#global-faqs .space-y-4');
+    if (!list) return;
+    list.innerHTML = content.faqs.map((item, index) => `
+      <div class="glass-card border-gold-gradient rounded-2xl overflow-hidden faq-item">
+        <button type="button" class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none faq-btn" aria-expanded="false" aria-controls="cms-faq-${index}">
+          <span class="text-sm font-bold uppercase text-white">${escapeHtml(item.question)}</span>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="text-amber-400 text-lg transition-transform duration-300 faq-icon"></iconify-icon>
+        </button>
+        <div id="cms-faq-${index}" class="max-h-0 overflow-hidden transition-all duration-300 faq-content">
+          <div class="px-6 pb-5 text-xs md:text-sm text-neutral-400 font-light leading-relaxed">${escapeHtml(item.answer)}</div>
+        </div>
+      </div>
+    `).join('');
+
+    list.querySelectorAll('.faq-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        const item = button.closest('.faq-item');
+        const panel = item.querySelector('.faq-content');
+        const iconNode = item.querySelector('.faq-icon');
+        const isOpen = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', String(!isOpen));
+        panel.style.maxHeight = isOpen ? '0px' : `${panel.scrollHeight}px`;
+        iconNode?.classList.toggle('rotate-180', !isOpen);
+      });
+    });
+  };
+
+  const hydratePartners = () => {
+    if (!Array.isArray(content.partners) || !content.partners.length) return;
+    const grid = document.getElementById('partners-magnetic-container');
+    if (!grid) return;
+    grid.innerHTML = content.partners.map((partner) => {
+      const body = partner.logo
+        ? `<img src="${escapeHtml(partner.logo)}" alt="${escapeHtml(partner.name)} logo" class="max-w-[7rem] max-h-12 object-contain" loading="lazy">`
+        : `<span class="text-xs font-bold uppercase tracking-wider text-neutral-300 text-center px-3">${escapeHtml(partner.name)}</span>`;
+      const contentNode = `<div class="w-36 h-20 bg-neutral-950 border border-white/5 rounded-2xl flex items-center justify-center hover:border-amber-400/20 transition-all duration-300 magnetic-logo-wrap">${body}</div>`;
+      return partner.url
+        ? `<a href="${escapeHtml(partner.url)}" target="_blank" rel="noopener noreferrer" aria-label="Visit ${escapeHtml(partner.name)}">${contentNode}</a>`
+        : contentNode;
+    }).join('');
   };
 
   const hydrateSocialProof = () => {
@@ -335,8 +406,8 @@
     const persistIntake = (payload, statusId) => {
       const status = document.getElementById(statusId);
       if (status) status.textContent = 'Saving your request…';
-      if (typeof submitIntake !== 'function') return;
-      submitIntake(payload)
+      if (typeof window.submitIntake !== 'function') return;
+      window.submitIntake(payload)
         .then(() => {
           if (status) status.textContent = 'Request saved. Continue in WhatsApp to speak with the studio.';
         })
@@ -428,7 +499,8 @@
     const footer = document.querySelector('footer');
     if (!footer) return;
     const intro = footer.querySelector('p');
-    if (intro) intro.textContent = 'A creative studio for film, photography, campaign graphics, editorial publications, motion design, event coverage, and website development.';
+    const footerIntro = content.pages?.global?.content?.site?.footer_intro;
+    if (intro && footerIntro) intro.textContent = footerIntro;
     const expertiseHeading = [...footer.querySelectorAll('h5')].find(item => item.textContent.trim() === 'Expertise');
     const expertiseList = expertiseHeading?.nextElementSibling;
     if (expertiseList) expertiseList.innerHTML = content.services.map(service => `<li><a href="#services" class="hover:text-white transition-colors spa-nav-link" data-page="services">${escapeHtml(service.title)}</a></li>`).join('');
@@ -439,16 +511,25 @@
     footer.querySelectorAll('a[href="#"]').forEach(link => link.hidden = true);
   };
 
-  window.addEventListener('DOMContentLoaded', () => {
+  const initializeManagedContent = () => {
     renderServices();
     renderTeam();
     hydrateHomepage();
+    hydratePageHeaders();
     hydrateSocialProof();
+    hydrateFaqs();
+    hydratePartners();
     renderPortfolio();
     document.getElementById('view-cac-certificate')?.addEventListener('click', () => {
       window.openOlympusPortfolioItem?.('157ouUK40lbUfM4xSL2Sc0E0gPQ4wnqcd');
     });
     initWhatsAppForms();
     hydrateFooter();
-  });
+  };
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', initializeManagedContent, { once: true });
+  } else {
+    initializeManagedContent();
+  }
 })();

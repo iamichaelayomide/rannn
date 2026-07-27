@@ -4,66 +4,43 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <title>Olympus Workspace</title>
+  <title>Olympus Studio — Workspace</title>
   <link rel="icon" href="/assets/olympus-logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/dashboard.css">
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 </head>
 <body>
   <div class="setup-banner hidden" id="setup-banner" role="status"></div>
 
   <section class="auth-shell" id="auth-shell" aria-labelledby="auth-title">
     <div class="auth-card">
-      <a class="brand brand-large" href="/">
-        <img src="/assets/olympus-logo.svg" alt="">
-        <span>Olympus</span>
-      </a>
-      <p class="eyebrow">Internal workspace</p>
-      <h1 id="auth-title">Run every project from one place.</h1>
-      <p class="muted">Sign in with your team account. Access is controlled by your assigned role.</p>
+      <div class="brand brand-large"><img src="/assets/olympus-logo.svg" alt=""><span>Olympus Studio</span></div>
+      <p class="eyebrow">Private workspace</p>
+      <h1 id="auth-title">Run the studio from one place.</h1>
+      <p class="muted">Manage the website, portfolio, projects, approvals, clients, and billing.</p>
       <form id="login-form" class="stack">
-        <label>Email<input required type="email" name="email" autocomplete="email" placeholder="you@olympus.studio"></label>
-        <label>Password<input required type="password" name="password" autocomplete="current-password" placeholder="••••••••"></label>
-        <button class="button primary" type="submit">Sign in</button>
+        <label>Email address<input name="email" type="email" autocomplete="username" required></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
         <p class="form-message" id="login-message" role="alert"></p>
+        <button class="button primary" type="submit"><span>Sign in</span></button>
       </form>
     </div>
   </section>
 
   <div class="app hidden" id="app">
-    <aside class="sidebar">
-      <a class="brand" href="/"><img src="/assets/olympus-logo.svg" alt=""><span>Olympus</span></a>
-      <nav aria-label="Workspace">
-        <button class="nav-item active" data-view="overview"><span>Overview</span></button>
-        <button class="nav-item" data-view="inbox"><span>Inbox</span><span class="nav-count" id="inbox-count">0</span></button>
-        <button class="nav-item" data-view="projects"><span>Projects</span></button>
-        <button class="nav-item" data-view="clients"><span>Clients</span></button>
-        <button class="nav-item" data-view="invoices"><span>Invoices</span></button>
-        <button class="nav-item" data-view="website"><span>Website</span></button>
-        <button class="nav-item" data-view="team"><span>Team & access</span></button>
-      </nav>
-      <div class="sidebar-foot">
-        <div class="user-chip">
-          <span class="avatar" id="user-avatar">O</span>
-          <span><strong id="user-name">Team member</strong><small id="user-role">Contributor</small></span>
-        </div>
-        <button class="text-button" id="sign-out">Sign out</button>
-      </div>
-    </aside>
-
     <main>
       <header class="topbar">
-        <button class="menu-button" id="menu-button" aria-label="Toggle navigation">Menu</button>
         <div>
           <p class="eyebrow" id="view-eyebrow">Workspace</p>
           <h1 id="view-title">Overview</h1>
         </div>
-        <div class="top-actions">
-          <button class="button secondary" data-action="new-client">Add client</button>
-          <button class="button primary" data-action="new-project">New project</button>
-        </div>
+        <div class="top-actions" id="top-actions"></div>
+        <button class="button ghost menu-button" id="menu-button" type="button" aria-label="Open navigation" aria-expanded="false">
+          <iconify-icon icon="solar:hamburger-menu-linear"></iconify-icon><span>Menu</span>
+        </button>
       </header>
 
       <div class="content" id="content" aria-live="polite">
@@ -73,25 +50,14 @@
             <p class="date-chip" id="current-date"></p>
           </div>
           <div class="metric-grid" id="metrics">
-            <article class="metric"><span>Active projects</span><strong>—</strong><small>Loading</small></article>
-            <article class="metric"><span>Awaiting approval</span><strong>—</strong><small>Loading</small></article>
-            <article class="metric"><span>Outstanding invoices</span><strong>—</strong><small>Loading</small></article>
-            <article class="metric"><span>New enquiries</span><strong>—</strong><small>Loading</small></article>
+            <article class="metric skeleton-card"></article><article class="metric skeleton-card"></article>
+            <article class="metric skeleton-card"></article><article class="metric skeleton-card"></article>
           </div>
           <div class="dashboard-grid">
-            <section class="panel">
-              <div class="panel-head"><div><p class="eyebrow">Priority queue</p><h2>Needs attention</h2></div></div>
-              <div id="attention-list" class="list-state">Loading activity…</div>
-            </section>
-            <section class="panel">
-              <div class="panel-head"><div><p class="eyebrow">Schedule</p><h2>Upcoming milestones</h2></div></div>
-              <div id="milestone-list" class="list-state">Loading milestones…</div>
-            </section>
+            <section class="panel"><div class="panel-head"><div><p class="eyebrow">Priority queue</p><h2>Needs attention</h2></div></div><div id="attention-list" class="list-state skeleton-lines"></div></section>
+            <section class="panel"><div class="panel-head"><div><p class="eyebrow">Schedule</p><h2>Upcoming milestones</h2></div></div><div id="milestone-list" class="list-state skeleton-lines"></div></section>
           </div>
-          <section class="panel">
-            <div class="panel-head"><div><p class="eyebrow">Portfolio</p><h2>Recent projects</h2></div><button class="text-button" data-view-jump="projects">View all</button></div>
-            <div id="recent-projects" class="list-state">Loading projects…</div>
-          </section>
+          <section class="panel"><div class="panel-head"><div><p class="eyebrow">Delivery</p><h2>Recent projects</h2></div><button class="text-button" data-view-jump="projects">View all</button></div><div id="recent-projects" class="list-state skeleton-lines"></div></section>
         </section>
 
         <section class="view" data-view-panel="inbox">
@@ -100,51 +66,108 @@
         </section>
 
         <section class="view" data-view-panel="projects">
-          <div class="section-tools"><input id="project-search" type="search" placeholder="Search projects or clients"><select id="project-filter"><option value="">All statuses</option><option value="draft">Draft</option><option value="active">Active</option><option value="on_hold">On hold</option><option value="completed">Completed</option></select><button class="button primary" data-action="new-project">New project</button></div>
+          <div class="section-tools"><input id="project-search" type="search" placeholder="Search projects or clients"><select id="project-filter"><option value="">All statuses</option><option value="draft">Draft</option><option value="active">Active</option><option value="on_hold">On hold</option><option value="completed">Completed</option></select></div>
           <div class="card-grid" id="project-grid"></div>
         </section>
 
         <section class="view" data-view-panel="clients">
-          <div class="section-tools"><input id="client-search" type="search" placeholder="Search clients"><button class="button primary" data-action="new-client">Add client</button></div>
+          <div class="section-tools"><input id="client-search" type="search" placeholder="Search clients"></div>
           <section class="panel table-wrap"><table><thead><tr><th>Client</th><th>Contact</th><th>Company</th><th>Projects</th></tr></thead><tbody id="client-table"></tbody></table></section>
         </section>
 
         <section class="view" data-view-panel="invoices">
-          <div class="section-tools"><input id="invoice-search" type="search" placeholder="Search invoice or project"><select id="invoice-filter"><option value="">All statuses</option><option value="draft">Draft</option><option value="open">Open</option><option value="paid">Paid</option><option value="void">Void</option><option value="uncollectible">Uncollectible</option></select><button class="button primary" data-action="new-invoice">New invoice</button></div>
+          <div class="section-tools"><input id="invoice-search" type="search" placeholder="Search invoice or project"><select id="invoice-filter"><option value="">All statuses</option><option value="draft">Draft</option><option value="open">Open</option><option value="paid">Paid</option><option value="void">Void</option><option value="uncollectible">Uncollectible</option></select></div>
           <section class="panel table-wrap"><table><thead><tr><th>Invoice</th><th>Project</th><th>Due</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody id="invoice-table"></tbody></table></section>
         </section>
 
-        <section class="view" data-view-panel="website">
-          <div class="tab-row"><button class="tab active" data-content-tab="pages">Pages</button><button class="tab" data-content-tab="services">Services</button><button class="tab" data-content-tab="media">Media</button></div>
-          <div id="content-pages"></div>
+        <section class="view" data-view-panel="pages">
+          <div class="cms-intro"><div><p class="eyebrow">Fixed website templates</p><h2>Page content</h2><p class="muted">Edit friendly fields, preview privately, then publish when the page is ready.</p></div></div>
+          <div class="content-status" id="cms-status"></div>
+          <div class="card-grid cms-grid" id="page-grid"></div>
+          <section class="panel collection-panel">
+            <div class="panel-head"><div><p class="eyebrow">Reusable content</p><h2>Team, testimonials, FAQs & partners</h2></div></div>
+            <div class="collection-tabs" role="tablist">
+              <button class="tab active" data-collection-tab="team">Team</button>
+              <button class="tab" data-collection-tab="testimonials">Testimonials</button>
+              <button class="tab" data-collection-tab="faqs">FAQs</button>
+              <button class="tab" data-collection-tab="partners">Partners</button>
+            </div>
+            <div id="collection-list"></div>
+          </section>
+        </section>
+
+        <section class="view" data-view-panel="portfolio">
+          <div class="section-tools"><input id="portfolio-search" type="search" placeholder="Search title or collection"><select id="portfolio-filter"><option value="">All categories</option><option value="film">Film</option><option value="events">Events</option><option value="graphics">Graphics</option><option value="editorial">Editorial</option><option value="motion">Motion</option></select><select id="portfolio-status"><option value="">All states</option><option value="published">Published</option><option value="draft">Draft</option><option value="archived">Archived</option></select></div>
+          <div class="portfolio-summary" id="portfolio-summary"></div>
+          <div class="portfolio-admin-grid" id="portfolio-grid"></div>
+          <div class="load-more-row hidden" id="portfolio-load-more"><button class="button secondary" data-action="load-more-portfolio">Load more</button></div>
+        </section>
+
+        <section class="view" data-view-panel="services">
+          <div class="content-status" id="service-status"></div>
+          <div class="card-grid cms-grid" id="service-grid"></div>
+        </section>
+
+        <section class="view" data-view-panel="media">
+          <div class="media-note"><iconify-icon icon="solar:shield-check-linear"></iconify-icon><p>Files used by published content cannot be removed. Archive unused assets to keep the library tidy.</p></div>
+          <div class="media-grid" id="media-grid"></div>
         </section>
 
         <section class="view" data-view-panel="team">
-          <section class="panel">
-            <div class="panel-head"><div><p class="eyebrow">Permissions</p><h2>Team & client access</h2></div></div>
-            <p class="muted">Owners control roles. Project access is managed separately so clients and contributors see just the work assigned to them.</p>
-            <div class="table-wrap"><table><thead><tr><th>Person</th><th>Role</th><th>Access</th></tr></thead><tbody id="team-table"></tbody></table></div>
-          </section>
+          <section class="panel"><div class="panel-head"><div><p class="eyebrow">Permissions</p><h2>Team & client access</h2></div></div><p class="muted">Owners control roles. Project access is separate so clients and contributors see only assigned work.</p><div class="table-wrap"><table><thead><tr><th>Person</th><th>Role</th><th>Access</th></tr></thead><tbody id="team-table"></tbody></table></div></section>
         </section>
       </div>
     </main>
+
+    <aside class="sidebar" id="sidebar" aria-label="Workspace navigation">
+      <div class="sidebar-head">
+        <a class="brand" href="/" target="_blank" rel="noopener"><img src="/assets/olympus-logo.svg" alt=""><span>Olympus Studio</span></a>
+        <button class="icon-button" id="collapse-sidebar" type="button" aria-label="Hide navigation"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button>
+      </div>
+      <nav>
+        <p class="nav-label">Workspace</p>
+        <button class="nav-item active" data-view="overview" aria-label="Overview"><span><iconify-icon icon="solar:widget-5-linear"></iconify-icon>Overview</span></button>
+        <button class="nav-item" data-view="inbox"><span><iconify-icon icon="solar:inbox-linear"></iconify-icon>Inbox</span><span class="nav-count" id="inbox-count">0</span></button>
+        <button class="nav-item" data-view="projects" aria-label="Projects"><span><iconify-icon icon="solar:folder-with-files-linear"></iconify-icon>Projects</span></button>
+        <button class="nav-item" data-view="clients" aria-label="Clients"><span><iconify-icon icon="solar:users-group-rounded-linear"></iconify-icon>Clients</span></button>
+        <button class="nav-item" data-view="invoices" aria-label="Billing"><span><iconify-icon icon="solar:bill-list-linear"></iconify-icon>Billing</span></button>
+        <details class="nav-group" open>
+          <summary><span><iconify-icon icon="solar:monitor-smartphone-linear"></iconify-icon>Website</span><iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
+          <div class="subnav">
+            <button class="nav-item" data-view="pages">Pages</button>
+            <button class="nav-item" data-view="portfolio">Portfolio</button>
+            <button class="nav-item" data-view="services">Services</button>
+            <button class="nav-item" data-view="media">Media</button>
+          </div>
+        </details>
+        <p class="nav-label">Administration</p>
+        <button class="nav-item" data-view="team" aria-label="Team and access"><span><iconify-icon icon="solar:shield-user-linear"></iconify-icon>Team & access</span></button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="user-chip"><span class="avatar" id="user-avatar">O</span><div><strong id="user-name">Owner</strong><small id="user-role">Role</small></div></div>
+        <button class="button ghost wide-button" id="sign-out" type="button"><iconify-icon icon="solar:logout-2-linear"></iconify-icon>Sign out</button>
+      </div>
+    </aside>
+    <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="Close navigation"></button>
   </div>
 
   <dialog id="entity-dialog">
     <form method="dialog" class="dialog-card" id="entity-form">
-      <div class="dialog-head"><div><p class="eyebrow" id="dialog-eyebrow">Create</p><h2 id="dialog-title">New project</h2></div><button class="icon-button" value="cancel" aria-label="Close">×</button></div>
+      <div class="dialog-head"><div><p class="eyebrow" id="dialog-eyebrow">Create</p><h2 id="dialog-title">New item</h2><p class="muted dialog-description" id="dialog-description"></p></div><button class="icon-button" value="cancel" aria-label="Close"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
       <div id="dialog-fields" class="form-grid"></div>
+      <div class="upload-progress hidden" id="upload-progress"><span></span></div>
       <p class="form-message" id="dialog-message" role="alert"></p>
-      <div class="dialog-actions"><button class="button secondary" value="cancel">Cancel</button><button class="button primary" type="submit" value="default" id="dialog-submit">Save</button></div>
+      <div class="dialog-actions"><button class="button ghost hidden" type="button" id="dialog-preview"><iconify-icon icon="solar:eye-linear"></iconify-icon>Preview</button><span class="dialog-spacer"></span><button class="button secondary" value="cancel">Cancel</button><button class="button primary" type="submit" value="default" id="dialog-submit">Save draft</button></div>
     </form>
   </dialog>
 
-  <dialog id="project-dialog">
-    <div class="dialog-card">
-      <div class="dialog-head"><div><p class="eyebrow">Project workspace</p><h2 id="project-dialog-title">Project</h2></div><button class="icon-button" data-close-project aria-label="Close">×</button></div>
-      <div id="project-dialog-content"></div>
-    </div>
-  </dialog>
+  <dialog id="project-dialog"><div class="dialog-card"><div class="dialog-head"><div><p class="eyebrow">Project workspace</p><h2 id="project-dialog-title">Project</h2></div><button class="icon-button" data-close-project aria-label="Close"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div><div id="project-dialog-content"></div></div></dialog>
+
+  <dialog id="preview-dialog" class="preview-dialog"><div class="preview-shell"><div class="preview-toolbar"><div><p class="eyebrow">Private preview</p><strong id="preview-title">Content preview</strong></div><div class="preview-actions"><button class="icon-button active" data-preview-width="desktop" title="Desktop"><iconify-icon icon="solar:monitor-linear"></iconify-icon></button><button class="icon-button" data-preview-width="mobile" title="Mobile"><iconify-icon icon="solar:smartphone-linear"></iconify-icon></button><button class="icon-button" data-close-preview aria-label="Close preview"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div></div><div class="preview-stage"><iframe id="preview-frame" title="Private content preview"></iframe></div></div></dialog>
+
+  <dialog id="password-dialog"><form method="dialog" class="dialog-card" id="password-form"><div class="dialog-head"><div><p class="eyebrow">Security step</p><h2>Choose a private password</h2><p class="muted dialog-description">The temporary password was shared during setup. Replace it before using the workspace.</p></div></div><div class="form-grid"><label class="wide">New password<input name="password" type="password" autocomplete="new-password" minlength="10" required></label><label class="wide">Confirm new password<input name="confirm_password" type="password" autocomplete="new-password" minlength="10" required></label></div><p class="form-message" id="password-message" role="alert"></p><div class="dialog-actions"><span class="dialog-spacer"></span><button class="button primary" type="submit">Update password</button></div></form></dialog>
+
+  <dialog id="confirm-dialog"><form method="dialog" class="dialog-card confirm-card"><div class="confirm-icon"><iconify-icon icon="solar:danger-triangle-linear"></iconify-icon></div><h2 id="confirm-title">Confirm action</h2><p class="muted" id="confirm-message"></p><div class="dialog-actions"><button class="button secondary" value="cancel">Cancel</button><button class="button destructive" value="confirm" id="confirm-action">Continue</button></div></form></dialog>
 
   <div class="toast-region" id="toast-region" aria-live="polite"></div>
   <script type="module" src="/dashboard.js"></script>
