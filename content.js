@@ -1,6 +1,6 @@
 window.OLYMPUS_CONTENT = {
   "siteConfig": {
-    "brandName": "Olympus Studio",
+    "brandName": "Olympus Atelier",
     "whatsappNumber": "2348087172313",
     "whatsappDisplay": "+234 808 717 2313",
     "email": null,
@@ -50,7 +50,7 @@ window.OLYMPUS_CONTENT = {
       "name": "John",
       "role": "Creative Lead",
       "image": "assets/team/john.webp",
-      "bio": "John leads Olympus Studio's creative direction, shaping cohesive concepts across film, photography, design, and editorial production."
+      "bio": "John leads Olympus Atelier's creative direction, shaping cohesive concepts across film, photography, design, and editorial production."
     },
     {
       "name": "Name coming soon",
@@ -68,7 +68,7 @@ window.OLYMPUS_CONTENT = {
       "name": "Ayomide",
       "role": "Website Designer",
       "image": "assets/team/ayomide.webp",
-      "bio": "Designs and develops responsive digital experiences that extend Olympus Studio's visual direction onto the web."
+      "bio": "Designs and develops responsive digital experiences that extend Olympus Atelier's visual direction onto the web."
     }
   ],
   "socialProof": {
@@ -216,7 +216,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1fXJmYYFsaAqeOx_mYkZ_IotRc2aRS8t4.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1fXJmYYFsaAqeOx_mYkZ_IotRc2aRS8t4/view",
-      "alt": "123 — Interviews & Corporate Film by Olympus Studio",
+      "alt": "123 — Interviews & Corporate Film by Olympus Atelier",
       "year": "2026",
       "featured": true
     },
@@ -229,7 +229,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Ed8rQMWC4K6H6xTXgvIz_CyqkfBccSOM.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Ed8rQMWC4K6H6xTXgvIz_CyqkfBccSOM/view",
-      "alt": "0703 — Interviews & Corporate Film by Olympus Studio",
+      "alt": "0703 — Interviews & Corporate Film by Olympus Atelier",
       "year": "2026",
       "featured": true
     },
@@ -242,7 +242,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1igiq5y0iX3RmdKZSWO5M7zkeqnsmt0TS.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1igiq5y0iX3RmdKZSWO5M7zkeqnsmt0TS/view",
-      "alt": "CIOD PODCAST with Dr Pamela — Interviews & Corporate Film by Olympus Studio",
+      "alt": "CIOD PODCAST with Dr Pamela — Interviews & Corporate Film by Olympus Atelier",
       "year": "2026",
       "featured": true
     },
@@ -255,7 +255,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1iqvJs8BH3M8nznk_5q-TiK9HstiS3YGh.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1iqvJs8BH3M8nznk_5q-TiK9HstiS3YGh/view",
-      "alt": "IMG 0773 — Interviews & Corporate Film by Olympus Studio",
+      "alt": "IMG 0773 — Interviews & Corporate Film by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -268,7 +268,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1uV1EMHGnixqz-LwrsXhEsWs12bZgi5jC.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1uV1EMHGnixqz-LwrsXhEsWs12bZgi5jC/view",
-      "alt": "Mrs. Ifeyinwa Osime M.CIoD 1 — Interviews & Corporate Film by Olympus Studio",
+      "alt": "Mrs. Ifeyinwa Osime M.CIoD 1 — Interviews & Corporate Film by Olympus Atelier",
       "year": "2026",
       "featured": true
     },
@@ -281,7 +281,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1wNoCc_8ce_9IdGpD37EC45SMsdz2VGet.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1wNoCc_8ce_9IdGpD37EC45SMsdz2VGet/view",
-      "alt": "new original — Interviews & Corporate Film by Olympus Studio",
+      "alt": "new original — Interviews & Corporate Film by Olympus Atelier",
       "year": "2026",
       "featured": true
     },
@@ -294,7 +294,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1MKT7l1KNP_wL_JoY3IEFJk6wmJEAW24m.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1MKT7l1KNP_wL_JoY3IEFJk6wmJEAW24m/view",
-      "alt": "Teaser 2 — Interviews & Corporate Film by Olympus Studio",
+      "alt": "Teaser 2 — Interviews & Corporate Film by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -307,7 +307,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Ge3pHUlp4EZCMALBGHOqdYIEwUk5YnUp.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Ge3pHUlp4EZCMALBGHOqdYIEwUk5YnUp/view",
-      "alt": "Teaser Dr Pamela — Interviews & Corporate Film by Olympus Studio",
+      "alt": "Teaser Dr Pamela — Interviews & Corporate Film by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -320,7 +320,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1QVxxaIjwOcDxQXRNmyePhQPBEjkZgDry.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1QVxxaIjwOcDxQXRNmyePhQPBEjkZgDry/view",
-      "alt": "Tomisin Grandma 1 — Celebrations & Events by Olympus Studio",
+      "alt": "Tomisin Grandma 1 — Celebrations & Events by Olympus Atelier",
       "year": "2026",
       "featured": true
     },
@@ -333,7 +333,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/157ouUK40lbUfM4xSL2Sc0E0gPQ4wnqcd.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/157ouUK40lbUfM4xSL2Sc0E0gPQ4wnqcd/view",
-      "alt": "CERTIFICATE - OLYMPUS ATELIER LTD — Credentials by Olympus Studio",
+      "alt": "CERTIFICATE - OLYMPUS ATELIER LTD — Credentials by Olympus Atelier",
       "year": "2026",
       "featured": true
     },
@@ -346,7 +346,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1CYrRzdDibyZBnE61j7ET9CMY3ccaqsiD.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1CYrRzdDibyZBnE61j7ET9CMY3ccaqsiD/view",
-      "alt": "Africa Summit — Conference Coverage by Olympus Studio",
+      "alt": "Africa Summit — Conference Coverage by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -359,7 +359,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1L-nzRD_Q77Vcz8KTxuvTePu4K-KkLHHu.webp",
       "previewSrc": "assets/documents/ulaps-2024-web.pdf",
       "originalUrl": "https://drive.google.com/file/d/1L-nzRD_Q77Vcz8KTxuvTePu4K-KkLHHu/view",
-      "alt": "Ulaps Magazine 2024 — Magazine Design by Olympus Studio",
+      "alt": "Ulaps Magazine 2024 — Magazine Design by Olympus Atelier",
       "year": "2024",
       "featured": false,
       "downloadUrl": "https://drive.usercontent.google.com/download?id=1L-nzRD_Q77Vcz8KTxuvTePu4K-KkLHHu&export=download&confirm=t"
@@ -373,7 +373,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/15Z1Hj69nZFdDDGWbDX5_YUZ3NIBq1OUX.webp",
       "previewSrc": "assets/documents/ulaps-2025-web.pdf",
       "originalUrl": "https://drive.google.com/file/d/15Z1Hj69nZFdDDGWbDX5_YUZ3NIBq1OUX/view",
-      "alt": "Ulaps Magazine 2025- Epitherapy — Magazine Design by Olympus Studio",
+      "alt": "Ulaps Magazine 2025- Epitherapy — Magazine Design by Olympus Atelier",
       "year": "2025",
       "featured": true,
       "downloadUrl": "https://drive.usercontent.google.com/download?id=15Z1Hj69nZFdDDGWbDX5_YUZ3NIBq1OUX&export=download&confirm=t"
@@ -387,7 +387,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/199tVx4cR2m23wKG-JDhXe4KKuQtZixKm.webp",
       "previewSrc": "assets/documents/ulaps-2026-web.pdf",
       "originalUrl": "https://drive.google.com/file/d/199tVx4cR2m23wKG-JDhXe4KKuQtZixKm/view",
-      "alt": "ULAPS MAGAZINE 2026 — Magazine Design by Olympus Studio",
+      "alt": "ULAPS MAGAZINE 2026 — Magazine Design by Olympus Atelier",
       "year": "2026",
       "featured": false,
       "downloadUrl": "https://drive.usercontent.google.com/download?id=199tVx4cR2m23wKG-JDhXe4KKuQtZixKm&export=download&confirm=t"
@@ -401,7 +401,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1qHAdquNAFo3xzKceDPG8qW0H8UdTwFh5.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1qHAdquNAFo3xzKceDPG8qW0H8UdTwFh5/view",
-      "alt": "app — Motion Design by Olympus Studio",
+      "alt": "app — Motion Design by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -414,7 +414,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1XaiwlFKlzr6rbyoSK4IoLr5t79wE9m6r.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1XaiwlFKlzr6rbyoSK4IoLr5t79wE9m6r/view",
-      "alt": "motion 1 — Motion Design by Olympus Studio",
+      "alt": "motion 1 — Motion Design by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -427,7 +427,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Ec5SK2NvNYIrJjAUG_XdXSeR4bASk5Pg.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Ec5SK2NvNYIrJjAUG_XdXSeR4bASk5Pg/view",
-      "alt": "motion 2 — Motion Design by Olympus Studio",
+      "alt": "motion 2 — Motion Design by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -440,7 +440,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1z-7USbZ6QXxYQZgEzMuDUy_9cvOcc6Xp.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1z-7USbZ6QXxYQZgEzMuDUy_9cvOcc6Xp/view",
-      "alt": "motion 3 — Motion Design by Olympus Studio",
+      "alt": "motion 3 — Motion Design by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -453,7 +453,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1gJbVwUYB-8oPStbqAwxZ6Ja4nZmvvIY5.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1gJbVwUYB-8oPStbqAwxZ6Ja4nZmvvIY5/view",
-      "alt": "001 — Election Campaigns by Olympus Studio",
+      "alt": "001 — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -466,7 +466,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1A9JkTR6Avafm3yZzqPleNlTXmql4i88-.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1A9JkTR6Avafm3yZzqPleNlTXmql4i88-/view",
-      "alt": "Adenike new month 2 — Election Campaigns by Olympus Studio",
+      "alt": "Adenike new month 2 — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -479,7 +479,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1z3vdhbUKKTrqK2yMq3Lyb-u3RnZnsiv-.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1z3vdhbUKKTrqK2yMq3Lyb-u3RnZnsiv-/view",
-      "alt": "Adenike — Election Campaigns by Olympus Studio",
+      "alt": "Adenike — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -492,7 +492,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1N8vcm7XOQFUT7B3Tbyg1eiASt1tT1TuY.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1N8vcm7XOQFUT7B3Tbyg1eiASt1tT1TuY/view",
-      "alt": "arc 101 tut — Election Campaigns by Olympus Studio",
+      "alt": "arc 101 tut — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -505,7 +505,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1qPPMhabdsXO6AcPE3o8L00HS5wyKC5Yu.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1qPPMhabdsXO6AcPE3o8L00HS5wyKC5Yu/view",
-      "alt": "BIG JOSH — Election Campaigns by Olympus Studio",
+      "alt": "BIG JOSH — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -518,7 +518,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1HyuuFv_JdtMYMMvownWLvaM50Sl41u7N.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1HyuuFv_JdtMYMMvownWLvaM50Sl41u7N/view",
-      "alt": "BROWN 006 3 — Election Campaigns by Olympus Studio",
+      "alt": "BROWN 006 3 — Election Campaigns by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -531,7 +531,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/16qJO-R6eTQTYvYZSguRMPCTClB8lT1KL.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/16qJO-R6eTQTYvYZSguRMPCTClB8lT1KL/view",
-      "alt": "d banner 2 — Election Campaigns by Olympus Studio",
+      "alt": "d banner 2 — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -544,7 +544,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1rsbmd0gNDshomAfKo0R0dcYryKXRxPqz.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1rsbmd0gNDshomAfKo0R0dcYryKXRxPqz/view",
-      "alt": "DAPO CAMPAIGN bae — Election Campaigns by Olympus Studio",
+      "alt": "DAPO CAMPAIGN bae — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -557,7 +557,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1ipylyIbLmzWta1cqMatikMJnKXycysBU.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1ipylyIbLmzWta1cqMatikMJnKXycysBU/view",
-      "alt": "DAPO CAMPAIGN DOI MAIN — Election Campaigns by Olympus Studio",
+      "alt": "DAPO CAMPAIGN DOI MAIN — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -570,7 +570,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/17I1I6mmHRYsBdzWlSc6Dwj__AFJyysmr.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/17I1I6mmHRYsBdzWlSc6Dwj__AFJyysmr/view",
-      "alt": "DAPO CAMPAIGN JUNE 1 — Election Campaigns by Olympus Studio",
+      "alt": "DAPO CAMPAIGN JUNE 1 — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -583,7 +583,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1cSrolmnqTAu052bDQz9Ru7febIUdiGMZ.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1cSrolmnqTAu052bDQz9Ru7febIUdiGMZ/view",
-      "alt": "DAPO CAMPAIGN JUNE 12 — Election Campaigns by Olympus Studio",
+      "alt": "DAPO CAMPAIGN JUNE 12 — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -596,7 +596,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1VYOWHhY-B9oQVN3YEQVXhJp65Phgzv1Q.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1VYOWHhY-B9oQVN3YEQVXhJp65Phgzv1Q/view",
-      "alt": "DAPO CAMPAIGN NAES 001 — Election Campaigns by Olympus Studio",
+      "alt": "DAPO CAMPAIGN NAES 001 — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -609,7 +609,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1hnKUtDC2s1EW8DryJqj1-rRgJg-74r6c.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1hnKUtDC2s1EW8DryJqj1-rRgJg-74r6c/view",
-      "alt": "DAPO CAMPAIGN nm — Election Campaigns by Olympus Studio",
+      "alt": "DAPO CAMPAIGN nm — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -622,7 +622,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1wtrzXumZw5LaKIubEJ5t6SIFLbrI5JNf.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1wtrzXumZw5LaKIubEJ5t6SIFLbrI5JNf/view",
-      "alt": "DAPO CAMPAIGN — Election Campaigns by Olympus Studio",
+      "alt": "DAPO CAMPAIGN — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -635,7 +635,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/18b2TRY2RDowKSvvnPIgHf59sv44IKmc7.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/18b2TRY2RDowKSvvnPIgHf59sv44IKmc7/view",
-      "alt": "DAPO DOI2 — Election Campaigns by Olympus Studio",
+      "alt": "DAPO DOI2 — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -648,7 +648,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1F-0-VE4Yg5-X2YnrXzb-nVErUzWSRdgp.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1F-0-VE4Yg5-X2YnrXzb-nVErUzWSRdgp/view",
-      "alt": "dapoo — Election Campaigns by Olympus Studio",
+      "alt": "dapoo — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -661,7 +661,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/10A3xT4MIBnYIbYaGicb06VEeq-DuLLJf.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/10A3xT4MIBnYIbYaGicb06VEeq-DuLLJf/view",
-      "alt": "dicco3 — Election Campaigns by Olympus Studio",
+      "alt": "dicco3 — Election Campaigns by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -674,7 +674,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1E8cQIEDmbDmCoEd2HXh1ioJP7FU10JSk.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1E8cQIEDmbDmCoEd2HXh1ioJP7FU10JSk/view",
-      "alt": "fola sls vote right — Election Campaigns by Olympus Studio",
+      "alt": "fola sls vote right — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -687,7 +687,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1RDcVmA0eRFMfcWG20wE4dCXC1pwau9w2.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1RDcVmA0eRFMfcWG20wE4dCXC1pwau9w2/view",
-      "alt": "idannn — Election Campaigns by Olympus Studio",
+      "alt": "idannn — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -700,7 +700,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/19j3zdBnI4rbJsGlHemDNfHnhLrw_UhVh.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/19j3zdBnI4rbJsGlHemDNfHnhLrw_UhVh/view",
-      "alt": "iidan — Election Campaigns by Olympus Studio",
+      "alt": "iidan — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -713,7 +713,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/14vCTRgQgS7-FGaqVmBs6bov_JfldWP5e.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/14vCTRgQgS7-FGaqVmBs6bov_JfldWP5e/view",
-      "alt": "IMG 20250808 155943 — Election Campaigns by Olympus Studio",
+      "alt": "IMG 20250808 155943 — Election Campaigns by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -726,7 +726,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1X-urJr1To-fVJOg-h4LldwYI-MmiV0Z7.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1X-urJr1To-fVJOg-h4LldwYI-MmiV0Z7/view",
-      "alt": "IMG 20250808 160131 — Election Campaigns by Olympus Studio",
+      "alt": "IMG 20250808 160131 — Election Campaigns by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -739,7 +739,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1paedPT7YQKU_4Gt1IdCjF9L6cLLXRzRd.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1paedPT7YQKU_4Gt1IdCjF9L6cLLXRzRd/view",
-      "alt": "IMG 20250808 160157 — Election Campaigns by Olympus Studio",
+      "alt": "IMG 20250808 160157 — Election Campaigns by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -752,7 +752,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1XKjPespDSUnGlxymRvfTNuJh0eIUKK7q.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1XKjPespDSUnGlxymRvfTNuJh0eIUKK7q/view",
-      "alt": "IMG 20250808 160200 — Election Campaigns by Olympus Studio",
+      "alt": "IMG 20250808 160200 — Election Campaigns by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -765,7 +765,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1VWEA_dRg4bvRJopH28XI1Cy1FdzpVPHR.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1VWEA_dRg4bvRJopH28XI1Cy1FdzpVPHR/view",
-      "alt": "IMG 20250808 160451 — Election Campaigns by Olympus Studio",
+      "alt": "IMG 20250808 160451 — Election Campaigns by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -778,7 +778,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1xi8XKMuK5kr1WZCwDBNw6Msx2ZqDVnZx.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1xi8XKMuK5kr1WZCwDBNw6Msx2ZqDVnZx/view",
-      "alt": "INISOL 2z — Election Campaigns by Olympus Studio",
+      "alt": "INISOL 2z — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -791,7 +791,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1FIH1QcGNM1QD1_oICzQ2rQCA5G3XZuSJ.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1FIH1QcGNM1QD1_oICzQ2rQCA5G3XZuSJ/view",
-      "alt": "OLOJO 2 — Election Campaigns by Olympus Studio",
+      "alt": "OLOJO 2 — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -804,7 +804,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1w38Prhkmqn4zFvzBQzDiWRctrULdpNtE.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1w38Prhkmqn4zFvzBQzDiWRctrULdpNtE/view",
-      "alt": "tolu 1 final — Election Campaigns by Olympus Studio",
+      "alt": "tolu 1 final — Election Campaigns by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -817,7 +817,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1sihH2eN4WMgL8udzqSBohRJ8f0hbBgzY.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1sihH2eN4WMgL8udzqSBohRJ8f0hbBgzY/view",
-      "alt": "tolu 2 final — Election Campaigns by Olympus Studio",
+      "alt": "tolu 2 final — Election Campaigns by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -830,7 +830,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Uv52QowX2tgGrV6GtcInN7-SrAlDnJWg.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Uv52QowX2tgGrV6GtcInN7-SrAlDnJWg/view",
-      "alt": "welcome to set dapo1 — Election Campaigns by Olympus Studio",
+      "alt": "welcome to set dapo1 — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -843,7 +843,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1mtiWIfpMXaPA5mDkH8ySrlgpb5z9sq3K.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1mtiWIfpMXaPA5mDkH8ySrlgpb5z9sq3K/view",
-      "alt": "WhatsApp Image 2026-06-03 at 22.45.22 — Election Campaigns by Olympus Studio",
+      "alt": "WhatsApp Image 2026-06-03 at 22.45.22 — Election Campaigns by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -856,7 +856,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1msMDNBUSQjkFLxPpbBWDfsaXg71pLcg7.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1msMDNBUSQjkFLxPpbBWDfsaXg71pLcg7/view",
-      "alt": "FASA call for volunteers — FASA Week by Olympus Studio",
+      "alt": "FASA call for volunteers — FASA Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -869,7 +869,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1AXtWueCnBflEX5d-4AmD8fV90rUCuC40.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1AXtWueCnBflEX5d-4AmD8fV90rUCuC40/view",
-      "alt": "FASA CFS — FASA Week by Olympus Studio",
+      "alt": "FASA CFS — FASA Week by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -882,7 +882,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1QqrfLBQcaA83dgD4k6yPgMp9wCZ4x-XS.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1QqrfLBQcaA83dgD4k6yPgMp9wCZ4x-XS/view",
-      "alt": "FASA fd — FASA Week by Olympus Studio",
+      "alt": "FASA fd — FASA Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -895,7 +895,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1bmDnecix1Z5157YpzjoY00hg-JuKrFvI.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1bmDnecix1Z5157YpzjoY00hg-JuKrFvI/view",
-      "alt": "FASA freshers vs staylites — FASA Week by Olympus Studio",
+      "alt": "FASA freshers vs staylites — FASA Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -908,7 +908,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1vdWmSzPmmgwKnnO4LgV6BfKjfWSN7aCK.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1vdWmSzPmmgwKnnO4LgV6BfKjfWSN7aCK/view",
-      "alt": "FASA FW 25 — FASA Week by Olympus Studio",
+      "alt": "FASA FW 25 — FASA Week by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -921,7 +921,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Hk-A9WF888nlQJGJGSIfusUO7OITPv5e.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Hk-A9WF888nlQJGJGSIfusUO7OITPv5e/view",
-      "alt": "FASA mtt — FASA Week by Olympus Studio",
+      "alt": "FASA mtt — FASA Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -934,7 +934,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/13-r8IawIw391C8cB8vifGIBra8xJHsf8.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/13-r8IawIw391C8cB8vifGIBra8xJHsf8/view",
-      "alt": "FASA week — FASA Week by Olympus Studio",
+      "alt": "FASA week — FASA Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -947,7 +947,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/10_Mqm8M0qBHQcCR6UC42lym9nUUJVPU7.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/10_Mqm8M0qBHQcCR6UC42lym9nUUJVPU7/view",
-      "alt": "FASA3 — FASA Week by Olympus Studio",
+      "alt": "FASA3 — FASA Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -960,7 +960,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1vw3GflL9qy9YfngL0jdOyGfI9IBcLSvZ.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1vw3GflL9qy9YfngL0jdOyGfI9IBcLSvZ/view",
-      "alt": "formlinepicks bam — Formline Picks by Olympus Studio",
+      "alt": "formlinepicks bam — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -973,7 +973,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1ddjCP5dnGjZlpZsK02NrUv4526esAafu.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1ddjCP5dnGjZlpZsK02NrUv4526esAafu/view",
-      "alt": "formlinepicks wc — Formline Picks by Olympus Studio",
+      "alt": "formlinepicks wc — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -986,7 +986,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1SoJdU0h5hBNsndZdThQcZnl8f0qHmynX.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1SoJdU0h5hBNsndZdThQcZnl8f0qHmynX/view",
-      "alt": "formlinepicks22 — Formline Picks by Olympus Studio",
+      "alt": "formlinepicks22 — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -999,7 +999,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/19bZAjbQZs3Mfmsh7CBXMzykSJvW8GBwl.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/19bZAjbQZs3Mfmsh7CBXMzykSJvW8GBwl/view",
-      "alt": "DOMINK SZOZSZLAI — Formline Picks by Olympus Studio",
+      "alt": "DOMINK SZOZSZLAI — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1012,7 +1012,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1JwFFfjp7cetAE4J-XhNZaXLEvsmnPjXi.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1JwFFfjp7cetAE4J-XhNZaXLEvsmnPjXi/view",
-      "alt": "feb highlight cover — Formline Picks by Olympus Studio",
+      "alt": "feb highlight cover — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1025,7 +1025,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1CUyRkxCBPwdx-GL648CSPP7sJtCBnPGv.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1CUyRkxCBPwdx-GL648CSPP7sJtCBnPGv/view",
-      "alt": "FLP AD 1 — Formline Picks by Olympus Studio",
+      "alt": "FLP AD 1 — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1038,7 +1038,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1NZYBEKnahZQ719DH1v9aO9T3VtIst4lw.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1NZYBEKnahZQ719DH1v9aO9T3VtIst4lw/view",
-      "alt": "FLP LOGO 1 — Formline Picks by Olympus Studio",
+      "alt": "FLP LOGO 1 — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1051,7 +1051,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1ANNS06ksqM9xVtVlQfOvcevjcLQJMiWs.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1ANNS06ksqM9xVtVlQfOvcevjcLQJMiWs/view",
-      "alt": "FLP NZ IG — Formline Picks by Olympus Studio",
+      "alt": "FLP NZ IG — Formline Picks by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -1064,7 +1064,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1fdxPy5_2pfz_efxSIgq952pBF1Gt4TBb.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1fdxPy5_2pfz_efxSIgq952pBF1Gt4TBb/view",
-      "alt": "FLP STORY AD 1 — Formline Picks by Olympus Studio",
+      "alt": "FLP STORY AD 1 — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1077,7 +1077,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Xp_uYV238QarCbBDpGiyOfIqBAPieSIY.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Xp_uYV238QarCbBDpGiyOfIqBAPieSIY/view",
-      "alt": "FLP STORY AD 3 — Formline Picks by Olympus Studio",
+      "alt": "FLP STORY AD 3 — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1090,7 +1090,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1yJp1hKHWm9Bzoebrl9i6IQgpRa-GJ25h.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1yJp1hKHWm9Bzoebrl9i6IQgpRa-GJ25h/view",
-      "alt": "FORMLINE PICK LANDINGPAGE phone 2 — Formline Picks by Olympus Studio",
+      "alt": "FORMLINE PICK LANDINGPAGE phone 2 — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1103,7 +1103,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/151BYgPC8hmIdtjGC5eMktT0AlOlAYtXL.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/151BYgPC8hmIdtjGC5eMktT0AlOlAYtXL/view",
-      "alt": "FORMLINE PICK LANDINGPAGE post 222 — Formline Picks by Olympus Studio",
+      "alt": "FORMLINE PICK LANDINGPAGE post 222 — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1116,7 +1116,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1JAg9wZPEeNNiaJh9Vn3f7cs-hSQSahtD.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1JAg9wZPEeNNiaJh9Vn3f7cs-hSQSahtD/view",
-      "alt": "FORMLINE PICK LANDINGPAGE 2 — Formline Picks by Olympus Studio",
+      "alt": "FORMLINE PICK LANDINGPAGE 2 — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1129,7 +1129,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1WPCuYHLB0uQrUA5O-K50DOPweYpBeIFo.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1WPCuYHLB0uQrUA5O-K50DOPweYpBeIFo/view",
-      "alt": "FORMLINE PICK LANDINGPAGE phone 1 — Formline Picks by Olympus Studio",
+      "alt": "FORMLINE PICK LANDINGPAGE phone 1 — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1142,7 +1142,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1H8eAgzF5LNJlfczko70R2_GhAlF-Y4aj.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1H8eAgzF5LNJlfczko70R2_GhAlF-Y4aj/view",
-      "alt": "formlinepicks 7wp — Formline Picks by Olympus Studio",
+      "alt": "formlinepicks 7wp — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1155,7 +1155,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1L2pFSZKGLva7qtEhxijP-mZ_4ETF55Sq.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1L2pFSZKGLva7qtEhxijP-mZ_4ETF55Sq/view",
-      "alt": "formlinepicks story ad 1 — Formline Picks by Olympus Studio",
+      "alt": "formlinepicks story ad 1 — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1168,7 +1168,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1PFj5PRixVlLDuEMTUluLWTpdnY_3igF3.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1PFj5PRixVlLDuEMTUluLWTpdnY_3igF3/view",
-      "alt": "Formlinepicks Story1 — Formline Picks by Olympus Studio",
+      "alt": "Formlinepicks Story1 — Formline Picks by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -1181,7 +1181,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1t4Mr4A97FYLM0-hlj_5xyymfybxMFcEH.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1t4Mr4A97FYLM0-hlj_5xyymfybxMFcEH/view",
-      "alt": "fra vs sweden 2 — Formline Picks by Olympus Studio",
+      "alt": "fra vs sweden 2 — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1194,7 +1194,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Kf7OU2WcCuYzr7HDyCHhkf7w5syWC9QU.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Kf7OU2WcCuYzr7HDyCHhkf7w5syWC9QU/view",
-      "alt": "hugo — Formline Picks by Olympus Studio",
+      "alt": "hugo — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1207,7 +1207,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1UfW5qUp1Av4BFpetSbp3fquRHtzW3Wrv.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1UfW5qUp1Av4BFpetSbp3fquRHtzW3Wrv/view",
-      "alt": "igpp — Formline Picks by Olympus Studio",
+      "alt": "igpp — Formline Picks by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -1220,7 +1220,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1lUCikJqwDOS_AaIBsHykmZwrlI2hW01B.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1lUCikJqwDOS_AaIBsHykmZwrlI2hW01B/view",
-      "alt": "K. MBAPPE — Formline Picks by Olympus Studio",
+      "alt": "K. MBAPPE — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1233,7 +1233,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1f6elMiCTI1GJm5h_kDGXrOmt0oQbOWoE.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1f6elMiCTI1GJm5h_kDGXrOmt0oQbOWoE/view",
-      "alt": "ncaa — Formline Picks by Olympus Studio",
+      "alt": "ncaa — Formline Picks by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -1246,7 +1246,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1mmm9dBRP7gU989LbDXDaqsbIlisk4bfS.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1mmm9dBRP7gU989LbDXDaqsbIlisk4bfS/view",
-      "alt": "NOR VS FRA — Formline Picks by Olympus Studio",
+      "alt": "NOR VS FRA — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1259,7 +1259,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1I1TwYA3XovWwBAcoFbSfeb1TLcAWkpkY.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1I1TwYA3XovWwBAcoFbSfeb1TLcAWkpkY/view",
-      "alt": "PAR VS FRA 4 — Formline Picks by Olympus Studio",
+      "alt": "PAR VS FRA 4 — Formline Picks by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1272,7 +1272,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1lM_p9fTxdbV26IwWP_ERxB3fHMPy7Qg_.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1lM_p9fTxdbV26IwWP_ERxB3fHMPy7Qg_/view",
-      "alt": "ASA DINNER ANTICIPATE — General Posters by Olympus Studio",
+      "alt": "ASA DINNER ANTICIPATE — General Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1285,7 +1285,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/15rhaZd-JppuuHNhLaBx80JNdaxzmbWYA.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/15rhaZd-JppuuHNhLaBx80JNdaxzmbWYA/view",
-      "alt": "ASA WEEK 26 — General Posters by Olympus Studio",
+      "alt": "ASA WEEK 26 — General Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1298,7 +1298,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1EjBvn5WTD_yMTsg08T7gY7HvdvEkfabl.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1EjBvn5WTD_yMTsg08T7gY7HvdvEkfabl/view",
-      "alt": "Aunt toun IV card — General Posters by Olympus Studio",
+      "alt": "Aunt toun IV card — General Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1311,7 +1311,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1vpEF7m8m_mSJB9p5P1OzOsvHl2sPSAc0.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1vpEF7m8m_mSJB9p5P1OzOsvHl2sPSAc0/view",
-      "alt": "church bannerrr — General Posters by Olympus Studio",
+      "alt": "church bannerrr — General Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1324,7 +1324,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1XnkYZRbC5Nv0R1_tDrar_WFgbG7WETL6.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1XnkYZRbC5Nv0R1_tDrar_WFgbG7WETL6/view",
-      "alt": "DENNY'S HAIRLINE3 — General Posters by Olympus Studio",
+      "alt": "DENNY'S HAIRLINE3 — General Posters by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -1337,7 +1337,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1EDXY0DF9qa1-l3hm3AneTIQVlEZ0lDAA.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1EDXY0DF9qa1-l3hm3AneTIQVlEZ0lDAA/view",
-      "alt": "esther — General Posters by Olympus Studio",
+      "alt": "esther — General Posters by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -1350,7 +1350,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1LtkY68EJX26ifIK_bGZtWv4hXJCBmNqj.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1LtkY68EJX26ifIK_bGZtWv4hXJCBmNqj/view",
-      "alt": "IMG 20250808 160410 — General Posters by Olympus Studio",
+      "alt": "IMG 20250808 160410 — General Posters by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -1363,7 +1363,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1UgLwO6y9IJ6kqesSn914NSLQhr4kNm1P.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1UgLwO6y9IJ6kqesSn914NSLQhr4kNm1P/view",
-      "alt": "Lonely at the top — General Posters by Olympus Studio",
+      "alt": "Lonely at the top — General Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1376,7 +1376,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1m4ncf2zznTnEGOunHpwhSGK-sT_VIAw5.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1m4ncf2zznTnEGOunHpwhSGK-sT_VIAw5/view",
-      "alt": "mamashow bd3 — General Posters by Olympus Studio",
+      "alt": "mamashow bd3 — General Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1389,7 +1389,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1b12q8lac32zAudsO8J6DMQqLP5w5ssfA.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1b12q8lac32zAudsO8J6DMQqLP5w5ssfA/view",
-      "alt": "NAES WEEK — General Posters by Olympus Studio",
+      "alt": "NAES WEEK — General Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1402,7 +1402,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1OX8ZrbuhE8Prk_wZbV9umVTRMe8UFRGr.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1OX8ZrbuhE8Prk_wZbV9umVTRMe8UFRGr/view",
-      "alt": "VC BDAY — General Posters by Olympus Studio",
+      "alt": "VC BDAY — General Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1415,7 +1415,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1NoTQ1QNBe-84KAkpLgfCvVjDY-Y88Wes.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1NoTQ1QNBe-84KAkpLgfCvVjDY-Y88Wes/view",
-      "alt": "VOUT — General Posters by Olympus Studio",
+      "alt": "VOUT — General Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1428,7 +1428,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Uf5dxRP9xhIa3lyqUL4abUt5UkDGf7-D.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Uf5dxRP9xhIa3lyqUL4abUt5UkDGf7-D/view",
-      "alt": "Fisayo exert — Judicial Council Week by Olympus Studio",
+      "alt": "Fisayo exert — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1441,7 +1441,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1PTwXZB-uO5u1XHTtvsHCxFyOR3xbZm8-.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1PTwXZB-uO5u1XHTtvsHCxFyOR3xbZm8-/view",
-      "alt": "JC EVENT OF THE WEEK — Judicial Council Week by Olympus Studio",
+      "alt": "JC EVENT OF THE WEEK — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1454,7 +1454,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1kQIuTtq7X0pNwXGS5F9F_wY8GCapFthY.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1kQIuTtq7X0pNwXGS5F9F_wY8GCapFthY/view",
-      "alt": "JC PANELIST 2 — Judicial Council Week by Olympus Studio",
+      "alt": "JC PANELIST 2 — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1467,7 +1467,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1YDHfmcQ9dfTszeB_exW4ajqk2mskpks7.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1YDHfmcQ9dfTszeB_exW4ajqk2mskpks7/view",
-      "alt": "jc thank you — Judicial Council Week by Olympus Studio",
+      "alt": "jc thank you — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1480,7 +1480,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1E2JkOrRUzYYjFczX9BhmfBKEhxS2jyWA.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1E2JkOrRUzYYjFczX9BhmfBKEhxS2jyWA/view",
-      "alt": "JS anticipate — Judicial Council Week by Olympus Studio",
+      "alt": "JS anticipate — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1493,7 +1493,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1VP5v_WSr7rnGI0ZApCyYq_boMJc1kUHA.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1VP5v_WSr7rnGI0ZApCyYq_boMJc1kUHA/view",
-      "alt": "JS BANNER II — Judicial Council Week by Olympus Studio",
+      "alt": "JS BANNER II — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1506,7 +1506,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1zVACfmCdMrRjRfojR5diuD1rGeWle06J.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1zVACfmCdMrRjRfojR5diuD1rGeWle06J/view",
-      "alt": "JS BANNER MCKP 1 — Judicial Council Week by Olympus Studio",
+      "alt": "JS BANNER MCKP 1 — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1519,7 +1519,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1gzGt36M2OCLsxa7XgTd3b603yfJ979X8.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1gzGt36M2OCLsxa7XgTd3b603yfJ979X8/view",
-      "alt": "JS JOTTER FRONT — Judicial Council Week by Olympus Studio",
+      "alt": "JS JOTTER FRONT — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1532,7 +1532,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1lZfLVdt0NPE5A6qeFzANLqldW0ES_AOl.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1lZfLVdt0NPE5A6qeFzANLqldW0ES_AOl/view",
-      "alt": "JS jotter inside — Judicial Council Week by Olympus Studio",
+      "alt": "JS jotter inside — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1545,7 +1545,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1ZIfW3Ogcp3qqw9xsBHjJ9BecMckodlLr.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1ZIfW3Ogcp3qqw9xsBHjJ9BecMckodlLr/view",
-      "alt": "JS JOTTER — Judicial Council Week by Olympus Studio",
+      "alt": "JS JOTTER — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1558,7 +1558,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1AnQ0mjnPhAsxGkLEZwrebv6vaNKV_Iy-.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1AnQ0mjnPhAsxGkLEZwrebv6vaNKV_Iy-/view",
-      "alt": "JS PANEL SESSION — Judicial Council Week by Olympus Studio",
+      "alt": "JS PANEL SESSION — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1571,7 +1571,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1TcbR-GOF2EZOykiktmnwTo5FMXpCPpih.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1TcbR-GOF2EZOykiktmnwTo5FMXpCPpih/view",
-      "alt": "JS REGISTRATION — Judicial Council Week by Olympus Studio",
+      "alt": "JS REGISTRATION — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1584,7 +1584,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Z5uQt-4Rq1AHviq_3Fu6l_31iQVWx503.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Z5uQt-4Rq1AHviq_3Fu6l_31iQVWx503/view",
-      "alt": "JS SPEAKER PSALMMY — Judicial Council Week by Olympus Studio",
+      "alt": "JS SPEAKER PSALMMY — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1597,7 +1597,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1gCfQ_CdhZ3PLFHFB9ciOFw4rZ2E060bn.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1gCfQ_CdhZ3PLFHFB9ciOFw4rZ2E060bn/view",
-      "alt": "JUDICIAL COUNCIL JOTTER MOCKUP — Judicial Council Week by Olympus Studio",
+      "alt": "JUDICIAL COUNCIL JOTTER MOCKUP — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1610,7 +1610,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1zVVyrErblo2mOACqvPCAi2rVVNa2zm9s.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1zVVyrErblo2mOACqvPCAi2rVVNa2zm9s/view",
-      "alt": "JUDICIAL COUNCIL SUMMIT MAIN 1 — Judicial Council Week by Olympus Studio",
+      "alt": "JUDICIAL COUNCIL SUMMIT MAIN 1 — Judicial Council Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1623,7 +1623,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1C-DgmuL0hf2en-xgRVYDir5B18hdf-ww.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1C-DgmuL0hf2en-xgRVYDir5B18hdf-ww/view",
-      "alt": "A. ISAK — Sports Posters by Olympus Studio",
+      "alt": "A. ISAK — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1636,7 +1636,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/19esj4B0K33XyCpb3Rtb7rk7qilL0jvvO.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/19esj4B0K33XyCpb3Rtb7rk7qilL0jvvO/view",
-      "alt": "ADEMOLA LOOKMAN — Sports Posters by Olympus Studio",
+      "alt": "ADEMOLA LOOKMAN — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1649,7 +1649,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/11k-aX44BpAO9qsrGPaYd4I3kUJOYRGwY.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/11k-aX44BpAO9qsrGPaYd4I3kUJOYRGwY/view",
-      "alt": "AIR SESKO — Sports Posters by Olympus Studio",
+      "alt": "AIR SESKO — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1662,7 +1662,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1ZEPtNebHMdsuoUqk7LX-GYSNm0cKkMd0.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1ZEPtNebHMdsuoUqk7LX-GYSNm0cKkMd0/view",
-      "alt": "ANTHONY EDWARDS — Sports Posters by Olympus Studio",
+      "alt": "ANTHONY EDWARDS — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1675,7 +1675,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/12rO2OtmwmtvSRaaeBPjCzPPvVO6I-rot.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/12rO2OtmwmtvSRaaeBPjCzPPvVO6I-rot/view",
-      "alt": "CANADA VS MOROCCO — Sports Posters by Olympus Studio",
+      "alt": "CANADA VS MOROCCO — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1688,7 +1688,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1wtAg5Yj0z2aVTcNw2PewlkguBdk3c6oI.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1wtAg5Yj0z2aVTcNw2PewlkguBdk3c6oI/view",
-      "alt": "Charles leclerc redit — Sports Posters by Olympus Studio",
+      "alt": "Charles leclerc redit — Sports Posters by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -1701,7 +1701,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1PSA3r_LKikAA4p-IPQNJdU-h5j1r34Kh.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1PSA3r_LKikAA4p-IPQNJdU-h5j1r34Kh/view",
-      "alt": "CHELSEA CWC PREP — Sports Posters by Olympus Studio",
+      "alt": "CHELSEA CWC PREP — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1714,7 +1714,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1_3ZdvRp45_UHkk4mbCSkk_7f9TGdElZw.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1_3ZdvRp45_UHkk4mbCSkk_7f9TGdElZw/view",
-      "alt": "CHELSEA VS FULHAM — Sports Posters by Olympus Studio",
+      "alt": "CHELSEA VS FULHAM — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1727,7 +1727,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1vSFoCJ-NnjMvxYGBBwFitIltpJonNGGV.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1vSFoCJ-NnjMvxYGBBwFitIltpJonNGGV/view",
-      "alt": "CHELSEA VS LIVERPOOL — Sports Posters by Olympus Studio",
+      "alt": "CHELSEA VS LIVERPOOL — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1740,7 +1740,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Xr05b2ePwhMN--sBZ_QXvYPm2BlMhvD1.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Xr05b2ePwhMN--sBZ_QXvYPm2BlMhvD1/view",
-      "alt": "CHELSEA VS MAN UNITED — Sports Posters by Olympus Studio",
+      "alt": "CHELSEA VS MAN UNITED — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1753,7 +1753,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/142RvVhOy0X9T3gh6deImuZxUlRKxZ5Be.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/142RvVhOy0X9T3gh6deImuZxUlRKxZ5Be/view",
-      "alt": "CR7 — Sports Posters by Olympus Studio",
+      "alt": "CR7 — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1766,7 +1766,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1F0rR1XcD_AA5sTT6T8qKu-pUysweNpK2.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1F0rR1XcD_AA5sTT6T8qKu-pUysweNpK2/view",
-      "alt": "E. HAALAND — Sports Posters by Olympus Studio",
+      "alt": "E. HAALAND — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1779,7 +1779,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1UQ3JZcq3aRg0poAJ0wgmG18T5EJOw5YS.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1UQ3JZcq3aRg0poAJ0wgmG18T5EJOw5YS/view",
-      "alt": "EL CLASSICO — Sports Posters by Olympus Studio",
+      "alt": "EL CLASSICO — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1792,7 +1792,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1uiTolT_DV2Q0nNIVnL9qju88ilMlFcty.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1uiTolT_DV2Q0nNIVnL9qju88ilMlFcty/view",
-      "alt": "ESTEVAO — Sports Posters by Olympus Studio",
+      "alt": "ESTEVAO — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1805,7 +1805,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1qbyDR89NMIIgUbw7g5WcrKs7GYLGFBqF.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1qbyDR89NMIIgUbw7g5WcrKs7GYLGFBqF/view",
-      "alt": "F. VALVERDE — Sports Posters by Olympus Studio",
+      "alt": "F. VALVERDE — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1818,7 +1818,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1x8mf6JDkow64VTLHdhWwfJc3Cp9UZBC2.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1x8mf6JDkow64VTLHdhWwfJc3Cp9UZBC2/view",
-      "alt": "G. RUSSEL — Sports Posters by Olympus Studio",
+      "alt": "G. RUSSEL — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1831,7 +1831,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1f5GYA2ISce0qVw-_GA_FnNiKNO4LB5Ea.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1f5GYA2ISce0qVw-_GA_FnNiKNO4LB5Ea/view",
-      "alt": "IMG 20250808 160403 — Sports Posters by Olympus Studio",
+      "alt": "IMG 20250808 160403 — Sports Posters by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -1844,7 +1844,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/195BzODSacRpOfCYp4SifZOogPCCEfZe-.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/195BzODSacRpOfCYp4SifZOogPCCEfZe-/view",
-      "alt": "JA MORANT — Sports Posters by Olympus Studio",
+      "alt": "JA MORANT — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1857,7 +1857,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1jQGGL6CFsC4JvHnFVdtr4w5UXndUlUqS.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1jQGGL6CFsC4JvHnFVdtr4w5UXndUlUqS/view",
-      "alt": "KIMI ANTONELLI — Sports Posters by Olympus Studio",
+      "alt": "KIMI ANTONELLI — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1870,7 +1870,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1D8iUMazENC3rJFF4QNhCIMnCNQraRE7G.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1D8iUMazENC3rJFF4QNhCIMnCNQraRE7G/view",
-      "alt": "KIMI — Sports Posters by Olympus Studio",
+      "alt": "KIMI — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1883,7 +1883,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1HtvYU_keCHQ_28-CULJtf9IZNe_POGZX.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1HtvYU_keCHQ_28-CULJtf9IZNe_POGZX/view",
-      "alt": "km10real — Sports Posters by Olympus Studio",
+      "alt": "km10real — Sports Posters by Olympus Atelier",
       "year": "2025",
       "featured": false
     },
@@ -1896,7 +1896,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1vBpMMiO-l0NzoMNRP7y_3HwCYbWKOnwd.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1vBpMMiO-l0NzoMNRP7y_3HwCYbWKOnwd/view",
-      "alt": "LEWIS HAMILTON — Sports Posters by Olympus Studio",
+      "alt": "LEWIS HAMILTON — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1909,7 +1909,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1yGhAEKn6_Wwzxe6CSn6A1t5P2LCt_7b5.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1yGhAEKn6_Wwzxe6CSn6A1t5P2LCt_7b5/view",
-      "alt": "MAN UNITED VS SEVILLA UEL — Sports Posters by Olympus Studio",
+      "alt": "MAN UNITED VS SEVILLA UEL — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1922,7 +1922,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1HPkDJ3pp9HdNEznTpkkEoV_Aw9qTAESI.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1HPkDJ3pp9HdNEznTpkkEoV_Aw9qTAESI/view",
-      "alt": "MO SALAH — Sports Posters by Olympus Studio",
+      "alt": "MO SALAH — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1935,7 +1935,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1HmBJxlMzjvavctoQGVCMBhSUXg8y13BB.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1HmBJxlMzjvavctoQGVCMBhSUXg8y13BB/view",
-      "alt": "N. MADUEKE — Sports Posters by Olympus Studio",
+      "alt": "N. MADUEKE — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1948,7 +1948,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/11G1jo4MzGuprva5FpltoFwjqYfvYoQ05.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/11G1jo4MzGuprva5FpltoFwjqYfvYoQ05/view",
-      "alt": "NEY — Sports Posters by Olympus Studio",
+      "alt": "NEY — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1961,7 +1961,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1B7-30b_AhaBIDwe35GLDHBPXTI7WjuhQ.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1B7-30b_AhaBIDwe35GLDHBPXTI7WjuhQ/view",
-      "alt": "OBI TOPPIN — Sports Posters by Olympus Studio",
+      "alt": "OBI TOPPIN — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1974,7 +1974,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1gK4FFFo6tofKTCA_S-sXNjdwWG1Iprft.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1gK4FFFo6tofKTCA_S-sXNjdwWG1Iprft/view",
-      "alt": "OLISE — Sports Posters by Olympus Studio",
+      "alt": "OLISE — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -1987,7 +1987,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1pQivqofr8b0Yz6_vpD_rCAdI6sgWzYZm.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1pQivqofr8b0Yz6_vpD_rCAdI6sgWzYZm/view",
-      "alt": "PRAISE MASEYI — Sports Posters by Olympus Studio",
+      "alt": "PRAISE MASEYI — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2000,7 +2000,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1dHnHdRPmZOZHK3gBXDq5llD75vIwhr6N.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1dHnHdRPmZOZHK3gBXDq5llD75vIwhr6N/view",
-      "alt": "PSG VS ARSENAL UCL — Sports Posters by Olympus Studio",
+      "alt": "PSG VS ARSENAL UCL — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2013,7 +2013,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/12BwCJSl0iX9TPYB-IXoa_oKLcigeISsw.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/12BwCJSl0iX9TPYB-IXoa_oKLcigeISsw/view",
-      "alt": "RUUD GULLIT — Sports Posters by Olympus Studio",
+      "alt": "RUUD GULLIT — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2026,7 +2026,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1rcdRIIWvPA9yQ_N5f-_AVSIXQlmhEb4T.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1rcdRIIWvPA9yQ_N5f-_AVSIXQlmhEb4T/view",
-      "alt": "S. CURRY — Sports Posters by Olympus Studio",
+      "alt": "S. CURRY — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2039,7 +2039,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1-BSammCzXutc3kMqUJ50T52brtHn_U3T.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1-BSammCzXutc3kMqUJ50T52brtHn_U3T/view",
-      "alt": "SAVINHO — Sports Posters by Olympus Studio",
+      "alt": "SAVINHO — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2052,7 +2052,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1zrjvkmzpIVMmJhHeY6UOKist9DXSkxYT.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1zrjvkmzpIVMmJhHeY6UOKist9DXSkxYT/view",
-      "alt": "SCOTLAND VS MOROCCO — Sports Posters by Olympus Studio",
+      "alt": "SCOTLAND VS MOROCCO — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2065,7 +2065,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/19FU0_XCJCnwjM9E3dpIUZuJLAq3VMj9l.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/19FU0_XCJCnwjM9E3dpIUZuJLAq3VMj9l/view",
-      "alt": "SGA — Sports Posters by Olympus Studio",
+      "alt": "SGA — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2078,7 +2078,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1otig4Bs23dAnWZbrhU5bzOq8ztYMDiGp.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1otig4Bs23dAnWZbrhU5bzOq8ztYMDiGp/view",
-      "alt": "STEPHEN CURRY — Sports Posters by Olympus Studio",
+      "alt": "STEPHEN CURRY — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2091,7 +2091,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1GGEdxm4s8mffh2bejL_fRHue2u6G49Jd.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1GGEdxm4s8mffh2bejL_fRHue2u6G49Jd/view",
-      "alt": "VIKTOR GYOKERES — Sports Posters by Olympus Studio",
+      "alt": "VIKTOR GYOKERES — Sports Posters by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2104,7 +2104,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1sUE3HaMfWN1hVntFb-5T4FfZeNmuzg_7.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1sUE3HaMfWN1hVntFb-5T4FfZeNmuzg_7/view",
-      "alt": "1 DTG — ULAPS Sports Week by Olympus Studio",
+      "alt": "1 DTG — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2117,7 +2117,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1q8Q6ktK574pZH_teCg3BFmqLE-Cd-dwj.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1q8Q6ktK574pZH_teCg3BFmqLE-Cd-dwj/view",
-      "alt": "2DTG — ULAPS Sports Week by Olympus Studio",
+      "alt": "2DTG — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2130,7 +2130,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/15vOwJPPYuziq9jEcBh4EGKLWFvaSgI6q.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/15vOwJPPYuziq9jEcBh4EGKLWFvaSgI6q/view",
-      "alt": "3 dtg — ULAPS Sports Week by Olympus Studio",
+      "alt": "3 dtg — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2143,7 +2143,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Yqc9iHHEAElp7a1nkKpWYy9tSFwGkp71.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Yqc9iHHEAElp7a1nkKpWYy9tSFwGkp71/view",
-      "alt": "22DD — ULAPS Sports Week by Olympus Studio",
+      "alt": "22DD — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2156,7 +2156,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/10oSaMeIJeaQiGc3zAv08-sJrmLjjkkyd.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/10oSaMeIJeaQiGc3zAv08-sJrmLjjkkyd/view",
-      "alt": "FB — ULAPS Sports Week by Olympus Studio",
+      "alt": "FB — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2169,7 +2169,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/10fji6jTsSdVLidJ14gWU3XKgM7Ekmode.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/10fji6jTsSdVLidJ14gWU3XKgM7Ekmode/view",
-      "alt": "FF — ULAPS Sports Week by Olympus Studio",
+      "alt": "FF — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2182,7 +2182,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1rSJcxmYTVep3QTVVKnX7BMh3JIx1tyzj.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1rSJcxmYTVep3QTVVKnX7BMh3JIx1tyzj/view",
-      "alt": "ID GAMES — ULAPS Sports Week by Olympus Studio",
+      "alt": "ID GAMES — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2195,7 +2195,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1prBRSq06JyYmmCS65s8RzdDdFOEmK-6d.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1prBRSq06JyYmmCS65s8RzdDdFOEmK-6d/view",
-      "alt": "OPC — ULAPS Sports Week by Olympus Studio",
+      "alt": "OPC — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2208,7 +2208,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Pwv2SqxKZ-s-gC-8kgoT87cWUTpYd2ZE.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Pwv2SqxKZ-s-gC-8kgoT87cWUTpYd2ZE/view",
-      "alt": "TABLE — ULAPS Sports Week by Olympus Studio",
+      "alt": "TABLE — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2221,7 +2221,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1H5btZvV-GiwQQ52oBu57cg_owbaEn9Yx.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1H5btZvV-GiwQQ52oBu57cg_owbaEn9Yx/view",
-      "alt": "track — ULAPS Sports Week by Olympus Studio",
+      "alt": "track — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2234,7 +2234,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/15RigdclKrjgq7yJcLZcLz8JqD1ld6rWK.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/15RigdclKrjgq7yJcLZcLz8JqD1ld6rWK/view",
-      "alt": "ULAPS 26 — ULAPS Sports Week by Olympus Studio",
+      "alt": "ULAPS 26 — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2247,7 +2247,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1vlNeDJhEyBa2eZV-2s-huPxnc0kfuEPK.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1vlNeDJhEyBa2eZV-2s-huPxnc0kfuEPK/view",
-      "alt": "ULAPS 2026 MTS 2 — ULAPS Sports Week by Olympus Studio",
+      "alt": "ULAPS 2026 MTS 2 — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2260,7 +2260,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1sLylzCUYaiC_I5PWPWNAnh2WDJRtyfKh.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1sLylzCUYaiC_I5PWPWNAnh2WDJRtyfKh/view",
-      "alt": "ULAPS 2026 MTS 4 — ULAPS Sports Week by Olympus Studio",
+      "alt": "ULAPS 2026 MTS 4 — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2273,7 +2273,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1XfDXcc7zQY1F1cOtJ5ivwLu8ZEht_bZL.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1XfDXcc7zQY1F1cOtJ5ivwLu8ZEht_bZL/view",
-      "alt": "ULAPS 2026 MTS1 — ULAPS Sports Week by Olympus Studio",
+      "alt": "ULAPS 2026 MTS1 — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2286,7 +2286,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1ZM4FhcWPip7rjb79BiSsSjzGLrv5_9CD.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1ZM4FhcWPip7rjb79BiSsSjzGLrv5_9CD/view",
-      "alt": "ULAPS 2026MTS 3 — ULAPS Sports Week by Olympus Studio",
+      "alt": "ULAPS 2026MTS 3 — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2299,7 +2299,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1dP_yJ__BY2SnYYlJByUvW9G8094_GO1d.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1dP_yJ__BY2SnYYlJByUvW9G8094_GO1d/view",
-      "alt": "VL&t — ULAPS Sports Week by Olympus Studio",
+      "alt": "VL&t — ULAPS Sports Week by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2312,7 +2312,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1Wc8UdKPcuWzNW9wvqZLda1FDesi-KfE7.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1Wc8UdKPcuWzNW9wvqZLda1FDesi-KfE7/view",
-      "alt": "Caprisun party 2K — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party 2K — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2325,7 +2325,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/19hAKIPaaIwFZomwvMc0CK5UgVn9nxTQr.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/19hAKIPaaIwFZomwvMc0CK5UgVn9nxTQr/view",
-      "alt": "Caprisun party 3k5 — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party 3k5 — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2338,7 +2338,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1oABT9NnnoWdZoZCrDCWBAycYGdPezruB.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1oABT9NnnoWdZoZCrDCWBAycYGdPezruB/view",
-      "alt": "Caprisun party 4K — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party 4K — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2351,7 +2351,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1VAZbdEAifhnILiWojSZWdcnLDgQMBd1h.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1VAZbdEAifhnILiWojSZWdcnLDgQMBd1h/view",
-      "alt": "Caprisun party 8K — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party 8K — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2364,7 +2364,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1X3_ypb2D4TFY67XJzMk79le7IyxH46Em.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1X3_ypb2D4TFY67XJzMk79le7IyxH46Em/view",
-      "alt": "Caprisun party artist — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party artist — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2377,7 +2377,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1cgnpdyiYdUVSM44eAaFPy7M_jck67Ks_.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1cgnpdyiYdUVSM44eAaFPy7M_jck67Ks_/view",
-      "alt": "Caprisun party demoo — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party demoo — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2390,7 +2390,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1GYIyyrUG2nIUMVM85x-GBSqLKqHmfTuZ.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1GYIyyrUG2nIUMVM85x-GBSqLKqHmfTuZ/view",
-      "alt": "Caprisun party DJ LINE UP 2 — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party DJ LINE UP 2 — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2403,7 +2403,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1HqstHo-oeyqF3Yn5-366h_CMAG7AJZOa.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1HqstHo-oeyqF3Yn5-366h_CMAG7AJZOa/view",
-      "alt": "Caprisun party dj line up — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party dj line up — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2416,7 +2416,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1vapGGwownsuEuhCW_Yer6umW4aSpmy4w.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1vapGGwownsuEuhCW_Yer6umW4aSpmy4w/view",
-      "alt": "Caprisun party hype men — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party hype men — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2429,7 +2429,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1-XG8cTRc7ARDmbqcKclSmctBlyJWQ4J0.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1-XG8cTRc7ARDmbqcKclSmctBlyJWQ4J0/view",
-      "alt": "Caprisun party main with ticket — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party main with ticket — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2442,7 +2442,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1OTdSh3u2m_PkJfRA6CrrqmuK3yBd2nmN.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1OTdSh3u2m_PkJfRA6CrrqmuK3yBd2nmN/view",
-      "alt": "Caprisun party main — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party main — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2455,7 +2455,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1ul4xHaqhiAHp9cLO3yhMZxmdIaXpE8ep.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1ul4xHaqhiAHp9cLO3yhMZxmdIaXpE8ep/view",
-      "alt": "Caprisun party new ticket — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party new ticket — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2468,7 +2468,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1_IM84RF13ow7h1dTmbFXZbaCiHPZcTRw.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1_IM84RF13ow7h1dTmbFXZbaCiHPZcTRw/view",
-      "alt": "Caprisun party PATNERSHIP — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party PATNERSHIP — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2481,7 +2481,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1NKlsG7qIzK-0F_2LWEcmufrTqNoFLdFv.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1NKlsG7qIzK-0F_2LWEcmufrTqNoFLdFv/view",
-      "alt": "Caprisun party proposaL — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party proposaL — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2494,7 +2494,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1cnK4J_mih3FbRE4mEHdyPLrq-rDf-k0S.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1cnK4J_mih3FbRE4mEHdyPLrq-rDf-k0S/view",
-      "alt": "Caprisun party Thank you — Caprisun Party by Olympus Studio",
+      "alt": "Caprisun party Thank you — Caprisun Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2507,7 +2507,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1tmz0E2JTedgrR3wSm5jug0k0ziR7TibS.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1tmz0E2JTedgrR3wSm5jug0k0ziR7TibS/view",
-      "alt": "mj bday — SLUR Party by Olympus Studio",
+      "alt": "mj bday — SLUR Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2520,7 +2520,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/18u8rkWt842MuCbPljFAq_WMBJdrEWPGQ.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/18u8rkWt842MuCbPljFAq_WMBJdrEWPGQ/view",
-      "alt": "qjijro — SLUR Party by Olympus Studio",
+      "alt": "qjijro — SLUR Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2533,7 +2533,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1_Bqgish5nfpjCF9quXxdpDVBSH70pGuC.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1_Bqgish5nfpjCF9quXxdpDVBSH70pGuC/view",
-      "alt": "SLUR ANTICIPATE — SLUR Party by Olympus Studio",
+      "alt": "SLUR ANTICIPATE — SLUR Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2546,7 +2546,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1idtwErIztvaNCxKAH06jS2O7Hkro7hUD.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1idtwErIztvaNCxKAH06jS2O7Hkro7hUD/view",
-      "alt": "SLUR banner — SLUR Party by Olympus Studio",
+      "alt": "SLUR banner — SLUR Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2559,7 +2559,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1NWGIVpm0zp52qZTot6XHI89rgkMCQPz2.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1NWGIVpm0zp52qZTot6XHI89rgkMCQPz2/view",
-      "alt": "SLUR dj lp — SLUR Party by Olympus Studio",
+      "alt": "SLUR dj lp — SLUR Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2572,7 +2572,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1rR5hYqWYGntoMKktnXxJQoy8VRSsbQMg.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1rR5hYqWYGntoMKktnXxJQoy8VRSsbQMg/view",
-      "alt": "SLUR MAIN MAIN — SLUR Party by Olympus Studio",
+      "alt": "SLUR MAIN MAIN — SLUR Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2585,7 +2585,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/19PmLm7CMaGmj_uWx3AQrlFUJx4Oh30ER.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/19PmLm7CMaGmj_uWx3AQrlFUJx4Oh30ER/view",
-      "alt": "SLUR pfp — SLUR Party by Olympus Studio",
+      "alt": "SLUR pfp — SLUR Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2598,7 +2598,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1mRwgI7M0VxqoLsXh-sh-uyWSTEUW863U.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1mRwgI7M0VxqoLsXh-sh-uyWSTEUW863U/view",
-      "alt": "SLUR ticket flyer — SLUR Party by Olympus Studio",
+      "alt": "SLUR ticket flyer — SLUR Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2611,7 +2611,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1uJOkU8KekQKO3i-wI__nwGiJhFS5Bz1Y.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1uJOkU8KekQKO3i-wI__nwGiJhFS5Bz1Y/view",
-      "alt": "yuy — SLUR Party by Olympus Studio",
+      "alt": "yuy — SLUR Party by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2624,7 +2624,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/19taZV54dZ3iBe3nXHU2ctO0mUEKLC_Un.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/19taZV54dZ3iBe3nXHU2ctO0mUEKLC_Un/view",
-      "alt": "STEEZE IN THE CITY BACKDROP SQUARE — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY BACKDROP SQUARE — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2637,7 +2637,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1BCEdpMbXy269AgUyGwrkDBBV-lbI9ZWv.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1BCEdpMbXy269AgUyGwrkDBBV-lbI9ZWv/view",
-      "alt": "STEEZE IN THE CITY CALL FOR VENDORS — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY CALL FOR VENDORS — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2650,7 +2650,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1_-bsi83549dL-P0akNlDmWarMbVVkhzy.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1_-bsi83549dL-P0akNlDmWarMbVVkhzy/view",
-      "alt": "STEEZE IN THE CITY HALOGEN — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY HALOGEN — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2663,7 +2663,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1vinUYwNkyUgKn2XN65I7VuMkHMdhMqwg.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1vinUYwNkyUgKn2XN65I7VuMkHMdhMqwg/view",
-      "alt": "STEEZE IN THE CITY lg — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY lg — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2676,7 +2676,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/15a3E9sbX2I5r3FSXEh-csSAjdXfCH1iA.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/15a3E9sbX2I5r3FSXEh-csSAjdXfCH1iA/view",
-      "alt": "STEEZE IN THE CITY 1DTG — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY 1DTG — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2689,7 +2689,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1tg5l-hXteLTA1Zf3mcYp6xGYzmkzm350.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1tg5l-hXteLTA1Zf3mcYp6xGYzmkzm350/view",
-      "alt": "STEEZE IN THE CITY 2DTG — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY 2DTG — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2702,7 +2702,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/110ewVnbpg6PD28S_lqBYH_Lq7njS070h.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/110ewVnbpg6PD28S_lqBYH_Lq7njS070h/view",
-      "alt": "STEEZE IN THE CITY 3DTG — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY 3DTG — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2715,7 +2715,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1E-xv2yQ9y5CXYD5SOs6FARv_fOS_FtcH.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1E-xv2yQ9y5CXYD5SOs6FARv_fOS_FtcH/view",
-      "alt": "STEEZE IN THE CITY 22 — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY 22 — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2728,7 +2728,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1phKdrOlQ8Ak4k18CHgsc7cAoYsz0NrLO.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1phKdrOlQ8Ak4k18CHgsc7cAoYsz0NrLO/view",
-      "alt": "STEEZE IN THE CITY 222 — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY 222 — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2741,7 +2741,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1PVqzzNuKeIexENgouLmcOIfEJKeWg1Oj.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1PVqzzNuKeIexENgouLmcOIfEJKeWg1Oj/view",
-      "alt": "STEEZE IN THE CITY BHETABOY — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY BHETABOY — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2754,7 +2754,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1n9lojRMzaQLfQSoDg_C0U3YLlY6i4zSo.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1n9lojRMzaQLfQSoDg_C0U3YLlY6i4zSo/view",
-      "alt": "STEEZE IN THE CITY cfb — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY cfb — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2767,7 +2767,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/13mXKdP2ShOJ4e1IfWhdRAeY0jYR8tsnh.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/13mXKdP2ShOJ4e1IfWhdRAeY0jYR8tsnh/view",
-      "alt": "STEEZE IN THE CITY dp — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY dp — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2780,7 +2780,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1FOcSle1zQCnNIuj8nUrqRAGCI_8GGQUd.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1FOcSle1zQCnNIuj8nUrqRAGCI_8GGQUd/view",
-      "alt": "STEEZE IN THE CITY IVY — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY IVY — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2793,7 +2793,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1ZDOo7vRVnTvyjHtMtdC2Qu71pOCJTZFA.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1ZDOo7vRVnTvyjHtMtdC2Qu71pOCJTZFA/view",
-      "alt": "STEEZE IN THE CITY MISKY — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY MISKY — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2806,7 +2806,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1du1hQB10nBMOEUTq3M8YthOvM3Dc2dS-.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1du1hQB10nBMOEUTq3M8YthOvM3Dc2dS-/view",
-      "alt": "STEEZE IN THE CITY SFR — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY SFR — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2819,7 +2819,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/127_cC9V7H0GIwhI4wzcNv8SV02NNmKdl.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/127_cC9V7H0GIwhI4wzcNv8SV02NNmKdl/view",
-      "alt": "STEEZE IN THE CITY TY — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITY TY — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     },
@@ -2832,7 +2832,7 @@ window.OLYMPUS_CONTENT = {
       "thumbnailSrc": "assets/portfolio/1c9mGadTUruMCu0Fu45ntz_CS_nbjx59F.webp",
       "previewSrc": null,
       "originalUrl": "https://drive.google.com/file/d/1c9mGadTUruMCu0Fu45ntz_CS_nbjx59F/view",
-      "alt": "STEEZE IN THE CITYyy — Steeze in the City by Olympus Studio",
+      "alt": "STEEZE IN THE CITYyy — Steeze in the City by Olympus Atelier",
       "year": "2026",
       "featured": false
     }

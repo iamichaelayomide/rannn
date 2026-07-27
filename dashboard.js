@@ -71,7 +71,7 @@ const pageSchemas = {
     ["Introduction", "header.body", "textarea"],
     ["Public email", "contact.email", "email", "contact"],
     ["Phone number", "contact.phone", "tel", "contact"],
-    ["Studio location", "contact.location", "text", "contact"],
+    ["Atelier location", "contact.location", "text", "contact"],
   ],
   book: [
     ["Small heading above the title (optional)", "header.eyebrow"],
@@ -299,7 +299,7 @@ async function refreshData({ preserveRoute = true } = {}) {
   const queries = [
     state.supabase.from("projects").select("*, clients(id,name,email,company), milestones(id,title,description,status,due_date,position,requires_approval,deliverables(id,title,description,file_url,version,status,client_note))").order("created_at", { ascending: false }),
     state.supabase.from("clients").select("*").order("created_at", { ascending: false }),
-    state.supabase.from("invoices").select("*, projects(id,title,client_id,clients(name,email))").order("created_at", { ascending: false }),
+    state.supabase.from("invoices").select("*, clients(id,name,email,company,phone), projects(id,title,client_id)").order("created_at", { ascending: false }),
     state.supabase.from("invoice_items").select("*").order("position"),
     state.supabase.from("intake_submissions").select("*").order("created_at", { ascending: false }),
     state.supabase.from("milestones").select("*, projects(id,title,clients(name))").order("due_date", { ascending: true }),
@@ -421,7 +421,7 @@ function clientProjects(clientId) {
 }
 
 function clientInvoices(clientId) {
-  return state.data.invoices.filter((invoice) => invoice.projects?.client_id === clientId);
+  return state.data.invoices.filter((invoice) => invoice.client_id === clientId);
 }
 
 function totalsByCurrency(invoices) {
@@ -537,8 +537,8 @@ function renderInvoices() {
   const term = $("#invoice-search").value.trim().toLowerCase();
   const status = $("#invoice-filter").value;
   const invoices = state.data.invoices.filter((invoice) => (!status || invoice.status === status)
-    && [invoice.invoice_number, invoice.projects?.title, invoice.projects?.clients?.name].some((value) => String(value || "").toLowerCase().includes(term)));
-  $("#invoice-table").innerHTML = invoices.length ? invoices.map((invoice) => `<tr class="clickable-table-row" tabindex="0" data-route="invoices/${invoice.id}"><td><strong>${escapeHtml(invoice.invoice_number)}${demoBadge(invoice)}</strong><small>${escapeHtml(invoice.projects?.clients?.name || "")}</small></td><td>${escapeHtml(invoice.projects?.title || "Not assigned")}</td><td>${formatDate(invoice.due_date)}</td><td>${money(invoice.total, invoice.currency)}</td><td>${badge(invoice.status)}</td><td>${icon("solar:arrow-right-linear")}</td></tr>`).join("") : `<tr><td colspan="6">${emptyState("No invoices match", "Create a draft invoice when a project is ready for billing.", routeButton("invoices/new", "New invoice", "primary"))}</td></tr>`;
+    && [invoice.invoice_number, invoice.projects?.title, invoice.job_reference, invoice.clients?.name].some((value) => String(value || "").toLowerCase().includes(term)));
+  $("#invoice-table").innerHTML = invoices.length ? invoices.map((invoice) => `<tr class="clickable-table-row" tabindex="0" data-route="invoices/${invoice.id}"><td><strong>${escapeHtml(invoice.invoice_number)}${demoBadge(invoice)}</strong><small>${escapeHtml(invoice.clients?.name || "")}</small></td><td>${escapeHtml(invoice.projects?.title || invoice.job_reference || "No project")}</td><td>${formatDate(invoice.due_date)}</td><td>${money(invoice.total, invoice.currency)}</td><td>${badge(invoice.status)}</td><td>${icon("solar:arrow-right-linear")}</td></tr>`).join("") : `<tr><td colspan="6">${emptyState("No invoices match", "Create an invoice for project or standalone work.", routeButton("invoices/new", "New invoice", "primary"))}</td></tr>`;
 }
 
 function renderPages() {
@@ -842,8 +842,12 @@ function renderInvoiceRoute(segments, params) {
       : invoice.status === "uncollectible"
         ? `<button class="button primary" type="button" data-show-payment>Mark paid</button><button class="button destructive" type="button" data-transition-invoice="${invoice.id}" data-next-status="void">Void</button>`
       : "";
-  $("#record-screen").innerHTML = recordHeader("invoices", "Billing", invoice.invoice_number, `${invoice.projects?.clients?.name || "Client"} · ${badge(invoice.status)}`, `${invoice.status === "draft" ? routeButton(`invoices/${invoice.id}/edit`, "Edit draft") : ""}${invoice.project_id ? `<a class="button secondary" href="/portal?project=${invoice.project_id}" target="_blank" rel="noopener">Open client view</a>` : ""}<button class="button secondary" type="button" data-print-invoice>${icon("solar:printer-linear")}Print</button>`)
-    + `<section class="invoice-sheet"><div class="invoice-brand"><img src="/assets/olympus-logo.svg" alt="Olympus Studio"><div><strong>Olympus Studio</strong><small>Creative production and design</small></div></div><div class="invoice-meta"><div><span>Bill to</span><strong>${escapeHtml(invoice.projects?.clients?.name || "Client")}</strong><small>${escapeHtml(invoice.projects?.clients?.email || "")}</small></div><div><span>Project</span><button class="text-link" type="button" data-route="projects/${invoice.project_id}">${escapeHtml(invoice.projects?.title || "")}</button><small>Due ${formatDate(invoice.due_date)}</small></div></div><table class="invoice-lines"><thead><tr><th>Description</th><th>Qty</th><th>Price</th><th>Amount</th></tr></thead><tbody>${items.map((item) => `<tr><td>${escapeHtml(item.description)}</td><td>${item.quantity}</td><td>${money(item.unit_price, invoice.currency)}</td><td>${money(Number(item.quantity) * Number(item.unit_price), invoice.currency)}</td></tr>`).join("")}</tbody></table><div class="invoice-totals"><div><span>Subtotal</span><strong>${money(invoice.subtotal, invoice.currency)}</strong></div><div><span>Tax</span><strong>${money(invoice.tax, invoice.currency)}</strong></div><div class="total"><span>Total</span><strong>${money(invoice.total, invoice.currency)}</strong></div></div>${invoice.notes ? `<p class="invoice-notes">${escapeHtml(invoice.notes)}</p>` : ""}${invoice.payment_reference ? `<p class="payment-reference"><strong>Payment reference:</strong> ${escapeHtml(invoice.payment_reference)}</p>` : ""}</section>`
+  const workReference = invoice.projects?.title || invoice.job_reference || "";
+  const workMarkup = workReference
+    ? `<div><span>${invoice.project_id ? "Project" : "Work reference"}</span>${invoice.project_id ? `<button class="text-link" type="button" data-route="projects/${invoice.project_id}">${escapeHtml(workReference)}</button>` : `<strong>${escapeHtml(workReference)}</strong>`}<small>Due ${formatDate(invoice.due_date)}</small></div>`
+    : `<div><span>Due date</span><strong>${formatDate(invoice.due_date)}</strong></div>`;
+  $("#record-screen").innerHTML = recordHeader("invoices", "Billing", invoice.invoice_number, `${invoice.clients?.name || "Client"} · ${titleCase(invoice.status)}`, `${invoice.status === "draft" ? routeButton(`invoices/${invoice.id}/edit`, "Edit draft") : ""}${invoice.project_id ? `<a class="button secondary" href="/portal?project=${invoice.project_id}" target="_blank" rel="noopener">Open client view</a>` : ""}<button class="button secondary" type="button" data-download-invoice="${invoice.id}">${icon("solar:download-linear")}Download PDF</button>`)
+    + `<section class="invoice-sheet"><div class="invoice-brand"><img src="/assets/olympus-logo.svg" alt="Olympus Atelier"><div><strong>Olympus Atelier</strong><small>Creative production and design</small></div></div><div class="invoice-meta"><div><span>Bill to</span><strong>${escapeHtml(invoice.clients?.name || "Client")}</strong><small>${escapeHtml(invoice.clients?.email || "")}</small></div>${workMarkup}</div><table class="invoice-lines"><thead><tr><th>Description</th><th>Qty</th><th>Price</th><th>Amount</th></tr></thead><tbody>${items.map((item) => `<tr><td>${escapeHtml(item.description)}</td><td>${item.quantity}</td><td>${money(item.unit_price, invoice.currency)}</td><td>${money(Number(item.quantity) * Number(item.unit_price), invoice.currency)}</td></tr>`).join("")}</tbody></table><div class="invoice-totals"><div><span>Subtotal</span><strong>${money(invoice.subtotal, invoice.currency)}</strong></div><div><span>Tax</span><strong>${money(invoice.tax, invoice.currency)}</strong></div><div class="total"><span>Total</span><strong>${money(invoice.total, invoice.currency)}</strong></div></div>${invoice.notes ? `<p class="invoice-notes">${escapeHtml(invoice.notes)}</p>` : ""}${invoice.payment_reference ? `<p class="payment-reference"><strong>Payment reference:</strong> ${escapeHtml(invoice.payment_reference)}</p>` : ""}</section>`
     + `<div class="record-actions">${transitions}</div><form class="compact-form payment-form hidden" data-payment-form="${invoice.id}"><label>Payment reference or method<input name="payment_reference" required placeholder="Bank transfer, receipt number, etc."></label><button class="button primary" type="submit">Confirm payment</button><div class="screen-message"></div></form>`
     + activityMarkup(activity);
 }
@@ -852,12 +856,32 @@ function renderInvoiceForm(invoice = null, projectId = "") {
   showRecordView(invoice ? "Edit invoice" : "New invoice");
   const items = invoice ? invoiceItemsFor(invoice.id) : [{ description: "", quantity: 1, unit_price: 0 }];
   const fields = field("Invoice number", "invoice_number", "text", { required: true, value: invoice?.invoice_number || `OLY-${new Date().getFullYear()}-${String(state.data.invoices.length + 1).padStart(3, "0")}` })
-    + field("Project", "project_id", "select", { required: true, value: invoice?.project_id || projectId, items: [{ value: "", label: "Select a project" }, ...state.data.projects.filter((project) => !project.archived_at || project.id === invoice?.project_id).map((project) => ({ value: project.id, label: `${project.title} — ${project.clients?.name || "No client"}` }))] })
+    + field("Project", "project_id", "select", { value: invoice?.project_id || projectId, help: "Choose No project for standalone work.", items: [{ value: "", label: "No project" }, ...state.data.projects.filter((project) => !project.archived_at || project.id === invoice?.project_id).map((project) => ({ value: project.id, label: `${project.title} — ${project.clients?.name || "No client"}` }))] })
+    + field("Currency", "currency", "select", { value: invoice?.currency || "NGN", items: ["NGN", "USD", "GBP"].map((value) => ({ value, label: value })) })
     + field("Due date", "due_date", "date", { required: true, value: invoice?.due_date })
     + field("Tax", "tax", "number", { min: 0, value: invoice?.tax || 0 })
     + field("Notes", "notes", "textarea", { wide: true, value: invoice?.notes });
-  $("#record-screen").innerHTML = `<form class="record-form" data-record-form="invoice" data-id="${invoice?.id || ""}">${recordHeader(invoice ? `invoices/${invoice.id}` : "invoices", "Back", invoice ? "Edit draft invoice" : "Create an invoice", "Add clear line items. Totals are calculated automatically.")}<div class="form-section"><div class="form-grid">${fields}</div></div><section class="form-section"><div class="panel-head"><div><p class="eyebrow">Line items</p><h3>What are you billing for?</h3></div><button class="button secondary" type="button" data-add-line-item>${icon("solar:add-circle-linear")}Add item</button></div><div id="invoice-line-items">${items.map(invoiceLineItem).join("")}</div><div class="live-total"><span>Estimated subtotal</span><strong id="invoice-live-total">${money(invoice?.subtotal || 0)}</strong></div></section><div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton(invoice ? `invoices/${invoice.id}` : "invoices", "Cancel", "secondary")}<button class="button primary" type="submit">Save draft</button></div></form>`;
+  const standaloneFields = field("Client", "client_id", "select", { value: invoice?.client_id || "", items: [{ value: "", label: "Choose a client or add one below" }, ...state.data.clients.filter((client) => !client.archived_at || client.id === invoice?.client_id).map((client) => ({ value: client.id, label: client.name }))] })
+    + field("Job or work reference (optional)", "job_reference", "text", { value: invoice?.job_reference || "" })
+    + `<div class="wide form-divider"><span>Or add a new client</span></div>`
+    + field("Client name", "new_client_name", "text")
+    + field("Company (optional)", "new_client_company", "text")
+    + field("Email (optional)", "new_client_email", "email")
+    + field("Phone (optional)", "new_client_phone", "tel");
+  $("#record-screen").innerHTML = `<form class="record-form" data-record-form="invoice" data-id="${invoice?.id || ""}">${recordHeader(invoice ? `invoices/${invoice.id}` : "invoices", "Back", invoice ? "Edit draft invoice" : "Create an invoice", "Create an invoice for a project or for standalone work.")}<div class="form-section"><div class="form-grid">${fields}</div></div><section class="form-section" data-standalone-invoice><p class="eyebrow">Client and work</p><div class="form-grid">${standaloneFields}</div></section><section class="form-section"><div class="panel-head"><div><p class="eyebrow">Line items</p><h3>What are you billing for?</h3></div><button class="button secondary" type="button" data-add-line-item>${icon("solar:add-circle-linear")}Add item</button></div><div id="invoice-line-items">${items.map(invoiceLineItem).join("")}</div><div class="live-total"><span>Estimated subtotal</span><strong id="invoice-live-total">${money(invoice?.subtotal || 0, invoice?.currency || "NGN")}</strong></div></section><div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton(invoice ? `invoices/${invoice.id}` : "invoices", "Cancel", "secondary")}<button class="button primary" type="submit">Save draft</button></div></form>`;
+  syncInvoiceProjectFields();
   updateInvoiceTotal();
+}
+
+function syncInvoiceProjectFields() {
+  const form = $('[data-record-form="invoice"]');
+  if (!form) return;
+  const projectId = $('[name="project_id"]', form)?.value || "";
+  $("[data-standalone-invoice]", form)?.classList.toggle("hidden", Boolean(projectId));
+  if (projectId) {
+    const project = state.data.projects.find((item) => item.id === projectId);
+    if (project && $('[name="client_id"]', form)) $('[name="client_id"]', form).value = project.client_id;
+  }
 }
 
 function invoiceLineItem(item = {}) {
@@ -870,7 +894,7 @@ function updateInvoiceTotal() {
   const quantities = $$('[name="line_quantity"]', form);
   const prices = $$('[name="line_price"]', form);
   const total = quantities.reduce((sum, input, index) => sum + Number(input.value || 0) * Number(prices[index]?.value || 0), 0);
-  if ($("#invoice-live-total")) $("#invoice-live-total").textContent = money(total);
+  if ($("#invoice-live-total")) $("#invoice-live-total").textContent = money(total, $('[name="currency"]', form)?.value || "NGN");
 }
 
 function renderPageRoute(segments) {
@@ -1125,10 +1149,19 @@ async function saveRecordForm(form, { publishCollection = false } = {}) {
       const quantities = $$('[name="line_quantity"]', form);
       const prices = $$('[name="line_price"]', form);
       const items = descriptions.map((input, index) => ({ description: input.value, quantity: Number(quantities[index].value), unit_price: Number(prices[index].value) }));
+      const newClient = values.new_client_name?.trim() ? {
+        name: values.new_client_name.trim(),
+        company: values.new_client_company || null,
+        email: values.new_client_email || null,
+        phone: values.new_client_phone || null,
+      } : null;
       const { data, error } = await state.supabase.rpc("save_invoice_draft", {
-        target_invoice_id: id, target_project_id: values.project_id,
+        target_invoice_id: id, target_project_id: values.project_id || null,
+        target_client_id: values.client_id || null, target_new_client: newClient,
+        target_job_reference: values.job_reference || null,
         target_invoice_number: values.invoice_number, target_due_date: values.due_date,
-        target_tax: Number(values.tax || 0), target_notes: values.notes || "", target_items: items,
+        target_currency: values.currency || "NGN", target_tax: Number(values.tax || 0),
+        target_notes: values.notes || "", target_items: items,
       });
       if (error) throw error;
       destination = `invoices/${data}`;
@@ -1235,6 +1268,38 @@ async function transitionInvoice(id, status, reference = null) {
   }
   toast(status === "paid" ? "Payment recorded." : `Invoice marked ${titleCase(status)}.`);
   await refreshData();
+}
+
+async function downloadInvoicePdf(id, button) {
+  const original = button.innerHTML;
+  button.disabled = true;
+  button.textContent = "Preparing PDF…";
+  try {
+    const response = await fetch(`/api/invoice-pdf?id=${encodeURIComponent(id)}`, {
+      headers: { Authorization: `Bearer ${state.session.access_token}` },
+      cache: "no-store",
+    });
+    if (!response.ok) {
+      const detail = await response.json().catch(() => ({}));
+      throw new Error(detail.error || "The invoice PDF could not be created.");
+    }
+    const disposition = response.headers.get("Content-Disposition") || "";
+    const filename = disposition.match(/filename="([^"]+)"/)?.[1] || "Olympus-Atelier-Invoice.pdf";
+    const url = URL.createObjectURL(await response.blob());
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    toast("Invoice PDF downloaded.");
+  } catch (error) {
+    setScreenError(error.message);
+  } finally {
+    button.disabled = false;
+    button.innerHTML = original;
+  }
 }
 
 function confirmAction(title, message, actionLabel = "Continue") {
@@ -1526,7 +1591,8 @@ document.addEventListener("click", async (event) => {
       await transitionInvoice(transition.dataset.transitionInvoice, transition.dataset.nextStatus);
     }
   }
-  if (event.target.closest("[data-print-invoice]")) window.print();
+  const downloadInvoice = event.target.closest("[data-download-invoice]");
+  if (downloadInvoice) await downloadInvoicePdf(downloadInvoice.dataset.downloadInvoice, downloadInvoice);
   const copyInvite = event.target.closest("[data-copy-invite]")?.dataset.copyInvite;
   if (copyInvite) {
     try { await navigator.clipboard.writeText(copyInvite); toast("Secure client link copied."); }
@@ -1589,11 +1655,12 @@ document.addEventListener("keydown", (event) => {
 
 document.addEventListener("input", (event) => {
   if (event.target.closest(".record-form")) state.dirty = true;
-  if (event.target.matches('[name="line_quantity"], [name="line_price"]')) updateInvoiceTotal();
+  if (event.target.matches('[name="line_quantity"], [name="line_price"], [name="currency"]')) updateInvoiceTotal();
 });
 
 document.addEventListener("change", (event) => {
   const input = event.target;
+  if (input.matches('[data-record-form="invoice"] [name="project_id"]')) syncInvoiceProjectFields();
   if (input.type === "file" && input.name.endsWith("_file") && input.files?.[0]) {
     const name = input.name.replace(/_file$/, "");
     const wrapper = $(`[data-image-field="${CSS.escape(name)}"]`);

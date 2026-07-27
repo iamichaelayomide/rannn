@@ -1,6 +1,12 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/invoice-pdf.js": {
+      "includeFiles": "node_modules/dejavu-fonts-ttf/ttf/DejaVuSans.ttf",
+      "maxDuration": 10
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",

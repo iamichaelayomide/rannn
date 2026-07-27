@@ -13,6 +13,9 @@ const requiredFiles = [
   "supabase/migrations/202607270005_archived_project_read_only.sql",
   "supabase/migrations/202607270006_services_page_cms.sql",
   "supabase/migrations/202607270007_repair_published_page_snapshots.sql",
+  "supabase/migrations/202607270008_atelier_standalone_invoices.sql",
+  "supabase/migrations/202607270009_correct_atelier_eyebrow.sql",
+  "api/invoice-pdf.js",
 ];
 
 for (const file of requiredFiles) await access(file);
@@ -96,6 +99,24 @@ if (/create\s+or\s+replace\s+function\s+public\.mark_cms_draft_change/i.test(crm
 }
 for (const required of ["?tab=${value}", "data-archive-project", "data-publish-collection"]) {
   if (!dashboard.includes(required)) throw new Error(`Missing routed CRM/CMS interaction: ${required}`);
+}
+
+for (const required of ["No project", "target_client_id", "target_new_client", "data-download-invoice"]) {
+  if (!dashboard.includes(required)) throw new Error(`Missing standalone invoice behavior: ${required}`);
+}
+const invoiceMigration = await readFile("supabase/migrations/202607270008_atelier_standalone_invoices.sql", "utf8");
+for (const required of ["alter column project_id drop not null", "client_id set not null", "target_new_client", "invoices_client_id_idx"]) {
+  if (!invoiceMigration.includes(required)) throw new Error(`Standalone invoice migration is missing ${required}`);
+}
+const invoicePdf = await readFile("api/invoice-pdf.js", "utf8");
+for (const required of ["PDFDocument", "DejaVuSans", "Olympus-Atelier-Invoice"]) {
+  if (!invoicePdf.includes(required)) throw new Error(`Invoice PDF is missing ${required}`);
+}
+for (const file of ["index.html", "admin.html", "portal.html", "dashboard.js", "portal.js", "content.js"]) {
+  const source = await readFile(file, "utf8");
+  if (/Olympus Studio|Premium Media House/i.test(source)) {
+    throw new Error(`${file} still contains obsolete Olympus branding`);
+  }
 }
 
 console.log("Static structure, interaction, preview, and secret-safety checks passed.");

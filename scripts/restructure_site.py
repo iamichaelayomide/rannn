@@ -24,10 +24,10 @@ services = '''<!-- PAGE 2: SERVICES -->
         </div>
         <div id="service-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-live="polite"></div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-14" aria-label="Olympus service showcase">
-          <figure class="service-showcase-card md:col-span-2"><img src="assets/portfolio/1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO.webp" alt="Conference guest speaking during Olympus Studio green-carpet coverage" loading="lazy"><figcaption>Events &amp; conferences</figcaption></figure>
-          <figure class="service-showcase-card"><img src="assets/portfolio/1gJbVwUYB-8oPStbqAwxZ6Ja4nZmvvIY5.webp" alt="Campaign graphic designed by Olympus Studio" loading="lazy"><figcaption>Campaign graphics</figcaption></figure>
-          <figure class="service-showcase-card"><img src="assets/team/photographer.webp" alt="Olympus Studio photographer" loading="lazy"><figcaption>Photography</figcaption></figure>
-          <figure class="service-showcase-card md:col-span-2"><img src="assets/portfolio/1UWRIR8lmqtK_068iXv5AqqaowjnUjDNO.webp" alt="Conference interview filmed by Olympus Studio" loading="lazy"><figcaption>Film &amp; storytelling</figcaption></figure>
+          <figure class="service-showcase-card md:col-span-2"><img src="assets/portfolio/1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO.webp" alt="Conference guest speaking during Olympus Atelier green-carpet coverage" loading="lazy"><figcaption>Events &amp; conferences</figcaption></figure>
+          <figure class="service-showcase-card"><img src="assets/portfolio/1gJbVwUYB-8oPStbqAwxZ6Ja4nZmvvIY5.webp" alt="Campaign graphic designed by Olympus Atelier" loading="lazy"><figcaption>Campaign graphics</figcaption></figure>
+          <figure class="service-showcase-card"><img src="assets/team/photographer.webp" alt="Olympus Atelier photographer" loading="lazy"><figcaption>Photography</figcaption></figure>
+          <figure class="service-showcase-card md:col-span-2"><img src="assets/portfolio/1UWRIR8lmqtK_068iXv5AqqaowjnUjDNO.webp" alt="Conference interview filmed by Olympus Atelier" loading="lazy"><figcaption>Film &amp; storytelling</figcaption></figure>
         </div>
       </div>
     </section>'''
@@ -58,14 +58,14 @@ about = '''<!-- PAGE 4: ABOUT -->
       <div class="max-w-7xl mx-auto px-6 py-16 lg:py-24">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end mb-16">
           <div class="lg:col-span-7">
-            <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">The studio</span>
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">The atelier</span>
             <h2 class="h2-editorial font-extrabold text-white mt-3">A compact team with an end-to-end visual practice.</h2>
           </div>
-          <p class="lg:col-span-5 text-neutral-400 leading-relaxed">Olympus Studio brings creative direction, photography, cinematography, editing, visual design, motion, and editorial production into one collaborative workflow.</p>
+          <p class="lg:col-span-5 text-neutral-400 leading-relaxed">Olympus Atelier brings creative direction, photography, cinematography, editing, visual design, motion, and editorial production into one collaborative workflow.</p>
         </div>
-        <div id="team-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6" aria-label="Olympus Studio team"></div>
+        <div id="team-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6" aria-label="Olympus Atelier team"></div>
         <div class="glass-card border-gold-gradient rounded-3xl p-8 md:p-12 mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div class="lg:col-span-5 aspect-[4/3] rounded-2xl overflow-hidden"><img src="assets/media/prefooter-stage.webp" alt="A professional conference stage covered by Olympus Studio" class="w-full h-full object-cover" loading="lazy"></div>
+          <div class="lg:col-span-5 aspect-[4/3] rounded-2xl overflow-hidden"><img src="assets/media/prefooter-stage.webp" alt="A professional conference stage covered by Olympus Atelier" class="w-full h-full object-cover" loading="lazy"></div>
           <div class="lg:col-span-7">
             <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">How we work</span>
             <h3 class="text-3xl md:text-4xl font-bold text-white mt-3">One visual language, from concept to delivery.</h3>
@@ -120,10 +120,10 @@ text = replace_between(text, "<!-- PAGE 4:", "<!-- PAGE 5:", about)
 text = replace_between(text, "<!-- PAGE 5:", "<!-- PAGE 6:", booking)
 text = replace_between(text, "<!-- Testimonials", "<!-- GLOBAL FAQS", testimonials)
 
-text = text.replace("<title>Olympus Studio — Premium Creative Media House</title>", "<title>Olympus Studio — Film, Photography &amp; Visual Design</title>")
+text = text.replace("<title>Olympus Atelier — Premium Creative Atelier</title>", "<title>Olympus Atelier — Film, Photography &amp; Visual Design</title>")
 text = text.replace(
-    '<meta name="description" content="Olympus Studio is a premium dark-themed media house and design agency delivering high-fidelity web, graphic branding, video production, and content storytelling.">',
-    '<meta name="description" content="Olympus Studio creates films, photography, campaign graphics, editorial publications, motion design, and event coverage.">',
+    '<meta name="description" content="Olympus Atelier is a premium dark-themed atelier and design agency delivering high-fidelity web, graphic branding, video production, and content storytelling.">',
+    '<meta name="description" content="Olympus Atelier creates films, photography, campaign graphics, editorial publications, motion design, and event coverage.">',
 )
 
 asset_replacements = {

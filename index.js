@@ -752,7 +752,7 @@ const submitIntake = async (payload) => {
   const configResponse = await fetch('/api/config', { cache: 'no-store' });
   const config = await configResponse.json().catch(() => ({}));
   if (!configResponse.ok || !config.configured) {
-    throw new Error('Online enquiries are temporarily unavailable. Please contact the studio directly.');
+    throw new Error('Online enquiries are temporarily unavailable. Please contact the atelier directly.');
   }
 
   const response = await fetch(`${config.url}/rest/v1/intake_submissions`, {

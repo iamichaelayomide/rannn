@@ -3,3 +3,5 @@
 supabase/.temp/
 .playwright-cli/
 output/
+node_modules/
+tmp/

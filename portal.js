@@ -106,12 +106,12 @@ function renderProjects(projects) {
           </section>
           <aside><p class="eyebrow">Billing</p><h3>Invoices</h3>
             ${(project.invoices || []).length ? project.invoices.map((invoice) => `<div class="item-row"><div><strong>${escapeHtml(invoice.invoice_number)}</strong><small>Due ${formatDate(invoice.due_date)}</small></div><div><strong>${money(invoice.total, invoice.currency)}</strong><small>${badge(invoice.status)}</small></div></div>`).join("") : '<p class="muted">No invoices have been shared.</p>'}
-            ${openInvoices.length ? '<p class="muted">Payment instructions are included on the invoice sent by the studio.</p>' : ""}
+            ${openInvoices.length ? '<p class="muted">Payment instructions are included on the invoice sent by the atelier.</p>' : ""}
           </aside>
         </div>
       </div>
     </article>`;
-  }).join("") : `<section class="panel empty">No projects are assigned to this account yet. Ask the studio to invite this email address.</section>`;
+  }).join("") : `<section class="panel empty">No projects are assigned to this account yet. Ask the atelier to invite this email address.</section>`;
 }
 
 function milestoneMarkup(milestone) {
@@ -122,7 +122,7 @@ function milestoneMarkup(milestone) {
     ${deliverables.map((item) => `<div class="deliverable">
       <div class="timeline-top"><a href="${escapeHtml(item.file_url)}" target="_blank" rel="noopener"><strong>${escapeHtml(item.title)}</strong></a><small class="muted">v${item.version}</small></div>
       ${item.description ? `<p>${escapeHtml(item.description)}</p>` : ""}
-      ${item.status === "shared" ? `<div class="deliverable-actions"><button class="button primary" data-review="${item.id}" data-status="approved">Approve</button><button class="button secondary" data-show-change-form="${item.id}">Request changes</button></div><form class="change-request-form hidden" data-change-request="${item.id}"><label>What should be changed?<textarea name="client_note" required placeholder="Describe the change clearly so the studio can act on it."></textarea></label><div class="inline-actions"><button class="button secondary" type="button" data-cancel-change-form>Cancel</button><button class="button primary" type="submit">Send request</button></div><p class="form-message" role="alert"></p></form>` : badge(item.status)}
+      ${item.status === "shared" ? `<div class="deliverable-actions"><button class="button primary" data-review="${item.id}" data-status="approved">Approve</button><button class="button secondary" data-show-change-form="${item.id}">Request changes</button></div><form class="change-request-form hidden" data-change-request="${item.id}"><label>What should be changed?<textarea name="client_note" required placeholder="Describe the change clearly so the atelier can act on it."></textarea></label><div class="inline-actions"><button class="button secondary" type="button" data-cancel-change-form>Cancel</button><button class="button primary" type="submit">Send request</button></div><p class="form-message" role="alert"></p></form>` : badge(item.status)}
     </div>`).join("")}
   </article>`;
 }

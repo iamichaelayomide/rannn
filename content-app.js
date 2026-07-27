@@ -60,10 +60,10 @@
     grid.innerHTML = content.teamMembers.map((member, index) => `
       <article class="team-card glass-card rounded-3xl overflow-hidden border border-white/10">
         <div class="aspect-[4/5] overflow-hidden bg-neutral-900">
-          <img src="${escapeHtml(member.image)}" alt="${escapeHtml(member.name)} — ${escapeHtml(member.role)} at Olympus Studio" class="w-full h-full object-cover" loading="lazy" decoding="async">
+          <img src="${escapeHtml(member.image)}" alt="${escapeHtml(member.name)} — ${escapeHtml(member.role)} at Olympus Atelier" class="w-full h-full object-cover" loading="lazy" decoding="async">
         </div>
         <div class="p-6">
-          <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400">${index === 0 ? 'Creative leadership' : 'Studio team'}</span>
+          <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400">${index === 0 ? 'Creative leadership' : 'Atelier team'}</span>
           <h3 class="text-2xl font-bold text-white mt-2">${escapeHtml(member.name)}</h3>
           <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400 mt-1">${escapeHtml(member.role)}</p>
           <p class="text-sm text-neutral-400 leading-relaxed mt-4">${escapeHtml(member.bio)}</p>
@@ -441,7 +441,7 @@
       if (typeof window.submitIntake !== 'function') return;
       window.submitIntake(payload)
         .then(() => {
-          if (status) status.textContent = 'Request saved. Continue in WhatsApp to speak with the studio.';
+          if (status) status.textContent = 'Request saved. Continue in WhatsApp to speak with the atelier.';
         })
         .catch(error => {
           if (status) status.textContent = error.message;
@@ -463,7 +463,7 @@
         payload: { location: form.get('location') || null }
       }, 'booking-form-status');
       openWhatsapp([
-        'Hello Olympus Studio, I would like to discuss a project.',
+        'Hello Olympus Atelier, I would like to discuss a project.',
         '',
         `Name: ${form.get('name')}`,
         `Email: ${form.get('email') || 'Not provided'}`,
@@ -485,7 +485,7 @@
         message: document.getElementById('contact-message')?.value.trim()
       }, 'contact-form-status');
       openWhatsapp([
-        'Hello Olympus Studio, I have an enquiry.',
+        'Hello Olympus Atelier, I have an enquiry.',
         '',
         `Name: ${document.getElementById('contact-name')?.value.trim()}`,
         `Email: ${document.getElementById('contact-email')?.value.trim()}`,
@@ -499,7 +499,7 @@
       event.stopImmediatePropagation();
       const isEvent = typeof scaleFormPath === 'undefined' || scaleFormPath === 'event';
       const details = [
-        'Hello Olympus Studio, I would like to start a project.',
+        'Hello Olympus Atelier, I would like to start a project.',
         '',
         `Name: ${document.getElementById('proposal-name')?.value.trim()}`,
         `Email: ${document.getElementById('proposal-email')?.value.trim()}`,

@@ -107,7 +107,7 @@ def build_items(inventory: list[dict]) -> list[dict]:
                     "thumbnailSrc": f"assets/portfolio/{drive_id}.webp",
                     "previewSrc": None,
                     "originalUrl": f"https://drive.google.com/file/d/{drive_id}/view",
-                    "alt": f"{humanize(filename)} — {collection} by Olympus Studio",
+                    "alt": f"{humanize(filename)} — {collection} by Olympus Atelier",
                     "year": item_year(lines),
                     "featured": False,
                 }
@@ -217,7 +217,7 @@ def main() -> int:
 
     content = {
         "siteConfig": {
-            "brandName": "Olympus Studio",
+            "brandName": "Olympus Atelier",
             "whatsappNumber": "2348087172313",
             "whatsappDisplay": "+234 808 717 2313",
             "email": None,
@@ -234,10 +234,10 @@ def main() -> int:
             {"id": "web", "title": "Website Design & Development", "summary": "Responsive portfolio, campaign, and business websites designed to feel distinctive and perform reliably."},
         ],
         "teamMembers": [
-            {"name": "John", "role": "Creative Lead", "image": "assets/team/john.webp", "bio": "John leads Olympus Studio's creative direction, shaping cohesive concepts across film, photography, design, and editorial production."},
+            {"name": "John", "role": "Creative Lead", "image": "assets/team/john.webp", "bio": "John leads Olympus Atelier's creative direction, shaping cohesive concepts across film, photography, design, and editorial production."},
             {"name": "Name coming soon", "role": "Photographer", "image": "assets/team/photographer.webp", "bio": "Focused on people, events, and editorial moments with an energetic, human point of view."},
             {"name": "Name coming soon", "role": "Cinematographer / Editor / Visual Designer", "image": "assets/team/cinematographer-editor.webp", "bio": "Builds visual narratives from camera through post-production, motion, and final design delivery."},
-            {"name": "Ayomide", "role": "Website Designer", "image": "assets/team/ayomide.webp", "bio": "Designs and develops responsive digital experiences that extend Olympus Studio's visual direction onto the web."},
+            {"name": "Ayomide", "role": "Website Designer", "image": "assets/team/ayomide.webp", "bio": "Designs and develops responsive digital experiences that extend Olympus Atelier's visual direction onto the web."},
         ],
         "socialProof": {
             "placeholder": True,

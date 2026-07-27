@@ -62,7 +62,7 @@ const globalContent = {
     whatsapp_number: sourceContent.siteConfig.whatsappNumber,
     email: sourceContent.siteConfig.email || "",
     location: sourceContent.siteConfig.location || "",
-    footer_intro: "A creative studio for film, photography, campaign graphics, editorial publications, motion design, event coverage, and website development.",
+    footer_intro: "A creative atelier for film, photography, campaign graphics, editorial publications, motion design, event coverage, and website development.",
     instagram: sourceContent.siteConfig.socials?.instagram || "",
     tiktok: sourceContent.siteConfig.socials?.tiktok || "",
     x: sourceContent.siteConfig.socials?.x || "",
