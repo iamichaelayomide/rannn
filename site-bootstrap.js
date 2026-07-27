@@ -47,7 +47,6 @@ const mergePublishedContent = (published) => {
           title: service.title,
           summary: service.summary || service.description || "",
           description: service.description || "",
-          image: service.image_url && service.image_url !== "null" ? service.image_url : null,
         }))
       : fallback.services,
     portfolioItems: hasManagedPortfolio

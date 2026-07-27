@@ -41,7 +41,6 @@
     if (!grid) return;
     grid.innerHTML = content.services.map((service, index) => `
       <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[310px]">
-        ${service.image ? `<img src="${escapeHtml(service.image)}" alt="${escapeHtml(service.title)}" class="w-full aspect-[16/10] object-cover rounded-2xl border border-white/10 mb-2" loading="lazy" decoding="async">` : ''}
         <div class="service-card-icon"><iconify-icon icon="${iconNames[index % iconNames.length]}"></iconify-icon></div>
         <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400 mt-8">Service ${String(index + 1).padStart(2, '0')}</span>
         <h3 class="text-2xl font-bold text-white mt-3">${escapeHtml(service.title)}</h3>

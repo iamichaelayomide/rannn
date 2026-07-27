@@ -912,45 +912,6 @@ html.lenis {
   font-size: 1.35rem;
 }
 
-.service-showcase-card {
-  min-height: 300px;
-  border-radius: 1.5rem;
-  overflow: hidden;
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #0d0d0d;
-}
-
-.service-showcase-card img {
-  width: 100%;
-  height: 100%;
-  min-height: 300px;
-  object-fit: cover;
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.service-showcase-card:hover img {
-  transform: scale(1.035);
-}
-
-.service-showcase-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.82), transparent 65%);
-  pointer-events: none;
-}
-
-.service-showcase-card figcaption {
-  position: absolute;
-  z-index: 1;
-  left: 1.5rem;
-  bottom: 1.35rem;
-  color: white;
-  font-weight: 700;
-  font-size: 1.15rem;
-}
-
 .archive-filter {
   min-height: 42px;
   border-radius: 999px;
@@ -1099,11 +1060,6 @@ textarea.form-control {
 }
 
 @media (max-width: 639px) {
-  .service-showcase-card,
-  .service-showcase-card img {
-    min-height: 240px;
-  }
-
   #lightbox-prev-btn,
   #lightbox-next-btn {
     top: auto !important;

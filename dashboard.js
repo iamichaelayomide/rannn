@@ -894,8 +894,7 @@ function renderServiceRoute(segments) {
   showRecordView(service ? service.title : "Add service", "Website");
   const fields = field("Service name", "title", "text", { required: true, value: service?.title, wide: true })
     + field("Short description", "summary", "textarea", { required: true, value: service?.summary, wide: true })
-    + field("Full description", "description", "textarea", { value: service?.description, wide: true })
-    + imageField("Service image", "image_url", service?.image_url, service?.title);
+    + field("Full description", "description", "textarea", { value: service?.description, wide: true });
   $("#record-screen").innerHTML = `<form class="record-form cms-editor" data-record-form="service" data-id="${service?.id || ""}">${recordHeader("services", "Services", service ? service.title : "Add a service", "Use clear language clients will understand.", service ? cmsBadge(service) : "")}<section class="form-section"><div class="form-grid">${fields}</div></section>${service ? revisionHistory("service", service.id) : ""}<div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton("services", "Cancel", "secondary")}${service ? `<button class="button ghost" type="button" data-duplicate-current="service" data-id="${service.id}">Duplicate</button><button class="button ghost" type="button" data-move-current="service" data-id="${service.id}" data-direction="-1">Move up</button><button class="button ghost" type="button" data-move-current="service" data-id="${service.id}" data-direction="1">Move down</button>` : ""}<button class="button ghost" type="button" data-preview-current="service">Preview</button><button class="button secondary" type="submit">Save draft</button>${service ? `<button class="button primary" type="button" data-publish-current="service" data-id="${service.id}">Publish</button><button class="button destructive" type="button" data-archive-current="service" data-id="${service.id}">Archive</button>` : ""}</div></form>`;
 }
 
@@ -1040,7 +1039,7 @@ async function verifyPublishedEntity(type, id) {
   } else if (type === "service") {
     source = state.data.services.find((item) => item.id === id);
     live = payload?.services?.find((item) => item.id === id || item.slug === source?.slug);
-    if (!source || !live || ["title", "summary", "description", "image_url"].some((key) => String(live[key] || "") !== String(source[key] || ""))) live = null;
+    if (!source || !live || ["title", "summary", "description"].some((key) => String(live[key] || "") !== String(source[key] || ""))) live = null;
   } else if (type === "portfolio") {
     source = state.data.portfolio.find((item) => item.id === id);
     live = payload?.portfolioItems?.find((item) => item.id === id);
@@ -1148,8 +1147,7 @@ async function saveRecordForm(form, { publishCollection = false } = {}) {
       toast("Draft changes saved.");
     } else if (kind === "service") {
       const existing = id ? state.data.services.find((item) => item.id === id) : null;
-      const image = await resolveImage(form, formData, "image_url", values.title, values.title);
-      const payload = { title: values.title.trim(), slug: existing?.slug || values.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"), summary: values.summary, description: values.description || null, image_url: image || null };
+      const payload = { title: values.title.trim(), slug: existing?.slug || values.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"), summary: values.summary, description: values.description || null, image_url: existing?.image_url || null };
       const query = id ? state.supabase.from("services").update(payload).eq("id", id).select("*").single() : state.supabase.from("services").insert({ ...payload, status: "draft", position: state.data.services.length, has_unpublished_changes: true }).select("*").single();
       const { data, error } = await query;
       if (error) throw error;
@@ -1370,7 +1368,7 @@ function previewRecordFromForm() {
   }
   if (kind === "service") {
     const existing = state.data.services.find((item) => item.id === form.dataset.id) || {};
-    return { kind, id: existing.id, slug: "services", record: { ...existing, ...values, image_url: values.image_url || existing.image_url } };
+    return { kind, id: existing.id, slug: "services", record: { ...existing, ...values } };
   }
   if (kind === "portfolio") {
     const existing = state.data.portfolio.find((item) => item.id === form.dataset.id) || {};

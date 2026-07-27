@@ -78,8 +78,11 @@ for (const required of ["managed-contact-details", "lightbox-description"]) {
     throw new Error(`The public template is missing managed content target: ${required}`);
   }
 }
-for (const required of ["service.description", "service.image", "siteConfig.socials", "hydrateContactDetails", "hydrateMetadata"]) {
+for (const required of ["service.description", "siteConfig.socials", "hydrateContactDetails", "hydrateMetadata"]) {
   if (!contentApp.includes(required)) throw new Error(`A CMS field is not connected to the public renderer: ${required}`);
+}
+if (contentApp.includes("service.image") || (await readFile("index.html", "utf8")).includes("Olympus service showcase")) {
+  throw new Error("The public Services section must remain text-led without service imagery");
 }
 if (!siteBootstrap.includes("hasManagedServices") || !siteBootstrap.includes("hasManagedGlobal")) {
   throw new Error("Empty published CMS collections must not fall back to removed placeholder content");
