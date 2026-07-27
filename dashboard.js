@@ -83,6 +83,11 @@ const pageSchemas = {
     ["Page heading", "header.title"],
     ["Introduction", "header.body", "textarea"],
   ],
+  services: [
+    ["Small heading above the title (optional)", "header.eyebrow"],
+    ["Page heading", "header.title"],
+    ["Introduction", "header.body", "textarea"],
+  ],
   global: [
     ["Brand name", "site.brand_name"],
     ["WhatsApp display number", "site.whatsapp"],
@@ -1019,6 +1024,31 @@ async function verifyPublishedCollection(type, index, item) {
   }
 }
 
+async function verifyPublishedEntity(type, id) {
+  const response = await fetch(`/api/content?published=${Date.now()}`, { cache: "no-store" });
+  if (!response.ok) throw new Error("The change was published, but the live website could not be verified.");
+  const payload = await response.json();
+  let source;
+  let live;
+  if (type === "page") {
+    source = state.data.pages.find((item) => item.id === id);
+    live = payload?.pages?.[source?.slug];
+    if (!source || !live
+      || JSON.stringify(live.content || {}) !== JSON.stringify(source.content || {})
+      || String(live.seo_title || "") !== String(source.seo_title || "")
+      || String(live.seo_description || "") !== String(source.seo_description || "")) live = null;
+  } else if (type === "service") {
+    source = state.data.services.find((item) => item.id === id);
+    live = payload?.services?.find((item) => item.id === id || item.slug === source?.slug);
+    if (!source || !live || ["title", "summary", "description", "image_url"].some((key) => String(live[key] || "") !== String(source[key] || ""))) live = null;
+  } else if (type === "portfolio") {
+    source = state.data.portfolio.find((item) => item.id === id);
+    live = payload?.portfolioItems?.find((item) => item.id === id);
+    if (!source || !live || ["title", "description", "thumbnail_src", "alt_text"].some((key) => String(live[key] || "") !== String(source[key] || ""))) live = null;
+  }
+  if (!live) throw new Error("The draft was saved, but the public website has not received this change yet. Please publish again.");
+}
+
 async function logActivity(projectId, action, entityType, entityId, metadata = {}) {
   await state.supabase.from("activities").insert({
     actor_id: state.profile.id, project_id: projectId || null,
@@ -1186,6 +1216,12 @@ async function saveRecordForm(form, { publishCollection = false } = {}) {
 async function publishEntity(type, id) {
   const { error } = await state.supabase.rpc("publish_cms_entity", { target_type: type, target_id: id });
   if (error) {
+    setScreenError(error.message);
+    return;
+  }
+  try {
+    await verifyPublishedEntity(type, id);
+  } catch (error) {
     setScreenError(error.message);
     return;
   }

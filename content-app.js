@@ -41,10 +41,12 @@
     if (!grid) return;
     grid.innerHTML = content.services.map((service, index) => `
       <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[310px]">
+        ${service.image ? `<img src="${escapeHtml(service.image)}" alt="${escapeHtml(service.title)}" class="w-full aspect-[16/10] object-cover rounded-2xl border border-white/10 mb-2" loading="lazy" decoding="async">` : ''}
         <div class="service-card-icon"><iconify-icon icon="${iconNames[index % iconNames.length]}"></iconify-icon></div>
         <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400 mt-8">Service ${String(index + 1).padStart(2, '0')}</span>
         <h3 class="text-2xl font-bold text-white mt-3">${escapeHtml(service.title)}</h3>
         <p class="text-sm text-neutral-400 leading-relaxed mt-4">${escapeHtml(service.summary)}</p>
+        ${service.description ? `<p class="text-xs text-neutral-500 leading-relaxed mt-3">${escapeHtml(service.description)}</p>` : ''}
         <ul class="mt-6 space-y-2 text-xs text-neutral-300">
           ${(service.deliverables || deliverables[index] || []).map(item => `<li class="flex items-center gap-2"><span class="text-amber-400">✓</span>${escapeHtml(item)}</li>`).join('')}
         </ul>
@@ -86,6 +88,7 @@
     document.querySelectorAll('.capabilities-card').forEach((card, cardIndex) => {
       const serviceIndex = capabilityIndexes[cardIndex] ?? cardIndex;
       const service = content.services[serviceIndex];
+      card.hidden = !service;
       if (!service) return;
       const title = card.querySelector('h3');
       const body = card.querySelector('.primary-content-block p');
@@ -115,6 +118,7 @@
 
   const hydratePageHeaders = () => {
     const targets = {
+      services: '#page-services > div > div:first-child',
       portfolio: '#page-portfolio > div > div:first-child > div:first-child',
       about: '#page-about > div > div:first-child > div:first-child',
       book: '#page-book > div > div:first-child',
@@ -137,6 +141,30 @@
         if (image) image.src = header.image;
       }
     });
+  };
+
+  const hydrateContactDetails = () => {
+    const contact = content.pages?.contact?.content?.contact || {};
+    const details = [
+      contact.email || content.siteConfig.email
+        ? ['solar:letter-linear', 'Email', contact.email || content.siteConfig.email, `mailto:${contact.email || content.siteConfig.email}`]
+        : null,
+      contact.phone || content.siteConfig.whatsappDisplay
+        ? ['solar:phone-linear', 'Phone', contact.phone || content.siteConfig.whatsappDisplay, `tel:${String(contact.phone || content.siteConfig.whatsappDisplay).replace(/[^\d+]/g, '')}`]
+        : null,
+      contact.location || content.siteConfig.location
+        ? ['solar:map-point-linear', 'Location', contact.location || content.siteConfig.location, '']
+        : null,
+    ].filter(Boolean);
+    const container = document.getElementById('managed-contact-details');
+    if (!container) return;
+    container.classList.toggle('hidden', !details.length);
+    container.innerHTML = details.map(([iconName, label, value, href]) => {
+      const body = `<iconify-icon icon="${iconName}" class="text-xl text-amber-400"></iconify-icon><span><small class="block text-[9px] uppercase tracking-widest text-neutral-500">${escapeHtml(label)}</small><strong class="block text-sm text-white mt-1">${escapeHtml(value)}</strong></span>`;
+      return href
+        ? `<a href="${escapeHtml(href)}" class="glass-card border border-white/10 rounded-2xl p-4 flex items-center gap-3 hover:border-amber-400/30">${body}</a>`
+        : `<div class="glass-card border border-white/10 rounded-2xl p-4 flex items-center gap-3">${body}</div>`;
+    }).join('');
   };
 
   const hydrateFaqs = () => {
@@ -237,6 +265,7 @@
     const nextButton = document.getElementById('lightbox-next-btn');
     const title = document.getElementById('lightbox-title');
     const category = document.getElementById('lightbox-category');
+    const description = document.getElementById('lightbox-description');
     const original = document.getElementById('lightbox-original-link');
     if (!modal || !image || !video || !driveFrame || !closeButton) return;
 
@@ -248,6 +277,10 @@
       const item = portfolioItems[activeIndex];
       title.textContent = item.title;
       category.textContent = `${item.collection} · ${item.year}`;
+      if (description) {
+        description.textContent = item.description || '';
+        description.classList.toggle('hidden', !item.description);
+      }
       image.classList.add('hidden');
       video.classList.add('hidden');
       driveFrame.classList.add('hidden');
@@ -505,10 +538,44 @@
     const expertiseList = expertiseHeading?.nextElementSibling;
     if (expertiseList) expertiseList.innerHTML = content.services.map(service => `<li><a href="#services" class="hover:text-white transition-colors spa-nav-link" data-page="services">${escapeHtml(service.title)}</a></li>`).join('');
 
+    document.querySelectorAll('.site-logo-link').forEach(link => {
+      link.setAttribute('aria-label', `${content.siteConfig.brandName} home`);
+      const image = link.querySelector('img');
+      if (image) image.alt = content.siteConfig.brandName;
+    });
+    document.title = `${content.siteConfig.brandName} — Film, Photography & Visual Design`;
+
     const connectHeading = [...footer.querySelectorAll('h5')].find(item => item.textContent.trim() === 'Connect');
     const connectRow = connectHeading?.nextElementSibling;
-    if (connectRow) connectRow.innerHTML = `<a href="${whatsappUrl('Hello Olympus Studio, I would like to discuss a project.')}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-amber-400/30 px-4 py-2 text-xs font-bold text-amber-400 hover:bg-amber-400/10"><iconify-icon icon="logos:whatsapp-icon"></iconify-icon>${escapeHtml(content.siteConfig.whatsappDisplay)}</a>`;
+    if (connectRow) {
+      const socialIcons = { instagram: 'ri:instagram-fill', tiktok: 'ri:tiktok-fill', x: 'ri:twitter-x-fill', linkedin: 'ri:linkedin-fill' };
+      const socialLinks = Object.entries(content.siteConfig.socials || {})
+        .filter(([, url]) => Boolean(url))
+        .map(([network, url]) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(titleCase(network))}" class="w-9 h-9 rounded-full border border-white/10 inline-flex items-center justify-center text-neutral-400 hover:text-amber-400 hover:border-amber-400/30"><iconify-icon icon="${socialIcons[network]}"></iconify-icon></a>`)
+        .join('');
+      const whatsappLink = content.siteConfig.whatsappNumber && content.siteConfig.whatsappDisplay
+        ? `<a href="${whatsappUrl(`Hello ${content.siteConfig.brandName}, I would like to discuss a project.`)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-amber-400/30 px-4 py-2 text-xs font-bold text-amber-400 hover:bg-amber-400/10"><iconify-icon icon="logos:whatsapp-icon"></iconify-icon>${escapeHtml(content.siteConfig.whatsappDisplay)}</a>`
+        : '';
+      connectRow.innerHTML = `${whatsappLink}${content.siteConfig.email ? `<a href="mailto:${escapeHtml(content.siteConfig.email)}" class="text-xs text-neutral-400 hover:text-white">${escapeHtml(content.siteConfig.email)}</a>` : ''}${content.siteConfig.location ? `<span class="text-xs text-neutral-500">${escapeHtml(content.siteConfig.location)}</span>` : ''}${socialLinks ? `<span class="flex gap-2">${socialLinks}</span>` : ''}`;
+    }
+    const copyright = connectHeading?.parentElement?.querySelector('p');
+    if (copyright) copyright.textContent = `© ${new Date().getFullYear()} ${content.siteConfig.brandName}. All rights reserved.`;
     footer.querySelectorAll('a[href="#"]').forEach(link => link.hidden = true);
+  };
+
+  const titleCase = value => String(value || '').replaceAll('_', ' ').replace(/\b\w/g, letter => letter.toUpperCase());
+
+  const hydrateMetadata = () => {
+    const slug = (window.location.hash.replace(/^#/, '').split('?')[0] || 'home');
+    const page = content.pages?.[slug];
+    document.title = page?.seo_title || `${content.siteConfig.brandName} — Film, Photography & Visual Design`;
+    let description = document.querySelector('meta[name="description"]');
+    if (!description) {
+      description = document.createElement('meta');
+      description.name = 'description';
+      document.head.append(description);
+    }
+    description.content = page?.seo_description || page?.content?.header?.body || page?.content?.hero?.body || '';
   };
 
   const initializeManagedContent = () => {
@@ -516,6 +583,7 @@
     renderTeam();
     hydrateHomepage();
     hydratePageHeaders();
+    hydrateContactDetails();
     hydrateSocialProof();
     hydrateFaqs();
     hydratePartners();
@@ -525,6 +593,8 @@
     });
     initWhatsAppForms();
     hydrateFooter();
+    hydrateMetadata();
+    window.addEventListener('hashchange', hydrateMetadata);
   };
 
   if (document.readyState === 'loading') {

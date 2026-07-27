@@ -20,40 +20,43 @@ const mergePublishedContent = (published) => {
   const globalContent = pages.global?.content || {};
   const managedServices = Array.isArray(published?.services) ? published.services : [];
   const managedPortfolio = Array.isArray(published?.portfolioItems) ? published.portfolioItems : [];
+  const hasManagedServices = Array.isArray(published?.services);
+  const hasManagedPortfolio = Array.isArray(published?.portfolioItems);
+  const hasManagedGlobal = Boolean(pages.global?.content);
 
   return {
     ...fallback,
     pages,
     siteConfig: {
       ...fallback.siteConfig,
-      brandName: globalContent.site?.brand_name || fallback.siteConfig.brandName,
-      whatsappNumber: globalContent.site?.whatsapp_number || fallback.siteConfig.whatsappNumber,
-      whatsappDisplay: globalContent.site?.whatsapp || fallback.siteConfig.whatsappDisplay,
-      email: globalContent.site?.email || fallback.siteConfig.email,
-      location: globalContent.site?.location || fallback.siteConfig.location,
+      brandName: globalContent.site?.brand_name ?? fallback.siteConfig.brandName,
+      whatsappNumber: globalContent.site?.whatsapp_number ?? fallback.siteConfig.whatsappNumber,
+      whatsappDisplay: globalContent.site?.whatsapp ?? fallback.siteConfig.whatsappDisplay,
+      email: globalContent.site?.email ?? fallback.siteConfig.email,
+      location: globalContent.site?.location ?? fallback.siteConfig.location,
       socials: {
-        instagram: globalContent.site?.instagram || fallback.siteConfig.socials?.instagram,
-        tiktok: globalContent.site?.tiktok || fallback.siteConfig.socials?.tiktok,
-        x: globalContent.site?.x || fallback.siteConfig.socials?.x,
-        linkedin: globalContent.site?.linkedin || fallback.siteConfig.socials?.linkedin,
+        instagram: globalContent.site?.instagram ?? fallback.siteConfig.socials?.instagram,
+        tiktok: globalContent.site?.tiktok ?? fallback.siteConfig.socials?.tiktok,
+        x: globalContent.site?.x ?? fallback.siteConfig.socials?.x,
+        linkedin: globalContent.site?.linkedin ?? fallback.siteConfig.socials?.linkedin,
       },
     },
-    services: managedServices.length
+    services: hasManagedServices
       ? managedServices.map((service) => ({
           id: service.slug || service.id,
           title: service.title,
           summary: service.summary || service.description || "",
           description: service.description || "",
-          image: service.image_url || null,
+          image: service.image_url && service.image_url !== "null" ? service.image_url : null,
         }))
       : fallback.services,
-    portfolioItems: managedPortfolio.length
+    portfolioItems: hasManagedPortfolio
       ? managedPortfolio.map(toPortfolioItem)
       : fallback.portfolioItems,
-    teamMembers: globalContent.team?.length ? globalContent.team : fallback.teamMembers,
+    teamMembers: hasManagedGlobal && Array.isArray(globalContent.team) ? globalContent.team : fallback.teamMembers,
     socialProof: {
       ...fallback.socialProof,
-      testimonials: globalContent.testimonials?.length
+      testimonials: hasManagedGlobal && Array.isArray(globalContent.testimonials)
         ? globalContent.testimonials
         : fallback.socialProof.testimonials,
     },

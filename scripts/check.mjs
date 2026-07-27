@@ -11,6 +11,8 @@ const requiredFiles = [
   "supabase/migrations/202607270003_complete_admin_flows.sql",
   "supabase/migrations/202607270004_crm_navigation_cms_repair.sql",
   "supabase/migrations/202607270005_archived_project_read_only.sql",
+  "supabase/migrations/202607270006_services_page_cms.sql",
+  "supabase/migrations/202607270007_repair_published_page_snapshots.sql",
 ];
 
 for (const file of requiredFiles) await access(file);
@@ -33,6 +35,8 @@ const portal = await readFile("portal.js", "utf8");
 const bootstrap = await readFile("site-bootstrap.js", "utf8");
 const admin = await readFile("admin.html", "utf8");
 const publicContentApi = await readFile("api/content.js", "utf8");
+const contentApp = await readFile("content-app.js", "utf8");
+const siteBootstrap = await readFile("site-bootstrap.js", "utf8");
 
 if (/window\.(prompt|alert|confirm)\s*\(/.test(`${dashboard}\n${portal}`)) {
   throw new Error("Native browser prompts are not allowed in the admin or client portal");
@@ -65,6 +69,20 @@ if (/s-maxage|stale-while-revalidate/.test(publicContentApi) || !publicContentAp
 }
 if (!dashboard.includes("verifyPublishedCollection")) {
   throw new Error("Site-wide publishing must verify the public payload before reporting success");
+}
+if (!dashboard.includes("verifyPublishedEntity")) {
+  throw new Error("Page, Service, and Portfolio publishing must verify the public payload");
+}
+for (const required of ["managed-contact-details", "lightbox-description"]) {
+  if (!admin.includes(required) && !(await readFile("index.html", "utf8")).includes(required)) {
+    throw new Error(`The public template is missing managed content target: ${required}`);
+  }
+}
+for (const required of ["service.description", "service.image", "siteConfig.socials", "hydrateContactDetails", "hydrateMetadata"]) {
+  if (!contentApp.includes(required)) throw new Error(`A CMS field is not connected to the public renderer: ${required}`);
+}
+if (!siteBootstrap.includes("hasManagedServices") || !siteBootstrap.includes("hasManagedGlobal")) {
+  throw new Error("Empty published CMS collections must not fall back to removed placeholder content");
 }
 const crmMigration = await readFile("supabase/migrations/202607270004_crm_navigation_cms_repair.sql", "utf8");
 for (const required of ["get_crm_dashboard", "set_project_archived", "save_sitewide_collection", "mark_page_draft_change", "mark_service_draft_change", "mark_portfolio_draft_change"]) {
