@@ -1140,7 +1140,11 @@ const initSPARouter = () => {
       const targetPage = link.getAttribute('data-page');
       if (targetPage) {
         e.preventDefault();
-        window.location.hash = targetPage;
+        const requestedHash = link.getAttribute('href')?.replace(/^#/, '') || targetPage;
+        navigateTo(targetPage);
+        if (window.location.hash.substring(1) !== requestedHash) {
+          window.location.hash = requestedHash;
+        }
       }
     });
   });

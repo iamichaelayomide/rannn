@@ -408,7 +408,7 @@ function renderTopAction() {
     return;
   }
   $("#top-actions").innerHTML = config
-    ? `<button class="button primary" data-action="${config[0]}">${icon(config[2])}<span>${config[1]}</span></button>`
+    ? `<button class="button primary" type="button" data-action="${config[0]}">${icon(config[2])}<span>${config[1]}</span></button>`
     : "";
 }
 
@@ -774,6 +774,26 @@ async function archiveMedia(id) {
   else { toast("Media archived."); await refreshData(); }
 }
 
+function handleCreateAction(action) {
+  const dialogs = {
+    "new-client": "client",
+    "new-project": "project",
+    "new-invoice": "invoice",
+    "new-service": "service",
+    "new-portfolio": "portfolio",
+    "new-media": "media",
+  };
+  const kind = dialogs[action];
+  if (!kind) return false;
+  try {
+    openDialog(kind);
+  } catch (error) {
+    console.error(`Could not open ${kind} dialog`, error);
+    toast(`The ${titleCase(kind)} form could not open. Refresh the page and try again.`, "error");
+  }
+  return true;
+}
+
 document.addEventListener("click", async (event) => {
   const nav = event.target.closest("[data-view]");
   if (nav) setView(nav.dataset.view);
@@ -781,12 +801,7 @@ document.addEventListener("click", async (event) => {
   if (jump) setView(jump.dataset.viewJump);
   const action = event.target.closest("[data-action]")?.dataset.action;
   if (action === "retry") await refreshData();
-  if (action === "new-client") openDialog("client");
-  if (action === "new-project") openDialog("project");
-  if (action === "new-invoice") openDialog("invoice");
-  if (action === "new-service") openDialog("service");
-  if (action === "new-portfolio") openDialog("portfolio");
-  if (action === "new-media") openDialog("media");
+  handleCreateAction(action);
   if (action === "load-more-portfolio") {
     state.portfolioVisible += 24;
     renderPortfolio();
