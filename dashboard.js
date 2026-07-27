@@ -5,13 +5,16 @@ const state = {
   session: null,
   profile: null,
   data: {
-    projects: [], clients: [], invoices: [], intake: [], milestones: [],
+    projects: [], clients: [], invoices: [], invoiceItems: [], intake: [],
+    milestones: [], invitations: [], members: [], activities: [],
     pages: [], services: [], media: [], portfolio: [], profiles: [], revisions: [],
   },
   view: "overview",
+  route: ["overview"],
   collectionTab: "team",
   portfolioVisible: 24,
-  loading: true,
+  previewPayload: null,
+  dirty: false,
 };
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -20,86 +23,23 @@ const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (character)
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;",
 })[character]);
 const titleCase = (value = "") => String(value).replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+const icon = (name) => `<iconify-icon icon="${name}"></iconify-icon>`;
 const formatDate = (value) => value
   ? new Intl.DateTimeFormat("en-NG", { day: "numeric", month: "short", year: "numeric" }).format(new Date(value))
+  : "Not set";
+const formatDateTime = (value) => value
+  ? new Intl.DateTimeFormat("en-NG", { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(value))
   : "Not set";
 const money = (value, currency = "NGN") => new Intl.NumberFormat("en-NG", {
   style: "currency", currency, maximumFractionDigits: 0,
 }).format(Number(value || 0));
 const badge = (status) => `<span class="badge ${escapeHtml(status)}">${escapeHtml(titleCase(status))}</span>`;
 const demoBadge = (record) => record?.is_demo ? '<span class="demo-badge">Demo</span>' : "";
-const icon = (name) => `<iconify-icon icon="${name}"></iconify-icon>`;
 const emptyState = (title, body, action = "") => `<div class="empty">${icon("solar:inbox-line-linear")}<strong>${escapeHtml(title)}</strong><p>${escapeHtml(body)}</p>${action}</div>`;
-const errorState = (message) => `<div class="empty error-state">${icon("solar:danger-triangle-linear")}<strong>Something went wrong</strong><p>${escapeHtml(message)}</p><button class="button secondary" data-action="retry">Retry</button></div>`;
-
-const pageSchemas = {
-  home: [
-    ["Hero eyebrow", "hero.eyebrow"],
-    ["Hero title — first line", "hero.title_line_one"],
-    ["Hero title — second line", "hero.title_line_two"],
-    ["Hero description", "hero.body", "textarea"],
-    ["Hero background image URL", "hero.background_image", "url"],
-    ["Vision statement", "vision.body", "textarea"],
-    ["Manifesto statement", "manifesto.body", "textarea"],
-  ],
-  about: [
-    ["Eyebrow", "header.eyebrow"],
-    ["Page title", "header.title"],
-    ["Introduction", "header.body", "textarea"],
-    ["Feature image URL", "header.image", "url"],
-  ],
-  contact: [
-    ["Eyebrow", "header.eyebrow"],
-    ["Page title", "header.title"],
-    ["Introduction", "header.body", "textarea"],
-    ["Public email", "contact.email", "email"],
-    ["Phone number", "contact.phone"],
-    ["Studio location", "contact.location"],
-  ],
-  book: [
-    ["Eyebrow", "header.eyebrow"],
-    ["Page title", "header.title"],
-    ["Introduction", "header.body", "textarea"],
-  ],
-  portfolio: [
-    ["Eyebrow", "header.eyebrow"],
-    ["Page title", "header.title"],
-    ["Introduction", "header.body", "textarea"],
-  ],
-  global: [
-    ["Brand name", "site.brand_name"],
-    ["WhatsApp display number", "site.whatsapp"],
-    ["WhatsApp international number", "site.whatsapp_number"],
-    ["Public email", "site.email", "email"],
-    ["Location", "site.location"],
-    ["Footer introduction", "site.footer_intro", "textarea"],
-    ["Instagram URL", "site.instagram", "url"],
-    ["TikTok URL", "site.tiktok", "url"],
-    ["X URL", "site.x", "url"],
-    ["LinkedIn URL", "site.linkedin", "url"],
-  ],
-};
-
-const collectionSchemas = {
-  team: [
-    ["Name", "name"], ["Role", "role"], ["Biography", "bio", "textarea"], ["Image URL", "image", "url"],
-  ],
-  testimonials: [
-    ["Client name", "name"], ["Role / company", "role"], ["Testimonial", "quote", "textarea"],
-  ],
-  faqs: [
-    ["Question", "question"], ["Answer", "answer", "textarea"],
-  ],
-  partners: [
-    ["Partner name", "name"], ["Website URL", "url", "url"], ["Logo URL", "logo", "url"],
-  ],
-};
-
-function getPath(object, path) {
-  return path.split(".").reduce((value, key) => value?.[key], object);
-}
-
-function setPath(object, path, value) {
+const inlineError = (message, retry = "") => `<div class="inline-error" role="alert">${icon("solar:danger-triangle-linear")}<div><strong>We could not complete that action</strong><p>${escapeHtml(message)}</p>${retry ? `<button class="button secondary" type="button" data-action="${retry}">Try again</button>` : ""}</div></div>`;
+const routeButton = (route, label, style = "secondary", iconName = "") => `<button type="button" class="button ${style}" data-route="${escapeHtml(route)}">${iconName ? icon(iconName) : ""}${escapeHtml(label)}</button>`;
+const getPath = (object, path) => path.split(".").reduce((value, key) => value?.[key], object);
+const setPath = (object, path, value) => {
   const keys = path.split(".");
   let target = object;
   keys.slice(0, -1).forEach((key) => {
@@ -107,14 +47,180 @@ function setPath(object, path, value) {
     target = target[key];
   });
   target[keys.at(-1)] = value;
+};
+
+const pageSchemas = {
+  home: [
+    ["Small heading above the title (optional)", "hero.eyebrow"],
+    ["First title line", "hero.title_line_one"],
+    ["Highlighted title line", "hero.title_line_two"],
+    ["Introduction", "hero.body", "textarea"],
+    ["Hero image", "hero.background_image", "image"],
+    ["Vision statement", "vision.body", "textarea"],
+    ["Manifesto statement", "manifesto.body", "textarea"],
+  ],
+  about: [
+    ["Small heading above the title (optional)", "header.eyebrow"],
+    ["Page heading", "header.title"],
+    ["Introduction", "header.body", "textarea"],
+    ["Feature image", "header.image", "image"],
+  ],
+  contact: [
+    ["Small heading above the title (optional)", "header.eyebrow"],
+    ["Page heading", "header.title"],
+    ["Introduction", "header.body", "textarea"],
+    ["Public email", "contact.email", "email", "contact"],
+    ["Phone number", "contact.phone", "tel", "contact"],
+    ["Studio location", "contact.location", "text", "contact"],
+  ],
+  book: [
+    ["Small heading above the title (optional)", "header.eyebrow"],
+    ["Page heading", "header.title"],
+    ["Introduction", "header.body", "textarea"],
+  ],
+  portfolio: [
+    ["Small heading above the title (optional)", "header.eyebrow"],
+    ["Page heading", "header.title"],
+    ["Introduction", "header.body", "textarea"],
+  ],
+  global: [
+    ["Brand name", "site.brand_name"],
+    ["WhatsApp display number", "site.whatsapp"],
+    ["WhatsApp number", "site.whatsapp_number"],
+    ["Public email", "site.email", "email", "contact"],
+    ["Location", "site.location", "text", "contact"],
+    ["Footer introduction", "site.footer_intro", "textarea"],
+    ["Instagram address", "site.instagram", "text", "advanced"],
+    ["TikTok address", "site.tiktok", "text", "advanced"],
+    ["X address", "site.x", "text", "advanced"],
+    ["LinkedIn address", "site.linkedin", "text", "advanced"],
+  ],
+};
+
+const collectionSchemas = {
+  team: [
+    ["Name", "name"], ["Role", "role"], ["Biography", "bio", "textarea"], ["Photo", "image", "image"],
+  ],
+  testimonials: [
+    ["Client name", "name"], ["Role or company", "role"], ["What they said", "quote", "textarea"],
+  ],
+  faqs: [["Question", "question"], ["Answer", "answer", "textarea"]],
+  partners: [["Partner name", "name"], ["Website address", "url"], ["Logo", "logo", "image"]],
+};
+
+function cmsState(record) {
+  if (record?.status === "archived") return "archived";
+  if (!record?.published_snapshot) return "draft";
+  return record.has_unpublished_changes ? "changes" : "published";
 }
 
-function toast(message, type = "success") {
+function cmsBadge(record) {
+  const current = cmsState(record);
+  const labels = { draft: "Draft", changes: "Changes to publish", published: "Published", archived: "Archived" };
+  return `<span class="badge ${current}">${labels[current]}</span>`;
+}
+
+function toast(message) {
   const node = document.createElement("div");
-  node.className = `toast ${type === "error" ? "error" : ""}`;
-  node.innerHTML = `${icon(type === "error" ? "solar:danger-circle-linear" : "solar:check-circle-linear")}<span>${escapeHtml(message)}</span>`;
+  node.className = "toast";
+  node.innerHTML = `${icon("solar:check-circle-linear")}<span>${escapeHtml(message)}</span>`;
   $("#toast-region").append(node);
-  setTimeout(() => node.remove(), 4300);
+  setTimeout(() => node.remove(), 3500);
+}
+
+function setScreenError(message) {
+  const target = $("#screen-message") || $("#record-screen");
+  if (target) target.innerHTML = inlineError(message);
+}
+
+function parseRoute() {
+  const raw = window.location.hash.replace(/^#/, "") || "overview";
+  const [path, query = ""] = raw.split("?");
+  return { segments: path.split("/").filter(Boolean), params: new URLSearchParams(query) };
+}
+
+function go(route) {
+  if (state.dirty && !window.confirmNavigationRequested) {
+    confirmAction("Discard unsaved changes?", "Your edits have not been saved.", "Discard").then((discard) => {
+      if (!discard) return;
+      state.dirty = false;
+      window.confirmNavigationRequested = true;
+      window.location.hash = route;
+      window.confirmNavigationRequested = false;
+    });
+    return;
+  }
+  window.location.hash = route;
+}
+
+function showListView(view) {
+  state.view = view;
+  state.route = [view];
+  $$(".view").forEach((panel) => panel.classList.toggle("active", panel.dataset.viewPanel === view));
+  $$(".nav-item").forEach((button) => button.classList.toggle("active", button.dataset.view === view));
+  $("#view-title").textContent = ({ invoices: "Billing", pages: "Pages", media: "Media library" })[view] || titleCase(view);
+  $("#view-eyebrow").textContent = ["pages", "portfolio", "services", "media", "team"].includes(view) ? "Administration" : "Workspace";
+  renderTopAction();
+  closeSidebar();
+}
+
+function showRecordView(title, eyebrow = "Workspace") {
+  state.view = "record";
+  $$(".view").forEach((panel) => panel.classList.toggle("active", panel.dataset.viewPanel === "record"));
+  $$(".nav-item").forEach((button) => button.classList.remove("active"));
+  $("#view-title").textContent = title;
+  $("#view-eyebrow").textContent = eyebrow;
+  $("#top-actions").innerHTML = "";
+  closeSidebar();
+}
+
+function recordHeader(parentRoute, parentLabel, title, body = "", actions = "") {
+  return `<div class="record-header">
+    <button class="back-link" type="button" data-route="${escapeHtml(parentRoute)}">${icon("solar:arrow-left-linear")}${escapeHtml(parentLabel)}</button>
+    <div class="record-heading"><div><h2>${escapeHtml(title)}</h2>${body ? `<p class="muted">${escapeHtml(body)}</p>` : ""}</div><div class="inline-actions">${actions}</div></div>
+  </div>`;
+}
+
+function field(label, name, type = "text", options = {}) {
+  const classes = options.wide ? "wide" : "";
+  const help = options.help ? `<small>${escapeHtml(options.help)}</small>` : "";
+  const required = options.required ? "required" : "";
+  if (type === "select") {
+    return `<label class="${classes}">${escapeHtml(label)}${help}<select name="${escapeHtml(name)}" ${required}>${options.items.map((item) => `<option value="${escapeHtml(item.value)}" ${String(item.value) === String(options.value ?? "") ? "selected" : ""}>${escapeHtml(item.label)}</option>`).join("")}</select></label>`;
+  }
+  if (type === "textarea") return `<label class="${classes}">${escapeHtml(label)}${help}<textarea name="${escapeHtml(name)}" ${required}>${escapeHtml(options.value || "")}</textarea></label>`;
+  if (type === "checkbox") return `<label class="check-field ${classes}"><input name="${escapeHtml(name)}" type="checkbox" ${options.value ? "checked" : ""}><span>${escapeHtml(label)}</span></label>`;
+  return `<label class="${classes}">${escapeHtml(label)}${help}<input name="${escapeHtml(name)}" type="${type}" value="${escapeHtml(options.value ?? "")}" ${required} ${options.min != null ? `min="${options.min}"` : ""} ${options.max != null ? `max="${options.max}"` : ""}></label>`;
+}
+
+function imageField(label, name, value = "", alt = "") {
+  const media = state.data.media.filter((item) => item.mime_type?.startsWith("image/"));
+  return `<section class="image-field wide" data-image-field="${escapeHtml(name)}">
+    <div class="image-field-head"><div><strong>${escapeHtml(label)}</strong><small>Keep this image, or replace it only when you want to.</small></div></div>
+    <input type="hidden" name="${escapeHtml(name)}" value="${escapeHtml(value)}">
+    <div class="current-image ${value ? "" : "empty-image"}">
+      ${value ? `<img src="${escapeHtml(value)}" alt="${escapeHtml(alt)}">` : icon("solar:gallery-linear")}
+      <div><strong>${value ? "Current image" : "No image selected"}</strong><small>${value ? "This image will stay unless you replace it." : "Choose an existing image or upload a new one."}</small></div>
+    </div>
+    <div class="image-actions">
+      <button class="button secondary" type="button" data-toggle-library="${escapeHtml(name)}">${icon("solar:gallery-wide-linear")}Choose from library</button>
+      <label class="button secondary upload-button">${icon("solar:upload-linear")}Upload new<input type="file" name="${escapeHtml(name)}_file" accept="image/jpeg,image/png,image/webp,image/gif" hidden></label>
+      <button class="button ghost ${value ? "" : "hidden"}" type="button" data-restore-image="${escapeHtml(name)}" data-original="${escapeHtml(value)}">Restore current image</button>
+    </div>
+    <div class="inline-library hidden" data-library="${escapeHtml(name)}">
+      ${media.length ? media.map((item) => `<button type="button" class="library-choice" data-choose-image="${escapeHtml(name)}" data-image-value="${escapeHtml(item.public_url)}"><img src="${escapeHtml(item.public_url)}" alt="${escapeHtml(item.alt_text)}"><span>${escapeHtml(item.internal_name)}</span></button>`).join("") : `<p class="muted">The media library has no images yet.</p>`}
+    </div>
+  </section>`;
+}
+
+function formShell(kind, title, description, fields, backRoute, submitLabel = "Save") {
+  return `<form class="record-form" data-record-form="${escapeHtml(kind)}">
+    ${recordHeader(backRoute, "Back", title, description)}
+    <div class="form-section"><div class="form-grid">${fields}</div></div>
+    <div class="upload-progress hidden" id="upload-progress"><span></span></div>
+    <div id="screen-message" class="screen-message" role="alert"></div>
+    <div class="sticky-actions">${routeButton(backRoute, "Cancel", "secondary")}<button class="button primary" type="submit">${escapeHtml(submitLabel)}</button></div>
+  </form>`;
 }
 
 async function getConfig() {
@@ -152,8 +258,7 @@ function showLogin() {
 }
 
 async function enterWorkspace() {
-  const { data: profile, error } = await state.supabase
-    .from("profiles").select("*").eq("id", state.session.user.id).single();
+  const { data: profile, error } = await state.supabase.from("profiles").select("*").eq("id", state.session.user.id).single();
   if (error) {
     $("#login-message").textContent = "Your account exists but has not been provisioned for this workspace.";
     await state.supabase.auth.signOut();
@@ -172,51 +277,50 @@ async function enterWorkspace() {
   applyRoleVisibility();
   restoreSidebar();
   await refreshData();
-  if (profile.must_change_password) {
-    $("#password-dialog").showModal();
-  }
+  if (profile.must_change_password) $("#password-dialog").showModal();
 }
 
 function applyRoleVisibility() {
   const role = state.profile.role;
   const canFinance = ["owner", "finance"].includes(role);
   const canContent = ["owner", "content_manager"].includes(role);
-  const canManageProjects = ["owner", "project_manager"].includes(role);
   $$('[data-view="invoices"], [data-view-panel="invoices"]').forEach((element) => element.classList.toggle("hidden", !canFinance));
   $$('[data-view="pages"], [data-view="portfolio"], [data-view="services"], [data-view="media"], [data-view-panel="pages"], [data-view-panel="portfolio"], [data-view-panel="services"], [data-view-panel="media"]')
     .forEach((element) => element.classList.toggle("hidden", !canContent));
   $$('[data-view="team"], [data-view-panel="team"]').forEach((element) => element.classList.toggle("hidden", role !== "owner"));
-  document.body.dataset.canManageProjects = String(canManageProjects);
 }
 
-async function refreshData() {
-  state.loading = true;
+async function refreshData({ preserveRoute = true } = {}) {
   const queries = [
     state.supabase.from("projects").select("*, clients(id,name,email,company), milestones(id,title,description,status,due_date,position,requires_approval,deliverables(id,title,description,file_url,version,status,client_note))").order("created_at", { ascending: false }),
-    state.supabase.from("clients").select("*, projects(id)").order("created_at", { ascending: false }),
-    state.supabase.from("invoices").select("*, projects(id,title,clients(name))").order("created_at", { ascending: false }),
+    state.supabase.from("clients").select("*").order("created_at", { ascending: false }),
+    state.supabase.from("invoices").select("*, projects(id,title,client_id,clients(name,email))").order("created_at", { ascending: false }),
+    state.supabase.from("invoice_items").select("*").order("position"),
     state.supabase.from("intake_submissions").select("*").order("created_at", { ascending: false }),
     state.supabase.from("milestones").select("*, projects(id,title,clients(name))").order("due_date", { ascending: true }),
+    state.supabase.from("project_invites").select("*").order("created_at", { ascending: false }),
+    state.supabase.from("project_members").select("*, profiles(id,full_name,role)").order("created_at"),
+    state.supabase.from("activities").select("*, profiles(full_name)").order("created_at", { ascending: false }).limit(250),
     state.supabase.from("pages").select("*").order("slug"),
     state.supabase.from("services").select("*").order("position"),
     state.supabase.from("media_assets").select("*").is("archived_at", null).order("created_at", { ascending: false }),
     state.supabase.from("portfolio_items").select("*").order("position"),
     state.supabase.from("profiles").select("*").order("created_at"),
-    state.supabase.from("content_revisions").select("*").order("published_at", { ascending: false }).limit(100),
+    state.supabase.from("content_revisions").select("*, profiles(full_name)").order("published_at", { ascending: false }).limit(100),
   ];
-  const keys = ["projects", "clients", "invoices", "intake", "milestones", "pages", "services", "media", "portfolio", "profiles", "revisions"];
+  const keys = ["projects", "clients", "invoices", "invoiceItems", "intake", "milestones", "invitations", "members", "activities", "pages", "services", "media", "portfolio", "profiles", "revisions"];
   const results = await Promise.all(queries);
   const errors = [];
   results.forEach((result, index) => {
     if (result.error) errors.push(result.error.message);
     else state.data[keys[index]] = result.data || [];
   });
-  state.loading = false;
-  renderAll();
-  if (errors.length) toast(`Some workspace data could not load: ${errors[0]}`, "error");
+  renderLists();
+  if (preserveRoute) renderRoute();
+  if (errors.length) setScreenError(errors[0]);
 }
 
-function renderAll() {
+function renderLists() {
   $("#current-date").textContent = new Intl.DateTimeFormat("en-NG", { weekday: "long", day: "numeric", month: "long" }).format(new Date());
   $("#welcome-title").textContent = `Good ${new Date().getHours() < 12 ? "morning" : new Date().getHours() < 17 ? "afternoon" : "evening"}, ${(state.profile.full_name || "team").split(" ")[0]}.`;
   $("#inbox-count").textContent = state.data.intake.filter((item) => item.status === "new").length;
@@ -230,7 +334,6 @@ function renderAll() {
   renderServices();
   renderMedia();
   renderTeam();
-  renderTopAction();
 }
 
 function renderOverview() {
@@ -238,44 +341,53 @@ function renderOverview() {
   const awaiting = state.data.milestones.filter((milestone) => milestone.status === "awaiting_approval").length;
   const openInvoices = state.data.invoices.filter((invoice) => invoice.status === "open");
   const enquiries = state.data.intake.filter((item) => item.status === "new").length;
-  $("#metrics").innerHTML = [
-    ["Active projects", active, `${state.data.projects.length} total projects`],
-    ["Awaiting approval", awaiting, awaiting ? "Client action required" : "Nothing waiting"],
-    ["Outstanding invoices", money(openInvoices.reduce((sum, invoice) => sum + Number(invoice.total || 0), 0)), `${openInvoices.length} open`],
-    ["New enquiries", enquiries, enquiries ? "Review the inbox" : "Inbox is clear"],
-  ].map(([label, value, note]) => `<article class="metric"><span>${label}</span><strong>${value}</strong><small>${note}</small></article>`).join("");
-
+  const metrics = [
+    ["Active projects", active, `${state.data.projects.length} total projects`, "projects?status=active"],
+    ["Awaiting approval", awaiting, awaiting ? "Client action required" : "Nothing waiting", "projects"],
+    ["Outstanding invoices", money(openInvoices.reduce((sum, invoice) => sum + Number(invoice.total || 0), 0)), `${openInvoices.length} open`, "invoices?status=open"],
+    ["New enquiries", enquiries, enquiries ? "Review the inbox" : "Inbox is clear", "inbox?status=new"],
+  ];
+  $("#metrics").innerHTML = metrics.map(([label, value, note, route]) => `<button class="metric clickable-card" type="button" data-route="${route}"><span>${label}</span><strong>${value}</strong><small>${note}</small></button>`).join("");
   const attention = [
-    ...state.data.intake.filter((item) => item.status === "new").slice(0, 3).map((item) => ({ title: `New enquiry from ${item.name}`, detail: item.title || item.service || "Project request", status: "new" })),
-    ...state.data.milestones.filter((item) => item.status === "awaiting_approval").slice(0, 3).map((item) => ({ title: item.title, detail: item.projects?.title || "Milestone", status: item.status })),
-    ...openInvoices.filter((item) => item.due_date && new Date(item.due_date) < new Date()).slice(0, 3).map((item) => ({ title: `${item.invoice_number} is overdue`, detail: item.projects?.title || "Invoice", status: "open" })),
+    ...state.data.intake.filter((item) => item.status === "new").slice(0, 3).map((item) => ({ title: `New enquiry from ${item.name}`, detail: item.title || item.service || "Project request", status: "new", route: `inbox/${item.id}` })),
+    ...state.data.milestones.filter((item) => item.status === "awaiting_approval").slice(0, 3).map((item) => ({ title: item.title, detail: item.projects?.title || "Milestone", status: item.status, route: `projects/${item.projects?.id}` })),
+    ...openInvoices.filter((item) => item.due_date && new Date(item.due_date) < new Date()).slice(0, 3).map((item) => ({ title: `${item.invoice_number} is overdue`, detail: item.projects?.title || "Invoice", status: "open", route: `invoices/${item.id}` })),
   ];
   $("#attention-list").innerHTML = attention.length
-    ? attention.map((item) => `<div class="item-row"><div><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.detail)}</small></div>${badge(item.status)}</div>`).join("")
+    ? attention.map((item) => `<button class="item-row clickable-row" type="button" data-route="${item.route}"><div><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.detail)}</small></div>${badge(item.status)}</button>`).join("")
     : emptyState("Nothing needs attention", "New enquiries, overdue invoices, and approval requests will appear here.");
-
   const upcoming = state.data.milestones.filter((milestone) => milestone.due_date && !["approved", "completed"].includes(milestone.status)).slice(0, 5);
   $("#milestone-list").innerHTML = upcoming.length
-    ? upcoming.map((milestone) => `<div class="item-row"><div><strong>${escapeHtml(milestone.title)}</strong><small>${escapeHtml(milestone.projects?.title || "")} · ${formatDate(milestone.due_date)}</small></div>${badge(milestone.status)}</div>`).join("")
+    ? upcoming.map((milestone) => `<button class="item-row clickable-row" type="button" data-route="projects/${milestone.projects?.id}"><div><strong>${escapeHtml(milestone.title)}</strong><small>${escapeHtml(milestone.projects?.title || "")} · ${formatDate(milestone.due_date)}</small></div>${badge(milestone.status)}</button>`).join("")
     : emptyState("No upcoming milestones", "Add milestones to an active project to build the delivery schedule.");
-
   $("#recent-projects").innerHTML = state.data.projects.length
-    ? state.data.projects.slice(0, 5).map((project) => `<div class="item-row"><div><strong>${escapeHtml(project.title)}${demoBadge(project)}</strong><small>${escapeHtml(project.clients?.name || "No client")} · ${escapeHtml(project.service || "General")}</small></div>${badge(project.status)}</div>`).join("")
-    : emptyState("No projects yet", "Create the first project to start tracking milestones, files, and billing.", '<button class="button primary" data-action="new-project">New project</button>');
+    ? state.data.projects.slice(0, 5).map((project) => `<button class="item-row clickable-row" type="button" data-route="projects/${project.id}"><div><strong>${escapeHtml(project.title)}${demoBadge(project)}</strong><small>${escapeHtml(project.clients?.name || "No client")} · ${escapeHtml(project.service || "General")}</small></div>${badge(project.status)}</button>`).join("")
+    : emptyState("No projects yet", "Create the first project to start tracking milestones, files, and billing.", routeButton("projects/new", "New project", "primary"));
+}
+
+function syncFilterFromRoute(id, name) {
+  const value = parseRoute().params.get(name);
+  if (value != null && $(`#${id}`)) $(`#${id}`).value = value;
+}
+
+function persistListFilters(section, fields) {
+  const params = new URLSearchParams();
+  for (const [id, name] of fields) {
+    const value = $(`#${id}`)?.value?.trim();
+    if (value) params.set(name, value);
+  }
+  const next = `${section}${params.size ? `?${params}` : ""}`;
+  window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${next}`);
 }
 
 function renderInbox() {
+  syncFilterFromRoute("inbox-search", "search");
+  syncFilterFromRoute("inbox-filter", "status");
   const term = $("#inbox-search").value.trim().toLowerCase();
   const status = $("#inbox-filter").value;
-  const items = state.data.intake.filter((item) =>
-    (!status || item.status === status)
-    && [item.name, item.email, item.title, item.service].some((value) => String(value || "").toLowerCase().includes(term))
-  );
-  $("#inbox-table").innerHTML = items.length ? items.map((item) => `
-    <tr><td><strong>${escapeHtml(item.name)}${demoBadge(item)}</strong><small>${escapeHtml(item.email)}</small></td>
-    <td>${escapeHtml(item.title || item.service || "General enquiry")}</td><td>${formatDate(item.created_at)}</td><td>${badge(item.status)}</td>
-    <td><button class="text-button" data-review-intake="${item.id}">${item.status === "new" ? "Start review" : item.status === "reviewing" ? "Convert to project" : "Open"}</button></td></tr>
-  `).join("") : `<tr><td colspan="5">${emptyState("No enquiries match", "New website enquiries will appear here automatically.")}</td></tr>`;
+  const items = state.data.intake.filter((item) => (!status || item.status === status)
+    && [item.name, item.email, item.title, item.service].some((value) => String(value || "").toLowerCase().includes(term)));
+  $("#inbox-table").innerHTML = items.length ? items.map((item) => `<tr class="clickable-table-row" tabindex="0" data-route="inbox/${item.id}"><td><strong>${escapeHtml(item.name)}${demoBadge(item)}</strong><small>${escapeHtml(item.email)}</small></td><td>${escapeHtml(item.title || item.service || "General enquiry")}</td><td>${formatDate(item.created_at)}</td><td>${badge(item.status)}</td><td>${icon("solar:arrow-right-linear")}</td></tr>`).join("") : `<tr><td colspan="5">${emptyState("No enquiries match", "New website enquiries will appear here automatically.")}</td></tr>`;
 }
 
 function projectProgress(project) {
@@ -285,55 +397,48 @@ function projectProgress(project) {
 }
 
 function renderProjects() {
+  syncFilterFromRoute("project-search", "search");
+  syncFilterFromRoute("project-filter", "status");
   const term = $("#project-search").value.trim().toLowerCase();
   const status = $("#project-filter").value;
-  const projects = state.data.projects.filter((project) =>
-    (!status || project.status === status)
-    && [project.title, project.clients?.name, project.service].some((value) => String(value || "").toLowerCase().includes(term))
-  );
+  const projects = state.data.projects.filter((project) => (!status || project.status === status)
+    && [project.title, project.clients?.name, project.service].some((value) => String(value || "").toLowerCase().includes(term)));
   $("#project-grid").innerHTML = projects.length ? projects.map((project) => {
     const progress = projectProgress(project);
-    return `<article class="project-card">${badge(project.status)}${demoBadge(project)}<h3>${escapeHtml(project.title)}</h3><p class="muted">${escapeHtml(project.clients?.name || "No client")} · ${escapeHtml(project.service || "General project")}</p><div class="progress" aria-label="${progress}% complete"><span style="width:${progress}%"></span></div><div class="meta"><span>${progress}% complete</span><span>Due ${formatDate(project.due_date)}</span></div><button class="button secondary wide-button" data-open-project="${project.id}">Open project</button></article>`;
-  }).join("") : emptyState("No projects match", "Adjust the filters or create a new client project.", '<button class="button primary" data-action="new-project">New project</button>');
+    return `<button class="project-card clickable-card" type="button" data-route="projects/${project.id}">${badge(project.status)}${demoBadge(project)}<h3>${escapeHtml(project.title)}</h3><p class="muted">${escapeHtml(project.clients?.name || "No client")} · ${escapeHtml(project.service || "General project")}</p><div class="progress" aria-label="${progress}% complete"><span style="width:${progress}%"></span></div><div class="meta"><span>${progress}% complete</span><span>Due ${formatDate(project.due_date)}</span></div><span class="button secondary wide-button">Open project</span></button>`;
+  }).join("") : emptyState("No projects match", "Adjust the filters or create a new client project.", routeButton("projects/new", "New project", "primary"));
 }
 
 function renderClients() {
+  syncFilterFromRoute("client-search", "search");
   const term = $("#client-search").value.trim().toLowerCase();
   const clients = state.data.clients.filter((client) => [client.name, client.email, client.company].some((value) => String(value || "").toLowerCase().includes(term)));
-  $("#client-table").innerHTML = clients.length ? clients.map((client) => `
-    <tr><td><strong>${escapeHtml(client.name)}${demoBadge(client)}</strong><small>${escapeHtml(client.notes || "")}</small></td><td>${escapeHtml(client.email || "—")}<small>${escapeHtml(client.phone || "")}</small></td><td>${escapeHtml(client.company || "—")}</td><td>${client.projects?.length || 0}</td></tr>
-  `).join("") : `<tr><td colspan="4">${emptyState("No clients match", "Clients created from enquiries or projects will appear here.")}</td></tr>`;
-}
-
-function invoiceActions(invoice) {
-  if (invoice.status === "draft") return `<button class="text-button" data-invoice-status="${invoice.id}" data-next-status="open">Finalize</button>`;
-  if (invoice.status === "open") return `<button class="text-button" data-invoice-status="${invoice.id}" data-next-status="paid">Mark paid</button>`;
-  return "";
+  $("#client-table").innerHTML = clients.length ? clients.map((client) => {
+    const count = state.data.projects.filter((project) => project.client_id === client.id).length;
+    return `<tr class="clickable-table-row" tabindex="0" data-route="clients/${client.id}"><td><strong>${escapeHtml(client.name)}${demoBadge(client)}</strong><small>${escapeHtml(client.notes || "")}</small></td><td>${escapeHtml(client.email || "Not provided")}<small>${escapeHtml(client.phone || "")}</small></td><td>${escapeHtml(client.company || "Not provided")}</td><td>${count} ${icon("solar:arrow-right-linear")}</td></tr>`;
+  }).join("") : `<tr><td colspan="4">${emptyState("No clients match", "Create a client now and add projects whenever they are ready.", routeButton("clients/new", "Add client", "primary"))}</td></tr>`;
 }
 
 function renderInvoices() {
+  syncFilterFromRoute("invoice-search", "search");
+  syncFilterFromRoute("invoice-filter", "status");
   const term = $("#invoice-search").value.trim().toLowerCase();
   const status = $("#invoice-filter").value;
-  const invoices = state.data.invoices.filter((invoice) =>
-    (!status || invoice.status === status)
-    && [invoice.invoice_number, invoice.projects?.title, invoice.projects?.clients?.name].some((value) => String(value || "").toLowerCase().includes(term))
-  );
-  $("#invoice-table").innerHTML = invoices.length ? invoices.map((invoice) => `
-    <tr><td><strong>${escapeHtml(invoice.invoice_number)}${demoBadge(invoice)}</strong><small>${escapeHtml(invoice.projects?.clients?.name || "")}</small></td><td>${escapeHtml(invoice.projects?.title || "—")}</td><td>${formatDate(invoice.due_date)}</td><td>${money(invoice.total, invoice.currency)}</td><td>${badge(invoice.status)}</td><td>${invoiceActions(invoice)}</td></tr>
-  `).join("") : `<tr><td colspan="6">${emptyState("No invoices match", "Draft and issued invoices will appear here.")}</td></tr>`;
-}
-
-function revisionLabel(type, id) {
-  const revisions = state.data.revisions.filter((revision) => revision.entity_type === type && revision.entity_id === id);
-  return revisions.length ? `Revision ${revisions[0].revision_number} · ${formatDate(revisions[0].published_at)}` : "Not published from this CMS yet";
+  const invoices = state.data.invoices.filter((invoice) => (!status || invoice.status === status)
+    && [invoice.invoice_number, invoice.projects?.title, invoice.projects?.clients?.name].some((value) => String(value || "").toLowerCase().includes(term)));
+  $("#invoice-table").innerHTML = invoices.length ? invoices.map((invoice) => `<tr class="clickable-table-row" tabindex="0" data-route="invoices/${invoice.id}"><td><strong>${escapeHtml(invoice.invoice_number)}${demoBadge(invoice)}</strong><small>${escapeHtml(invoice.projects?.clients?.name || "")}</small></td><td>${escapeHtml(invoice.projects?.title || "Not assigned")}</td><td>${formatDate(invoice.due_date)}</td><td>${money(invoice.total, invoice.currency)}</td><td>${badge(invoice.status)}</td><td>${icon("solar:arrow-right-linear")}</td></tr>`).join("") : `<tr><td colspan="6">${emptyState("No invoices match", "Create a draft invoice when a project is ready for billing.", routeButton("invoices/new", "New invoice", "primary"))}</td></tr>`;
 }
 
 function renderPages() {
-  $("#cms-status").textContent = `${state.data.pages.filter((page) => page.status === "published").length} published pages · drafts remain private until published`;
-  $("#page-grid").innerHTML = state.data.pages.length ? state.data.pages.map((page) => `
-    <article class="cms-card">${badge(page.status)}<h3>${escapeHtml(page.title)}</h3><p class="muted">/${escapeHtml(page.slug)}</p><div class="meta"><span>${escapeHtml(revisionLabel("page", page.id))}</span><span>Updated ${formatDate(page.updated_at)}</span></div><div class="cms-card-actions"><button class="text-button" data-edit-page="${page.id}">Edit</button><button class="text-button" data-preview-page="${page.id}">Preview</button><button class="text-button" data-publish-type="page" data-publish-id="${page.id}">Publish</button></div>
-    </article>
-  `).join("") : emptyState("No page templates", "Page templates will appear after the CMS migration is applied.");
+  syncFilterFromRoute("page-search", "search");
+  syncFilterFromRoute("page-status", "status");
+  const term = $("#page-search").value.trim().toLowerCase();
+  const status = $("#page-status").value;
+  const pages = state.data.pages.filter((page) => page.title.toLowerCase().includes(term) && (!status || cmsState(page) === status));
+  const published = state.data.pages.filter((page) => cmsState(page) === "published").length;
+  const changes = state.data.pages.filter((page) => cmsState(page) === "changes").length;
+  $("#cms-status").textContent = `${published} published · ${changes} with changes to publish`;
+  $("#page-grid").innerHTML = pages.length ? pages.map((page) => `<button class="cms-card clickable-card" type="button" data-route="pages/${page.id}">${cmsBadge(page)}<h3>${escapeHtml(page.slug === "global" ? "Site-wide content" : page.title)}</h3><p class="muted">${page.slug === "global" ? "Navigation, footer, team and shared sections" : `/${escapeHtml(page.slug)}`}</p><div class="meta"><span>Edited ${formatDate(page.updated_at)}</span><span>Published ${formatDate(page.published_at)}</span></div><span class="text-button">Open editor ${icon("solar:arrow-right-linear")}</span></button>`).join("") : emptyState("No pages match", "Try another search or publishing status.");
   renderCollections();
 }
 
@@ -342,62 +447,52 @@ function globalPage() {
 }
 
 function renderCollections() {
-  $$(".collection-tabs .tab").forEach((button) => button.classList.toggle("active", button.dataset.collectionTab === state.collectionTab));
   const page = globalPage();
   const items = page?.content?.[state.collectionTab] || [];
-  const singular = { team: "team member", testimonials: "testimonial", faqs: "FAQ", partners: "partner" }[state.collectionTab];
-  $("#collection-list").innerHTML = `
-    <div class="section-tools"><button class="button secondary" data-add-collection="${state.collectionTab}">${icon("solar:add-circle-linear")}Add ${singular}</button></div>
-    ${items.length ? items.map((item, index) => `
-      <div class="collection-item"><div class="collection-thumb">${item.image || item.logo ? `<img src="${escapeHtml(item.image || item.logo)}" alt="">` : icon("solar:document-text-linear")}</div><div class="collection-copy"><strong>${escapeHtml(item.name || item.question || `Untitled ${singular}`)}</strong><small>${escapeHtml(item.role || item.quote || item.answer || item.url || "")}</small></div><div><button class="text-button" data-edit-collection="${state.collectionTab}" data-collection-index="${index}">Edit</button><button class="text-button danger" data-remove-collection="${state.collectionTab}" data-collection-index="${index}">Remove</button></div></div>
-    `).join("") : emptyState(`No ${state.collectionTab} yet`, `Add the first ${singular}; it will remain private until Global content is published.`)}
-  `;
+  const singular = titleCase(state.collectionTab).replace(/s$/, "");
+  $$(".tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.collectionTab === state.collectionTab));
+  $("#collection-list").innerHTML = `<div class="section-tools">${routeButton(`collections/${state.collectionTab}/new`, `Add ${singular}`, "secondary", "solar:add-circle-linear")}</div>${items.length ? items.map((item, index) => `<button class="collection-item clickable-row" type="button" data-route="collections/${state.collectionTab}/${index}"><div class="collection-thumb">${item.image || item.logo ? `<img src="${escapeHtml(item.image || item.logo)}" alt="">` : icon("solar:document-text-linear")}</div><div class="collection-copy"><strong>${escapeHtml(item.name || item.question || `Untitled ${singular}`)}</strong><small>${escapeHtml(item.role || item.quote || item.answer || item.url || "")}</small></div>${icon("solar:arrow-right-linear")}</button>`).join("") : emptyState(`No ${state.collectionTab} yet`, `Add the first ${singular.toLowerCase()} to Site-wide content.`)}`;
 }
 
 function renderPortfolio() {
+  syncFilterFromRoute("portfolio-search", "search");
+  syncFilterFromRoute("portfolio-filter", "category");
+  syncFilterFromRoute("portfolio-status", "status");
   const term = $("#portfolio-search").value.trim().toLowerCase();
   const category = $("#portfolio-filter").value;
   const status = $("#portfolio-status").value;
-  const items = state.data.portfolio.filter((item) =>
-    (!category || item.category === category)
-    && (!status || item.status === status)
-    && [item.title, item.collection, item.category].some((value) => String(value || "").toLowerCase().includes(term))
-  );
-  const visibleItems = items.slice(0, state.portfolioVisible);
-  $("#portfolio-summary").textContent = `${visibleItems.length} shown · ${items.length} matching · ${state.data.portfolio.filter((item) => item.status === "published").length} published`;
-  $("#portfolio-load-more").classList.toggle("hidden", visibleItems.length >= items.length);
-  $("#portfolio-grid").innerHTML = items.length ? visibleItems.map((item) => `
-    <article class="portfolio-admin-card"><div class="portfolio-admin-media"><img src="${escapeHtml(item.thumbnail_src)}" alt="${escapeHtml(item.alt_text || item.title)}" loading="lazy" onerror="this.src='/assets/portfolio-fallback.svg'">${badge(item.status)}</div><div class="portfolio-admin-body"><p class="eyebrow">${escapeHtml(item.category)} · ${escapeHtml(item.year || "")}</p><h3 title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.collection || "No collection")}</p><div class="portfolio-admin-actions"><button class="text-button" data-edit-portfolio="${item.id}">Edit</button><button class="text-button" data-duplicate-portfolio="${item.id}">Duplicate</button><button class="text-button" data-publish-type="portfolio" data-publish-id="${item.id}">Publish</button><button class="icon-button" data-move-type="portfolio" data-move-id="${item.id}" data-direction="-1" title="Move earlier">${icon("solar:arrow-up-linear")}</button><button class="icon-button" data-move-type="portfolio" data-move-id="${item.id}" data-direction="1" title="Move later">${icon("solar:arrow-down-linear")}</button><button class="icon-button" data-archive-type="portfolio" data-archive-id="${item.id}" title="Archive">${icon("solar:archive-linear")}</button></div></div></article>
-  `).join("") : emptyState("No portfolio items match", "Adjust the filters or add a new portfolio item.", '<button class="button primary" data-action="new-portfolio">Add portfolio item</button>');
+  const items = state.data.portfolio.filter((item) => (!category || item.category === category)
+    && (!status || cmsState(item) === status)
+    && [item.title, item.collection].some((value) => String(value || "").toLowerCase().includes(term)));
+  $("#portfolio-summary").textContent = `${Math.min(items.length, state.portfolioVisible)} shown · ${items.length} matching · ${state.data.portfolio.length} total`;
+  $("#portfolio-grid").innerHTML = items.length ? items.slice(0, state.portfolioVisible).map((item) => `<button class="portfolio-admin-card clickable-card" type="button" data-route="portfolio/${item.id}"><div class="portfolio-admin-media"><img src="${escapeHtml(item.thumbnail_src)}" alt="${escapeHtml(item.alt_text || item.title)}" loading="lazy" onerror="this.src='/assets/portfolio-fallback.svg'">${cmsBadge(item)}</div><div class="portfolio-admin-body"><p class="eyebrow">${escapeHtml(item.category)} · ${escapeHtml(item.year || "")}</p><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.collection || "No collection")}</p><span class="text-button">Open editor ${icon("solar:arrow-right-linear")}</span></div></button>`).join("") : emptyState("No portfolio items match", "Adjust the filters or add a portfolio item.", routeButton("portfolio/new", "Add portfolio item", "primary"));
+  $("#portfolio-load-more").classList.toggle("hidden", items.length <= state.portfolioVisible);
 }
 
 function renderServices() {
-  $("#service-status").textContent = `${state.data.services.length} services · ${state.data.services.filter((service) => service.status === "published").length} published`;
-  $("#service-grid").innerHTML = state.data.services.length ? state.data.services.map((service) => `
-    <article class="cms-card">${badge(service.status)}<h3>${escapeHtml(service.title)}</h3><p class="muted">${escapeHtml(service.summary || "No summary")}</p><div class="meta"><span>${escapeHtml(revisionLabel("service", service.id))}</span><span>Position ${service.position + 1}</span></div><div class="cms-card-actions"><button class="text-button" data-edit-service="${service.id}">Edit</button><button class="text-button" data-duplicate-service="${service.id}">Duplicate</button><button class="text-button" data-publish-type="service" data-publish-id="${service.id}">Publish</button><button class="icon-button" data-move-type="service" data-move-id="${service.id}" data-direction="-1" title="Move earlier">${icon("solar:arrow-up-linear")}</button><button class="icon-button" data-move-type="service" data-move-id="${service.id}" data-direction="1" title="Move later">${icon("solar:arrow-down-linear")}</button><button class="icon-button" data-archive-type="service" data-archive-id="${service.id}" title="Archive">${icon("solar:archive-linear")}</button></div></article>
-  `).join("") : emptyState("No services yet", "Add the studio services that should appear on the public website.", '<button class="button primary" data-action="new-service">Add service</button>');
+  const published = state.data.services.filter((item) => cmsState(item) === "published").length;
+  $("#service-status").textContent = `${published} published · ${state.data.services.length - published} drafts or changes`;
+  $("#service-grid").innerHTML = state.data.services.length ? state.data.services.map((service) => `<button class="cms-card clickable-card" type="button" data-route="services/${service.id}">${cmsBadge(service)}<h3>${escapeHtml(service.title)}</h3><p class="muted">${escapeHtml(service.summary || "No summary")}</p><div class="meta"><span>Position ${service.position + 1}</span><span>Edited ${formatDate(service.updated_at)}</span></div><span class="text-button">Open editor ${icon("solar:arrow-right-linear")}</span></button>`).join("") : emptyState("No services yet", "Add the services that should appear on the website.", routeButton("services/new", "Add service", "primary"));
 }
 
 function renderMedia() {
   $("#media-grid").innerHTML = state.data.media.length ? state.data.media.map((asset) => {
     const isImage = asset.mime_type?.startsWith("image/");
-    return `<article class="media-card"><div class="media-preview">${isImage ? `<img src="${escapeHtml(asset.public_url)}" alt="${escapeHtml(asset.alt_text)}" loading="lazy">` : icon(asset.mime_type === "application/pdf" ? "solar:document-text-linear" : "solar:videocamera-record-linear")}</div><div class="media-body"><strong title="${escapeHtml(asset.internal_name)}">${escapeHtml(asset.internal_name)}</strong><small>${escapeHtml(asset.mime_type || "Unknown file")} · ${asset.size_bytes ? `${Math.round(asset.size_bytes / 1024)} KB` : "Size unknown"}</small><div class="media-actions"><button class="text-button" data-edit-media="${asset.id}">Edit</button><button class="text-button" data-copy-url="${escapeHtml(asset.public_url || "")}">Copy URL</button><button class="text-button danger" data-archive-media="${asset.id}">Archive</button></div></div></article>`;
-  }).join("") : emptyState("Media library is empty", "Upload an image, PDF, or short video and reuse it across website content.", '<button class="button primary" data-action="new-media">Upload media</button>');
+    return `<button class="media-card clickable-card" type="button" data-route="media/${asset.id}"><div class="media-preview">${isImage ? `<img src="${escapeHtml(asset.public_url)}" alt="${escapeHtml(asset.alt_text)}" loading="lazy">` : icon(asset.mime_type === "application/pdf" ? "solar:document-text-linear" : "solar:videocamera-record-linear")}</div><div class="media-body"><strong>${escapeHtml(asset.internal_name)}</strong><small>${escapeHtml(asset.mime_type || "Unknown file")} · ${asset.size_bytes ? `${Math.round(asset.size_bytes / 1024)} KB` : "Size unknown"}</small><span class="text-button">Open details ${icon("solar:arrow-right-linear")}</span></div></button>`;
+  }).join("") : emptyState("Media library is empty", "Upload an image, PDF, or short video.", routeButton("media/new", "Upload media", "primary"));
 }
 
 function renderTeam() {
-  $("#team-table").innerHTML = state.data.profiles.length ? state.data.profiles.map((profile) => `
-    <tr><td><strong>${escapeHtml(profile.full_name || "Unnamed account")}</strong></td><td>${badge(profile.role)}</td><td>${profile.role === "client" ? "Assigned projects" : "Workspace"}</td></tr>
-  `).join("") : `<tr><td colspan="3">${emptyState("No team profiles", "Team accounts will appear after they sign in or are invited.")}</td></tr>`;
+  $("#team-table").innerHTML = state.data.profiles.length ? state.data.profiles.map((profile) => `<tr class="clickable-table-row" tabindex="0" data-route="team/${profile.id}"><td><strong>${escapeHtml(profile.full_name || "Unnamed account")}</strong><small>${escapeHtml(profile.id === state.profile.id ? "This is you" : "")}</small></td><td>${badge(profile.role)}</td><td>${profile.role === "client" ? "Assigned projects" : "Workspace"} ${icon("solar:arrow-right-linear")}</td></tr>`).join("") : `<tr><td colspan="3">${emptyState("No team profiles", "Team accounts appear after sign in or invitation.")}</td></tr>`;
 }
 
 const topActionMap = {
-  projects: ["new-project", "New project", "solar:add-circle-linear"],
-  clients: ["new-client", "Add client", "solar:user-plus-linear"],
-  invoices: ["new-invoice", "New invoice", "solar:add-circle-linear"],
-  portfolio: ["new-portfolio", "Add portfolio", "solar:gallery-add-linear"],
-  services: ["new-service", "Add service", "solar:add-circle-linear"],
-  media: ["new-media", "Upload media", "solar:upload-linear"],
+  projects: ["projects/new", "New project", "solar:add-circle-linear"],
+  clients: ["clients/new", "Add client", "solar:user-plus-linear"],
+  invoices: ["invoices/new", "New invoice", "solar:add-circle-linear"],
+  portfolio: ["portfolio/new", "Add portfolio", "solar:gallery-add-linear"],
+  services: ["services/new", "Add service", "solar:add-circle-linear"],
+  media: ["media/new", "Upload media", "solar:upload-linear"],
 };
 
 function renderTopAction() {
@@ -407,135 +502,336 @@ function renderTopAction() {
     $("#top-actions").innerHTML = "";
     return;
   }
-  $("#top-actions").innerHTML = config
-    ? `<button class="button primary" type="button" data-action="${config[0]}">${icon(config[2])}<span>${config[1]}</span></button>`
-    : "";
+  $("#top-actions").innerHTML = config ? routeButton(config[0], config[1], "primary", config[2]) : "";
 }
 
-function openProject(projectId) {
-  const project = state.data.projects.find((item) => item.id === projectId);
-  if (!project) return;
-  $("#project-dialog").dataset.projectId = projectId;
-  $("#project-dialog-title").textContent = project.title;
-  const milestones = [...(project.milestones || [])].sort((a, b) => a.position - b.position);
-  $("#project-dialog-content").innerHTML = `
-    <div class="project-summary"><div><span class="muted">Client</span><strong>${escapeHtml(project.clients?.name || "—")}</strong></div><div><span class="muted">Due</span><strong>${formatDate(project.due_date)}</strong></div><div><span class="muted">Budget</span><strong>${money(project.budget, project.currency)}</strong></div><div><span class="muted">Status</span>${badge(project.status)}</div></div>
-    <div class="panel-head project-detail-head"><div><p class="eyebrow">Delivery plan</p><h3>Milestones</h3></div><div class="inline-actions"><button class="button secondary" data-invite-client="${project.id}">Invite client</button><button class="button primary" data-add-milestone="${project.id}">Add milestone</button></div></div>
-    <div class="timeline">${milestones.length ? milestones.map((milestone) => `<article class="timeline-item"><div class="timeline-top"><div><strong>${escapeHtml(milestone.title)}</strong><small class="muted">Due ${formatDate(milestone.due_date)}</small></div>${badge(milestone.status)}</div>${milestone.description ? `<p>${escapeHtml(milestone.description)}</p>` : ""}${(milestone.deliverables || []).map((item) => `<div class="deliverable"><div class="timeline-top"><a href="${escapeHtml(item.file_url)}" target="_blank" rel="noopener"><strong>${escapeHtml(item.title)}</strong></a>${badge(item.status)}</div><small class="muted">Version ${item.version}${item.client_note ? ` · Client: ${escapeHtml(item.client_note)}` : ""}</small></div>`).join("")}<button class="text-button detail-action" data-add-deliverable="${milestone.id}">Share deliverable</button></article>`).join("") : emptyState("No milestones yet", "Add the first milestone to create the client delivery plan.")}</div>`;
-  $("#project-dialog").showModal();
+function renderNotFound(parent, label) {
+  showRecordView("Not found");
+  $("#record-screen").innerHTML = recordHeader(parent, `Back to ${label}`, "This record is unavailable", "It may have been removed, or your account may not have access.") + emptyState("Nothing to show", "Return to the list and choose another record.");
 }
 
-function setView(view) {
-  state.view = view;
-  $$(".nav-item").forEach((button) => button.classList.toggle("active", button.dataset.view === view));
-  $$(".view").forEach((panel) => panel.classList.toggle("active", panel.dataset.viewPanel === view));
-  $("#view-title").textContent = ({ invoices: "Billing", pages: "Pages", portfolio: "Portfolio", services: "Services", media: "Media library" })[view] || titleCase(view);
-  $("#view-eyebrow").textContent = ["pages", "portfolio", "services", "media", "team"].includes(view) ? "Administration" : "Workspace";
-  renderTopAction();
-  closeSidebar();
-  window.location.hash = view;
-}
-
-function restoreSidebar() {
-  const hidden = localStorage.getItem("olympus-sidebar-hidden") === "true";
-  $("#app").classList.toggle("sidebar-hidden", hidden);
-}
-
-function toggleDesktopSidebar() {
-  const hidden = !$("#app").classList.contains("sidebar-hidden");
-  $("#app").classList.toggle("sidebar-hidden", hidden);
-  localStorage.setItem("olympus-sidebar-hidden", String(hidden));
-}
-
-function openSidebar() {
-  if (matchMedia("(max-width: 800px)").matches) $("#app").classList.add("sidebar-open");
-  else {
-    $("#app").classList.remove("sidebar-hidden");
-    localStorage.setItem("olympus-sidebar-hidden", "false");
+function renderClientRoute(segments, params) {
+  const id = segments[1];
+  const action = segments[2];
+  if (id === "new") {
+    const intake = state.data.intake.find((item) => item.id === params.get("intake"));
+    return renderClientForm(null, intake ? { name: intake.name, email: intake.email, phone: intake.phone, notes: intake.message } : null);
   }
-  $("#menu-button").setAttribute("aria-expanded", "true");
+  const client = state.data.clients.find((item) => item.id === id);
+  if (!client) return renderNotFound("clients", "clients");
+  if (action === "edit") return renderClientForm(client);
+  showRecordView(client.name);
+  const projects = state.data.projects.filter((item) => item.client_id === client.id);
+  const invoices = state.data.invoices.filter((item) => item.projects?.client_id === client.id);
+  const activity = state.data.activities.filter((item) => (item.entity_type === "client" && item.entity_id === client.id)
+    || projects.some((project) => project.id === item.project_id));
+  $("#record-screen").innerHTML = recordHeader("clients", "Clients", client.name, client.company || "Client profile", `${routeButton(`projects/new?client=${client.id}`, "Create project", "primary", "solar:add-circle-linear")}${routeButton(`clients/${client.id}/edit`, "Edit client")}`)
+    + `<div class="detail-grid"><section class="panel"><p class="eyebrow">Contact</p><h3>Client information</h3><dl class="detail-list"><div><dt>Email</dt><dd>${escapeHtml(client.email || "Not provided")}</dd></div><div><dt>Phone</dt><dd>${escapeHtml(client.phone || "Not provided")}</dd></div><div><dt>Company</dt><dd>${escapeHtml(client.company || "Not provided")}</dd></div><div><dt>Notes</dt><dd>${escapeHtml(client.notes || "No notes")}</dd></div></dl></section><section class="panel"><p class="eyebrow">Work</p><h3>${projects.length} project${projects.length === 1 ? "" : "s"}</h3>${projects.length ? projects.map((project) => `<button class="item-row clickable-row" type="button" data-route="projects/${project.id}"><div><strong>${escapeHtml(project.title)}</strong><small>${escapeHtml(project.service || "General project")}</small></div>${badge(project.status)}</button>`).join("") : emptyState("No projects yet", "Create a project when this client is ready.")}</section></div>`
+    + `<section class="panel"><div class="panel-head"><div><p class="eyebrow">Billing</p><h3>Invoices</h3></div></div>${invoices.length ? invoices.map((invoice) => `<button class="item-row clickable-row" type="button" data-route="invoices/${invoice.id}"><div><strong>${escapeHtml(invoice.invoice_number)}</strong><small>${money(invoice.total, invoice.currency)}</small></div>${badge(invoice.status)}</button>`).join("") : emptyState("No invoices", "Invoices linked to this client will appear here.")}</section>`
+    + activityMarkup(activity);
 }
 
-function closeSidebar() {
-  $("#app").classList.remove("sidebar-open");
-  $("#menu-button").setAttribute("aria-expanded", "false");
+function renderClientForm(client = null, prefill = null) {
+  const values = client || prefill || {};
+  showRecordView(client ? "Edit client" : "Add client");
+  const fields = field("Client name", "name", "text", { required: true, value: values.name })
+    + field("Company", "company", "text", { value: values.company })
+    + field("Email", "email", "email", { value: values.email })
+    + field("Phone", "phone", "tel", { value: values.phone })
+    + field("Notes", "notes", "textarea", { wide: true, value: values.notes });
+  $("#record-screen").innerHTML = formShell("client", client ? "Edit client" : "Add a client", "Only the client name is required. Add the rest whenever it is available.", fields, client ? `clients/${client.id}` : "clients", client ? "Save changes" : "Add client");
+  const form = $("[data-record-form]");
+  form.dataset.id = client?.id || "";
 }
 
-const field = (label, name, type = "text", options = {}) => {
-  const wide = options.wide ? "wide" : "";
-  const help = options.help ? `<small>${escapeHtml(options.help)}</small>` : "";
-  if (type === "select") return `<label class="${wide}">${label}${help}<select name="${name}" ${options.required ? "required" : ""}>${options.items.map((item) => `<option value="${escapeHtml(item.value)}" ${String(options.value) === String(item.value) ? "selected" : ""}>${escapeHtml(item.label)}</option>`).join("")}</select></label>`;
-  if (type === "textarea") return `<label class="${wide}">${label}${help}<textarea name="${name}" ${options.required ? "required" : ""}>${escapeHtml(options.value || "")}</textarea></label>`;
-  if (type === "checkbox") return `<label class="check-field ${wide}"><input name="${name}" type="checkbox" ${options.value ? "checked" : ""}><span>${label}</span></label>`;
-  return `<label class="${wide}">${label}${help}<input name="${name}" type="${type}" ${type !== "file" ? `value="${escapeHtml(options.value ?? "")}"` : ""} ${options.required ? "required" : ""} ${options.min != null ? `min="${options.min}"` : ""} ${options.max != null ? `max="${options.max}"` : ""} ${options.accept ? `accept="${escapeHtml(options.accept)}"` : ""}></label>`;
-};
-
-function pageFields(page) {
-  const schema = pageSchemas[page.slug] || [["Page introduction", "body", "textarea"]];
-  return field("Page title", "page_title", "text", { value: page.title, wide: true })
-    + schema.map(([label, path, type = "text"]) => field(label, path, type, {
-    value: getPath(page.content || {}, path),
-    wide: type === "textarea" || type === "url",
-  })).join("")
-    + field("SEO title", "seo_title", "text", { value: page.seo_title, wide: true })
-    + field("SEO description", "seo_description", "textarea", { value: page.seo_description, wide: true });
+function renderProjectRoute(segments, params) {
+  const id = segments[1];
+  const action = segments[2];
+  if (id === "new") {
+    const intake = state.data.intake.find((item) => item.id === params.get("intake"));
+    const matchedClient = intake ? state.data.clients.find((client) => client.email?.toLowerCase() === intake.email?.toLowerCase()) : null;
+    return renderProjectForm(null, params.get("client") || matchedClient?.id || "", intake || null);
+  }
+  const project = state.data.projects.find((item) => item.id === id);
+  if (!project) return renderNotFound("projects", "projects");
+  if (action === "edit") return renderProjectForm(project);
+  if (action === "milestones" && segments[3] === "new") return renderMilestoneForm(project);
+  if (action === "milestones" && segments[4] === "edit") {
+    const milestone = state.data.milestones.find((item) => item.id === segments[3] && item.project_id === project.id);
+    return milestone ? renderMilestoneForm(project, milestone) : renderNotFound(`projects/${project.id}`, "project");
+  }
+  if (action === "deliverables" && segments[3] === "new") return renderDeliverableForm(project, params.get("milestone"));
+  if (action === "deliverables" && segments[4] === "edit") {
+    const milestone = state.data.milestones.find((item) => item.project_id === project.id && item.deliverables?.some((deliverable) => deliverable.id === segments[3]));
+    const deliverable = milestone?.deliverables?.find((item) => item.id === segments[3]);
+    return deliverable ? renderDeliverableForm(project, milestone.id, deliverable) : renderNotFound(`projects/${project.id}`, "project");
+  }
+  showRecordView(project.title);
+  const invoices = state.data.invoices.filter((item) => item.project_id === project.id);
+  const invites = state.data.invitations.filter((item) => item.project_id === project.id);
+  const members = state.data.members.filter((item) => item.project_id === project.id);
+  const activity = state.data.activities.filter((item) => item.project_id === project.id);
+  const progress = projectProgress(project);
+  const milestones = [...(project.milestones || [])].sort((a, b) => a.position - b.position);
+  $("#record-screen").innerHTML = recordHeader("projects", "Projects", project.title, `${project.clients?.name || "No client"} · ${progress}% complete`, `${routeButton(`projects/${project.id}/edit`, "Edit project")}`)
+    + `<div class="project-summary"><button type="button" class="clickable-card" data-route="clients/${project.client_id}"><span class="muted">Client</span><strong>${escapeHtml(project.clients?.name || "Not assigned")}</strong></button><div><span class="muted">Due</span><strong>${formatDate(project.due_date)}</strong></div><div><span class="muted">Budget</span><strong>${money(project.budget, project.currency)}</strong></div><div><span class="muted">Status</span>${badge(project.status)}</div></div>`
+    + `<div class="record-tabs"><a href="#project-overview">Overview</a><a href="#project-delivery">Delivery</a><a href="#project-billing">Billing</a><a href="#project-access">Client access</a><a href="#project-activity">Activity</a></div>`
+    + `<section class="panel" id="project-overview"><p class="eyebrow">Overview</p><h3>${escapeHtml(project.service || "General project")}</h3><p class="muted">${escapeHtml(project.description || "No project description yet.")}</p><div class="progress"><span style="width:${progress}%"></span></div></section>`
+    + `<section class="panel" id="project-delivery"><div class="panel-head"><div><p class="eyebrow">Delivery plan</p><h3>Milestones and deliverables</h3></div>${routeButton(`projects/${project.id}/milestones/new`, "Add milestone", "primary")}</div>${milestones.length ? milestones.map((milestone) => `<article class="timeline-item"><div class="timeline-top"><div><strong>${escapeHtml(milestone.title)}</strong><small class="muted">Due ${formatDate(milestone.due_date)}</small></div><div class="inline-actions">${badge(milestone.status)}${routeButton(`projects/${project.id}/milestones/${milestone.id}/edit`, "Edit", "ghost")}</div></div>${milestone.description ? `<p>${escapeHtml(milestone.description)}</p>` : ""}${(milestone.deliverables || []).map((item) => `<div class="deliverable"><div class="timeline-top"><a href="${escapeHtml(item.file_url)}" target="_blank" rel="noopener"><strong>${escapeHtml(item.title)}</strong></a><div class="inline-actions">${badge(item.status)}${routeButton(`projects/${project.id}/deliverables/${item.id}/edit`, "Edit", "ghost")}</div></div><small class="muted">Version ${item.version}${item.client_note ? ` · Client: ${escapeHtml(item.client_note)}` : ""}</small></div>`).join("")}${routeButton(`projects/${project.id}/deliverables/new?milestone=${milestone.id}`, "Share deliverable", "ghost")}</article>`).join("") : emptyState("No milestones yet", "Add the first milestone to create the delivery plan.")}</section>`
+    + `<section class="panel" id="project-billing"><div class="panel-head"><div><p class="eyebrow">Billing</p><h3>Invoices</h3></div>${routeButton(`invoices/new?project=${project.id}`, "New invoice", "secondary")}</div>${invoices.length ? invoices.map((invoice) => `<button class="item-row clickable-row" type="button" data-route="invoices/${invoice.id}"><div><strong>${escapeHtml(invoice.invoice_number)}</strong><small>${money(invoice.total, invoice.currency)}</small></div>${badge(invoice.status)}</button>`).join("") : emptyState("No invoices", "Create an invoice when this project is ready for billing.")}</section>`
+    + `<section class="panel" id="project-access"><div class="panel-head"><div><p class="eyebrow">Client access</p><h3>Invitations and members</h3></div></div>${inviteForm(project.id)}${inviteList(invites)}${members.length ? `<div class="member-list">${members.map((member) => `<div class="item-row"><div><strong>${escapeHtml(member.profiles?.full_name || "Member")}</strong><small>${escapeHtml(member.member_role)}</small></div>${badge("active")}</div>`).join("")}</div>` : ""}</section>`
+    + `<section id="project-activity">${activityMarkup(activity)}</section>`;
 }
 
-function openDialog(kind, record = null, options = {}) {
-  const form = $("#entity-form");
-  form.reset();
-  form.dataset.dirty = "false";
-  form.dataset.kind = kind;
-  form.dataset.id = record?.id || "";
-  form.dataset.projectId = record?.project_id || "";
-  form.dataset.milestoneId = record?.milestone_id || "";
-  form.dataset.intakeId = record?.intake_submission_id || "";
-  form.dataset.collectionType = options.collectionType || "";
-  form.dataset.collectionIndex = options.collectionIndex ?? "";
-  $("#dialog-eyebrow").textContent = record ? "Update" : "Create";
-  $("#dialog-message").textContent = "";
-  $("#upload-progress").classList.add("hidden");
-  $("#dialog-preview").classList.toggle("hidden", !["page", "service", "portfolio"].includes(kind));
+function renderProjectForm(project = null, clientId = "", intake = null) {
+  showRecordView(project ? "Edit project" : "New project");
+  const selectedClient = project?.client_id || clientId;
+  const fields = field("Project title", "title", "text", { required: true, value: project?.title || intake?.title || (intake ? `${intake.name} project` : ""), wide: true })
+    + field("Client", "client_id", "select", { value: selectedClient, items: [{ value: "", label: "Select a client or add one below" }, ...state.data.clients.map((client) => ({ value: client.id, label: client.name }))] })
+    + field("Service", "service", "text", { value: project?.service || intake?.service })
+    + field("Budget", "budget", "number", { min: 0, value: project?.budget || String(intake?.budget || "").replace(/[^0-9.]/g, "") })
+    + field("Currency", "currency", "select", { value: project?.currency || "NGN", items: [{ value: "NGN", label: "Nigerian naira (NGN)" }, { value: "USD", label: "US dollar (USD)" }, { value: "GBP", label: "British pound (GBP)" }] })
+    + field("Start date", "start_date", "date", { value: project?.start_date })
+    + field("Due date", "due_date", "date", { value: project?.due_date })
+    + field("Status", "status", "select", { value: project?.status || "draft", items: ["draft", "active", "on_hold", "completed", "cancelled"].map((value) => ({ value, label: titleCase(value) })) })
+    + field("Description", "description", "textarea", { wide: true, value: project?.description || intake?.message });
+  const inlineClient = !project ? `<details class="form-section collapsible-section" ${intake && !selectedClient ? "open" : ""}><summary>Client not listed? Add them here</summary><div class="form-grid">${field("Client name", "new_client_name", "text", { value: intake?.name })}${field("Client email", "new_client_email", "email", { value: intake?.email })}${field("Client phone", "new_client_phone", "tel", { value: intake?.phone })}${field("Company", "new_client_company", "text")}</div></details>` : "";
+  $("#record-screen").innerHTML = formShell("project", project ? "Edit project" : "Create a project", "Choose an existing client or add a new client in the same flow.", fields, project ? `projects/${project.id}` : "projects", project ? "Save changes" : "Create project").replace('<div class="upload-progress', `${inlineClient}<div class="upload-progress`);
+  const form = $("[data-record-form]");
+  form.dataset.id = project?.id || "";
+  form.dataset.intakeId = intake?.id || "";
+}
 
-  const configs = {
-    client: {
-      title: record ? "Edit client" : "Add client", description: "Keep contact details and project context together.",
-      html: field("Client name", "name", "text", { required: true, value: record?.name }) + field("Company", "company", "text", { value: record?.company }) + field("Email", "email", "email", { value: record?.email }) + field("Phone", "phone", "tel", { value: record?.phone }) + field("Notes", "notes", "textarea", { wide: true, value: record?.notes }),
-    },
-    project: {
-      title: record?.id ? "Edit project" : "New project", description: "Create the project record before adding milestones, files, and billing.",
-      html: field("Project title", "title", "text", { required: true, value: record?.title }) + field("Client", "client_id", "select", { required: true, value: record?.client_id, items: [{ value: "", label: "Select a client" }, ...state.data.clients.map((client) => ({ value: client.id, label: client.name }))] }) + field("Service", "service", "text", { value: record?.service }) + field("Budget", "budget", "number", { min: 0, value: record?.budget }) + field("Start date", "start_date", "date", { value: record?.start_date }) + field("Due date", "due_date", "date", { value: record?.due_date }) + field("Description", "description", "textarea", { wide: true, value: record?.description }),
-    },
-    invoice: {
-      title: "New invoice", description: "Draft financial details remain editable until the invoice is finalized.",
-      html: field("Invoice number", "invoice_number", "text", { required: true, value: `OLY-${new Date().getFullYear()}-${String(state.data.invoices.length + 1).padStart(3, "0")}` }) + field("Project", "project_id", "select", { required: true, items: [{ value: "", label: "Select a project" }, ...state.data.projects.map((project) => ({ value: project.id, label: project.title }))] }) + field("Subtotal", "subtotal", "number", { required: true, min: 0 }) + field("Tax", "tax", "number", { min: 0 }) + field("Due date", "due_date", "date", { required: true }) + field("Notes", "notes", "textarea", { wide: true }),
-    },
-    page: { title: `Edit ${record?.title || "page"}`, description: "Save changes as a private draft. Publish only after previewing.", html: pageFields(record) },
-    milestone: { title: "Add milestone", description: "Milestones become the delivery timeline shared with the client.", html: field("Milestone title", "title", "text", { required: true }) + field("Due date", "due_date", "date") + field("Description", "description", "textarea", { wide: true }) + field("Requires client approval", "requires_approval", "select", { items: [{ value: "true", label: "Yes" }, { value: "false", label: "No" }] }) },
-    deliverable: { title: "Share deliverable", description: "Use a secure file URL and version each client-facing delivery.", html: field("Deliverable title", "title", "text", { required: true }) + field("Version", "version", "number", { required: true, min: 1, value: 1 }) + field("Secure file URL", "file_url", "url", { required: true, wide: true }) + field("Description", "description", "textarea", { wide: true }) },
-    service: {
-      title: record ? "Edit service" : "Add service", description: "Edit the public service card, then preview and publish.",
-      html: field("Service title", "title", "text", { required: true, value: record?.title }) + field("Slug", "slug", "text", { required: true, value: record?.slug }) + field("Image URL", "image_url", "url", { value: record?.image_url, wide: true }) + field("Summary", "summary", "textarea", { required: true, value: record?.summary, wide: true }) + field("Full description", "description", "textarea", { value: record?.description, wide: true }),
-    },
-    portfolio: {
-      title: record ? "Edit portfolio item" : "Add portfolio item", description: "Upload managed media or link to a large externally hosted video or document.",
-      html: field("Title", "title", "text", { required: true, value: record?.title }) + field("Slug", "slug", "text", { required: true, value: record?.slug }) + field("Category", "category", "select", { required: true, value: record?.category || "graphics", items: ["film", "events", "graphics", "editorial", "motion"].map((value) => ({ value, label: titleCase(value) })) }) + field("Collection", "collection", "text", { value: record?.collection }) + field("Year", "year", "number", { min: 2000, max: 2100, value: record?.year || new Date().getFullYear() }) + field("Media type", "media_type", "select", { value: record?.media_type || "image", items: ["image", "video", "pdf"].map((value) => ({ value, label: titleCase(value) })) }) + field("Description", "description", "textarea", { value: record?.description, wide: true }) + field("Alternative text", "alt_text", "textarea", { required: true, value: record?.alt_text, wide: true }) + field("Thumbnail URL", "thumbnail_src", "url", { value: record?.thumbnail_src, wide: true, help: "Keep the current URL or upload a replacement below." }) + field("Upload thumbnail", "thumbnail_file", "file", { accept: "image/jpeg,image/png,image/webp,image/gif", wide: true }) + field("Preview URL", "preview_src", "url", { value: record?.preview_src, wide: true }) + field("Original / external URL", "original_url", "url", { value: record?.original_url, wide: true }) + field("Upload main file", "main_file", "file", { accept: "image/jpeg,image/png,image/webp,image/gif,application/pdf,video/mp4,video/webm", wide: true, help: "Use an external URL for large video files." }) + field("Feature this item", "featured", "checkbox", { value: record?.featured }),
-    },
-    media: {
-      title: record ? "Edit media details" : "Upload media", description: "Managed files can be reused by page, service, and portfolio content.",
-      html: field("Internal name", "internal_name", "text", { required: true, value: record?.internal_name }) + (!record ? field("File", "file", "file", { required: true, accept: "image/jpeg,image/png,image/webp,image/gif,image/svg+xml,application/pdf,video/mp4,video/webm" }) : "") + field("Alternative text", "alt_text", "textarea", { wide: true, required: true, value: record?.alt_text }) + field("Caption", "caption", "textarea", { wide: true, value: record?.caption }),
-    },
-    collection: {
-      title: `${record ? "Edit" : "Add"} ${titleCase(options.collectionType).replace(/s$/, "")}`, description: "This item remains in the Global content draft until Global content is published.",
-      html: (collectionSchemas[options.collectionType] || []).map(([label, name, type = "text"]) => field(label, name, type, { required: ["name", "question", "quote"].includes(name), value: record?.[name], wide: type === "textarea" || type === "url" })).join(""),
-    },
-  };
-  const config = configs[kind];
-  $("#dialog-title").textContent = config.title;
-  $("#dialog-description").textContent = config.description;
-  $("#dialog-fields").innerHTML = config.html;
-  $("#dialog-submit").textContent = ["page", "service", "portfolio", "collection"].includes(kind) ? "Save draft" : "Save";
-  $("#entity-dialog").showModal();
+function renderMilestoneForm(project, milestone = null) {
+  showRecordView(milestone ? "Edit milestone" : "Add milestone");
+  const fields = field("Milestone title", "title", "text", { required: true, value: milestone?.title, wide: true })
+    + field("Due date", "due_date", "date", { value: milestone?.due_date })
+    + field("Status", "status", "select", { value: milestone?.status || "not_started", items: ["not_started", "in_progress", "awaiting_approval", "changes_requested", "approved", "completed"].map((value) => ({ value, label: titleCase(value) })) })
+    + field("Description", "description", "textarea", { value: milestone?.description, wide: true })
+    + field("Requires client approval", "requires_approval", "checkbox", { value: milestone?.requires_approval ?? true, wide: true });
+  $("#record-screen").innerHTML = formShell("milestone", milestone ? "Edit milestone" : "Add a milestone", `Manage a delivery step for ${project.title}.`, fields, `projects/${project.id}`, milestone ? "Save milestone" : "Add milestone");
+  const form = $("[data-record-form]");
+  form.dataset.projectId = project.id;
+  form.dataset.id = milestone?.id || "";
+}
+
+function renderDeliverableForm(project, milestoneId, deliverable = null) {
+  const milestone = state.data.milestones.find((item) => item.id === milestoneId);
+  showRecordView(deliverable ? "Edit deliverable" : "Share deliverable");
+  if (!milestone) return renderNotFound(`projects/${project.id}`, "project");
+  const fields = field("Deliverable title", "title", "text", { required: true, value: deliverable?.title, wide: true })
+    + field("Version", "version", "number", { required: true, min: 1, value: deliverable?.version || 1 })
+    + field("Status", "status", "select", { value: deliverable?.status || "shared", items: ["draft", "shared", "approved", "changes_requested", "archived"].map((value) => ({ value, label: titleCase(value) })) })
+    + field("Secure file address", "file_url", "text", { required: true, value: deliverable?.file_url, wide: true })
+    + field("Description", "description", "textarea", { value: deliverable?.description, wide: true });
+  $("#record-screen").innerHTML = formShell("deliverable", deliverable ? "Edit deliverable" : "Share a deliverable", `Manage a file in ${milestone.title}.`, fields, `projects/${project.id}`, deliverable ? "Save deliverable" : "Share deliverable");
+  const form = $("[data-record-form]");
+  form.dataset.projectId = project.id;
+  form.dataset.milestoneId = milestone.id;
+  form.dataset.id = deliverable?.id || "";
+}
+
+function inviteForm(projectId) {
+  return `<form class="compact-form" data-invite-form="${projectId}"><label>Client email<input type="email" name="email" required placeholder="client@example.com"></label><button class="button secondary" type="submit">${icon("solar:link-circle-linear")}Create secure link</button><div class="screen-message" role="alert"></div></form><div class="copy-fallback hidden" data-copy-fallback><label>Secure link<input readonly></label><small>Select and copy this link.</small></div>`;
+}
+
+function inviteList(invites) {
+  if (!invites.length) return `<p class="muted">No invitation links have been created.</p>`;
+  return `<div class="invite-list">${invites.map((invite) => {
+    const status = invite.revoked_at ? "revoked" : invite.accepted_at ? "accepted" : new Date(invite.expires_at) < new Date() ? "expired" : "active";
+    const url = `${window.location.origin}/portal?invite=${invite.token}`;
+    return `<div class="item-row"><div><strong>${escapeHtml(invite.email)}</strong><small>${titleCase(status)} · Expires ${formatDate(invite.expires_at)}</small></div><div class="inline-actions">${status === "active" ? `<button class="text-button" type="button" data-copy-invite="${escapeHtml(url)}">Copy link</button><button class="text-button danger" type="button" data-revoke-invite="${invite.id}">Revoke</button>` : ""}${badge(status)}</div></div>`;
+  }).join("")}</div>`;
+}
+
+function activityMarkup(activity) {
+  return `<section class="panel"><div class="panel-head"><div><p class="eyebrow">History</p><h3>Recent activity</h3></div></div>${activity.length ? activity.slice(0, 12).map((item) => `<div class="item-row"><div><strong>${escapeHtml(`${titleCase(item.entity_type)} ${titleCase(item.action)}`)}</strong><small>${escapeHtml(item.profiles?.full_name || "Workspace member")} · ${formatDateTime(item.created_at)}</small></div></div>`).join("") : emptyState("No activity yet", "Important changes will appear here.")}</section>`;
+}
+
+function revisionHistory(type, id) {
+  const revisions = state.data.revisions.filter((item) => item.entity_type === type && item.entity_id === id);
+  return `<details class="form-section collapsible-section revision-history"><summary>Published versions (${revisions.length})</summary>${revisions.length ? revisions.map((item) => `<div class="item-row"><div><strong>Version ${item.revision_number}</strong><small>${escapeHtml(item.profiles?.full_name || "Workspace member")} · ${formatDateTime(item.published_at)}</small></div>${badge("published")}</div>`).join("") : `<p class="muted">The first published version will appear here.</p>`}</details>`;
+}
+
+function intakePayload(payload = {}) {
+  const entries = Object.entries(payload).filter(([, value]) => value != null && value !== "");
+  if (!entries.length) return "";
+  return `<section class="panel"><p class="eyebrow">Submitted details</p><dl class="detail-list">${entries.map(([key, value]) => `<div><dt>${escapeHtml(titleCase(key))}</dt><dd>${escapeHtml(typeof value === "object" ? JSON.stringify(value) : value)}</dd></div>`).join("")}</dl></section>`;
+}
+
+function renderInboxRoute(segments) {
+  const item = state.data.intake.find((entry) => entry.id === segments[1]);
+  if (!item) return renderNotFound("inbox", "inbox");
+  showRecordView("Enquiry");
+  const archive = item.status !== "archived" && item.status !== "converted"
+    ? `<button class="button destructive" type="button" data-archive-intake="${item.id}">Archive</button>`
+    : "";
+  const action = item.status === "new"
+    ? `<button class="button primary" type="button" data-intake-status="${item.id}" data-next-status="reviewing">Start review</button>${archive}`
+    : item.status === "reviewing"
+      ? `${routeButton(`clients/new?intake=${item.id}`, "Create client", "secondary")}${routeButton(`projects/new?intake=${item.id}`, "Convert to project", "primary")}${archive}`
+      : "";
+  $("#record-screen").innerHTML = recordHeader("inbox", "Inbox", item.title || item.service || "Project enquiry", `${item.name} · Received ${formatDate(item.created_at)}`, action)
+    + `<div class="detail-grid"><section class="panel"><p class="eyebrow">Contact</p><dl class="detail-list"><div><dt>Name</dt><dd>${escapeHtml(item.name)}</dd></div><div><dt>Email</dt><dd>${escapeHtml(item.email)}</dd></div><div><dt>Phone</dt><dd>${escapeHtml(item.phone || "Not provided")}</dd></div><div><dt>Status</dt><dd>${badge(item.status)}</dd></div></dl></section><section class="panel"><p class="eyebrow">Request</p><dl class="detail-list"><div><dt>Service</dt><dd>${escapeHtml(item.service || "Not specified")}</dd></div><div><dt>Budget</dt><dd>${escapeHtml(item.budget || "Not specified")}</dd></div><div><dt>Timeline</dt><dd>${escapeHtml(item.timeline || "Not specified")}</dd></div></dl></section></div><section class="panel"><p class="eyebrow">Message</p><p class="muted">${escapeHtml(item.message || "No additional message was provided.")}</p></section>${intakePayload(item.payload)}`;
+}
+
+function invoiceItemsFor(id) {
+  return state.data.invoiceItems.filter((item) => item.invoice_id === id).sort((a, b) => a.position - b.position);
+}
+
+function renderInvoiceRoute(segments, params) {
+  const id = segments[1];
+  const action = segments[2];
+  if (id === "new") return renderInvoiceForm(null, params.get("project") || "");
+  const invoice = state.data.invoices.find((item) => item.id === id);
+  if (!invoice) return renderNotFound("invoices", "billing");
+  if (action === "edit" && invoice.status === "draft") return renderInvoiceForm(invoice);
+  showRecordView(invoice.invoice_number);
+  const items = invoiceItemsFor(invoice.id);
+  const activity = state.data.activities.filter((item) => item.entity_type === "invoice" && item.entity_id === invoice.id);
+  const transitions = invoice.status === "draft"
+    ? `<button class="button primary" type="button" data-transition-invoice="${invoice.id}" data-next-status="open">Finalize invoice</button>`
+    : invoice.status === "open"
+      ? `<button class="button primary" type="button" data-show-payment>Mark paid</button><button class="button destructive" type="button" data-transition-invoice="${invoice.id}" data-next-status="void">Void</button><button class="button secondary" type="button" data-transition-invoice="${invoice.id}" data-next-status="uncollectible">Uncollectible</button>`
+      : invoice.status === "uncollectible"
+        ? `<button class="button primary" type="button" data-show-payment>Mark paid</button><button class="button destructive" type="button" data-transition-invoice="${invoice.id}" data-next-status="void">Void</button>`
+      : "";
+  $("#record-screen").innerHTML = recordHeader("invoices", "Billing", invoice.invoice_number, `${invoice.projects?.clients?.name || "Client"} · ${badge(invoice.status)}`, `${invoice.status === "draft" ? routeButton(`invoices/${invoice.id}/edit`, "Edit draft") : ""}${invoice.project_id ? `<a class="button secondary" href="/portal?project=${invoice.project_id}" target="_blank" rel="noopener">Open client view</a>` : ""}<button class="button secondary" type="button" data-print-invoice>${icon("solar:printer-linear")}Print</button>`)
+    + `<section class="invoice-sheet"><div class="invoice-brand"><img src="/assets/olympus-logo.svg" alt="Olympus Studio"><div><strong>Olympus Studio</strong><small>Creative production and design</small></div></div><div class="invoice-meta"><div><span>Bill to</span><strong>${escapeHtml(invoice.projects?.clients?.name || "Client")}</strong><small>${escapeHtml(invoice.projects?.clients?.email || "")}</small></div><div><span>Project</span><button class="text-link" type="button" data-route="projects/${invoice.project_id}">${escapeHtml(invoice.projects?.title || "")}</button><small>Due ${formatDate(invoice.due_date)}</small></div></div><table class="invoice-lines"><thead><tr><th>Description</th><th>Qty</th><th>Price</th><th>Amount</th></tr></thead><tbody>${items.map((item) => `<tr><td>${escapeHtml(item.description)}</td><td>${item.quantity}</td><td>${money(item.unit_price, invoice.currency)}</td><td>${money(Number(item.quantity) * Number(item.unit_price), invoice.currency)}</td></tr>`).join("")}</tbody></table><div class="invoice-totals"><div><span>Subtotal</span><strong>${money(invoice.subtotal, invoice.currency)}</strong></div><div><span>Tax</span><strong>${money(invoice.tax, invoice.currency)}</strong></div><div class="total"><span>Total</span><strong>${money(invoice.total, invoice.currency)}</strong></div></div>${invoice.notes ? `<p class="invoice-notes">${escapeHtml(invoice.notes)}</p>` : ""}${invoice.payment_reference ? `<p class="payment-reference"><strong>Payment reference:</strong> ${escapeHtml(invoice.payment_reference)}</p>` : ""}</section>`
+    + `<div class="record-actions">${transitions}</div><form class="compact-form payment-form hidden" data-payment-form="${invoice.id}"><label>Payment reference or method<input name="payment_reference" required placeholder="Bank transfer, receipt number, etc."></label><button class="button primary" type="submit">Confirm payment</button><div class="screen-message"></div></form>`
+    + activityMarkup(activity);
+}
+
+function renderInvoiceForm(invoice = null, projectId = "") {
+  showRecordView(invoice ? "Edit invoice" : "New invoice");
+  const items = invoice ? invoiceItemsFor(invoice.id) : [{ description: "", quantity: 1, unit_price: 0 }];
+  const fields = field("Invoice number", "invoice_number", "text", { required: true, value: invoice?.invoice_number || `OLY-${new Date().getFullYear()}-${String(state.data.invoices.length + 1).padStart(3, "0")}` })
+    + field("Project", "project_id", "select", { required: true, value: invoice?.project_id || projectId, items: [{ value: "", label: "Select a project" }, ...state.data.projects.map((project) => ({ value: project.id, label: `${project.title} — ${project.clients?.name || "No client"}` }))] })
+    + field("Due date", "due_date", "date", { required: true, value: invoice?.due_date })
+    + field("Tax", "tax", "number", { min: 0, value: invoice?.tax || 0 })
+    + field("Notes", "notes", "textarea", { wide: true, value: invoice?.notes });
+  $("#record-screen").innerHTML = `<form class="record-form" data-record-form="invoice" data-id="${invoice?.id || ""}">${recordHeader(invoice ? `invoices/${invoice.id}` : "invoices", "Back", invoice ? "Edit draft invoice" : "Create an invoice", "Add clear line items. Totals are calculated automatically.")}<div class="form-section"><div class="form-grid">${fields}</div></div><section class="form-section"><div class="panel-head"><div><p class="eyebrow">Line items</p><h3>What are you billing for?</h3></div><button class="button secondary" type="button" data-add-line-item>${icon("solar:add-circle-linear")}Add item</button></div><div id="invoice-line-items">${items.map(invoiceLineItem).join("")}</div><div class="live-total"><span>Estimated subtotal</span><strong id="invoice-live-total">${money(invoice?.subtotal || 0)}</strong></div></section><div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton(invoice ? `invoices/${invoice.id}` : "invoices", "Cancel", "secondary")}<button class="button primary" type="submit">Save draft</button></div></form>`;
+  updateInvoiceTotal();
+}
+
+function invoiceLineItem(item = {}) {
+  return `<div class="invoice-line-item"><label class="line-description">Description<input name="line_description" required value="${escapeHtml(item.description || "")}" placeholder="Event photography, design work…"></label><label>Quantity<input name="line_quantity" type="number" min=".01" step=".01" required value="${Number(item.quantity || 1)}"></label><label>Unit price<input name="line_price" type="number" min="0" step=".01" required value="${Number(item.unit_price || 0)}"></label><button class="icon-button" type="button" data-remove-line-item aria-label="Remove line item">${icon("solar:trash-bin-trash-linear")}</button></div>`;
+}
+
+function updateInvoiceTotal() {
+  const form = $('[data-record-form="invoice"]');
+  if (!form) return;
+  const quantities = $$('[name="line_quantity"]', form);
+  const prices = $$('[name="line_price"]', form);
+  const total = quantities.reduce((sum, input, index) => sum + Number(input.value || 0) * Number(prices[index]?.value || 0), 0);
+  if ($("#invoice-live-total")) $("#invoice-live-total").textContent = money(total);
+}
+
+function renderPageRoute(segments) {
+  const page = state.data.pages.find((item) => item.id === segments[1]);
+  if (!page) return renderNotFound("pages", "pages");
+  showRecordView(page.slug === "global" ? "Site-wide content" : page.title, "Website");
+  const schema = pageSchemas[page.slug] || [];
+  const main = schema.filter(([, , , group]) => !group);
+  const contact = schema.filter(([, , , group]) => group === "contact");
+  const advanced = schema.filter(([, , , group]) => group === "advanced");
+  const renderFields = (items) => items.map(([label, path, type = "text"]) => type === "image"
+    ? imageField(label, path, getPath(page.content || {}, path), page.title)
+    : field(label, path, type, { value: getPath(page.content || {}, path), wide: type === "textarea" })).join("");
+  $("#record-screen").innerHTML = `<form class="record-form cms-editor" data-record-form="page" data-id="${page.id}">${recordHeader("pages", "Pages", page.slug === "global" ? "Site-wide content" : page.title, "Make changes privately, preview the real website, then publish when ready.", `${cmsBadge(page)}`)}<section class="form-section"><p class="eyebrow">Main content</p><div class="form-grid">${renderFields(main)}</div></section>${contact.length ? `<details class="form-section collapsible-section" open><summary>Contact details</summary><div class="form-grid">${renderFields(contact)}</div></details>` : ""}<details class="form-section collapsible-section"><summary>Search and more options</summary><div class="form-grid">${renderFields(advanced)}${field("Google result title", "seo_title", "text", { value: page.seo_title, wide: true })}${field("Google result description", "seo_description", "textarea", { value: page.seo_description, wide: true })}</div></details>${revisionHistory("page", page.id)}<div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton("pages", "Cancel", "secondary")}<button class="button ghost" type="button" data-preview-current="page">${icon("solar:eye-linear")}Preview</button><button class="button secondary" type="submit">Save draft</button><button class="button primary" type="button" data-publish-current="page" data-id="${page.id}">Publish</button></div></form>`;
+}
+
+function renderServiceRoute(segments) {
+  const id = segments[1];
+  const service = id === "new" ? null : state.data.services.find((item) => item.id === id);
+  if (id !== "new" && !service) return renderNotFound("services", "services");
+  showRecordView(service ? service.title : "Add service", "Website");
+  const fields = field("Service name", "title", "text", { required: true, value: service?.title, wide: true })
+    + field("Short description", "summary", "textarea", { required: true, value: service?.summary, wide: true })
+    + field("Full description", "description", "textarea", { value: service?.description, wide: true })
+    + imageField("Service image", "image_url", service?.image_url, service?.title);
+  $("#record-screen").innerHTML = `<form class="record-form cms-editor" data-record-form="service" data-id="${service?.id || ""}">${recordHeader("services", "Services", service ? service.title : "Add a service", "Use clear language clients will understand.", service ? cmsBadge(service) : "")}<section class="form-section"><div class="form-grid">${fields}</div></section>${service ? revisionHistory("service", service.id) : ""}<div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton("services", "Cancel", "secondary")}${service ? `<button class="button ghost" type="button" data-duplicate-current="service" data-id="${service.id}">Duplicate</button><button class="button ghost" type="button" data-move-current="service" data-id="${service.id}" data-direction="-1">Move up</button><button class="button ghost" type="button" data-move-current="service" data-id="${service.id}" data-direction="1">Move down</button>` : ""}<button class="button ghost" type="button" data-preview-current="service">Preview</button><button class="button secondary" type="submit">Save draft</button>${service ? `<button class="button primary" type="button" data-publish-current="service" data-id="${service.id}">Publish</button><button class="button destructive" type="button" data-archive-current="service" data-id="${service.id}">Archive</button>` : ""}</div></form>`;
+}
+
+function renderPortfolioRoute(segments) {
+  const id = segments[1];
+  const item = id === "new" ? null : state.data.portfolio.find((entry) => entry.id === id);
+  if (id !== "new" && !item) return renderNotFound("portfolio", "portfolio");
+  showRecordView(item ? item.title : "Add portfolio item", "Website");
+  const fields = field("Project title", "title", "text", { required: true, value: item?.title, wide: true })
+    + field("Category", "category", "select", { required: true, value: item?.category || "graphics", items: ["film", "events", "graphics", "editorial", "motion"].map((value) => ({ value, label: titleCase(value) })) })
+    + field("Collection", "collection", "text", { value: item?.collection })
+    + field("Year", "year", "number", { min: 2000, max: 2100, value: item?.year || new Date().getFullYear() })
+    + field("Media type", "media_type", "select", { value: item?.media_type || "image", items: ["image", "video", "pdf"].map((value) => ({ value, label: titleCase(value) })) })
+    + field("Description", "description", "textarea", { value: item?.description, wide: true })
+    + field("Image description", "alt_text", "textarea", { required: true, value: item?.alt_text, wide: true })
+    + imageField("Thumbnail", "thumbnail_src", item?.thumbnail_src, item?.alt_text || item?.title)
+    + field("Feature this project", "featured", "checkbox", { value: item?.featured, wide: true });
+  $("#record-screen").innerHTML = `<form class="record-form cms-editor" data-record-form="portfolio" data-id="${item?.id || ""}">${recordHeader("portfolio", "Portfolio", item ? item.title : "Add portfolio item", "The current image stays unless you deliberately replace it.", item ? cmsBadge(item) : "")}<section class="form-section"><div class="form-grid">${fields}</div></section><details class="form-section collapsible-section"><summary>Video, document and advanced options</summary><div class="form-grid">${field("Preview file address", "preview_src", "text", { value: item?.preview_src, wide: true })}${field("Original or external address", "original_url", "text", { value: item?.original_url, wide: true })}</div></details>${item ? revisionHistory("portfolio", item.id) : ""}<div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton("portfolio", "Cancel", "secondary")}${item ? `<button class="button ghost" type="button" data-duplicate-current="portfolio" data-id="${item.id}">Duplicate</button><button class="button ghost" type="button" data-move-current="portfolio" data-id="${item.id}" data-direction="-1">Move up</button><button class="button ghost" type="button" data-move-current="portfolio" data-id="${item.id}" data-direction="1">Move down</button>` : ""}<button class="button ghost" type="button" data-preview-current="portfolio">Preview</button><button class="button secondary" type="submit">Save draft</button>${item ? `<button class="button primary" type="button" data-publish-current="portfolio" data-id="${item.id}">Publish</button><button class="button destructive" type="button" data-archive-current="portfolio" data-id="${item.id}">Archive</button>` : ""}</div></form>`;
+}
+
+function renderMediaRoute(segments) {
+  const id = segments[1];
+  const asset = id === "new" ? null : state.data.media.find((item) => item.id === id);
+  if (id !== "new" && !asset) return renderNotFound("media", "media");
+  showRecordView(asset ? asset.internal_name : "Upload media", "Website");
+  const preview = asset ? `<div class="media-detail-preview">${asset.mime_type?.startsWith("image/") ? `<img src="${escapeHtml(asset.public_url)}" alt="${escapeHtml(asset.alt_text)}">` : icon("solar:document-text-linear")}</div>` : "";
+  const fields = field("Name in the library", "internal_name", "text", { required: true, value: asset?.internal_name, wide: true })
+    + (!asset ? `<label class="wide">Choose file<input name="file" type="file" required accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,application/pdf,video/mp4,video/webm"></label>` : "")
+    + field("Image description", "alt_text", "textarea", { required: true, value: asset?.alt_text, wide: true })
+    + field("Caption (optional)", "caption", "textarea", { value: asset?.caption, wide: true });
+  $("#record-screen").innerHTML = `<form class="record-form" data-record-form="media" data-id="${asset?.id || ""}">${recordHeader("media", "Media", asset ? asset.internal_name : "Upload media", "Give files clear names so they are easy to reuse.")}${preview}<section class="form-section"><div class="form-grid">${fields}</div></section><div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton("media", "Cancel", "secondary")}${asset ? `<button class="button ghost" type="button" data-copy-media="${escapeHtml(asset.public_url || "")}">Copy address</button>` : ""}<button class="button primary" type="submit">${asset ? "Save details" : "Upload file"}</button>${asset ? `<button class="button destructive" type="button" data-archive-media="${asset.id}">Archive</button>` : ""}</div></form>`;
+}
+
+function renderTeamRoute(segments) {
+  const profile = state.data.profiles.find((item) => item.id === segments[1]);
+  if (!profile) return renderNotFound("team", "team");
+  showRecordView(profile.full_name || "Team member", "Administration");
+  const roles = [
+    ["owner", "Owner — full workspace access"],
+    ["content_manager", "Content manager — website and media"],
+    ["project_manager", "Project manager — clients and projects"],
+    ["finance", "Finance — billing"],
+    ["contributor", "Contributor — assigned work"],
+    ["client", "Client — assigned projects only"],
+  ];
+  const fields = field("Name", "full_name", "text", { required: true, value: profile.full_name, wide: true })
+    + field("Access role", "role", "select", { required: true, value: profile.role, items: roles.map(([value, label]) => ({ value, label })) });
+  $("#record-screen").innerHTML = formShell("team", profile.full_name || "Team member", "Choose the access level that matches this person’s responsibilities.", fields, "team", "Save access");
+  $("[data-record-form]").dataset.id = profile.id;
+}
+
+function renderCollectionRoute(segments) {
+  const type = segments[1];
+  const index = segments[2] === "new" ? -1 : Number(segments[2]);
+  const page = globalPage();
+  const existing = index >= 0 ? page?.content?.[type]?.[index] : null;
+  const schema = collectionSchemas[type];
+  if (!schema || !page || (index >= 0 && !existing)) return renderNotFound("pages", "pages");
+  showRecordView(`${existing ? "Edit" : "Add"} ${titleCase(type).replace(/s$/, "")}`, "Website");
+  const fields = schema.map(([label, name, fieldType = "text"]) => fieldType === "image"
+    ? imageField(label, name, existing?.[name], existing?.name)
+    : field(label, name, fieldType, { required: ["name", "question", "quote"].includes(name), value: existing?.[name], wide: fieldType === "textarea" })).join("");
+  $("#record-screen").innerHTML = `<form class="record-form cms-editor" data-record-form="collection" data-collection-type="${type}" data-collection-index="${index}">${recordHeader("pages", "Pages", `${existing ? "Edit" : "Add"} ${titleCase(type).replace(/s$/, "")}`, "This stays private until Site-wide content is published.")}<section class="form-section"><div class="form-grid">${fields}</div></section><div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton("pages", "Cancel", "secondary")}<button class="button primary" type="submit">Save draft</button>${existing ? `<button class="button destructive" type="button" data-remove-collection="${type}" data-index="${index}">Remove</button>` : ""}</div></form>`;
+}
+
+async function renderRoute() {
+  const { segments, params } = parseRoute();
+  state.route = segments;
+  const section = segments[0] || "overview";
+  const listSections = ["overview", "inbox", "projects", "clients", "invoices", "pages", "portfolio", "services", "media", "team"];
+  if (segments.length === 1 && listSections.includes(section)) return showListView(section);
+  if (section === "clients") return renderClientRoute(segments, params);
+  if (section === "projects") return renderProjectRoute(segments, params);
+  if (section === "inbox") return renderInboxRoute(segments);
+  if (section === "invoices") return renderInvoiceRoute(segments, params);
+  if (section === "pages") return renderPageRoute(segments);
+  if (section === "services") return renderServiceRoute(segments);
+  if (section === "portfolio") return renderPortfolioRoute(segments);
+  if (section === "media") return renderMediaRoute(segments);
+  if (section === "team") return renderTeamRoute(segments);
+  if (section === "collections") return renderCollectionRoute(segments);
+  showListView("overview");
 }
 
 async function uploadAsset(file, internalName, altText) {
@@ -546,13 +842,9 @@ async function uploadAsset(file, internalName, altText) {
   if (uploadError) throw uploadError;
   const { data: publicFile } = state.supabase.storage.from("site-media").getPublicUrl(storagePath);
   const { data: asset, error } = await state.supabase.from("media_assets").insert({
-    storage_path: storagePath,
-    public_url: publicFile.publicUrl,
-    internal_name: internalName || file.name,
-    alt_text: altText || "",
-    mime_type: file.type,
-    size_bytes: file.size,
-    uploaded_by: state.profile.id,
+    storage_path: storagePath, public_url: publicFile.publicUrl,
+    internal_name: internalName || file.name, alt_text: altText || "",
+    mime_type: file.type, size_bytes: file.size, uploaded_by: state.profile.id,
   }).select("*").single();
   if (error) {
     await state.supabase.storage.from("site-media").remove([storagePath]);
@@ -561,108 +853,188 @@ async function uploadAsset(file, internalName, altText) {
   return asset;
 }
 
-async function saveEntity(event) {
-  event.preventDefault();
-  const submit = $("#dialog-submit");
-  submit.disabled = true;
-  $("#dialog-message").textContent = "";
-  const form = event.currentTarget;
+async function resolveImage(form, formData, name, title, alt) {
+  const file = formData.get(`${name}_file`);
+  if (file?.size) {
+    $("#upload-progress")?.classList.remove("hidden");
+    const asset = await uploadAsset(file, title, alt);
+    return asset.public_url;
+  }
+  return formData.get(name) || "";
+}
+
+async function logActivity(projectId, action, entityType, entityId, metadata = {}) {
+  await state.supabase.from("activities").insert({
+    actor_id: state.profile.id, project_id: projectId || null,
+    action, entity_type: entityType, entity_id: String(entityId || ""), metadata,
+  });
+}
+
+async function saveRecordForm(form) {
+  const kind = form.dataset.recordForm;
   const formData = new FormData(form);
   const values = Object.fromEntries(formData.entries());
-  const kind = form.dataset.kind;
+  const id = form.dataset.id || null;
+  const submit = $('button[type="submit"]', form);
+  submit.disabled = true;
+  $("#screen-message").innerHTML = "";
   try {
-    let query;
+    let destination;
     if (kind === "client") {
-      query = state.supabase.from("clients").insert({ ...values, created_by: state.profile.id });
+      const payload = { name: values.name.trim(), company: values.company || null, email: values.email || null, phone: values.phone || null, notes: values.notes || null };
+      const query = id ? state.supabase.from("clients").update(payload).eq("id", id).select("*").single() : state.supabase.from("clients").insert({ ...payload, created_by: state.profile.id }).select("*").single();
+      const { data, error } = await query;
+      if (error) throw error;
+      await logActivity(null, id ? "updated" : "created", "client", data.id);
+      const intakeId = parseRoute().params.get("intake");
+      if (intakeId) await state.supabase.from("intake_submissions").update({ status: "reviewing" }).eq("id", intakeId);
+      destination = `clients/${data.id}`;
+      toast(id ? "Client changes saved." : "Client added.");
     } else if (kind === "project") {
-      query = state.supabase.from("projects").insert({ ...values, budget: values.budget || null, created_by: state.profile.id, status: "draft", currency: "NGN", intake_submission_id: form.dataset.intakeId || null }).select("id").single();
-    } else if (kind === "invoice") {
-      query = state.supabase.from("invoices").insert({ ...values, subtotal: Number(values.subtotal), tax: Number(values.tax || 0), created_by: state.profile.id, status: "draft", currency: "NGN" });
-    } else if (kind === "page") {
-      const page = state.data.pages.find((item) => item.id === form.dataset.id);
-      const content = structuredClone(page.content || {});
-      (pageSchemas[page.slug] || []).forEach(([, path]) => setPath(content, path, values[path] || ""));
-      query = state.supabase.from("pages").update({ title: values.page_title, content, seo_title: values.seo_title || null, seo_description: values.seo_description || null, updated_by: state.profile.id }).eq("id", page.id);
-    } else if (kind === "milestone") {
-      const project = state.data.projects.find((item) => item.id === form.dataset.projectId);
-      query = state.supabase.from("milestones").insert({ project_id: form.dataset.projectId, title: values.title, due_date: values.due_date || null, description: values.description || null, requires_approval: values.requires_approval === "true", position: project?.milestones?.length || 0 });
-    } else if (kind === "deliverable") {
-      query = state.supabase.from("deliverables").insert({ milestone_id: form.dataset.milestoneId, title: values.title, version: Number(values.version), file_url: values.file_url, description: values.description || null, status: "shared", uploaded_by: state.profile.id });
-    } else if (kind === "service") {
-      const payload = { title: values.title, slug: values.slug, image_url: values.image_url || null, summary: values.summary || null, description: values.description || null };
-      query = form.dataset.id
-        ? state.supabase.from("services").update(payload).eq("id", form.dataset.id)
-        : state.supabase.from("services").insert({ ...payload, status: "draft", position: state.data.services.length });
-    } else if (kind === "portfolio") {
-      $("#upload-progress").classList.remove("hidden");
-      const existing = state.data.portfolio.find((item) => item.id === form.dataset.id);
-      const thumbnailAsset = await uploadAsset(formData.get("thumbnail_file"), `${values.title} thumbnail`, values.alt_text);
-      const mainAsset = await uploadAsset(formData.get("main_file"), values.title, values.alt_text);
-      const thumbnailSrc = thumbnailAsset?.public_url || values.thumbnail_src || existing?.thumbnail_src;
-      if (!thumbnailSrc) throw new Error("Add a thumbnail URL or upload a thumbnail image.");
-      const payload = {
-        title: values.title,
-        slug: values.slug,
-        description: values.description || null,
-        category: values.category,
-        collection: values.collection || null,
-        year: Number(values.year) || null,
-        media_type: values.media_type,
-        thumbnail_src: thumbnailSrc,
-        preview_src: values.preview_src || (mainAsset?.mime_type.startsWith("image/") ? mainAsset.public_url : null),
-        original_url: mainAsset?.public_url || values.original_url || null,
-        alt_text: values.alt_text,
-        featured: formData.get("featured") === "on",
-        updated_by: state.profile.id,
-      };
-      query = form.dataset.id
-        ? state.supabase.from("portfolio_items").update(payload).eq("id", form.dataset.id)
-        : state.supabase.from("portfolio_items").insert({ ...payload, status: "draft", position: state.data.portfolio.length, created_by: state.profile.id });
-    } else if (kind === "media") {
-      if (form.dataset.id) {
-        query = state.supabase.from("media_assets").update({ internal_name: values.internal_name, alt_text: values.alt_text, caption: values.caption || null }).eq("id", form.dataset.id);
-      } else {
-        $("#upload-progress").classList.remove("hidden");
-        await uploadAsset(formData.get("file"), values.internal_name, values.alt_text);
-        query = Promise.resolve({ error: null });
+      let resolvedClientId = values.client_id;
+      if (!resolvedClientId && values.new_client_name?.trim()) {
+        const { data: client, error: clientError } = await state.supabase.from("clients").insert({
+          name: values.new_client_name.trim(),
+          email: values.new_client_email || null,
+          phone: values.new_client_phone || null,
+          company: values.new_client_company || null,
+          created_by: state.profile.id,
+        }).select("*").single();
+        if (clientError) throw clientError;
+        resolvedClientId = client.id;
       }
+      if (!resolvedClientId) throw new Error("Choose a client or add a new client below.");
+      const payload = { title: values.title.trim(), client_id: resolvedClientId, service: values.service || null, description: values.description || null, budget: values.budget || null, currency: values.currency, start_date: values.start_date || null, due_date: values.due_date || null, status: values.status };
+      const query = id ? state.supabase.from("projects").update(payload).eq("id", id).select("*").single() : state.supabase.from("projects").insert({ ...payload, intake_submission_id: form.dataset.intakeId || null, created_by: state.profile.id }).select("*").single();
+      const { data, error } = await query;
+      if (error) throw error;
+      await logActivity(data.id, id ? "updated" : "created", "project", data.id);
+      destination = `projects/${data.id}`;
+      toast(id ? "Project changes saved." : "Project created.");
+    } else if (kind === "milestone") {
+      const payload = { project_id: form.dataset.projectId, title: values.title.trim(), due_date: values.due_date || null, description: values.description || null, status: values.status, requires_approval: formData.get("requires_approval") === "on", position: state.data.milestones.filter((item) => item.project_id === form.dataset.projectId).length };
+      if (id) delete payload.position;
+      const query = id ? state.supabase.from("milestones").update(payload).eq("id", id).select("*").single() : state.supabase.from("milestones").insert(payload).select("*").single();
+      const { data, error } = await query;
+      if (error) throw error;
+      await logActivity(form.dataset.projectId, id ? "updated" : "created", "milestone", data.id);
+      destination = `projects/${form.dataset.projectId}`;
+      toast(id ? "Milestone saved." : "Milestone added.");
+    } else if (kind === "deliverable") {
+      const payload = { milestone_id: form.dataset.milestoneId, title: values.title.trim(), version: Number(values.version), file_url: values.file_url, description: values.description || null, status: values.status || "shared", uploaded_by: state.profile.id };
+      const query = id ? state.supabase.from("deliverables").update(payload).eq("id", id).select("*").single() : state.supabase.from("deliverables").insert(payload).select("*").single();
+      const { data, error } = await query;
+      if (error) throw error;
+      await logActivity(form.dataset.projectId, id ? "updated" : "shared", "deliverable", data.id);
+      destination = `projects/${form.dataset.projectId}`;
+      toast(id ? "Deliverable saved." : "Deliverable shared.");
+    } else if (kind === "invoice") {
+      const descriptions = $$('[name="line_description"]', form);
+      const quantities = $$('[name="line_quantity"]', form);
+      const prices = $$('[name="line_price"]', form);
+      const items = descriptions.map((input, index) => ({ description: input.value, quantity: Number(quantities[index].value), unit_price: Number(prices[index].value) }));
+      const { data, error } = await state.supabase.rpc("save_invoice_draft", {
+        target_invoice_id: id, target_project_id: values.project_id,
+        target_invoice_number: values.invoice_number, target_due_date: values.due_date,
+        target_tax: Number(values.tax || 0), target_notes: values.notes || "", target_items: items,
+      });
+      if (error) throw error;
+      destination = `invoices/${data}`;
+      toast("Invoice draft saved.");
+    } else if (kind === "page") {
+      const page = state.data.pages.find((item) => item.id === id);
+      const content = structuredClone(page.content || {});
+      for (const [, path, type = "text"] of pageSchemas[page.slug] || []) {
+        const value = type === "image" ? await resolveImage(form, formData, path, page.title, page.title) : values[path] || "";
+        setPath(content, path, value);
+      }
+      const nextTitle = getPath(content, "header.title") || getPath(content, "hero.title_line_one") || page.title;
+      const { error } = await state.supabase.from("pages").update({ title: nextTitle, content, seo_title: values.seo_title || null, seo_description: values.seo_description || null, updated_by: state.profile.id }).eq("id", id);
+      if (error) throw error;
+      destination = `pages/${id}`;
+      toast("Draft changes saved.");
+    } else if (kind === "service") {
+      const existing = id ? state.data.services.find((item) => item.id === id) : null;
+      const image = await resolveImage(form, formData, "image_url", values.title, values.title);
+      const payload = { title: values.title.trim(), slug: existing?.slug || values.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"), summary: values.summary, description: values.description || null, image_url: image || null };
+      const query = id ? state.supabase.from("services").update(payload).eq("id", id).select("*").single() : state.supabase.from("services").insert({ ...payload, status: "draft", position: state.data.services.length, has_unpublished_changes: true }).select("*").single();
+      const { data, error } = await query;
+      if (error) throw error;
+      destination = `services/${data.id}`;
+      toast("Service draft saved.");
+    } else if (kind === "portfolio") {
+      const existing = id ? state.data.portfolio.find((item) => item.id === id) : null;
+      const image = await resolveImage(form, formData, "thumbnail_src", values.title, values.alt_text);
+      if (!image) throw new Error("Choose a thumbnail image before saving.");
+      const payload = { title: values.title.trim(), slug: existing?.slug || values.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"), category: values.category, collection: values.collection || null, year: Number(values.year), media_type: values.media_type, description: values.description || null, alt_text: values.alt_text, thumbnail_src: image, preview_src: values.preview_src || null, original_url: values.original_url || null, featured: formData.get("featured") === "on", updated_by: state.profile.id };
+      const query = id ? state.supabase.from("portfolio_items").update(payload).eq("id", id).select("*").single() : state.supabase.from("portfolio_items").insert({ ...payload, status: "draft", position: state.data.portfolio.length, created_by: state.profile.id, has_unpublished_changes: true }).select("*").single();
+      const { data, error } = await query;
+      if (error) throw error;
+      destination = `portfolio/${data.id}`;
+      toast("Portfolio draft saved.");
+    } else if (kind === "media") {
+      if (id) {
+        const { error } = await state.supabase.from("media_assets").update({ internal_name: values.internal_name, alt_text: values.alt_text, caption: values.caption || null }).eq("id", id);
+        if (error) throw error;
+        destination = `media/${id}`;
+        toast("Media details saved.");
+      } else {
+        $("#upload-progress")?.classList.remove("hidden");
+        const asset = await uploadAsset(formData.get("file"), values.internal_name, values.alt_text);
+        destination = `media/${asset.id}`;
+        toast("File uploaded.");
+      }
+    } else if (kind === "team") {
+      const { error } = await state.supabase.from("profiles").update({ full_name: values.full_name, role: values.role }).eq("id", id);
+      if (error) throw error;
+      destination = `team/${id}`;
+      toast("Team access saved.");
     } else if (kind === "collection") {
       const page = globalPage();
-      if (!page) throw new Error("Global content is unavailable.");
-      const content = structuredClone(page.content || {});
       const type = form.dataset.collectionType;
+      const index = Number(form.dataset.collectionIndex);
+      const content = structuredClone(page.content || {});
       content[type] ||= [];
       const item = {};
-      (collectionSchemas[type] || []).forEach(([, name]) => { item[name] = values[name] || ""; });
-      const index = form.dataset.collectionIndex === "" ? -1 : Number(form.dataset.collectionIndex);
+      for (const [, name, typeName = "text"] of collectionSchemas[type]) {
+        item[name] = typeName === "image" ? await resolveImage(form, formData, name, values.name || type, values.name || type) : values[name] || "";
+      }
       if (index >= 0) content[type][index] = item;
       else content[type].push(item);
-      query = state.supabase.from("pages").update({ content, updated_by: state.profile.id }).eq("id", page.id);
+      const { error } = await state.supabase.from("pages").update({ content, updated_by: state.profile.id }).eq("id", page.id);
+      if (error) throw error;
+      destination = "pages";
+      toast("Site-wide draft saved.");
     }
-    const { error } = await query;
-    if (error) throw error;
-    form.dataset.dirty = "false";
-    $("#entity-dialog").close();
-    toast(`${titleCase(kind)} saved${["page", "service", "portfolio", "collection"].includes(kind) ? " as a draft" : ""}.`);
-    await refreshData();
+    state.dirty = false;
+    await refreshData({ preserveRoute: false });
+    go(destination);
   } catch (error) {
-    $("#dialog-message").textContent = error.message;
+    $("#screen-message").innerHTML = inlineError(error.message || "Please check the form and try again.");
   } finally {
     submit.disabled = false;
-    $("#upload-progress").classList.add("hidden");
+    $("#upload-progress")?.classList.add("hidden");
   }
 }
 
 async function publishEntity(type, id) {
-  const button = document.querySelector(`[data-publish-type="${type}"][data-publish-id="${id}"]`);
-  if (button) button.disabled = true;
   const { error } = await state.supabase.rpc("publish_cms_entity", { target_type: type, target_id: id });
-  if (error) toast(error.message, "error");
-  else {
-    toast(`${titleCase(type)} published to the website.`);
-    await refreshData();
+  if (error) {
+    setScreenError(error.message);
+    return;
   }
-  if (button) button.disabled = false;
+  toast(`${titleCase(type)} published.`);
+  await refreshData();
+}
+
+async function transitionInvoice(id, status, reference = null) {
+  const { error } = await state.supabase.rpc("transition_invoice", { target_invoice_id: id, target_status: status, target_payment_reference: reference });
+  if (error) {
+    setScreenError(error.message);
+    return;
+  }
+  toast(status === "paid" ? "Payment recorded." : `Invoice marked ${titleCase(status)}.`);
+  await refreshData();
 }
 
 function confirmAction(title, message, actionLabel = "Continue") {
@@ -671,34 +1043,20 @@ function confirmAction(title, message, actionLabel = "Continue") {
   $("#confirm-action").textContent = actionLabel;
   const dialog = $("#confirm-dialog");
   dialog.showModal();
-  return new Promise((resolve) => {
-    dialog.addEventListener("close", () => resolve(dialog.returnValue === "confirm"), { once: true });
-  });
+  return new Promise((resolve) => dialog.addEventListener("close", () => resolve(dialog.returnValue === "confirm"), { once: true }));
 }
 
 async function archiveEntity(type, id) {
-  const approved = await confirmAction("Archive this content?", "Archived content is removed from the public site but remains available in the workspace.", "Archive");
+  const approved = await confirmAction("Archive this content?", "It will leave the public site but remain available in the workspace.", "Archive");
   if (!approved) return;
   const table = type === "portfolio" ? "portfolio_items" : "services";
   const { error } = await state.supabase.from(table).update({ status: "archived" }).eq("id", id);
-  if (error) toast(error.message, "error");
-  else { toast("Content archived."); await refreshData(); }
-}
-
-async function moveEntity(type, id, direction) {
-  const list = type === "portfolio" ? state.data.portfolio : state.data.services;
-  const currentIndex = list.findIndex((item) => item.id === id);
-  const nextIndex = currentIndex + Number(direction);
-  if (currentIndex < 0 || nextIndex < 0 || nextIndex >= list.length) return;
-  const table = type === "portfolio" ? "portfolio_items" : "services";
-  const current = list[currentIndex];
-  const next = list[nextIndex];
-  const [{ error: firstError }, { error: secondError }] = await Promise.all([
-    state.supabase.from(table).update({ position: next.position }).eq("id", current.id),
-    state.supabase.from(table).update({ position: current.position }).eq("id", next.id),
-  ]);
-  if (firstError || secondError) toast((firstError || secondError).message, "error");
-  else await refreshData();
+  if (error) setScreenError(error.message);
+  else {
+    toast("Content archived.");
+    await refreshData({ preserveRoute: false });
+    go(type === "portfolio" ? "portfolio" : "services");
+  }
 }
 
 async function duplicateEntity(type, id) {
@@ -709,197 +1067,311 @@ async function duplicateEntity(type, id) {
   ["id", "legacy_id", "published_snapshot", "published_at", "created_at", "updated_at"].forEach((key) => delete payload[key]);
   payload.title = `${source.title} copy`;
   payload.slug = `${source.slug}-copy-${Date.now().toString().slice(-5)}`;
-  payload.position = type === "portfolio" ? state.data.portfolio.length : state.data.services.length;
+  payload.position = (type === "portfolio" ? state.data.portfolio : state.data.services).length;
   payload.status = "draft";
+  payload.has_unpublished_changes = true;
   if (type === "portfolio") {
     payload.created_by = state.profile.id;
     payload.updated_by = state.profile.id;
   }
-  const { error } = await state.supabase.from(table).insert(payload);
-  if (error) toast(error.message, "error");
-  else { toast("Draft copy created."); await refreshData(); }
-}
-
-function previewMarkup(kind, record) {
-  const image = record.thumbnail_src || record.image_url || getPath(record.content || {}, "hero.background_image");
-  const title = record.title || getPath(record.content || {}, "hero.title_line_one") || "Content preview";
-  const secondaryTitle = getPath(record.content || {}, "hero.title_line_two") || "";
-  const body = record.summary || record.description || getPath(record.content || {}, "hero.body") || getPath(record.content || {}, "header.body") || "";
-  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><style>*{box-sizing:border-box}body{margin:0;background:#080807;color:#f8f5ec;font-family:Inter,Arial,sans-serif}.shell{min-height:100vh;padding:8vw;background:${image ? `linear-gradient(#05050599,#050505e8),url('${String(image).replaceAll("'", "%27")}') center/cover` : "radial-gradient(circle at 70% 0,#2b2411,transparent 35%),#080807"}.eyebrow{color:#e8bb48;text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:700}.content{max-width:780px;margin-top:18vh}h1{font-size:clamp(42px,9vw,96px);line-height:.94;letter-spacing:-.06em;margin:16px 0 24px}h1 span{color:#e8bb48}p{max-width:620px;color:#c3bfb4;line-height:1.75;font-size:16px}.card{max-width:520px;margin:12vh auto;padding:26px;border:1px solid #2d2e27;border-radius:24px;background:#11120f}.card img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:17px}.card h1{font-size:38px}.pill{display:inline-flex;margin-top:22px;padding:12px 20px;border-radius:999px;background:#e8bb48;color:#151206;font-weight:700}</style></head><body>${kind === "page" ? `<main class="shell"><div class="content"><div class="eyebrow">${escapeHtml(getPath(record.content || {}, "hero.eyebrow") || getPath(record.content || {}, "header.eyebrow") || record.slug || "Olympus Studio")}</div><h1>${escapeHtml(title)} ${secondaryTitle ? `<span>${escapeHtml(secondaryTitle)}</span>` : ""}</h1><p>${escapeHtml(body)}</p><span class="pill">Primary action</span></div></main>` : `<main class="shell"><article class="card">${image ? `<img src="${escapeHtml(image)}" alt="">` : ""}<div class="eyebrow">${escapeHtml(record.category || kind)}</div><h1>${escapeHtml(title)}</h1><p>${escapeHtml(body)}</p><span class="pill">${kind === "service" ? "Brief this service" : "View project"}</span></article></main>`}</body></html>`;
-}
-
-function recordFromOpenForm() {
-  const form = $("#entity-form");
-  const values = Object.fromEntries(new FormData(form).entries());
-  const kind = form.dataset.kind;
-  if (kind === "page") {
-    const page = state.data.pages.find((item) => item.id === form.dataset.id);
-    const content = structuredClone(page.content || {});
-    (pageSchemas[page.slug] || []).forEach(([, path]) => setPath(content, path, values[path] || ""));
-    return { kind, record: { ...page, content } };
+  const { data, error } = await state.supabase.from(table).insert(payload).select("*").single();
+  if (error) setScreenError(error.message);
+  else {
+    toast("Draft copy created.");
+    await refreshData({ preserveRoute: false });
+    go(`${type}/${data.id}`);
   }
-  return { kind, record: values };
 }
 
-function showPreview(kind, record) {
-  $("#preview-title").textContent = record.title || titleCase(kind);
-  $("#preview-frame").srcdoc = previewMarkup(kind, record);
-  $("#preview-frame").classList.remove("mobile");
-  $("#preview-dialog").showModal();
-}
-
-async function removeCollection(type, index) {
-  const approved = await confirmAction("Remove this draft item?", "The item will be removed from the Global content draft. The published website stays unchanged until Global content is published.", "Remove");
-  if (!approved) return;
-  const page = globalPage();
-  const content = structuredClone(page.content || {});
-  content[type] ||= [];
-  content[type].splice(Number(index), 1);
-  const { error } = await state.supabase.from("pages").update({ content, updated_by: state.profile.id }).eq("id", page.id);
-  if (error) toast(error.message, "error");
-  else { toast("Draft item removed."); await refreshData(); }
+async function moveEntity(type, id, direction) {
+  const list = type === "portfolio" ? state.data.portfolio : state.data.services;
+  const currentIndex = list.findIndex((item) => item.id === id);
+  const nextIndex = currentIndex + Number(direction);
+  if (currentIndex < 0 || nextIndex < 0 || nextIndex >= list.length) return;
+  const table = type === "portfolio" ? "portfolio_items" : "services";
+  const current = list[currentIndex];
+  const next = list[nextIndex];
+  const first = await state.supabase.from(table).update({ position: next.position }).eq("id", current.id);
+  if (first.error) return setScreenError(first.error.message);
+  const second = await state.supabase.from(table).update({ position: current.position }).eq("id", next.id);
+  if (second.error) return setScreenError(second.error.message);
+  toast(direction < 0 ? "Moved earlier." : "Moved later.");
+  await refreshData();
 }
 
 async function archiveMedia(id) {
-  const { data: usage, error: usageError } = await state.supabase.rpc("media_asset_usage", { target_id: id });
-  if (usageError) { toast(usageError.message, "error"); return; }
-  if (Number(usage) > 0) {
-    toast(`This file is used in ${usage} content record${usage === 1 ? "" : "s"}. Replace those references before archiving it.`, "error");
-    return;
+  const { data: usage, error: usageError } = await state.supabase.rpc("media_asset_usage_details", { target_id: id });
+  if (usageError) return setScreenError(usageError.message);
+  if (usage?.length) {
+    const locations = usage.slice(0, 4).map((item) => `${item.source_label}: ${item.record_title}`).join(", ");
+    const more = usage.length > 4 ? ` and ${usage.length - 4} more` : "";
+    return setScreenError(`This file is still used by ${locations}${more}. Replace it there before archiving.`);
   }
-  const approved = await confirmAction("Archive this media file?", "The file remains in storage but is hidden from the active media library.", "Archive");
+  const approved = await confirmAction("Archive this media file?", "The file stays in storage but is hidden from the active library.", "Archive");
   if (!approved) return;
   const { error } = await state.supabase.from("media_assets").update({ archived_at: new Date().toISOString() }).eq("id", id);
-  if (error) toast(error.message, "error");
-  else { toast("Media archived."); await refreshData(); }
+  if (error) setScreenError(error.message);
+  else {
+    toast("Media archived.");
+    await refreshData({ preserveRoute: false });
+    go("media");
+  }
 }
 
-function handleCreateAction(action) {
-  const dialogs = {
-    "new-client": "client",
-    "new-project": "project",
-    "new-invoice": "invoice",
-    "new-service": "service",
-    "new-portfolio": "portfolio",
-    "new-media": "media",
-  };
-  const kind = dialogs[action];
-  if (!kind) return false;
-  try {
-    openDialog(kind);
-  } catch (error) {
-    console.error(`Could not open ${kind} dialog`, error);
-    toast(`The ${titleCase(kind)} form could not open. Refresh the page and try again.`, "error");
+function previewRecordFromForm() {
+  const form = $(".cms-editor");
+  if (!form) return null;
+  const formData = new FormData(form);
+  const values = Object.fromEntries(formData.entries());
+  const kind = form.dataset.recordForm;
+  if (kind === "page") {
+    const page = state.data.pages.find((item) => item.id === form.dataset.id);
+    const content = structuredClone(page.content || {});
+    for (const [, path] of pageSchemas[page.slug] || []) setPath(content, path, values[path] || getPath(content, path) || "");
+    return { kind, id: page.id, slug: page.slug, record: { ...page, content } };
   }
-  return true;
+  if (kind === "service") {
+    const existing = state.data.services.find((item) => item.id === form.dataset.id) || {};
+    return { kind, id: existing.id, slug: "services", record: { ...existing, ...values, image_url: values.image_url || existing.image_url } };
+  }
+  if (kind === "portfolio") {
+    const existing = state.data.portfolio.find((item) => item.id === form.dataset.id) || {};
+    return { kind, id: existing.id, slug: "portfolio", record: { ...existing, ...values, thumbnail_src: values.thumbnail_src || existing.thumbnail_src } };
+  }
+  return null;
+}
+
+function buildPreviewPayload(preview) {
+  const pages = Object.fromEntries(state.data.pages.filter((item) => item.published_snapshot).map((item) => [item.slug, item.published_snapshot]));
+  const services = state.data.services.filter((item) => item.published_snapshot && item.status === "published").map((item) => item.published_snapshot);
+  const portfolioItems = state.data.portfolio.filter((item) => item.published_snapshot && item.status === "published").map((item) => item.published_snapshot);
+  if (preview.kind === "page") pages[preview.slug] = { title: preview.record.title, slug: preview.slug, content: preview.record.content, seo_title: preview.record.seo_title, seo_description: preview.record.seo_description };
+  if (preview.kind === "service") {
+    const index = services.findIndex((item) => item.id === preview.id || item.slug === preview.record.slug);
+    if (index >= 0) services[index] = preview.record; else services.push(preview.record);
+  }
+  if (preview.kind === "portfolio") {
+    const index = portfolioItems.findIndex((item) => item.id === preview.id);
+    if (index >= 0) portfolioItems[index] = preview.record; else portfolioItems.unshift(preview.record);
+  }
+  return { pages, services, portfolioItems, generatedAt: new Date().toISOString() };
+}
+
+function openExactPreview() {
+  const preview = previewRecordFromForm();
+  if (!preview) return;
+  state.previewPayload = buildPreviewPayload(preview);
+  $("#preview-title").textContent = `${titleCase(preview.slug)} preview`;
+  $("#preview-frame").className = "";
+  $("#preview-frame").src = `/?cmsPreview=1#${encodeURIComponent(preview.slug === "global" ? "home" : preview.slug)}`;
+  $("#preview-dialog").showModal();
+}
+
+function sendPreviewPayload() {
+  if (!state.previewPayload) return;
+  $("#preview-frame").contentWindow?.postMessage({ type: "olympus-preview-content", payload: state.previewPayload }, window.location.origin);
+}
+
+function restoreSidebar() {
+  $("#app").classList.toggle("sidebar-hidden", localStorage.getItem("olympus-sidebar-hidden") === "true");
+}
+function toggleDesktopSidebar() {
+  const hidden = !$("#app").classList.contains("sidebar-hidden");
+  $("#app").classList.toggle("sidebar-hidden", hidden);
+  localStorage.setItem("olympus-sidebar-hidden", String(hidden));
+}
+function openSidebar() {
+  if (matchMedia("(max-width: 800px)").matches) $("#app").classList.add("sidebar-open");
+  else {
+    $("#app").classList.remove("sidebar-hidden");
+    localStorage.setItem("olympus-sidebar-hidden", "false");
+  }
+  $("#menu-button").setAttribute("aria-expanded", "true");
+}
+function closeSidebar() {
+  $("#app").classList.remove("sidebar-open");
+  $("#menu-button").setAttribute("aria-expanded", "false");
 }
 
 document.addEventListener("click", async (event) => {
+  const routeTarget = event.target.closest("[data-route]");
+  if (routeTarget) {
+    event.preventDefault();
+    go(routeTarget.dataset.route);
+    return;
+  }
   const nav = event.target.closest("[data-view]");
-  if (nav) setView(nav.dataset.view);
-  const jump = event.target.closest("[data-view-jump]");
-  if (jump) setView(jump.dataset.viewJump);
+  if (nav) {
+    go(nav.dataset.view);
+    return;
+  }
+  const row = event.target.closest("[data-route]");
+  if (row) return go(row.dataset.route);
   const action = event.target.closest("[data-action]")?.dataset.action;
   if (action === "retry") await refreshData();
-  handleCreateAction(action);
   if (action === "load-more-portfolio") {
     state.portfolioVisible += 24;
     renderPortfolio();
   }
-
-  const projectId = event.target.closest("[data-open-project]")?.dataset.openProject;
-  if (projectId) openProject(projectId);
-  const milestoneProjectId = event.target.closest("[data-add-milestone]")?.dataset.addMilestone;
-  if (milestoneProjectId) { $("#project-dialog").close(); openDialog("milestone", { project_id: milestoneProjectId }); }
-  const deliverableMilestoneId = event.target.closest("[data-add-deliverable]")?.dataset.addDeliverable;
-  if (deliverableMilestoneId) { $("#project-dialog").close(); openDialog("deliverable", { milestone_id: deliverableMilestoneId }); }
-  if (event.target.closest("[data-close-project]")) $("#project-dialog").close();
-
-  const inviteProjectId = event.target.closest("[data-invite-client]")?.dataset.inviteClient;
-  if (inviteProjectId) {
-    const email = window.prompt("Client email address");
-    if (!email) return;
-    const { data, error } = await state.supabase.from("project_invites").insert({ project_id: inviteProjectId, email: email.trim().toLowerCase(), created_by: state.profile.id }).select("token").single();
-    if (error) toast(error.message, "error");
+  const tab = event.target.closest("[data-collection-tab]")?.dataset.collectionTab;
+  if (tab) {
+    state.collectionTab = tab;
+    renderCollections();
+  }
+  const toggleLibrary = event.target.closest("[data-toggle-library]")?.dataset.toggleLibrary;
+  if (toggleLibrary) $(`[data-library="${CSS.escape(toggleLibrary)}"]`)?.classList.toggle("hidden");
+  const choice = event.target.closest("[data-choose-image]");
+  if (choice) {
+    const name = choice.dataset.chooseImage;
+    const wrapper = $(`[data-image-field="${CSS.escape(name)}"]`);
+    $('[name="' + CSS.escape(name) + '"]', wrapper).value = choice.dataset.imageValue;
+    $(".current-image", wrapper).innerHTML = `<img src="${escapeHtml(choice.dataset.imageValue)}" alt=""><div><strong>Selected image</strong><small>This will replace the current image after you save.</small></div>`;
+    $(`[data-library="${CSS.escape(name)}"]`).classList.add("hidden");
+    state.dirty = true;
+  }
+  const restore = event.target.closest("[data-restore-image]");
+  if (restore) {
+    const name = restore.dataset.restoreImage;
+    const wrapper = $(`[data-image-field="${CSS.escape(name)}"]`);
+    $('[name="' + CSS.escape(name) + '"]', wrapper).value = restore.dataset.original;
+    $(".current-image", wrapper).innerHTML = `<img src="${escapeHtml(restore.dataset.original)}" alt=""><div><strong>Current image</strong><small>This image will stay unless you replace it.</small></div>`;
+  }
+  if (event.target.closest("[data-add-line-item]")) {
+    $("#invoice-line-items").insertAdjacentHTML("beforeend", invoiceLineItem());
+    updateInvoiceTotal();
+  }
+  const removeLine = event.target.closest("[data-remove-line-item]");
+  if (removeLine && $$(".invoice-line-item").length > 1) {
+    removeLine.closest(".invoice-line-item").remove();
+    updateInvoiceTotal();
+  }
+  if (event.target.closest("[data-preview-current]")) openExactPreview();
+  const publish = event.target.closest("[data-publish-current]");
+  if (publish) await publishEntity(publish.dataset.publishCurrent, publish.dataset.id);
+  const archive = event.target.closest("[data-archive-current]");
+  if (archive) await archiveEntity(archive.dataset.archiveCurrent, archive.dataset.id);
+  const duplicate = event.target.closest("[data-duplicate-current]");
+  if (duplicate) await duplicateEntity(duplicate.dataset.duplicateCurrent, duplicate.dataset.id);
+  const move = event.target.closest("[data-move-current]");
+  if (move) await moveEntity(move.dataset.moveCurrent, move.dataset.id, move.dataset.direction);
+  const archiveMediaButton = event.target.closest("[data-archive-media]");
+  if (archiveMediaButton) await archiveMedia(archiveMediaButton.dataset.archiveMedia);
+  const copyMedia = event.target.closest("[data-copy-media]")?.dataset.copyMedia;
+  if (copyMedia) {
+    try { await navigator.clipboard.writeText(copyMedia); toast("Media address copied."); }
+    catch { setScreenError("Copying is unavailable in this browser. Select the address from the media record instead."); }
+  }
+  if (event.target.closest("[data-show-payment]")) $(".payment-form").classList.remove("hidden");
+  const transition = event.target.closest("[data-transition-invoice]");
+  if (transition) {
+    const destructive = ["void", "uncollectible"].includes(transition.dataset.nextStatus);
+    if (!destructive || await confirmAction(`${titleCase(transition.dataset.nextStatus)} this invoice?`, "This changes the invoice lifecycle and may not be reversible.", titleCase(transition.dataset.nextStatus))) {
+      await transitionInvoice(transition.dataset.transitionInvoice, transition.dataset.nextStatus);
+    }
+  }
+  if (event.target.closest("[data-print-invoice]")) window.print();
+  const copyInvite = event.target.closest("[data-copy-invite]")?.dataset.copyInvite;
+  if (copyInvite) {
+    try { await navigator.clipboard.writeText(copyInvite); toast("Secure client link copied."); }
+    catch {
+      const fallback = $("[data-copy-fallback]");
+      fallback.classList.remove("hidden");
+      $("input", fallback).value = copyInvite;
+      $("input", fallback).select();
+    }
+  }
+  const revoke = event.target.closest("[data-revoke-invite]")?.dataset.revokeInvite;
+  if (revoke && await confirmAction("Revoke this invitation?", "The client will no longer be able to use this link.", "Revoke")) {
+    const invite = state.data.invitations.find((item) => item.id === revoke);
+    const { error } = await state.supabase.from("project_invites").update({ revoked_at: new Date().toISOString() }).eq("id", revoke);
+    if (error) setScreenError(error.message);
     else {
-      const inviteUrl = `${window.location.origin}/portal?invite=${data.token}`;
-      try { await navigator.clipboard.writeText(inviteUrl); toast("Secure client link copied. It expires in 7 days."); }
-      catch { window.prompt("Copy this secure client link", inviteUrl); }
+      await logActivity(invite.project_id, "revoked", "invitation", revoke);
+      toast("Invitation revoked.");
+      await refreshData();
     }
   }
-
-  const pageId = event.target.closest("[data-edit-page]")?.dataset.editPage;
-  if (pageId) openDialog("page", state.data.pages.find((page) => page.id === pageId));
-  const previewPageId = event.target.closest("[data-preview-page]")?.dataset.previewPage;
-  if (previewPageId) showPreview("page", state.data.pages.find((page) => page.id === previewPageId));
-  const serviceId = event.target.closest("[data-edit-service]")?.dataset.editService;
-  if (serviceId) openDialog("service", state.data.services.find((service) => service.id === serviceId));
-  const portfolioId = event.target.closest("[data-edit-portfolio]")?.dataset.editPortfolio;
-  if (portfolioId) openDialog("portfolio", state.data.portfolio.find((item) => item.id === portfolioId));
-  const mediaId = event.target.closest("[data-edit-media]")?.dataset.editMedia;
-  if (mediaId) openDialog("media", state.data.media.find((item) => item.id === mediaId));
-
-  const publishButton = event.target.closest("[data-publish-type]");
-  if (publishButton) await publishEntity(publishButton.dataset.publishType, publishButton.dataset.publishId);
-  const archiveButton = event.target.closest("[data-archive-type]");
-  if (archiveButton) await archiveEntity(archiveButton.dataset.archiveType, archiveButton.dataset.archiveId);
-  const moveButton = event.target.closest("[data-move-type]");
-  if (moveButton) await moveEntity(moveButton.dataset.moveType, moveButton.dataset.moveId, moveButton.dataset.direction);
-  const duplicateService = event.target.closest("[data-duplicate-service]")?.dataset.duplicateService;
-  if (duplicateService) await duplicateEntity("service", duplicateService);
-  const duplicatePortfolio = event.target.closest("[data-duplicate-portfolio]")?.dataset.duplicatePortfolio;
-  if (duplicatePortfolio) await duplicateEntity("portfolio", duplicatePortfolio);
-
-  const collectionTab = event.target.closest("[data-collection-tab]")?.dataset.collectionTab;
-  if (collectionTab) { state.collectionTab = collectionTab; renderCollections(); }
-  const addCollection = event.target.closest("[data-add-collection]")?.dataset.addCollection;
-  if (addCollection) openDialog("collection", null, { collectionType: addCollection });
-  const editCollection = event.target.closest("[data-edit-collection]");
-  if (editCollection) {
-    const type = editCollection.dataset.editCollection;
-    const index = Number(editCollection.dataset.collectionIndex);
-    openDialog("collection", globalPage()?.content?.[type]?.[index], { collectionType: type, collectionIndex: index });
-  }
-  const removeCollectionButton = event.target.closest("[data-remove-collection]");
-  if (removeCollectionButton) await removeCollection(removeCollectionButton.dataset.removeCollection, removeCollectionButton.dataset.collectionIndex);
-
-  const copyUrl = event.target.closest("[data-copy-url]")?.dataset.copyUrl;
-  if (copyUrl) {
-    try { await navigator.clipboard.writeText(copyUrl); toast("Media URL copied."); }
-    catch { toast("The URL could not be copied.", "error"); }
-  }
-  const archiveMediaId = event.target.closest("[data-archive-media]")?.dataset.archiveMedia;
-  if (archiveMediaId) await archiveMedia(archiveMediaId);
-
-  const reviewId = event.target.closest("[data-review-intake]")?.dataset.reviewIntake;
-  if (reviewId) {
-    const item = state.data.intake.find((entry) => entry.id === reviewId);
-    if (item?.status === "new") {
-      const { error } = await state.supabase.from("intake_submissions").update({ status: "reviewing" }).eq("id", reviewId);
-      if (error) toast(error.message, "error"); else { toast("Enquiry moved to review."); await refreshData(); }
-    } else if (item?.status === "reviewing") {
-      let client = state.data.clients.find((entry) => entry.email?.toLowerCase() === item.email.toLowerCase());
-      if (!client) {
-        const { data, error } = await state.supabase.from("clients").insert({ name: item.name, email: item.email, phone: item.phone || null, created_by: state.profile.id }).select("*").single();
-        if (error) { toast(error.message, "error"); return; }
-        client = { ...data, projects: [] };
-        state.data.clients.unshift(client);
-      }
-      openDialog("project", { title: item.title || `${item.name} project`, service: item.service, budget: String(item.budget || "").replace(/[^0-9.]/g, ""), description: item.message, client_id: client.id, intake_submission_id: item.id });
-    } else toast(item?.message || "No additional message was provided.");
-  }
-
-  const invoiceButton = event.target.closest("[data-invoice-status]");
-  if (invoiceButton) {
-    const patch = { status: invoiceButton.dataset.nextStatus };
-    if (patch.status === "paid") {
-      const reference = window.prompt("Payment reference or method");
-      if (!reference) return;
-      patch.payment_reference = reference;
+  const intakeStatus = event.target.closest("[data-intake-status]");
+  if (intakeStatus) {
+    const { error } = await state.supabase.from("intake_submissions").update({ status: intakeStatus.dataset.nextStatus }).eq("id", intakeStatus.dataset.intakeStatus);
+    if (error) setScreenError(error.message);
+    else {
+      toast("Enquiry moved to review.");
+      await refreshData();
     }
-    const { error } = await state.supabase.from("invoices").update(patch).eq("id", invoiceButton.dataset.invoiceStatus);
-    if (error) toast(error.message, "error");
-    else { toast(patch.status === "paid" ? "Invoice marked paid." : "Invoice finalized and ready to send."); await refreshData(); }
+  }
+  const archiveIntake = event.target.closest("[data-archive-intake]");
+  if (archiveIntake && await confirmAction("Archive this enquiry?", "It will leave the active inbox but remain in the workspace history.", "Archive")) {
+    const { error } = await state.supabase.from("intake_submissions").update({ status: "archived" }).eq("id", archiveIntake.dataset.archiveIntake);
+    if (error) setScreenError(error.message);
+    else {
+      toast("Enquiry archived.");
+      await refreshData({ preserveRoute: false });
+      go("inbox");
+    }
+  }
+  const removeCollection = event.target.closest("[data-remove-collection]");
+  if (removeCollection && await confirmAction("Remove this item?", "It remains on the live website until Site-wide content is published.", "Remove")) {
+    const page = globalPage();
+    const content = structuredClone(page.content || {});
+    content[removeCollection.dataset.removeCollection].splice(Number(removeCollection.dataset.index), 1);
+    const { error } = await state.supabase.from("pages").update({ content, updated_by: state.profile.id }).eq("id", page.id);
+    if (error) setScreenError(error.message);
+    else {
+      toast("Draft item removed.");
+      await refreshData({ preserveRoute: false });
+      go("pages");
+    }
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && event.target.matches("tr[data-route]")) go(event.target.dataset.route);
+  if (event.key === "Escape") closeSidebar();
+});
+
+document.addEventListener("input", (event) => {
+  if (event.target.closest(".record-form")) state.dirty = true;
+  if (event.target.matches('[name="line_quantity"], [name="line_price"]')) updateInvoiceTotal();
+});
+
+document.addEventListener("change", (event) => {
+  const input = event.target;
+  if (input.type === "file" && input.name.endsWith("_file") && input.files?.[0]) {
+    const name = input.name.replace(/_file$/, "");
+    const wrapper = $(`[data-image-field="${CSS.escape(name)}"]`);
+    if (!wrapper) return;
+    const previewUrl = URL.createObjectURL(input.files[0]);
+    $(`[name="${CSS.escape(name)}"]`, wrapper).value = previewUrl;
+    $(".current-image", wrapper).innerHTML = `<img src="${previewUrl}" alt=""><div><strong>New image selected</strong><small>Save the draft to upload this replacement.</small></div>`;
+    state.dirty = true;
+  }
+});
+
+document.addEventListener("submit", async (event) => {
+  const recordForm = event.target.closest("[data-record-form]");
+  if (recordForm) {
+    event.preventDefault();
+    await saveRecordForm(recordForm);
+    return;
+  }
+  const inviteFormNode = event.target.closest("[data-invite-form]");
+  if (inviteFormNode) {
+    event.preventDefault();
+    const email = new FormData(inviteFormNode).get("email").trim().toLowerCase();
+    const { data, error } = await state.supabase.from("project_invites").insert({ project_id: inviteFormNode.dataset.inviteForm, email, created_by: state.profile.id }).select("*").single();
+    if (error) $(".screen-message", inviteFormNode).innerHTML = inlineError(error.message);
+    else {
+      await logActivity(data.project_id, "created", "invitation", data.id, { email });
+      toast("Secure client link created.");
+      await refreshData();
+    }
+    return;
+  }
+  const paymentForm = event.target.closest("[data-payment-form]");
+  if (paymentForm) {
+    event.preventDefault();
+    await transitionInvoice(paymentForm.dataset.paymentForm, "paid", new FormData(paymentForm).get("payment_reference"));
   }
 });
 
@@ -911,7 +1383,10 @@ $("#login-form").addEventListener("submit", async (event) => {
   const values = Object.fromEntries(new FormData(event.currentTarget).entries());
   const { data, error } = await state.supabase.auth.signInWithPassword(values);
   if (error) $("#login-message").textContent = error.message;
-  else { state.session = data.session; await enterWorkspace(); }
+  else {
+    state.session = data.session;
+    await enterWorkspace();
+  }
   button.disabled = false;
 });
 
@@ -926,49 +1401,20 @@ $("#password-form").addEventListener("submit", async (event) => {
   const button = $("button", event.currentTarget);
   button.disabled = true;
   const { error: passwordError } = await state.supabase.auth.updateUser({ password: values.password });
-  if (passwordError) {
-    $("#password-message").textContent = passwordError.message;
-    button.disabled = false;
-    return;
-  }
-  const { error } = await state.supabase.from("profiles").update({ must_change_password: false }).eq("id", state.profile.id);
-  if (error) $("#password-message").textContent = error.message;
+  if (passwordError) $("#password-message").textContent = passwordError.message;
   else {
-    state.profile.must_change_password = false;
-    $("#password-dialog").close();
-    toast("Your private password is active.");
+    const { error } = await state.supabase.from("profiles").update({ must_change_password: false }).eq("id", state.profile.id);
+    if (error) $("#password-message").textContent = error.message;
+    else {
+      state.profile.must_change_password = false;
+      $("#password-dialog").close();
+      toast("Your private password is active.");
+    }
   }
   button.disabled = false;
 });
 
-$("#entity-form").addEventListener("submit", saveEntity);
-$("#entity-form").addEventListener("input", () => {
-  $("#entity-form").dataset.dirty = "true";
-});
-$("#entity-dialog").addEventListener("cancel", async (event) => {
-  if ($("#entity-form").dataset.dirty !== "true") return;
-  event.preventDefault();
-  const discard = await confirmAction("Discard unsaved changes?", "The edits in this form have not been saved.", "Discard");
-  if (discard) {
-    $("#entity-form").dataset.dirty = "false";
-    $("#entity-dialog").close();
-  }
-});
-$("#entity-dialog").addEventListener("click", async (event) => {
-  const cancelButton = event.target.closest('button[value="cancel"]');
-  if (!cancelButton || $("#entity-form").dataset.dirty !== "true") return;
-  event.preventDefault();
-  const discard = await confirmAction("Discard unsaved changes?", "The edits in this form have not been saved.", "Discard");
-  if (discard) {
-    $("#entity-form").dataset.dirty = "false";
-    $("#entity-dialog").close();
-  }
-});
 $("#password-dialog").addEventListener("cancel", (event) => event.preventDefault());
-$("#dialog-preview").addEventListener("click", () => {
-  const { kind, record } = recordFromOpenForm();
-  showPreview(kind, record);
-});
 $("#sign-out").addEventListener("click", () => state.supabase.auth.signOut());
 $("#menu-button").addEventListener("click", openSidebar);
 $("#collapse-sidebar").addEventListener("click", toggleDesktopSidebar);
@@ -976,28 +1422,50 @@ $("#sidebar-backdrop").addEventListener("click", closeSidebar);
 $("#preview-dialog").addEventListener("click", (event) => {
   const width = event.target.closest("[data-preview-width]")?.dataset.previewWidth;
   if (width) {
-    $("#preview-frame").classList.toggle("mobile", width === "mobile");
+    $("#preview-frame").className = width;
     $$("[data-preview-width]").forEach((button) => button.classList.toggle("active", button.dataset.previewWidth === width));
+  }
+  if (event.target.closest("[data-refresh-preview]")) {
+    $("#preview-frame").src = $("#preview-frame").src;
   }
   if (event.target.closest("[data-close-preview]")) $("#preview-dialog").close();
 });
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeSidebar();
-});
-["inbox-search", "inbox-filter"].forEach((id) => $(`#${id}`).addEventListener("input", renderInbox));
-["project-search", "project-filter"].forEach((id) => $(`#${id}`).addEventListener("input", renderProjects));
-$("#client-search").addEventListener("input", renderClients);
-["invoice-search", "invoice-filter"].forEach((id) => $(`#${id}`).addEventListener("input", renderInvoices));
-["portfolio-search", "portfolio-filter", "portfolio-status"].forEach((id) => $(`#${id}`).addEventListener("input", () => {
-  state.portfolioVisible = 24;
-  renderPortfolio();
-}));
 
+window.addEventListener("message", (event) => {
+  if (event.origin === window.location.origin && event.data?.type === "olympus-preview-ready") sendPreviewPayload();
+});
+window.addEventListener("hashchange", renderRoute);
 window.addEventListener("beforeunload", (event) => {
-  if ($("#entity-dialog").open && $("#entity-form").dataset.dirty === "true") {
+  if (state.dirty) {
     event.preventDefault();
     event.returnValue = "";
   }
 });
+
+["inbox-search", "inbox-filter"].forEach((id) => $(`#${id}`).addEventListener("input", () => {
+  renderInbox();
+  persistListFilters("inbox", [["inbox-search", "search"], ["inbox-filter", "status"]]);
+}));
+["project-search", "project-filter"].forEach((id) => $(`#${id}`).addEventListener("input", () => {
+  renderProjects();
+  persistListFilters("projects", [["project-search", "search"], ["project-filter", "status"]]);
+}));
+$("#client-search").addEventListener("input", () => {
+  renderClients();
+  persistListFilters("clients", [["client-search", "search"]]);
+});
+["invoice-search", "invoice-filter"].forEach((id) => $(`#${id}`).addEventListener("input", () => {
+  renderInvoices();
+  persistListFilters("invoices", [["invoice-search", "search"], ["invoice-filter", "status"]]);
+}));
+["page-search", "page-status"].forEach((id) => $(`#${id}`).addEventListener("input", () => {
+  renderPages();
+  persistListFilters("pages", [["page-search", "search"], ["page-status", "status"]]);
+}));
+["portfolio-search", "portfolio-filter", "portfolio-status"].forEach((id) => $(`#${id}`).addEventListener("input", () => {
+  state.portfolioVisible = 24;
+  renderPortfolio();
+  persistListFilters("portfolio", [["portfolio-search", "search"], ["portfolio-filter", "category"], ["portfolio-status", "status"]]);
+}));
 
 bootstrap();

@@ -122,7 +122,7 @@ function milestoneMarkup(milestone) {
     ${deliverables.map((item) => `<div class="deliverable">
       <div class="timeline-top"><a href="${escapeHtml(item.file_url)}" target="_blank" rel="noopener"><strong>${escapeHtml(item.title)}</strong></a><small class="muted">v${item.version}</small></div>
       ${item.description ? `<p>${escapeHtml(item.description)}</p>` : ""}
-      ${item.status === "shared" ? `<div class="deliverable-actions"><button class="button primary" data-review="${item.id}" data-status="approved">Approve</button><button class="button secondary" data-review="${item.id}" data-status="changes_requested">Request changes</button></div>` : badge(item.status)}
+      ${item.status === "shared" ? `<div class="deliverable-actions"><button class="button primary" data-review="${item.id}" data-status="approved">Approve</button><button class="button secondary" data-show-change-form="${item.id}">Request changes</button></div><form class="change-request-form hidden" data-change-request="${item.id}"><label>What should be changed?<textarea name="client_note" required placeholder="Describe the change clearly so the studio can act on it."></textarea></label><div class="inline-actions"><button class="button secondary" type="button" data-cancel-change-form>Cancel</button><button class="button primary" type="submit">Send request</button></div><p class="form-message" role="alert"></p></form>` : badge(item.status)}
     </div>`).join("")}
   </article>`;
 }
@@ -144,19 +144,43 @@ $("#portal-login").addEventListener("submit", async (event) => {
 });
 
 document.addEventListener("click", async (event) => {
+  const showChange = event.target.closest("[data-show-change-form]");
+  if (showChange) {
+    const form = $(`[data-change-request="${showChange.dataset.showChangeForm}"]`);
+    form.classList.remove("hidden");
+    $("textarea", form).focus();
+    return;
+  }
+  const cancelChange = event.target.closest("[data-cancel-change-form]");
+  if (cancelChange) {
+    cancelChange.closest("[data-change-request]").classList.add("hidden");
+    return;
+  }
   const review = event.target.closest("[data-review]");
   if (!review) return;
   const status = review.dataset.status;
-  let clientNote = null;
-  if (status === "changes_requested") {
-    clientNote = window.prompt("What needs to change? Be specific so the team can act on it.");
-    if (!clientNote) return;
-  }
   review.disabled = true;
-  const { error } = await supabase.from("deliverables").update({ status, client_note: clientNote }).eq("id", review.dataset.review);
+  const { error } = await supabase.from("deliverables").update({ status, client_note: null }).eq("id", review.dataset.review);
   if (error) toast(error.message);
-  else { toast(status === "approved" ? "Deliverable approved." : "Change request sent."); await showPortal(); }
+  else { toast("Deliverable approved."); await showPortal(); }
   review.disabled = false;
+});
+
+document.addEventListener("submit", async (event) => {
+  const form = event.target.closest("[data-change-request]");
+  if (!form) return;
+  event.preventDefault();
+  const clientNote = new FormData(form).get("client_note")?.trim();
+  if (!clientNote) return;
+  const button = $('button[type="submit"]', form);
+  button.disabled = true;
+  const { error } = await supabase.from("deliverables").update({ status: "changes_requested", client_note: clientNote }).eq("id", form.dataset.changeRequest);
+  if (error) $(".form-message", form).textContent = error.message;
+  else {
+    toast("Change request sent.");
+    await showPortal();
+  }
+  button.disabled = false;
 });
 
 $("#portal-sign-out").addEventListener("click", () => supabase.auth.signOut());

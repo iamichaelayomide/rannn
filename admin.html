@@ -82,6 +82,7 @@
 
         <section class="view" data-view-panel="pages">
           <div class="cms-intro"><div><p class="eyebrow">Fixed website templates</p><h2>Page content</h2><p class="muted">Edit friendly fields, preview privately, then publish when the page is ready.</p></div></div>
+          <div class="section-tools"><input id="page-search" type="search" placeholder="Search pages"><select id="page-status"><option value="">All pages</option><option value="draft">Draft</option><option value="changes">Changes to publish</option><option value="published">Published</option></select></div>
           <div class="content-status" id="cms-status"></div>
           <div class="card-grid cms-grid" id="page-grid"></div>
           <section class="panel collection-panel">
@@ -97,7 +98,7 @@
         </section>
 
         <section class="view" data-view-panel="portfolio">
-          <div class="section-tools"><input id="portfolio-search" type="search" placeholder="Search title or collection"><select id="portfolio-filter"><option value="">All categories</option><option value="film">Film</option><option value="events">Events</option><option value="graphics">Graphics</option><option value="editorial">Editorial</option><option value="motion">Motion</option></select><select id="portfolio-status"><option value="">All states</option><option value="published">Published</option><option value="draft">Draft</option><option value="archived">Archived</option></select></div>
+            <div class="section-tools"><input id="portfolio-search" type="search" placeholder="Search title or collection"><select id="portfolio-filter"><option value="">All categories</option><option value="film">Film</option><option value="events">Events</option><option value="graphics">Graphics</option><option value="editorial">Editorial</option><option value="motion">Motion</option></select><select id="portfolio-status"><option value="">All states</option><option value="draft">Draft</option><option value="changes">Changes to publish</option><option value="published">Published</option><option value="archived">Archived</option></select></div>
           <div class="portfolio-summary" id="portfolio-summary"></div>
           <div class="portfolio-admin-grid" id="portfolio-grid"></div>
           <div class="load-more-row hidden" id="portfolio-load-more"><button class="button secondary" data-action="load-more-portfolio">Load more</button></div>
@@ -115,6 +116,10 @@
 
         <section class="view" data-view-panel="team">
           <section class="panel"><div class="panel-head"><div><p class="eyebrow">Permissions</p><h2>Team & client access</h2></div></div><p class="muted">Owners control roles. Project access is separate so clients and contributors see only assigned work.</p><div class="table-wrap"><table><thead><tr><th>Person</th><th>Role</th><th>Access</th></tr></thead><tbody id="team-table"></tbody></table></div></section>
+        </section>
+
+        <section class="view record-view" data-view-panel="record">
+          <div id="record-screen"></div>
         </section>
       </div>
     </main>
@@ -151,19 +156,7 @@
     <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="Close navigation"></button>
   </div>
 
-  <dialog id="entity-dialog">
-    <form method="dialog" class="dialog-card" id="entity-form">
-      <div class="dialog-head"><div><p class="eyebrow" id="dialog-eyebrow">Create</p><h2 id="dialog-title">New item</h2><p class="muted dialog-description" id="dialog-description"></p></div><button class="icon-button" value="cancel" aria-label="Close"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
-      <div id="dialog-fields" class="form-grid"></div>
-      <div class="upload-progress hidden" id="upload-progress"><span></span></div>
-      <p class="form-message" id="dialog-message" role="alert"></p>
-      <div class="dialog-actions"><button class="button ghost hidden" type="button" id="dialog-preview"><iconify-icon icon="solar:eye-linear"></iconify-icon>Preview</button><span class="dialog-spacer"></span><button class="button secondary" value="cancel">Cancel</button><button class="button primary" type="submit" value="default" id="dialog-submit">Save draft</button></div>
-    </form>
-  </dialog>
-
-  <dialog id="project-dialog"><div class="dialog-card"><div class="dialog-head"><div><p class="eyebrow">Project workspace</p><h2 id="project-dialog-title">Project</h2></div><button class="icon-button" data-close-project aria-label="Close"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div><div id="project-dialog-content"></div></div></dialog>
-
-  <dialog id="preview-dialog" class="preview-dialog"><div class="preview-shell"><div class="preview-toolbar"><div><p class="eyebrow">Private preview</p><strong id="preview-title">Content preview</strong></div><div class="preview-actions"><button class="icon-button active" data-preview-width="desktop" title="Desktop"><iconify-icon icon="solar:monitor-linear"></iconify-icon></button><button class="icon-button" data-preview-width="mobile" title="Mobile"><iconify-icon icon="solar:smartphone-linear"></iconify-icon></button><button class="icon-button" data-close-preview aria-label="Close preview"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div></div><div class="preview-stage"><iframe id="preview-frame" title="Private content preview"></iframe></div></div></dialog>
+  <dialog id="preview-dialog" class="preview-dialog"><div class="preview-shell"><div class="preview-toolbar"><div><p class="eyebrow">Private preview</p><strong id="preview-title">Website preview</strong></div><div class="preview-actions"><button class="icon-button active" data-preview-width="desktop" title="Desktop"><iconify-icon icon="solar:monitor-linear"></iconify-icon></button><button class="icon-button" data-preview-width="tablet" title="Tablet"><iconify-icon icon="solar:tablet-linear"></iconify-icon></button><button class="icon-button" data-preview-width="mobile" title="Mobile"><iconify-icon icon="solar:smartphone-linear"></iconify-icon></button><button class="icon-button" data-refresh-preview title="Refresh preview"><iconify-icon icon="solar:refresh-linear"></iconify-icon></button><button class="icon-button" data-close-preview aria-label="Close preview"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div></div><div class="preview-stage"><iframe id="preview-frame" title="Private website preview"></iframe></div></div></dialog>
 
   <dialog id="password-dialog"><form method="dialog" class="dialog-card" id="password-form"><div class="dialog-head"><div><p class="eyebrow">Security step</p><h2>Choose a private password</h2><p class="muted dialog-description">The temporary password was shared during setup. Replace it before using the workspace.</p></div></div><div class="form-grid"><label class="wide">New password<input name="password" type="password" autocomplete="new-password" minlength="10" required></label><label class="wide">Confirm new password<input name="confirm_password" type="password" autocomplete="new-password" minlength="10" required></label></div><p class="form-message" id="password-message" role="alert"></p><div class="dialog-actions"><span class="dialog-spacer"></span><button class="button primary" type="submit">Update password</button></div></form></dialog>
 

@@ -62,14 +62,32 @@ const mergePublishedContent = (published) => {
   };
 };
 
-try {
-  const response = await fetch("/api/content", { cache: "no-store" });
-  if (!response.ok) throw new Error("Managed content is unavailable");
-  window.OLYMPUS_CONTENT = mergePublishedContent(await response.json());
-  window.OLYMPUS_CONTENT_SOURCE = "supabase";
-} catch {
-  window.OLYMPUS_CONTENT = fallback;
-  window.OLYMPUS_CONTENT_SOURCE = "fallback";
+const isPrivatePreview = new URLSearchParams(window.location.search).get("cmsPreview") === "1"
+  && window.parent !== window;
+
+if (isPrivatePreview) {
+  const previewPayload = await new Promise((resolve) => {
+    const timeout = setTimeout(() => resolve(null), 10000);
+    window.addEventListener("message", (event) => {
+      if (event.origin !== window.location.origin || event.data?.type !== "olympus-preview-content") return;
+      clearTimeout(timeout);
+      resolve(event.data.payload);
+    }, { once: false });
+    window.parent.postMessage({ type: "olympus-preview-ready" }, window.location.origin);
+  });
+  window.OLYMPUS_CONTENT = previewPayload ? mergePublishedContent(previewPayload) : fallback;
+  window.OLYMPUS_CONTENT_SOURCE = previewPayload ? "private-preview" : "fallback";
+  document.documentElement.dataset.cmsPreview = "true";
+} else {
+  try {
+    const response = await fetch("/api/content", { cache: "no-store" });
+    if (!response.ok) throw new Error("Managed content is unavailable");
+    window.OLYMPUS_CONTENT = mergePublishedContent(await response.json());
+    window.OLYMPUS_CONTENT_SOURCE = "supabase";
+  } catch {
+    window.OLYMPUS_CONTENT = fallback;
+    window.OLYMPUS_CONTENT_SOURCE = "fallback";
+  }
 }
 
 await import("./index.js");
