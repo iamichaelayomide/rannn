@@ -96,6 +96,9 @@ if (!admin.includes('window.history.replaceState(null, "", `${window.location.pa
 if (!admin.includes('<meta name="referrer" content="no-referrer">')) {
   throw new Error("The admin must not forward sensitive URLs through referrer headers");
 }
+if (!admin.includes('http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate"')) {
+  throw new Error("The admin document must opt out of browser caching");
+}
 if (/openDialog|entityConfigs|pageFields\(record\)/.test(dashboard)) {
   throw new Error("Forms must be built only for their routed record type");
 }
