@@ -5,7 +5,8 @@ const state = {
   session: null,
   profile: null,
   data: {
-    projects: [], clients: [], invoices: [], invoiceItems: [], intake: [],
+    projects: [], clients: [], invoices: [], invoiceItems: [], payments: [],
+    adjustments: [], adjustmentItems: [], billingSettings: null, intake: [],
     milestones: [], invitations: [], members: [], activities: [],
     pages: [], services: [], media: [], portfolio: [], profiles: [], revisions: [], crm: null,
   },
@@ -301,6 +302,10 @@ async function refreshData({ preserveRoute = true } = {}) {
     state.supabase.from("clients").select("*").order("created_at", { ascending: false }),
     state.supabase.from("invoices").select("*, clients(id,name,email,company,phone), projects(id,title,client_id)").order("created_at", { ascending: false }),
     state.supabase.from("invoice_items").select("*").order("position"),
+    state.supabase.from("invoice_payments").select("*, invoices(id,invoice_number,client_id,project_id,clients(id,name),projects(id,title))").order("paid_at", { ascending: false }),
+    state.supabase.from("invoice_adjustments").select("*, invoices(id,invoice_number,currency,client_id,project_id,clients(id,name),projects(id,title))").order("created_at", { ascending: false }),
+    state.supabase.from("invoice_adjustment_items").select("*").order("position"),
+    state.supabase.from("billing_settings").select("*").eq("id", true).maybeSingle(),
     state.supabase.from("intake_submissions").select("*").order("created_at", { ascending: false }),
     state.supabase.from("milestones").select("*, projects(id,title,clients(name))").order("due_date", { ascending: true }),
     state.supabase.from("project_invites").select("*").order("created_at", { ascending: false }),
@@ -314,7 +319,7 @@ async function refreshData({ preserveRoute = true } = {}) {
     state.supabase.from("content_revisions").select("*, profiles(full_name)").order("published_at", { ascending: false }).limit(100),
     state.supabase.rpc("get_crm_dashboard", { months_back: 12 }),
   ];
-  const keys = ["projects", "clients", "invoices", "invoiceItems", "intake", "milestones", "invitations", "members", "activities", "pages", "services", "media", "portfolio", "profiles", "revisions", "crm"];
+  const keys = ["projects", "clients", "invoices", "invoiceItems", "payments", "adjustments", "adjustmentItems", "billingSettings", "intake", "milestones", "invitations", "members", "activities", "pages", "services", "media", "portfolio", "profiles", "revisions", "crm"];
   const results = await Promise.all(queries);
   const errors = [];
   results.forEach((result, index) => {
@@ -345,12 +350,12 @@ function renderLists() {
 function renderOverview() {
   const active = state.data.projects.filter((project) => !project.archived_at && project.status === "active").length;
   const awaiting = state.data.milestones.filter((milestone) => milestone.status === "awaiting_approval").length;
-  const openInvoices = state.data.invoices.filter((invoice) => invoice.status === "open");
+  const openInvoices = state.data.invoices.filter((invoice) => !["draft", "paid", "void"].includes(invoice.status) && invoiceBalance(invoice).outstanding > 0);
   const enquiries = state.data.intake.filter((item) => item.status === "new").length;
   const metrics = [
     ["Active projects", active, `${state.data.projects.filter((project) => !project.archived_at).length} current projects`, "projects?status=active"],
     ["Awaiting approval", awaiting, awaiting ? "Client action required" : "Nothing waiting", "projects"],
-    ["Outstanding invoices", money(openInvoices.reduce((sum, invoice) => sum + Number(invoice.total || 0), 0)), `${openInvoices.length} open`, "invoices?status=open"],
+    ["Outstanding invoices", moneyTotals(totalsByCurrency(openInvoices.map((invoice) => ({ currency: invoice.currency, total: invoiceBalance(invoice).outstanding }))), "Nothing due"), `${openInvoices.length} due`, "invoices?status=open"],
     ["New enquiries", enquiries, enquiries ? "Review the inbox" : "Inbox is clear", "inbox?status=new"],
   ];
   $("#metrics").innerHTML = metrics.map(([label, value, note, route]) => `<button class="metric clickable-card" type="button" data-route="${route}"><span>${label}</span><strong>${value}</strong><small>${note}</small></button>`).join("");
@@ -437,15 +442,21 @@ function moneyTotals(totals, empty = "None") {
 }
 
 function clientPaidTotals(clientId) {
-  return totalsByCurrency(clientInvoices(clientId).filter((invoice) => invoice.status === "paid"));
+  const invoiceIds = new Set(clientInvoices(clientId).map((invoice) => invoice.id));
+  return totalsByCurrency(state.data.payments.filter((payment) => invoiceIds.has(payment.invoice_id) && payment.status === "recorded").map((payment) => ({ currency: payment.currency, total: payment.amount })));
 }
 
 function clientOutstandingTotals(clientId) {
-  return totalsByCurrency(clientInvoices(clientId).filter((invoice) => ["open", "uncollectible"].includes(invoice.status)));
+  return totalsByCurrency(clientInvoices(clientId).map((invoice) => ({ currency: invoice.currency, total: invoiceBalance(invoice).outstanding })).filter((invoice) => invoice.total > 0));
 }
 
 function crmCurrencies() {
   return [...new Set(state.data.invoices.map((invoice) => invoice.currency).filter(Boolean))].sort();
+}
+
+function crmCurrencyEntries(value) {
+  if (Array.isArray(value)) return value;
+  return Object.entries(value || {}).map(([currency, total]) => ({ currency, total }));
 }
 
 function syncSelectOptions(select, options, defaultLabel) {
@@ -456,17 +467,17 @@ function syncSelectOptions(select, options, defaultLabel) {
 }
 
 function renderCrmChart() {
-  const months = state.data.crm?.months || [];
+  const months = state.data.crm?.months || state.data.crm?.monthly || [];
   const select = $("#crm-chart-currency");
   const currencies = crmCurrencies();
   syncSelectOptions(select, currencies, "Clients only");
   const currency = select.value;
   const clientMax = Math.max(1, ...months.map((item) => Number(item.clientsWorked || 0)));
-  const revenueValues = months.map((item) => Number(item.revenue?.find((entry) => entry.currency === currency)?.total || 0));
+  const revenueValues = months.map((item) => Number(crmCurrencyEntries(item.revenue).find((entry) => entry.currency === currency)?.total || 0));
   const revenueMax = Math.max(1, ...revenueValues);
   $("#crm-chart").innerHTML = months.length ? months.map((item, index) => {
     const label = new Intl.DateTimeFormat("en-NG", { month: "short" }).format(new Date(`${item.month}T00:00:00`));
-    const clients = Number(item.clientsWorked || 0);
+    const clients = Number(item.clientsWorked ?? item.clients ?? 0);
     const revenue = revenueValues[index];
     return `<button class="crm-month" type="button" data-route="clients?worked=${escapeHtml(item.month)}" aria-label="${label}: ${clients} clients${currency ? `, ${money(revenue, currency)} paid` : ""}"><div class="crm-bars"><span class="client-bar" style="height:${Math.max(4, clients / clientMax * 100)}%"></span>${currency ? `<span class="revenue-bar" style="height:${Math.max(revenue ? 4 : 0, revenue / revenueMax * 100)}%"></span>` : ""}</div><strong>${clients}</strong><small>${label}</small>${currency ? `<em>${money(revenue, currency)}</em>` : ""}</button>`;
   }).join("") : emptyState("No monthly activity yet", "Projects and paid invoices will build this chart over time.");
@@ -489,10 +500,10 @@ function renderClients() {
   const minPaid = Number($("#client-min-paid").value || 0);
   const crm = state.data.crm || {};
   $("#crm-metrics").innerHTML = [
-    ["Active clients", crm.activeClients || 0, "With current work", "clients?filter=active"],
-    ["Worked with this month", crm.clientsWorkedThisMonth || 0, `${crm.newClientsThisMonth || 0} new`, `clients?worked=${new Date().toISOString().slice(0, 7)}-01`],
-    ["Paid this month", moneyTotals(Object.fromEntries((crm.paidThisMonth || []).map((item) => [item.currency, item.total])), "No payments"), "Separated by currency", "invoices?status=paid"],
-    ["Outstanding", moneyTotals(Object.fromEntries((crm.outstanding || []).map((item) => [item.currency, item.total])), "Nothing due"), "Open and uncollectible", "clients?filter=outstanding"],
+    ["Active clients", crm.activeClients ?? crm.active_clients ?? 0, "With current work", "clients?filter=active"],
+    ["Worked with this month", crm.clientsWorkedThisMonth ?? crm.worked_this_month ?? 0, `${crm.newClientsThisMonth || 0} new`, `clients?worked=${new Date().toISOString().slice(0, 7)}-01`],
+    ["Paid this month", moneyTotals(Object.fromEntries(crmCurrencyEntries(crm.paidThisMonth ?? crm.paid_this_month).map((item) => [item.currency, item.total])), "No payments"), "Separated by currency", "invoices?status=paid"],
+    ["Outstanding", moneyTotals(Object.fromEntries(crmCurrencyEntries(crm.outstanding).map((item) => [item.currency, item.total])), "Nothing due"), "Open and uncollectible", "clients?filter=outstanding"],
   ].map(([label, value, note, route]) => `<button class="metric clickable-card" type="button" data-route="${route}"><span>${label}</span><strong>${escapeHtml(value)}</strong><small>${note}</small></button>`).join("");
   renderCrmChart();
   const workedMonth = parseRoute().params.get("worked");
@@ -502,7 +513,7 @@ function renderClients() {
     const paid = clientPaidTotals(client.id);
     const searchable = [client.name, client.email, client.company, ...(client.tags || []), ...projects.map((project) => project.service)];
     const isActive = projects.some((project) => !project.archived_at && ["active", "on_hold"].includes(project.status));
-    const hasOutstanding = invoices.some((invoice) => ["open", "uncollectible"].includes(invoice.status));
+    const hasOutstanding = invoices.some((invoice) => invoiceBalance(invoice).outstanding > 0 && !["draft", "void"].includes(invoice.status));
     const followUpDue = client.next_follow_up_at && new Date(client.next_follow_up_at) <= new Date();
     const overlapsMonth = !workedMonth || projects.some((project) => {
       const monthStart = new Date(`${workedMonth}T00:00:00`);
@@ -825,6 +836,132 @@ function invoiceItemsFor(id) {
   return state.data.invoiceItems.filter((item) => item.invoice_id === id).sort((a, b) => a.position - b.position);
 }
 
+function adjustmentItemsFor(id) {
+  return state.data.adjustmentItems.filter((item) => item.adjustment_id === id).sort((a, b) => a.position - b.position);
+}
+
+function invoiceBalance(invoice) {
+  const debits = state.data.adjustments.filter((item) => item.invoice_id === invoice.id && item.kind === "debit" && item.status === "issued").reduce((sum, item) => sum + Number(item.total || 0), 0);
+  const credits = state.data.adjustments.filter((item) => item.invoice_id === invoice.id && item.kind === "credit" && item.status === "issued").reduce((sum, item) => sum + Number(item.total || 0), 0);
+  const paid = state.data.payments.filter((item) => item.invoice_id === invoice.id && item.status === "recorded").reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const adjusted = Number(invoice.total || 0) + debits - credits;
+  return { original: Number(invoice.total || 0), debits, credits, adjusted, paid, outstanding: Math.max(adjusted - paid, 0) };
+}
+
+function billingTabs(active) {
+  return `<nav class="billing-tabs" aria-label="Billing sections">${[
+    ["invoices", "Invoices"], ["receipts", "Receipts"], ["debit-notes", "Debit Notes"],
+    ["credit-notes", "Credit Notes"], ["billing/settings", "Settings"],
+  ].map(([route, label]) => `<button type="button" class="${active === route ? "active" : ""}" data-route="${route}">${label}</button>`).join("")}</nav>`;
+}
+
+function billingDocumentMarkup(type, record) {
+  const liveInvoice = type === "invoice" ? record : state.data.invoices.find((item) => item.id === record.invoice_id);
+  if (!liveInvoice) return inlineError("The linked invoice is unavailable.");
+  const invoiceSnapshot = type === "invoice" ? record.document_snapshot : record.document_snapshot?.invoice_snapshot;
+  const invoice = invoiceSnapshot?.invoice
+    ? { ...liveInvoice, ...invoiceSnapshot.invoice, clients: invoiceSnapshot.client || liveInvoice.clients, projects: invoiceSnapshot.project || liveInvoice.projects }
+    : liveInvoice;
+  const settings = invoiceSnapshot?.settings || state.data.billingSettings || {};
+  const documentTitle = ({ invoice: "INVOICE", receipt: "RECEIPT", debit: "DEBIT NOTE", credit: "CREDIT NOTE" })[type];
+  const number = type === "invoice" ? invoice.invoice_number : type === "receipt" ? record.receipt_number : record.note_number || "DRAFT";
+  const items = type === "invoice" ? invoiceSnapshot?.items || invoiceItemsFor(invoice.id)
+    : type === "receipt" ? [{ description: `${record.method}${record.reference ? ` · ${record.reference}` : ""}`, quantity: 1, unit_price: record.amount }]
+      : adjustmentItemsFor(record.id);
+  const vat = type === "invoice" ? Number(invoice.tax || 0) : type === "receipt" ? 0 : Number(record.tax || 0);
+  const total = type === "invoice" ? Number(invoice.total || 0) : type === "receipt" ? Number(record.amount || 0) : Number(record.total || 0);
+  const client = invoice.clients || {};
+  const dateValue = type === "invoice" ? invoice.issued_at || invoice.created_at : type === "receipt" ? record.paid_at : record.issued_at || record.created_at;
+  const balance = invoiceBalance(liveInvoice);
+  return `<section class="accounting-document" aria-label="${documentTitle} ${escapeHtml(number)}">
+    <div class="document-watermark" aria-hidden="true">OLYMPUS</div>
+    <header class="document-head"><div class="document-wordmark"><strong>OLYMPUS</strong><small>ATELIER</small></div><div><p>${escapeHtml(settings.address || "")}</p><p>Payer ID: ${escapeHtml(settings.payer_id || "—")}</p><p>TIN: ${escapeHtml(settings.tin || "—")}</p></div><h2>${documentTitle}</h2></header>
+    <div class="document-parties"><div><span>CLIENT</span><strong>${escapeHtml(client.name || "Client")}</strong><small>${escapeHtml(client.company || client.email || "")}</small></div><div><span>DOCUMENT NO.</span><strong>${escapeHtml(number)}</strong><small>${formatDate(dateValue)}</small></div></div>
+    ${type !== "invoice" && record.reason ? `<p class="document-reason"><strong>Reason:</strong> ${escapeHtml(record.reason)}</p>` : ""}
+    <table class="document-lines"><thead><tr><th>ITEM</th><th>DELIVERABLES</th><th>PRICE</th></tr></thead><tbody>
+      ${items.map((item, index) => `<tr><td>${String(index + 1).padStart(2, "0")}</td><td><strong>${escapeHtml(item.description)}</strong>${Number(item.quantity) !== 1 ? `<small>${item.quantity} × ${money(item.unit_price, invoice.currency)}</small>` : ""}</td><td>${money(Number(item.quantity || 1) * Number(item.unit_price || 0), invoice.currency)}</td></tr>`).join("")}
+      ${type !== "receipt" ? `<tr class="vat-row"><td></td><td>VAT ${type === "invoice" ? Number(invoice.vat_rate || 7.5) : Number(record.vat_rate || 7.5)}%</td><td>${money(vat, invoice.currency)}</td></tr>` : ""}
+    </tbody></table>
+    <div class="document-total"><span>${type === "receipt" ? "AMOUNT RECEIVED" : "TOTAL"}</span><strong>${money(total, invoice.currency)}</strong></div>
+    ${type === "receipt" ? `<div class="document-balance"><span>Invoice</span><strong>${escapeHtml(invoice.invoice_number)}</strong><span>Remaining balance</span><strong>${money(record.document_snapshot?.balance_after ?? balance.outstanding, invoice.currency)}</strong></div>` : ""}
+    <footer class="document-footer"><div><span>BANK DETAILS</span><strong>${escapeHtml(settings.bank_name || "")} / ${escapeHtml(settings.account_name || "")}</strong><small>${escapeHtml(settings.account_number || "")}</small></div><div><span>PAYMENT POLICY</span><strong>${Number(settings.deposit_percent || 70)}% deposit</strong><small>${escapeHtml(settings.policy_text || "")}</small></div><div><span>CONTACT</span><strong>${escapeHtml(settings.contact_phone || "")}</strong><small>${escapeHtml(settings.contact_email || "")}</small></div></footer>
+  </section>`;
+}
+
+function renderBillingList(kind) {
+  showRecordView(titleCase(kind.replace("-", " ")), "Billing");
+  const isReceipt = kind === "receipts";
+  const adjustmentKind = kind === "debit-notes" ? "debit" : kind === "credit-notes" ? "credit" : null;
+  const records = isReceipt ? state.data.payments : state.data.adjustments.filter((item) => item.kind === adjustmentKind);
+  const rows = records.map((record) => {
+    const number = isReceipt ? record.receipt_number : record.note_number || "Draft note";
+    const invoice = record.invoices || {};
+    return `<tr class="clickable-table-row" tabindex="0" data-route="${isReceipt ? "receipts" : `${record.kind}-notes`}/${record.id}"><td><strong>${escapeHtml(number)}</strong><small>${escapeHtml(invoice.clients?.name || "")}</small></td><td>${escapeHtml(invoice.invoice_number || "")}</td><td>${formatDate(isReceipt ? record.paid_at : record.issued_at || record.created_at)}</td><td>${money(isReceipt ? record.amount : record.total, isReceipt ? record.currency : invoice.currency)}</td><td>${badge(record.status)}</td><td>${icon("solar:arrow-right-linear")}</td></tr>`;
+  }).join("");
+  $("#record-screen").innerHTML = billingTabs(kind) + `<section class="panel table-wrap"><table><thead><tr><th>Document</th><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>${rows || `<tr><td colspan="6">${emptyState(`No ${kind.replace("-", " ")} yet`, isReceipt ? "Receipts are created automatically when a payment is recorded." : "Create a note from a finalized invoice.")}</td></tr>`}</tbody></table></section>`;
+}
+
+function renderPaymentRoute(segments) {
+  const id = segments[1];
+  if (segments[0] === "receipts") {
+    const payment = state.data.payments.find((item) => item.id === id);
+    if (!payment) return renderNotFound("receipts", "receipt");
+    const invoice = state.data.invoices.find((item) => item.id === payment.invoice_id);
+    showRecordView(payment.receipt_number, "Billing");
+    $("#record-screen").innerHTML = recordHeader("receipts", "Receipts", payment.receipt_number, `${invoice?.clients?.name || "Client"} · ${titleCase(payment.status)}`, `<button class="button secondary" type="button" data-download-document="receipt" data-document-id="${payment.id}">${icon("solar:download-linear")}Download PDF</button>${payment.status === "recorded" ? `<button class="button destructive" type="button" data-void-payment="${payment.id}">Void receipt</button>` : ""}`) + billingDocumentMarkup("receipt", payment);
+    return;
+  }
+  const invoice = state.data.invoices.find((item) => item.id === id);
+  if (!invoice || segments[2] !== "payments" || segments[3] !== "new") return renderNotFound("invoices", "invoice");
+  const balance = invoiceBalance(invoice);
+  showRecordView("Record payment", "Billing");
+  const fields = field("Amount received", "amount", "number", { required: true, min: .01, max: balance.outstanding, value: balance.outstanding, help: `Outstanding: ${money(balance.outstanding, invoice.currency)}` })
+    + field("Payment date", "paid_at", "date", { required: true, value: new Date().toISOString().slice(0, 10) })
+    + field("Payment method", "method", "select", { required: true, items: ["Bank transfer", "Card", "Cash", "Cheque", "Other"].map((value) => ({ value, label: value })) })
+    + field("Reference (optional)", "reference") + field("Notes (optional)", "notes", "textarea", { wide: true });
+  $("#record-screen").innerHTML = `<form class="record-form" data-record-form="payment" data-invoice-id="${invoice.id}">${recordHeader(`invoices/${invoice.id}`, "Invoice", "Record payment", `${invoice.invoice_number} · ${invoice.clients?.name || "Client"}`)}<section class="form-section"><div class="form-grid">${fields}</div></section><div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton(`invoices/${invoice.id}`, "Cancel", "secondary")}<button class="button primary" type="submit">Record payment & create receipt</button></div></form>`;
+}
+
+function renderAdjustmentRoute(kind, segments, params) {
+  const routeName = `${kind}-notes`;
+  const id = segments[1];
+  if (id === "new") return renderAdjustmentForm(kind, null, params.get("invoice"));
+  const adjustment = state.data.adjustments.find((item) => item.id === id && item.kind === kind);
+  if (!adjustment) return renderNotFound(routeName, `${kind} note`);
+  if (segments[2] === "edit" && adjustment.status === "draft") return renderAdjustmentForm(kind, adjustment, adjustment.invoice_id);
+  const invoice = state.data.invoices.find((item) => item.id === adjustment.invoice_id);
+  showRecordView(adjustment.note_number || `Draft ${titleCase(kind)} note`, "Billing");
+  const actions = `${adjustment.status === "draft" ? routeButton(`${routeName}/${adjustment.id}/edit`, "Edit draft") + `<button class="button primary" type="button" data-issue-adjustment="${adjustment.id}">Issue note</button>` : `<button class="button secondary" type="button" data-download-document="${kind}" data-document-id="${adjustment.id}">${icon("solar:download-linear")}Download PDF</button>`}${adjustment.status === "issued" ? `<button class="button destructive" type="button" data-void-adjustment="${adjustment.id}">Void note</button>` : ""}`;
+  $("#record-screen").innerHTML = recordHeader(routeName, titleCase(routeName.replace("-", " ")), adjustment.note_number || "Draft note", `${invoice?.invoice_number || ""} · ${titleCase(adjustment.status)}`, actions) + billingDocumentMarkup(kind, adjustment);
+}
+
+function renderAdjustmentForm(kind, adjustment, invoiceId) {
+  const invoice = state.data.invoices.find((item) => item.id === invoiceId);
+  if (!invoice) return renderNotFound("invoices", "invoice");
+  const items = adjustment ? adjustmentItemsFor(adjustment.id) : [{ description: "", quantity: 1, unit_price: 0 }];
+  showRecordView(`${adjustment ? "Edit" : "Create"} ${titleCase(kind)} note`, "Billing");
+  const fields = field("Reason", "reason", "text", { required: true, value: adjustment?.reason, wide: true })
+    + field("VAT rate (%)", "vat_rate", "number", { min: 0, max: 100, value: adjustment?.vat_rate ?? state.data.billingSettings?.default_vat_rate ?? 7.5 })
+    + field("Notes (optional)", "notes", "textarea", { value: adjustment?.notes, wide: true });
+  $("#record-screen").innerHTML = `<form class="record-form" data-record-form="adjustment" data-id="${adjustment?.id || ""}" data-kind="${kind}" data-invoice-id="${invoice.id}">${recordHeader(`invoices/${invoice.id}`, "Invoice", `${adjustment ? "Edit" : "Create"} ${titleCase(kind)} note`, `${invoice.invoice_number} · ${invoice.clients?.name || "Client"}`)}<section class="form-section"><div class="form-grid">${fields}</div></section><section class="form-section"><div class="panel-head"><div><p class="eyebrow">Line items</p><h3>Adjustment details</h3></div><button class="button secondary" type="button" data-add-line-item>${icon("solar:add-circle-linear")}Add item</button></div><div id="invoice-line-items">${items.map(invoiceLineItem).join("")}</div></section><div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton(`invoices/${invoice.id}`, "Cancel", "secondary")}<button class="button secondary" type="submit">Save draft</button>${adjustment ? `<button class="button primary" type="button" data-issue-adjustment="${adjustment.id}">Issue note</button>` : ""}</div></form>`;
+}
+
+function renderBillingSettings() {
+  const settings = state.data.billingSettings || {};
+  showRecordView("Billing settings", "Billing");
+  const fields = field("Business name", "business_name", "text", { required: true, value: settings.business_name })
+    + field("Address", "address", "textarea", { required: true, value: settings.address, wide: true })
+    + field("Payer ID", "payer_id", "text", { value: settings.payer_id }) + field("TIN", "tin", "text", { value: settings.tin })
+    + field("Bank", "bank_name", "text", { value: settings.bank_name }) + field("Account name", "account_name", "text", { value: settings.account_name })
+    + field("Account number", "account_number", "text", { value: settings.account_number }) + field("Contact phone", "contact_phone", "tel", { value: settings.contact_phone })
+    + field("Contact email", "contact_email", "email", { value: settings.contact_email })
+    + field("Default VAT rate (%)", "default_vat_rate", "number", { min: 0, max: 100, value: settings.default_vat_rate })
+    + field("Deposit (%)", "deposit_percent", "number", { min: 0, max: 100, value: settings.deposit_percent })
+    + field("Payment policy", "policy_text", "textarea", { value: settings.policy_text, wide: true })
+    + field("Logo address (optional)", "logo_url", "text", { value: settings.logo_url }) + field("Watermark address (optional)", "watermark_url", "text", { value: settings.watermark_url });
+  $("#record-screen").innerHTML = billingTabs("billing/settings") + `<form class="record-form" data-record-form="billing-settings">${recordHeader("invoices", "Billing", "Billing settings", "Changes affect drafts and future documents. Finalized documents keep their original snapshot.")}<section class="form-section"><div class="form-grid">${fields}</div></section><div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton("invoices", "Cancel", "secondary")}<button class="button primary" type="submit">Save billing settings</button></div></form>`;
+}
+
 function renderInvoiceRoute(segments, params) {
   const id = segments[1];
   const action = segments[2];
@@ -852,6 +989,29 @@ function renderInvoiceRoute(segments, params) {
     + activityMarkup(activity);
 }
 
+function renderInvoiceRouteV2(segments, params) {
+  const id = segments[1];
+  const action = segments[2];
+  if (id === "new") return renderInvoiceForm(null, params.get("project") || "");
+  if (action === "payments") return renderPaymentRoute(segments);
+  const invoice = state.data.invoices.find((item) => item.id === id);
+  if (!invoice) return renderNotFound("invoices", "billing");
+  if (action === "edit" && invoice.status === "draft") return renderInvoiceForm(invoice);
+  showRecordView(invoice.invoice_number);
+  const activity = state.data.activities.filter((item) => item.entity_type === "invoice" && item.entity_id === invoice.id);
+  const balance = invoiceBalance(invoice);
+  const transitions = invoice.status === "draft"
+    ? `<button class="button primary" type="button" data-transition-invoice="${invoice.id}" data-next-status="open">Finalize invoice</button>`
+    : !["paid", "void"].includes(invoice.status)
+      ? `${routeButton(`invoices/${invoice.id}/payments/new`, "Record payment", "primary")}${routeButton(`debit-notes/new?invoice=${invoice.id}`, "Debit note")}${routeButton(`credit-notes/new?invoice=${invoice.id}`, "Credit note")}<button class="button destructive" type="button" data-transition-invoice="${invoice.id}" data-next-status="void">Void</button>${invoice.status !== "uncollectible" ? `<button class="button secondary" type="button" data-transition-invoice="${invoice.id}" data-next-status="uncollectible">Uncollectible</button>` : ""}`
+      : "";
+  const ledgerRows = state.data.payments.filter((item) => item.invoice_id === invoice.id).map((item) => `<button class="item-row clickable-row" type="button" data-route="receipts/${item.id}"><div><strong>${escapeHtml(item.receipt_number)}</strong><small>${formatDate(item.paid_at)} · ${escapeHtml(item.method)}</small></div><div><strong>${money(item.amount, item.currency)}</strong>${badge(item.status)}</div></button>`).join("")
+    + state.data.adjustments.filter((item) => item.invoice_id === invoice.id).map((item) => `<button class="item-row clickable-row" type="button" data-route="${item.kind}-notes/${item.id}"><div><strong>${escapeHtml(item.note_number || `Draft ${item.kind} note`)}</strong><small>${escapeHtml(item.reason)}</small></div><div><strong>${money(item.total, invoice.currency)}</strong>${badge(item.status)}</div></button>`).join("");
+  const ledger = `<section class="panel ledger-panel"><div class="panel-head"><div><p class="eyebrow">Balance</p><h3>Invoice ledger</h3></div></div><div class="balance-grid"><div><span>Original</span><strong>${money(balance.original, invoice.currency)}</strong></div><div><span>Debits</span><strong>${money(balance.debits, invoice.currency)}</strong></div><div><span>Credits</span><strong>${money(balance.credits, invoice.currency)}</strong></div><div><span>Paid</span><strong>${money(balance.paid, invoice.currency)}</strong></div><div class="balance-due"><span>Outstanding</span><strong>${money(balance.outstanding, invoice.currency)}</strong></div></div>${ledgerRows || `<p class="muted">No payments or adjustments have been recorded.</p>`}</section>`;
+  $("#record-screen").innerHTML = recordHeader("invoices", "Billing", invoice.invoice_number, `${invoice.clients?.name || "Client"} · ${titleCase(invoice.status)}`, `${invoice.status === "draft" ? routeButton(`invoices/${invoice.id}/edit`, "Edit draft") : ""}${invoice.project_id ? `<a class="button secondary" href="/portal?project=${invoice.project_id}" target="_blank" rel="noopener">Open client view</a>` : ""}<button class="button secondary" type="button" data-download-document="invoice" data-document-id="${invoice.id}">${icon("solar:download-linear")}Download PDF</button>`)
+    + billingDocumentMarkup("invoice", invoice) + ledger + `<div class="record-actions">${transitions}</div>` + activityMarkup(activity);
+}
+
 function renderInvoiceForm(invoice = null, projectId = "") {
   showRecordView(invoice ? "Edit invoice" : "New invoice");
   const items = invoice ? invoiceItemsFor(invoice.id) : [{ description: "", quantity: 1, unit_price: 0 }];
@@ -859,7 +1019,7 @@ function renderInvoiceForm(invoice = null, projectId = "") {
     + field("Project", "project_id", "select", { value: invoice?.project_id || projectId, help: "Choose No project for standalone work.", items: [{ value: "", label: "No project" }, ...state.data.projects.filter((project) => !project.archived_at || project.id === invoice?.project_id).map((project) => ({ value: project.id, label: `${project.title} — ${project.clients?.name || "No client"}` }))] })
     + field("Currency", "currency", "select", { value: invoice?.currency || "NGN", items: ["NGN", "USD", "GBP"].map((value) => ({ value, label: value })) })
     + field("Due date", "due_date", "date", { required: true, value: invoice?.due_date })
-    + field("Tax", "tax", "number", { min: 0, value: invoice?.tax || 0 })
+    + field(`VAT amount (${Number(invoice?.vat_rate || state.data.billingSettings?.default_vat_rate || 7.5)}% default)`, "tax", "number", { min: 0, value: invoice?.tax || 0 })
     + field("Notes", "notes", "textarea", { wide: true, value: invoice?.notes });
   const standaloneFields = field("Client", "client_id", "select", { value: invoice?.client_id || "", items: [{ value: "", label: "Choose a client or add one below" }, ...state.data.clients.filter((client) => !client.archived_at || client.id === invoice?.client_id).map((client) => ({ value: client.id, label: client.name }))] })
     + field("Job or work reference (optional)", "job_reference", "text", { value: invoice?.job_reference || "" })
@@ -869,6 +1029,7 @@ function renderInvoiceForm(invoice = null, projectId = "") {
     + field("Email (optional)", "new_client_email", "email")
     + field("Phone (optional)", "new_client_phone", "tel");
   $("#record-screen").innerHTML = `<form class="record-form" data-record-form="invoice" data-id="${invoice?.id || ""}">${recordHeader(invoice ? `invoices/${invoice.id}` : "invoices", "Back", invoice ? "Edit draft invoice" : "Create an invoice", "Create an invoice for a project or for standalone work.")}<div class="form-section"><div class="form-grid">${fields}</div></div><section class="form-section" data-standalone-invoice><p class="eyebrow">Client and work</p><div class="form-grid">${standaloneFields}</div></section><section class="form-section"><div class="panel-head"><div><p class="eyebrow">Line items</p><h3>What are you billing for?</h3></div><button class="button secondary" type="button" data-add-line-item>${icon("solar:add-circle-linear")}Add item</button></div><div id="invoice-line-items">${items.map(invoiceLineItem).join("")}</div><div class="live-total"><span>Estimated subtotal</span><strong id="invoice-live-total">${money(invoice?.subtotal || 0, invoice?.currency || "NGN")}</strong></div></section><div id="screen-message" class="screen-message"></div><div class="sticky-actions">${routeButton(invoice ? `invoices/${invoice.id}` : "invoices", "Cancel", "secondary")}<button class="button primary" type="submit">Save draft</button></div></form>`;
+  if (!invoice) $('[data-record-form="invoice"]').dataset.autoVat = "true";
   syncInvoiceProjectFields();
   updateInvoiceTotal();
 }
@@ -894,6 +1055,9 @@ function updateInvoiceTotal() {
   const quantities = $$('[name="line_quantity"]', form);
   const prices = $$('[name="line_price"]', form);
   const total = quantities.reduce((sum, input, index) => sum + Number(input.value || 0) * Number(prices[index]?.value || 0), 0);
+  if (form.dataset.autoVat === "true" && $('[name="tax"]', form)) {
+    $('[name="tax"]', form).value = (total * Number(state.data.billingSettings?.default_vat_rate || 7.5) / 100).toFixed(2);
+  }
   if ($("#invoice-live-total")) $("#invoice-live-total").textContent = money(total, $('[name="currency"]', form)?.value || "NGN");
 }
 
@@ -993,7 +1157,11 @@ async function renderRoute() {
   if (section === "clients") return renderClientRoute(segments, params);
   if (section === "projects") return renderProjectRoute(segments, params);
   if (section === "inbox") return renderInboxRoute(segments);
-  if (section === "invoices") return renderInvoiceRoute(segments, params);
+  if (section === "invoices") return renderInvoiceRouteV2(segments, params);
+  if (section === "receipts") return segments.length === 1 ? renderBillingList("receipts") : renderPaymentRoute(segments);
+  if (section === "debit-notes") return segments.length === 1 ? renderBillingList("debit-notes") : renderAdjustmentRoute("debit", segments, params);
+  if (section === "credit-notes") return segments.length === 1 ? renderBillingList("credit-notes") : renderAdjustmentRoute("credit", segments, params);
+  if (section === "billing" && segments[1] === "settings") return renderBillingSettings();
   if (section === "pages") return renderPageRoute(segments);
   if (section === "services") return renderServiceRoute(segments);
   if (section === "portfolio") return renderPortfolioRoute(segments);
@@ -1166,6 +1334,64 @@ async function saveRecordForm(form, { publishCollection = false } = {}) {
       if (error) throw error;
       destination = `invoices/${data}`;
       toast("Invoice draft saved.");
+    } else if (kind === "payment") {
+      const paidAt = values.paid_at ? `${values.paid_at}T12:00:00Z` : new Date().toISOString();
+      const { data, error } = await state.supabase.rpc("record_invoice_payment", {
+        target_invoice_id: form.dataset.invoiceId,
+        target_amount: Number(values.amount),
+        target_paid_at: paidAt,
+        target_method: values.method,
+        target_reference: values.reference || null,
+        target_notes: values.notes || null,
+      });
+      if (error) throw error;
+      destination = `receipts/${data}`;
+      toast("Payment recorded and receipt created.");
+    } else if (kind === "adjustment") {
+      const descriptions = $$('[name="line_description"]', form);
+      const quantities = $$('[name="line_quantity"]', form);
+      const prices = $$('[name="line_price"]', form);
+      const items = descriptions.map((input, index) => ({
+        description: input.value,
+        quantity: Number(quantities[index].value),
+        unit_price: Number(prices[index].value),
+      }));
+      const { data, error } = await state.supabase.rpc("save_invoice_adjustment_draft", {
+        target_adjustment_id: id,
+        target_invoice_id: form.dataset.invoiceId,
+        target_kind: form.dataset.kind,
+        target_reason: values.reason,
+        target_vat_rate: Number(values.vat_rate || 0),
+        target_notes: values.notes || null,
+        target_items: items,
+      });
+      if (error) throw error;
+      destination = `${form.dataset.kind}-notes/${data}`;
+      toast(`${titleCase(form.dataset.kind)} note draft saved.`);
+    } else if (kind === "billing-settings") {
+      const payload = {
+        business_name: values.business_name.trim(),
+        address: values.address.trim(),
+        payer_id: values.payer_id || null,
+        tin: values.tin || null,
+        bank_name: values.bank_name || null,
+        account_name: values.account_name || null,
+        account_number: values.account_number || null,
+        contact_phone: values.contact_phone || null,
+        contact_email: values.contact_email || null,
+        default_vat_rate: Number(values.default_vat_rate || 0),
+        deposit_percent: Number(values.deposit_percent || 0),
+        policy_text: values.policy_text || null,
+        logo_url: values.logo_url || null,
+        watermark_url: values.watermark_url || null,
+        updated_by: state.profile.id,
+        updated_at: new Date().toISOString(),
+      };
+      const { error } = await state.supabase.from("billing_settings").update(payload).eq("id", true);
+      if (error) throw error;
+      await logActivity(null, "updated", "billing_settings", "singleton");
+      destination = "billing/settings";
+      toast("Billing settings saved.");
     } else if (kind === "page") {
       const page = state.data.pages.find((item) => item.id === id);
       const content = structuredClone(page.content || {});
@@ -1300,6 +1526,93 @@ async function downloadInvoicePdf(id, button) {
     button.disabled = false;
     button.innerHTML = original;
   }
+}
+
+async function downloadBillingDocument(type, id, button) {
+  const original = button.innerHTML;
+  button.disabled = true;
+  button.textContent = "Preparing PDF…";
+  try {
+    const response = await fetch(`/api/billing-document?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`, {
+      headers: { Authorization: `Bearer ${state.session.access_token}` },
+      cache: "no-store",
+    });
+    if (!response.ok) {
+      const detail = await response.json().catch(() => ({}));
+      throw new Error(detail.error || "The document PDF could not be created.");
+    }
+    const disposition = response.headers.get("Content-Disposition") || "";
+    const filename = disposition.match(/filename="([^"]+)"/)?.[1] || `Olympus-Atelier-${titleCase(type)}.pdf`;
+    const url = URL.createObjectURL(await response.blob());
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    toast(`${titleCase(type)} PDF downloaded.`);
+  } catch (error) {
+    setScreenError(error.message);
+  } finally {
+    button.disabled = false;
+    button.innerHTML = original;
+  }
+}
+
+async function issueAdjustment(id) {
+  const adjustment = state.data.adjustments.find((item) => item.id === id);
+  if (!adjustment) return;
+  const approved = await confirmAction(`Issue this ${adjustment.kind} note?`, "Issuing creates an immutable accounting document and updates the invoice balance.", "Issue note");
+  if (!approved) return;
+  const { error } = await state.supabase.rpc("issue_invoice_adjustment", { target_adjustment_id: id });
+  if (error) return setScreenError(error.message);
+  toast(`${titleCase(adjustment.kind)} note issued.`);
+  await refreshData();
+}
+
+async function voidPayment(id) {
+  const reason = await askForReason("Void this receipt?", "The payment will be removed from the invoice balance, but its receipt and audit history remain.");
+  if (!reason) return;
+  const { error } = await state.supabase.rpc("void_invoice_payment", { target_payment_id: id, target_reason: reason });
+  if (error) return setScreenError(error.message);
+  toast("Receipt voided.");
+  await refreshData();
+}
+
+async function voidAdjustment(id) {
+  const adjustment = state.data.adjustments.find((item) => item.id === id);
+  const reason = await askForReason(`Void this ${adjustment?.kind || ""} note?`, "The invoice balance will be recalculated and the note will remain in the audit history.");
+  if (!reason) return;
+  const { error } = await state.supabase.rpc("void_invoice_adjustment", { target_adjustment_id: id, target_reason: reason });
+  if (error) return setScreenError(error.message);
+  toast("Note voided.");
+  await refreshData();
+}
+
+async function askForReason(title, message) {
+  const approved = await confirmAction(title, `${message} Select continue, then enter the reason in the inline field.`, "Continue");
+  if (!approved) return "";
+  const existing = $("#void-reason-panel");
+  if (existing) existing.remove();
+  const panel = document.createElement("form");
+  panel.id = "void-reason-panel";
+  panel.className = "panel compact-form";
+  panel.innerHTML = `<label>Reason<input name="reason" required autofocus placeholder="Why is this being voided?"></label><button class="button primary" type="submit">Confirm</button><button class="button secondary" type="button" data-cancel-reason>Cancel</button>`;
+  $("#record-screen").append(panel);
+  return new Promise((resolve) => {
+    panel.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const reason = new FormData(panel).get("reason").trim();
+      if (!reason) return;
+      panel.remove();
+      resolve(reason);
+    });
+    $("[data-cancel-reason]", panel).addEventListener("click", () => {
+      panel.remove();
+      resolve("");
+    });
+  });
 }
 
 function confirmAction(title, message, actionLabel = "Continue") {
@@ -1593,6 +1906,14 @@ document.addEventListener("click", async (event) => {
   }
   const downloadInvoice = event.target.closest("[data-download-invoice]");
   if (downloadInvoice) await downloadInvoicePdf(downloadInvoice.dataset.downloadInvoice, downloadInvoice);
+  const downloadDocument = event.target.closest("[data-download-document]");
+  if (downloadDocument) await downloadBillingDocument(downloadDocument.dataset.downloadDocument, downloadDocument.dataset.documentId, downloadDocument);
+  const issueNote = event.target.closest("[data-issue-adjustment]");
+  if (issueNote) await issueAdjustment(issueNote.dataset.issueAdjustment);
+  const voidReceipt = event.target.closest("[data-void-payment]");
+  if (voidReceipt) await voidPayment(voidReceipt.dataset.voidPayment);
+  const voidNote = event.target.closest("[data-void-adjustment]");
+  if (voidNote) await voidAdjustment(voidNote.dataset.voidAdjustment);
   const copyInvite = event.target.closest("[data-copy-invite]")?.dataset.copyInvite;
   if (copyInvite) {
     try { await navigator.clipboard.writeText(copyInvite); toast("Secure client link copied."); }
@@ -1655,6 +1976,7 @@ document.addEventListener("keydown", (event) => {
 
 document.addEventListener("input", (event) => {
   if (event.target.closest(".record-form")) state.dirty = true;
+  if (event.target.matches('[data-record-form="invoice"] [name="tax"]')) event.target.form.dataset.autoVat = "false";
   if (event.target.matches('[name="line_quantity"], [name="line_price"], [name="currency"]')) updateInvoiceTotal();
 });
 

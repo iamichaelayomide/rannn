@@ -3,7 +3,11 @@
   "trailingSlash": false,
   "functions": {
     "api/invoice-pdf.js": {
-      "includeFiles": "node_modules/dejavu-fonts-ttf/ttf/DejaVuSans.ttf",
+      "includeFiles": "node_modules/dejavu-fonts-ttf/ttf/*.ttf",
+      "maxDuration": 10
+    },
+    "api/billing-document.js": {
+      "includeFiles": "node_modules/dejavu-fonts-ttf/ttf/*.ttf",
       "maxDuration": 10
     }
   },

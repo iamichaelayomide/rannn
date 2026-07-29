@@ -15,7 +15,11 @@ const requiredFiles = [
   "supabase/migrations/202607270007_repair_published_page_snapshots.sql",
   "supabase/migrations/202607270008_atelier_standalone_invoices.sql",
   "supabase/migrations/202607270009_correct_atelier_eyebrow.sql",
+  "supabase/migrations/202607290001_accounting_documents.sql",
+  "supabase/migrations/202607290003_repair_adjustment_draft_rpc.sql",
+  "supabase/migrations/202607290005_preserve_crm_dashboard_interface.sql",
   "api/invoice-pdf.js",
+  "api/billing-document.js",
 ];
 
 for (const file of requiredFiles) await access(file);
@@ -101,16 +105,20 @@ for (const required of ["?tab=${value}", "data-archive-project", "data-publish-c
   if (!dashboard.includes(required)) throw new Error(`Missing routed CRM/CMS interaction: ${required}`);
 }
 
-for (const required of ["No project", "target_client_id", "target_new_client", "data-download-invoice"]) {
+for (const required of ["No project", "target_client_id", "target_new_client", "data-download-document"]) {
   if (!dashboard.includes(required)) throw new Error(`Missing standalone invoice behavior: ${required}`);
 }
 const invoiceMigration = await readFile("supabase/migrations/202607270008_atelier_standalone_invoices.sql", "utf8");
 for (const required of ["alter column project_id drop not null", "client_id set not null", "target_new_client", "invoices_client_id_idx"]) {
   if (!invoiceMigration.includes(required)) throw new Error(`Standalone invoice migration is missing ${required}`);
 }
-const invoicePdf = await readFile("api/invoice-pdf.js", "utf8");
-for (const required of ["PDFDocument", "DejaVuSans", "Olympus-Atelier-Invoice"]) {
-  if (!invoicePdf.includes(required)) throw new Error(`Invoice PDF is missing ${required}`);
+const accountingMigration = await readFile("supabase/migrations/202607290001_accounting_documents.sql", "utf8");
+for (const required of ["billing_settings", "invoice_payments", "invoice_adjustments", "record_invoice_payment", "get_invoice_balance", "document_snapshot"]) {
+  if (!accountingMigration.includes(required)) throw new Error(`Accounting migration is missing ${required}`);
+}
+const billingPdf = await readFile("api/billing-document.js", "utf8");
+for (const required of ["PDFDocument", "DejaVuSansCondensed-Bold", "RECEIPT", "DEBIT NOTE", "CREDIT NOTE", "roundedBorder"]) {
+  if (!billingPdf.includes(required)) throw new Error(`Billing PDF is missing ${required}`);
 }
 for (const file of ["index.html", "admin.html", "portal.html", "dashboard.js", "portal.js", "content.js"]) {
   const source = await readFile(file, "utf8");

@@ -94,7 +94,14 @@
         </section>
 
         <section class="view" data-view-panel="invoices">
-          <div class="section-tools"><input id="invoice-search" type="search" placeholder="Search invoice or project"><select id="invoice-filter"><option value="">All statuses</option><option value="draft">Draft</option><option value="open">Open</option><option value="paid">Paid</option><option value="void">Void</option><option value="uncollectible">Uncollectible</option></select></div>
+          <nav class="billing-tabs" aria-label="Billing sections">
+            <button class="active" type="button" data-billing-list="invoices">Invoices</button>
+            <button type="button" data-route="receipts">Receipts</button>
+            <button type="button" data-route="debit-notes">Debit Notes</button>
+            <button type="button" data-route="credit-notes">Credit Notes</button>
+            <button type="button" data-route="billing/settings">Settings</button>
+          </nav>
+          <div class="section-tools"><input id="invoice-search" type="search" placeholder="Search invoice or project"><select id="invoice-filter"><option value="">All statuses</option><option value="draft">Draft</option><option value="open">Open</option><option value="partially_paid">Partially paid</option><option value="paid">Paid</option><option value="credited">Credited</option><option value="void">Void</option><option value="uncollectible">Uncollectible</option></select></div>
           <section class="panel table-wrap"><table><thead><tr><th>Invoice</th><th>Project</th><th>Due</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody id="invoice-table"></tbody></table></section>
         </section>
 

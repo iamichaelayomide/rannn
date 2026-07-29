@@ -72,7 +72,11 @@ async function showPortal() {
         id, title, description, due_date, position, status, requires_approval,
         deliverables(id, title, description, file_url, version, status, client_note, created_at)
       ),
-      invoices(id, invoice_number, status, currency, total, due_date)
+      invoices(
+        id, invoice_number, status, currency, total, due_date,
+        invoice_payments(id, receipt_number, amount, currency, paid_at, status),
+        invoice_adjustments(id, kind, note_number, total, status, issued_at)
+      )
     `)
     .order("created_at", { ascending: false });
   if (error) {
@@ -105,7 +109,7 @@ function renderProjects(projects) {
             <div class="timeline">${milestones.length ? milestones.map((milestone) => milestoneMarkup(milestone)).join("") : '<p class="muted">The delivery plan is being prepared.</p>'}</div>
           </section>
           <aside><p class="eyebrow">Billing</p><h3>Invoices</h3>
-            ${(project.invoices || []).length ? project.invoices.map((invoice) => `<div class="item-row"><div><strong>${escapeHtml(invoice.invoice_number)}</strong><small>Due ${formatDate(invoice.due_date)}</small></div><div><strong>${money(invoice.total, invoice.currency)}</strong><small>${badge(invoice.status)}</small></div></div>`).join("") : '<p class="muted">No invoices have been shared.</p>'}
+            ${(project.invoices || []).length ? project.invoices.map((invoice) => `<div class="item-row"><div><strong>${escapeHtml(invoice.invoice_number)}</strong><small>Due ${formatDate(invoice.due_date)}</small><button class="text-button" type="button" data-download-document="invoice" data-document-id="${invoice.id}">Download invoice</button>${(invoice.invoice_payments || []).filter((item) => item.status === "recorded").map((item) => `<button class="text-button" type="button" data-download-document="receipt" data-document-id="${item.id}">${escapeHtml(item.receipt_number)}</button>`).join("")}${(invoice.invoice_adjustments || []).filter((item) => item.status === "issued").map((item) => `<button class="text-button" type="button" data-download-document="${item.kind}" data-document-id="${item.id}">${escapeHtml(item.note_number)}</button>`).join("")}</div><div><strong>${money(invoice.total, invoice.currency)}</strong><small>${badge(invoice.status)}</small></div></div>`).join("") : '<p class="muted">No invoices have been shared.</p>'}
             ${openInvoices.length ? '<p class="muted">Payment instructions are included on the invoice sent by the atelier.</p>' : ""}
           </aside>
         </div>
@@ -154,6 +158,33 @@ document.addEventListener("click", async (event) => {
   const cancelChange = event.target.closest("[data-cancel-change-form]");
   if (cancelChange) {
     cancelChange.closest("[data-change-request]").classList.add("hidden");
+    return;
+  }
+  const download = event.target.closest("[data-download-document]");
+  if (download) {
+    download.disabled = true;
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const response = await fetch(`/api/billing-document?type=${encodeURIComponent(download.dataset.downloadDocument)}&id=${encodeURIComponent(download.dataset.documentId)}`, {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error((await response.json().catch(() => ({}))).error || "The PDF could not be downloaded.");
+      const disposition = response.headers.get("Content-Disposition") || "";
+      const filename = disposition.match(/filename="([^"]+)"/)?.[1] || "Olympus-Atelier-Document.pdf";
+      const url = URL.createObjectURL(await response.blob());
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      toast(error.message);
+    } finally {
+      download.disabled = false;
+    }
     return;
   }
   const review = event.target.closest("[data-review]");
