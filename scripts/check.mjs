@@ -90,6 +90,12 @@ for (const message of ["olympus-preview-ready", "olympus-preview-content"]) {
 if (admin.includes('id="entity-dialog"') || admin.includes('id="project-dialog"')) {
   throw new Error("Operational creation and project details must not use modal dialogs");
 }
+if (!admin.includes('window.history.replaceState(null, "", `${window.location.pathname}${window.location.hash}`)')) {
+  throw new Error("The admin must remove query parameters before authentication initializes");
+}
+if (!admin.includes('<meta name="referrer" content="no-referrer">')) {
+  throw new Error("The admin must not forward sensitive URLs through referrer headers");
+}
 if (/openDialog|entityConfigs|pageFields\(record\)/.test(dashboard)) {
   throw new Error("Forms must be built only for their routed record type");
 }

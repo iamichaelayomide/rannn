@@ -4,6 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <script>
+    (() => {
+      if (!window.location.search) return;
+      window.history.replaceState(null, "", `${window.location.pathname}${window.location.hash}`);
+    })();
+  </script>
   <title>Olympus Atelier — Workspace</title>
   <link rel="icon" href="/assets/olympus-logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +28,7 @@
       <p class="eyebrow">Private workspace</p>
       <h1 id="auth-title">Run the atelier from one place.</h1>
       <p class="muted">Manage the website, portfolio, projects, approvals, clients, and billing.</p>
-      <form id="login-form" class="stack">
+      <form id="login-form" class="stack" method="post" action="/admin" autocomplete="on">
         <label>Email address<input name="email" type="email" autocomplete="username" required></label>
         <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
         <p class="form-message" id="login-message" role="alert"></p>
