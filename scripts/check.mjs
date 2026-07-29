@@ -41,6 +41,7 @@ if (config.includes("service_role")) {
 }
 
 const dashboard = await readFile("dashboard.js", "utf8");
+const dashboardCss = await readFile("dashboard.css", "utf8");
 const portal = await readFile("portal.js", "utf8");
 const bootstrap = await readFile("site-bootstrap.js", "utf8");
 const admin = await readFile("admin.html", "utf8");
@@ -54,6 +55,12 @@ const inquiryDeliveryMigration = await readFile("supabase/migrations/20260730000
 
 if (/window\.(prompt|alert|confirm)\s*\(/.test(`${dashboard}\n${portal}`)) {
   throw new Error("Native browser prompts are not allowed in the admin or client portal");
+}
+if (dashboardCss.includes("var(--accent)")) {
+  throw new Error("Dashboard controls must not depend on the undefined --accent color");
+}
+if (!dashboardCss.includes(".billing-tabs button.active") || !dashboardCss.includes("background: var(--gold);")) {
+  throw new Error("Billing tabs require a visible high-contrast selected state");
 }
 if (!publicIndex.includes("fetch('/api/inquiries'") || publicIndex.includes("/rest/v1/intake_submissions")) {
   throw new Error("Public enquiries must use the validated server endpoint rather than direct Supabase inserts");
