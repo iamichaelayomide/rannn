@@ -12,5 +12,10 @@ export default function handler(_request, response) {
   }
 
   response.setHeader("Cache-Control", "no-store");
-  return response.status(200).json({ configured: true, url, anonKey });
+  return response.status(200).json({
+    configured: true,
+    url,
+    anonKey,
+    turnstileSiteKey: process.env.TURNSTILE_SITE_KEY || null,
+  });
 }

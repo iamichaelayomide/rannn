@@ -38,6 +38,15 @@
           <h1 id="view-title">Overview</h1>
         </div>
         <div class="top-actions" id="top-actions"></div>
+        <div class="notification-center">
+          <button class="icon-button notification-button" id="notification-button" type="button" aria-label="Open notifications" aria-expanded="false">
+            <iconify-icon icon="solar:bell-linear"></iconify-icon><span class="notification-count hidden" id="notification-count">0</span>
+          </button>
+          <section class="notification-panel hidden" id="notification-panel" aria-label="Notifications">
+            <div class="notification-head"><strong>Notifications</strong><button class="text-button" id="mark-all-notifications" type="button">Mark all read</button></div>
+            <div id="notification-list"></div>
+          </section>
+        </div>
         <button class="button ghost menu-button" id="menu-button" type="button" aria-label="Open navigation" aria-expanded="false">
           <iconify-icon icon="solar:hamburger-menu-linear"></iconify-icon><span>Menu</span>
         </button>
@@ -61,8 +70,9 @@
         </section>
 
         <section class="view" data-view-panel="inbox">
-          <div class="section-tools"><input id="inbox-search" type="search" placeholder="Search enquiries"><select id="inbox-filter"><option value="">All statuses</option><option value="new">New</option><option value="reviewing">Reviewing</option><option value="converted">Converted</option><option value="archived">Archived</option></select></div>
-          <section class="panel table-wrap"><table><thead><tr><th>Enquiry</th><th>Service</th><th>Received</th><th>Status</th><th></th></tr></thead><tbody id="inbox-table"></tbody></table></section>
+          <div class="metric-grid enquiry-metrics" id="enquiry-metrics"></div>
+          <div class="section-tools"><input id="inbox-search" type="search" placeholder="Search tickets or contacts"><select id="inbox-filter"><option value="">All open enquiries</option><option value="new">New</option><option value="in_review">In review</option><option value="waiting_for_client">Waiting</option><option value="qualified">Qualified</option><option value="converted">Converted</option><option value="closed">Closed</option><option value="spam">Spam</option></select><select id="inbox-assignee-filter"><option value="">Everyone</option><option value="mine">Mine</option><option value="unassigned">Unassigned</option></select></div>
+          <section class="panel table-wrap"><table><thead><tr><th>Ticket</th><th>Contact & source</th><th>Service</th><th>Assigned</th><th>Last activity</th><th>Status</th></tr></thead><tbody id="inbox-table"></tbody></table></section>
         </section>
 
         <section class="view" data-view-panel="projects">
@@ -157,7 +167,7 @@
       <nav>
         <p class="nav-label">Workspace</p>
         <button class="nav-item active" data-view="overview" aria-label="Overview"><span><iconify-icon icon="solar:widget-5-linear"></iconify-icon>Overview</span></button>
-        <button class="nav-item" data-view="inbox"><span><iconify-icon icon="solar:inbox-linear"></iconify-icon>Inbox</span><span class="nav-count" id="inbox-count">0</span></button>
+        <button class="nav-item" data-view="inbox"><span><iconify-icon icon="solar:inbox-linear"></iconify-icon>Enquiries</span><span class="nav-count" id="inbox-count">0</span></button>
         <button class="nav-item" data-view="projects" aria-label="Projects"><span><iconify-icon icon="solar:folder-with-files-linear"></iconify-icon>Projects</span></button>
         <button class="nav-item" data-view="clients" aria-label="Clients"><span><iconify-icon icon="solar:users-group-rounded-linear"></iconify-icon>Clients</span></button>
         <button class="nav-item" data-view="invoices" aria-label="Billing"><span><iconify-icon icon="solar:bill-list-linear"></iconify-icon>Billing</span></button>

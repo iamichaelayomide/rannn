@@ -2,6 +2,9 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "functions": {
+    "api/inquiries.js": {
+      "maxDuration": 10
+    },
     "api/invoice-pdf.js": {
       "includeFiles": "node_modules/dejavu-fonts-ttf/ttf/*.ttf",
       "maxDuration": 10

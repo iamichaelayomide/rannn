@@ -72,7 +72,7 @@
 
       <!-- Right CTA button -->
       <div class="flex items-center gap-4">
-        <a href="#book" class="hidden lg:inline-flex items-center justify-center bg-gold-gradient text-neutral-950 text-xs md:text-sm font-bold px-6 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)] spa-nav-link" data-page="book">
+        <a href="#contact?intent=project&amp;source_cta=Header%20Book%20Now" class="hidden lg:inline-flex items-center justify-center bg-gold-gradient text-neutral-950 text-xs md:text-sm font-bold px-6 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)] spa-nav-link" data-page="contact">
           Book Now
         </a>
         
@@ -94,7 +94,7 @@
       <a href="#portfolio" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-colors" data-page="portfolio">Portfolio</a>
       <a href="#about" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-colors" data-page="about">About</a>
       <a href="#contact" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-colors" data-page="contact">Contact</a>
-      <a href="#book" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-gold-gradient transition-colors" data-page="book">Book Session</a>
+      <a href="#contact?intent=project&amp;source_cta=Mobile%20Book%20Session" class="mobile-nav-link text-2xl font-bold uppercase tracking-wider text-gold-gradient transition-colors" data-page="contact">Start a project</a>
     </nav>
   </div>
 
@@ -120,7 +120,7 @@
         </p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
-          <a href="#book" class="w-full sm:w-auto inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-8 py-4 rounded-full transition-transform duration-300 hover:-translate-y-0.5 shadow-lg shadow-amber-500/10 spa-nav-link" data-page="book">
+          <a href="#contact?intent=project&amp;source_cta=Home%20Hero" class="w-full sm:w-auto inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-8 py-4 rounded-full transition-transform duration-300 hover:-translate-y-0.5 shadow-lg shadow-amber-500/10 spa-nav-link" data-page="contact">
             Start A Project
           </a>
           <a href="#services" class="w-full sm:w-auto inline-flex items-center justify-center glass-card text-white font-semibold px-8 py-4 rounded-full hover:bg-white/5 transition-transform duration-300 hover:-translate-y-0.5 border-gold-gradient spa-nav-link" data-page="services">
@@ -476,35 +476,106 @@
         <div class="text-center mb-16">
           <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Get in Touch</span>
           <h2 class="h2-editorial font-extrabold uppercase text-white mt-3">Contact</h2>
-          <p class="text-neutral-400 text-sm mt-2 max-w-xl mx-auto font-light">Reach out directly to start a conversation.</p>
+          <p class="text-neutral-400 text-sm mt-2 max-w-xl mx-auto font-light">Tell us what you need once. Your enquiry will be saved and tracked from here.</p>
         </div>
 
         <div id="managed-contact-details" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl mx-auto mb-8" aria-label="Atelier contact details"></div>
 
-        <div class="glass-card border-gold-gradient p-8 rounded-3xl max-w-2xl mx-auto">
-          <h3 class="text-2xl font-bold uppercase text-white mb-6 text-center">Send A Message</h3>
+        <div class="glass-card border-gold-gradient p-6 md:p-8 rounded-3xl max-w-3xl mx-auto">
+          <div class="text-center mb-8">
+            <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400">One enquiry, one reference</span>
+            <h3 class="text-2xl font-bold uppercase text-white mt-2">How can we help?</h3>
+            <p class="text-sm text-neutral-400 mt-2">Choose the closest option. We will only ask for the details we need.</p>
+          </div>
           
-          <form id="contact-form" class="space-y-6">
-            <div>
-              <label for="contact-name" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Full Name</label>
-              <input id="contact-name" name="name" type="text" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. John Doe" required>
+          <form id="unified-enquiry-form" class="space-y-6" novalidate>
+            <input type="hidden" name="intent" id="enquiry-intent" value="general">
+            <input type="hidden" name="turnstile_token" id="turnstile-token">
+            <input type="hidden" name="source_cta" id="enquiry-source-cta">
+            <input type="hidden" name="idempotency_key" id="enquiry-idempotency-key">
+            <input type="text" name="website" class="enquiry-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <div class="enquiry-intent-grid" role="radiogroup" aria-label="Enquiry type">
+              <button type="button" class="enquiry-intent active" data-enquiry-intent="general" aria-pressed="true"><iconify-icon icon="solar:chat-round-dots-linear"></iconify-icon><span>General enquiry</span></button>
+              <button type="button" class="enquiry-intent" data-enquiry-intent="project" aria-pressed="false"><iconify-icon icon="solar:clipboard-list-linear"></iconify-icon><span>Start a project</span></button>
+              <button type="button" class="enquiry-intent" data-enquiry-intent="event" aria-pressed="false"><iconify-icon icon="solar:calendar-linear"></iconify-icon><span>Event coverage</span></button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label for="enquiry-name" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Full name</label>
+                <input id="enquiry-name" name="name" type="text" maxlength="120" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="Your name" required>
+              </div>
+              <div>
+                <label for="enquiry-channel" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Best way to reply</label>
+                <select id="enquiry-channel" name="preferred_channel" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm" required>
+                  <option value="email">Email</option>
+                  <option value="whatsapp">WhatsApp</option>
+                  <option value="phone">Phone call</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label for="enquiry-email" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Email <span class="text-neutral-600 normal-case">(email or phone required)</span></label>
+                <input id="enquiry-email" name="email" type="email" maxlength="254" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="you@example.com">
+              </div>
+              <div>
+                <label for="enquiry-phone" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Phone or WhatsApp</label>
+                <input id="enquiry-phone" name="phone" type="tel" maxlength="40" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="+234 ...">
+              </div>
+            </div>
+
+            <div id="enquiry-project-fields" class="space-y-5 hidden">
+              <div>
+                <label for="enquiry-service" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Service</label>
+                <select id="enquiry-service" name="service" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm"><option value="">Choose a service</option></select>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label for="enquiry-timeline" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Preferred date or timeline <span class="text-neutral-600 normal-case">(optional)</span></label>
+                  <input id="enquiry-timeline" name="timeline" type="text" maxlength="120" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. September or flexible">
+                </div>
+                <div>
+                  <label for="enquiry-budget" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Budget range <span class="text-neutral-600 normal-case">(optional)</span></label>
+                  <input id="enquiry-budget" name="budget" type="text" maxlength="120" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. ₦500,000">
+                </div>
+              </div>
+              <div>
+                <label for="enquiry-location" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Location or venue <span class="text-neutral-600 normal-case">(optional)</span></label>
+                <input id="enquiry-location" name="location" type="text" maxlength="240" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="City, venue, or remote">
+              </div>
             </div>
 
             <div>
-              <label for="contact-email" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Email Address</label>
-              <input id="contact-email" name="email" type="email" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. john@example.com" required>
+              <label for="enquiry-message" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">What do you need?</label>
+              <textarea id="enquiry-message" name="message" rows="6" minlength="10" maxlength="5000" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="Tell us what you need, who it is for, and what a successful result looks like." required></textarea>
             </div>
 
-            <div>
-              <label for="contact-message" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Message</label>
-              <textarea id="contact-message" name="message" rows="5" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600" placeholder="Your questions, inquiries, or notes here..." required></textarea>
-            </div>
-
-            <button type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] transition-transform duration-300 shadow-lg shadow-amber-500/10">
-              Continue on WhatsApp
+            <label class="enquiry-consent">
+              <input type="checkbox" name="consent" required>
+              <span>I agree that Olympus Atelier may contact me about this enquiry.</span>
+            </label>
+            <div id="turnstile-container" class="flex justify-center"></div>
+            <div id="enquiry-form-error" class="enquiry-form-error hidden" role="alert"></div>
+            <button id="enquiry-submit" type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] transition-transform duration-300 shadow-lg shadow-amber-500/10">
+              Send enquiry
             </button>
-            <p id="contact-form-status" class="text-xs text-neutral-400 text-center" role="status"></p>
+            <p class="text-xs text-neutral-500 text-center">Your enquiry is saved before any WhatsApp conversation begins.</p>
           </form>
+
+          <section id="enquiry-success" class="enquiry-success hidden" aria-live="polite" tabindex="-1">
+            <div class="enquiry-success-icon"><iconify-icon icon="solar:check-circle-bold"></iconify-icon></div>
+            <p class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400">Enquiry received</p>
+            <h3 class="text-2xl font-bold text-white mt-2">We have saved your request.</h3>
+            <p class="text-neutral-400 mt-3">Your reference is <strong id="enquiry-ticket-number" class="text-white"></strong>. We normally respond within one business day.</p>
+            <p id="enquiry-email-status" class="text-xs text-neutral-500 mt-2"></p>
+            <div class="enquiry-success-actions">
+              <a id="enquiry-whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-6 py-3.5 rounded-full"><iconify-icon icon="logos:whatsapp-icon"></iconify-icon>Continue on WhatsApp</a>
+              <button id="enquiry-start-again" type="button" class="inline-flex items-center justify-center border border-white/10 text-white font-bold px-6 py-3.5 rounded-full">Send another enquiry</button>
+            </div>
+          </section>
         </div>
 
       </div>
@@ -1087,7 +1158,7 @@
         <h2 class="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-white font-display max-w-2xl leading-none">
           Let's create something amazing together.
         </h2>
-        <a href="#book" class="inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-8 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.25)] spa-nav-link" data-page="book">
+        <a href="#contact?intent=project&amp;source_cta=Prefooter%20CTA" class="inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-8 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.25)] spa-nav-link" data-page="contact">
           Get in Touch
         </a>
       </div>
@@ -1169,7 +1240,7 @@
           <h5 class="text-xs font-bold uppercase tracking-wider text-neutral-300 mb-5 font-mono">Connect</h5>
           
           <div class="flex gap-4 mb-6">
-            <a href="https://wa.me/2348087172313?text=Hello%20Olympus%20Atelier%2C%20I%20would%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-amber-400/30 px-4 py-2 text-xs font-bold text-amber-400 hover:bg-amber-400/10">
+            <a href="#contact?intent=general&amp;preferred_channel=whatsapp&amp;source_cta=Footer%20WhatsApp" data-page="contact" class="spa-nav-link inline-flex items-center gap-2 rounded-full border border-amber-400/30 px-4 py-2 text-xs font-bold text-amber-400 hover:bg-amber-400/10">
               <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>+234 808 717 2313
             </a>
           </div>

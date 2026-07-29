@@ -99,6 +99,18 @@ main { min-width: 0; grid-column: 1; grid-row: 1; }
 .topbar { min-height: 94px; display: flex; align-items: center; gap: 18px; padding: 20px 34px; border-bottom: 1px solid var(--line-soft); background: #090a08e8; backdrop-filter: blur(16px); position: sticky; top: 0; z-index: 35; }
 .topbar h1 { margin: 0; font-size: 25px; }
 .top-actions { display: flex; gap: 9px; margin-left: auto; }
+.notification-center { position: relative; }
+.notification-button { position: relative; }
+.notification-count { position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; padding: 0 5px; border: 2px solid #090a08; border-radius: 999px; background: var(--gold); color: #111; font-size: 9px; font-weight: 800; }
+.notification-panel { position: absolute; top: calc(100% + 12px); right: 0; width: min(390px, calc(100vw - 32px)); max-height: min(520px, 72vh); overflow: auto; border: 1px solid var(--line); border-radius: 18px; background: #11120f; box-shadow: 0 22px 70px #000b; }
+.notification-head { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 16px; border-bottom: 1px solid var(--line-soft); background: #11120ff2; backdrop-filter: blur(12px); }
+.notification-item { width: 100%; display: grid; grid-template-columns: auto 1fr; gap: 10px; padding: 14px 16px; color: var(--muted); text-align: left; border: 0; border-bottom: 1px solid var(--line-soft); background: transparent; cursor: pointer; }
+.notification-item:hover, .notification-item:focus-visible { color: var(--text); background: var(--surface-2); }
+.notification-item strong, .notification-item small { display: block; }
+.notification-item small { margin-top: 4px; line-height: 1.45; }
+.notification-item.unread { color: var(--text); background: #efbf4520; }
+.notification-dot { width: 7px; height: 7px; margin-top: 5px; border-radius: 50%; background: var(--gold); opacity: .25; }
+.notification-item.unread .notification-dot { opacity: 1; box-shadow: 0 0 0 4px #efbf4518; }
 .menu-button { margin-left: 4px; }
 .content { width: 100%; max-width: 1550px; padding: 32px 34px 70px; }
 .view { display: none; }
@@ -110,6 +122,24 @@ main { min-width: 0; grid-column: 1; grid-row: 1; }
 .date-chip, .badge, .demo-badge { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); padding: 7px 11px; font-size: 10px; }
 .demo-badge { margin-left: 6px; border-color: #4f4527; color: #d7bd73; padding: 3px 7px; }
 .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 16px; }
+.enquiry-metrics .metric { text-align: left; cursor: pointer; }
+.unread-row td:first-child { box-shadow: inset 3px 0 var(--gold); }
+.ticket-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+.ticket-toolbar > div { display: flex; align-items: center; gap: 10px; }
+.ticket-toolbar label { min-width: 220px; }
+.ticket-toolbar select { margin-top: 4px; }
+.conversation-message { max-width: 82%; margin: 10px 0; padding: 14px; border: 1px solid var(--line-soft); border-radius: 16px; background: var(--surface-2); }
+.conversation-message.outbound { margin-left: auto; border-color: #efbf4540; }
+.conversation-message > div { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.conversation-message p { margin: 10px 0; color: var(--text); white-space: pre-wrap; }
+.conversation-message small { color: var(--muted); }
+.inquiry-message-form { grid-template-columns: 180px minmax(0, 1fr) auto; align-items: end; margin-top: 18px; }
+.inquiry-message-form .wide { grid-column: auto; }
+.ticket-actions { margin-top: 16px; }
+.preserve-lines { white-space: pre-wrap; }
+.realtime-toast { color: var(--text); text-align: left; cursor: pointer; }
+.realtime-toast span, .realtime-toast small { display: block; }
+.realtime-toast small { margin-top: 3px; color: var(--muted); }
 .metric { padding: 20px; border: 1px solid var(--line-soft); border-radius: var(--radius); background: var(--surface); }
 .metric span, .metric small { display: block; color: var(--muted); font-size: 11px; }
 .metric strong { display: block; margin: 14px 0 8px; font-family: "Space Grotesk"; font-size: 31px; }

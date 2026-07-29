@@ -8,6 +8,123 @@
   --color-gold-dark: #8C6D1F;
 }
 
+.enquiry-honeypot {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+}
+
+.enquiry-intent-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.enquiry-intent {
+  min-height: 5.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem;
+  color: #a3a3a3;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.enquiry-intent:hover,
+.enquiry-intent:focus-visible {
+  color: #fff;
+  border-color: rgba(251, 191, 36, 0.45);
+}
+
+.enquiry-intent.active {
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.65);
+  background: rgba(251, 191, 36, 0.08);
+}
+
+.enquiry-intent iconify-icon {
+  font-size: 1.35rem;
+}
+
+.enquiry-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: #a3a3a3;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.enquiry-consent input {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: 0.12rem;
+  accent-color: #fbbf24;
+}
+
+.enquiry-form-error {
+  padding: 0.9rem 1rem;
+  color: #fecaca;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  border: 1px solid rgba(248, 113, 113, 0.38);
+  border-radius: 0.9rem;
+  background: rgba(127, 29, 29, 0.22);
+}
+
+.enquiry-success {
+  padding: 2rem 0.5rem 0.5rem;
+  text-align: center;
+}
+
+.enquiry-success-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  color: #fbbf24;
+  font-size: 2rem;
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.08);
+}
+
+.enquiry-success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.enquiry-success-actions a {
+  gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .enquiry-intent-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .enquiry-intent {
+    min-height: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+
 html {
   font-size: 15px;
   scroll-padding-top: 6rem;

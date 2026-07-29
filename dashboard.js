@@ -8,6 +8,7 @@ const state = {
     projects: [], clients: [], invoices: [], invoiceItems: [], payments: [],
     adjustments: [], adjustmentItems: [], billingSettings: null, intake: [],
     milestones: [], invitations: [], members: [], activities: [],
+    inquiryMessages: [], inquiryEvents: [], notifications: [], inquiryMetrics: null,
     pages: [], services: [], media: [], portfolio: [], profiles: [], revisions: [], crm: null,
   },
   view: "overview",
@@ -16,6 +17,7 @@ const state = {
   portfolioVisible: 24,
   previewPayload: null,
   dirty: false,
+  notificationChannel: null,
 };
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -283,6 +285,7 @@ async function enterWorkspace() {
   applyRoleVisibility();
   restoreSidebar();
   await refreshData();
+  subscribeToEnquiries();
   if (profile.must_change_password) $("#password-dialog").showModal();
 }
 
@@ -290,6 +293,8 @@ function applyRoleVisibility() {
   const role = state.profile.role;
   const canFinance = ["owner", "finance"].includes(role);
   const canContent = ["owner", "content_manager"].includes(role);
+  const canManageEnquiries = ["owner", "project_manager", "contributor"].includes(role);
+  $$('[data-view="inbox"], [data-view-panel="inbox"], .notification-center').forEach((element) => element.classList.toggle("hidden", !canManageEnquiries));
   $$('[data-view="invoices"], [data-view-panel="invoices"]').forEach((element) => element.classList.toggle("hidden", !canFinance));
   $$('[data-view="pages"], [data-view="portfolio"], [data-view="services"], [data-view="media"], [data-view-panel="pages"], [data-view-panel="portfolio"], [data-view-panel="services"], [data-view-panel="media"]')
     .forEach((element) => element.classList.toggle("hidden", !canContent));
@@ -311,6 +316,10 @@ async function refreshData({ preserveRoute = true } = {}) {
     state.supabase.from("project_invites").select("*").order("created_at", { ascending: false }),
     state.supabase.from("project_members").select("*, profiles(id,full_name,role)").order("created_at"),
     state.supabase.from("activities").select("*, profiles(full_name)").order("created_at", { ascending: false }).limit(250),
+    state.supabase.from("inquiry_messages").select("*, profiles:actor_id(full_name)").order("created_at", { ascending: true }),
+    state.supabase.from("inquiry_events").select("*, profiles:actor_id(full_name)").order("created_at", { ascending: true }),
+    state.supabase.from("notifications").select("*").order("created_at", { ascending: false }).limit(100),
+    state.supabase.rpc("get_inquiry_metrics"),
     state.supabase.from("pages").select("*").order("slug"),
     state.supabase.from("services").select("*").order("position"),
     state.supabase.from("media_assets").select("*").is("archived_at", null).order("created_at", { ascending: false }),
@@ -319,7 +328,7 @@ async function refreshData({ preserveRoute = true } = {}) {
     state.supabase.from("content_revisions").select("*, profiles(full_name)").order("published_at", { ascending: false }).limit(100),
     state.supabase.rpc("get_crm_dashboard", { months_back: 12 }),
   ];
-  const keys = ["projects", "clients", "invoices", "invoiceItems", "payments", "adjustments", "adjustmentItems", "billingSettings", "intake", "milestones", "invitations", "members", "activities", "pages", "services", "media", "portfolio", "profiles", "revisions", "crm"];
+  const keys = ["projects", "clients", "invoices", "invoiceItems", "payments", "adjustments", "adjustmentItems", "billingSettings", "intake", "milestones", "invitations", "members", "activities", "inquiryMessages", "inquiryEvents", "notifications", "inquiryMetrics", "pages", "services", "media", "portfolio", "profiles", "revisions", "crm"];
   const results = await Promise.all(queries);
   const errors = [];
   results.forEach((result, index) => {
@@ -335,6 +344,7 @@ function renderLists() {
   $("#current-date").textContent = new Intl.DateTimeFormat("en-NG", { weekday: "long", day: "numeric", month: "long" }).format(new Date());
   $("#welcome-title").textContent = `Good ${new Date().getHours() < 12 ? "morning" : new Date().getHours() < 17 ? "afternoon" : "evening"}, ${(state.profile.full_name || "team").split(" ")[0]}.`;
   $("#inbox-count").textContent = state.data.intake.filter((item) => item.status === "new").length;
+  renderNotifications();
   renderOverview();
   renderInbox();
   renderProjects();
@@ -392,14 +402,69 @@ function persistListFilters(section, fields) {
   window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${next}`);
 }
 
+function renderNotifications() {
+  const unread = state.data.notifications.filter((item) => !item.read_at);
+  $("#notification-count").textContent = unread.length;
+  $("#notification-count").classList.toggle("hidden", unread.length === 0);
+  $("#notification-list").innerHTML = state.data.notifications.length
+    ? state.data.notifications.slice(0, 20).map((item) => `<button type="button" class="notification-item ${item.read_at ? "" : "unread"}" data-notification-route="${item.inquiry_id ? `inbox/${item.inquiry_id}` : "inbox"}"><span class="notification-dot"></span><span><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.body || "")} · ${formatDateTime(item.created_at)}</small></span></button>`).join("")
+    : emptyState("No notifications", "New enquiry alerts will appear here.");
+}
+
+function subscribeToEnquiries() {
+  if (!state.supabase || !state.profile || !["owner", "project_manager", "contributor"].includes(state.profile.role)) return;
+  if (state.notificationChannel) state.supabase.removeChannel(state.notificationChannel);
+  state.notificationChannel = state.supabase
+    .channel(`olympus-enquiries-${state.profile.id}`)
+    .on("postgres_changes", {
+      event: "INSERT",
+      schema: "public",
+      table: "notifications",
+      filter: `recipient_id=eq.${state.profile.id}`,
+    }, async (payload) => {
+      const notice = payload.new;
+      state.data.notifications.unshift(notice);
+      renderNotifications();
+      const node = document.createElement("button");
+      node.type = "button";
+      node.className = "toast realtime-toast";
+      node.dataset.route = notice.inquiry_id ? `inbox/${notice.inquiry_id}` : "inbox";
+      node.innerHTML = `${icon("solar:bell-bing-linear")}<span><strong>${escapeHtml(notice.title)}</strong><small>${escapeHtml(notice.body || "Open the enquiry")}</small></span>`;
+      $("#toast-region").append(node);
+      setTimeout(() => node.remove(), 8000);
+      const { data: ticket } = notice.inquiry_id
+        ? await state.supabase.from("intake_submissions").select("*").eq("id", notice.inquiry_id).maybeSingle()
+        : { data: null };
+      if (ticket && !state.data.intake.some((item) => item.id === ticket.id)) state.data.intake.unshift(ticket);
+      renderInbox();
+      $("#inbox-count").textContent = state.data.intake.filter((item) => item.status === "new").length;
+    })
+    .subscribe();
+}
+
 function renderInbox() {
   syncFilterFromRoute("inbox-search", "search");
   syncFilterFromRoute("inbox-filter", "status");
+  syncFilterFromRoute("inbox-assignee-filter", "assignee");
   const term = $("#inbox-search").value.trim().toLowerCase();
   const status = $("#inbox-filter").value;
-  const items = state.data.intake.filter((item) => (!status || item.status === status)
-    && [item.name, item.email, item.title, item.service].some((value) => String(value || "").toLowerCase().includes(term)));
-  $("#inbox-table").innerHTML = items.length ? items.map((item) => `<tr class="clickable-table-row" tabindex="0" data-route="inbox/${item.id}"><td><strong>${escapeHtml(item.name)}${demoBadge(item)}</strong><small>${escapeHtml(item.email)}</small></td><td>${escapeHtml(item.title || item.service || "General enquiry")}</td><td>${formatDate(item.created_at)}</td><td>${badge(item.status)}</td><td>${icon("solar:arrow-right-linear")}</td></tr>`).join("") : `<tr><td colspan="5">${emptyState("No enquiries match", "New website enquiries will appear here automatically.")}</td></tr>`;
+  const assignee = $("#inbox-assignee-filter").value;
+  const openStatuses = ["new", "in_review", "waiting_for_client", "qualified"];
+  const items = state.data.intake.filter((item) => (!status ? openStatuses.includes(item.status) : item.status === status)
+    && (!assignee || (assignee === "mine" ? item.assigned_to === state.profile.id : !item.assigned_to))
+    && [item.ticket_number, item.name, item.email, item.phone, item.title, item.service, item.source_page, item.source_cta].some((value) => String(value || "").toLowerCase().includes(term)));
+  const metrics = state.data.inquiryMetrics || {};
+  $("#enquiry-metrics").innerHTML = [
+    ["New tickets", metrics.new || 0, "Unreviewed enquiries", "new"],
+    ["Open tickets", metrics.open || 0, "Across the shared queue", ""],
+    ["Response time", `${Number(metrics.average_first_response_hours || 0)}h`, "Average first response", ""],
+    ["Conversion rate", `${Number(metrics.conversion_rate || 0)}%`, "Tickets converted to projects", "converted"],
+  ].map(([label, value, detail, filter]) => `<button type="button" class="metric clickable-card" data-route="inbox${filter ? `?status=${filter}` : ""}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong><small>${escapeHtml(detail)}</small></button>`).join("");
+  $("#inbox-table").innerHTML = items.length ? items.map((item) => {
+    const assigned = state.data.profiles.find((profile) => profile.id === item.assigned_to);
+    const unread = state.data.notifications.some((notice) => notice.inquiry_id === item.id && !notice.read_at);
+    return `<tr class="clickable-table-row ${unread ? "unread-row" : ""}" tabindex="0" data-route="inbox/${item.id}"><td><strong>${escapeHtml(item.ticket_number || "Legacy enquiry")}${demoBadge(item)}</strong><small>${escapeHtml(item.intent ? titleCase(item.intent) : "General enquiry")}</small></td><td><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.email || item.phone || "No contact")} · ${escapeHtml(item.source_cta || item.source_page || "Direct")}</small></td><td>${escapeHtml(item.service || "General")}</td><td>${escapeHtml(assigned?.full_name || "Unassigned")}</td><td>${formatDateTime(item.last_activity_at || item.created_at)}</td><td>${badge(item.status)}</td></tr>`;
+  }).join("") : `<tr><td colspan="6">${emptyState("No enquiries match", "New website enquiries will appear here automatically.")}</td></tr>`;
 }
 
 function projectProgress(project) {
@@ -832,6 +897,34 @@ function renderInboxRoute(segments) {
     + `<div class="detail-grid"><section class="panel"><p class="eyebrow">Contact</p><dl class="detail-list"><div><dt>Name</dt><dd>${escapeHtml(item.name)}</dd></div><div><dt>Email</dt><dd>${escapeHtml(item.email)}</dd></div><div><dt>Phone</dt><dd>${escapeHtml(item.phone || "Not provided")}</dd></div><div><dt>Status</dt><dd>${badge(item.status)}</dd></div></dl></section><section class="panel"><p class="eyebrow">Request</p><dl class="detail-list"><div><dt>Service</dt><dd>${escapeHtml(item.service || "Not specified")}</dd></div><div><dt>Budget</dt><dd>${escapeHtml(item.budget || "Not specified")}</dd></div><div><dt>Timeline</dt><dd>${escapeHtml(item.timeline || "Not specified")}</dd></div></dl></section></div><section class="panel"><p class="eyebrow">Message</p><p class="muted">${escapeHtml(item.message || "No additional message was provided.")}</p></section>${intakePayload(item.payload)}`;
 }
 
+async function renderEnquiryRoute(segments) {
+  const item = state.data.intake.find((entry) => entry.id === segments[1]);
+  if (!item) return renderNotFound("inbox", "inbox");
+  showRecordView("Enquiry");
+  const tab = parseRoute().params.get("tab") || "overview";
+  const assignee = state.data.profiles.find((profile) => profile.id === item.assigned_to);
+  const team = state.data.profiles.filter((profile) => ["owner", "project_manager", "contributor"].includes(profile.role));
+  const messages = state.data.inquiryMessages.filter((message) => message.inquiry_id === item.id);
+  const events = state.data.inquiryEvents.filter((entry) => entry.inquiry_id === item.id);
+  const linkedClient = state.data.clients.find((client) => client.id === item.client_id);
+  const linkedProject = state.data.projects.find((project) => project.intake_submission_id === item.id);
+  const linkedInvoices = state.data.invoices.filter((invoice) => invoice.client_id === item.client_id || invoice.project_id === linkedProject?.id);
+  const actions = `<button class="button secondary" type="button" data-assign-inquiry="${item.id}" data-assignee="${state.profile.id}">Assign to me</button>${item.status === "new" ? `<button class="button primary" type="button" data-inquiry-status="${item.id}" data-next-status="in_review">Start review</button>` : ""}`;
+  const tabs = `<nav class="record-tabs" aria-label="Enquiry sections">${[
+    ["overview", "Overview"], ["conversation", "Conversation & notes"], ["activity", "Activity"], ["related", "Related records"],
+  ].map(([value, label]) => `<button type="button" class="${tab === value ? "active" : ""}" data-route="inbox/${item.id}?tab=${value}">${label}</button>`).join("")}</nav>`;
+  const overview = `<div class="detail-grid"><section class="panel"><p class="eyebrow">Contact</p><dl class="detail-list"><div><dt>Name</dt><dd>${escapeHtml(item.name)}</dd></div><div><dt>Email</dt><dd>${escapeHtml(item.email || "Not provided")}</dd></div><div><dt>Phone / WhatsApp</dt><dd>${escapeHtml(item.phone || "Not provided")}</dd></div><div><dt>Preferred reply</dt><dd>${escapeHtml(titleCase(item.preferred_channel || "email"))}</dd></div><div><dt>Consent</dt><dd>${item.consent_at ? `Recorded ${formatDateTime(item.consent_at)}` : "Legacy enquiry"}</dd></div></dl></section><section class="panel"><p class="eyebrow">Request</p><dl class="detail-list"><div><dt>Intent</dt><dd>${escapeHtml(titleCase(item.intent || item.kind || "general"))}</dd></div><div><dt>Service</dt><dd>${escapeHtml(item.service || "Not specified")}</dd></div><div><dt>Budget</dt><dd>${escapeHtml(item.budget || "Not specified")}</dd></div><div><dt>Timeline</dt><dd>${escapeHtml(item.timeline || "Not specified")}</dd></div><div><dt>Source</dt><dd>${escapeHtml(item.source_cta || item.source_page || "Direct")}</dd></div></dl></section></div><section class="panel"><p class="eyebrow">Message</p><p class="muted preserve-lines">${escapeHtml(item.message || "No message was provided.")}</p></section>${intakePayload(item.payload)}`;
+  const conversation = `<section class="panel"><div class="panel-head"><div><p class="eyebrow">Conversation</p><h3>Messages and internal notes</h3></div></div>${messages.length ? messages.map((message) => `<article class="conversation-message ${message.direction}"><div><strong>${escapeHtml(message.sender_type === "contact" ? item.name : message.profiles?.full_name || "Team member")}</strong>${badge(message.channel)}</div><p>${escapeHtml(message.body)}</p><small>${formatDateTime(message.created_at)}</small></article>`).join("") : emptyState("No follow-up yet", "Log a call, WhatsApp conversation, email, or internal note below.")}<form class="compact-form inquiry-message-form" data-inquiry-message="${item.id}"><label>Type<select name="channel"><option value="internal">Internal note</option><option value="whatsapp">WhatsApp contact</option><option value="phone">Phone contact</option><option value="email">Email contact</option></select></label><label class="wide">Message<textarea name="body" required placeholder="Write a note or summary of the contact"></textarea></label><button class="button primary" type="submit">Save update</button><div class="screen-message" role="alert"></div></form></section>`;
+  const activity = `<section class="panel"><div class="panel-head"><div><p class="eyebrow">Audit history</p><h3>Ticket activity</h3></div></div>${events.length ? events.map((entry) => `<div class="item-row"><div><strong>${escapeHtml(titleCase(entry.event_type))}</strong><small>${escapeHtml(entry.profiles?.full_name || "System")} · ${formatDateTime(entry.created_at)}</small></div>${entry.to_value ? badge(entry.to_value) : ""}</div>`).join("") : emptyState("No activity yet", "Assignment, status, conversion, and contact events will appear here.")}</section>`;
+  const related = `<div class="detail-grid"><section class="panel"><p class="eyebrow">CRM</p><h3>Client</h3>${linkedClient ? `<button class="item-row clickable-row" data-route="clients/${linkedClient.id}"><div><strong>${escapeHtml(linkedClient.name)}</strong><small>${escapeHtml(linkedClient.email || linkedClient.phone || "")}</small></div>${icon("solar:arrow-right-linear")}</button>` : emptyState("No client linked", "Create a CRM client while preserving this ticket.", routeButton(`clients/new?intake=${item.id}`, "Create client", "secondary"))}</section><section class="panel"><p class="eyebrow">Delivery</p><h3>Project</h3>${linkedProject ? `<button class="item-row clickable-row" data-route="projects/${linkedProject.id}"><div><strong>${escapeHtml(linkedProject.title)}</strong><small>${escapeHtml(linkedProject.status)}</small></div>${icon("solar:arrow-right-linear")}</button>` : emptyState("Not converted yet", "Create a project using the enquiry details.", routeButton(`projects/new?intake=${item.id}`, "Convert to project", "primary"))}</section></div><section class="panel"><p class="eyebrow">Billing</p><h3>Invoices</h3>${linkedInvoices.length ? linkedInvoices.map((invoice) => `<button class="item-row clickable-row" data-route="invoices/${invoice.id}"><div><strong>${escapeHtml(invoice.invoice_number)}</strong><small>${money(invoice.total, invoice.currency)}</small></div>${badge(invoice.status)}</button>`).join("") : `<p class="muted">No related invoices.</p>`}</section>`;
+  const selected = ({ overview, conversation, activity, related })[tab] || overview;
+  $("#record-screen").innerHTML = recordHeader("inbox", "Enquiries", item.ticket_number || item.title || "Enquiry", `${item.name} · Received ${formatDate(item.created_at)}`, actions)
+    + `<section class="ticket-toolbar"><div>${badge(item.status)}<span class="muted">Assigned to ${escapeHtml(assignee?.full_name || "shared queue")}</span></div><label>Assignee<select data-inquiry-assignee="${item.id}"><option value="">Shared queue</option>${team.map((profile) => `<option value="${profile.id}" ${profile.id === item.assigned_to ? "selected" : ""}>${escapeHtml(profile.full_name || profile.role)}</option>`).join("")}</select></label></section>${tabs}${selected}<section class="panel ticket-actions"><div class="inline-actions">${["in_review", "waiting_for_client", "qualified", "closed"].map((value) => `<button class="button secondary" type="button" data-inquiry-status="${item.id}" data-next-status="${value}">${escapeHtml(titleCase(value))}</button>`).join("")}<button class="button destructive" type="button" data-inquiry-status="${item.id}" data-next-status="spam">Mark spam</button>${item.phone ? `<a class="button secondary" href="https://wa.me/${escapeHtml(item.phone.replace(/\D/g, ""))}?text=${encodeURIComponent(`Hello ${item.name}, following up on ${item.ticket_number}.`)}" target="_blank" rel="noopener">Open WhatsApp</a>` : ""}</div></section>`;
+  await state.supabase.rpc("mark_inquiry_notifications_read", { target_inquiry_id: item.id });
+  state.data.notifications.forEach((notice) => { if (notice.inquiry_id === item.id && !notice.read_at) notice.read_at = new Date().toISOString(); });
+  renderNotifications();
+}
+
 function invoiceItemsFor(id) {
   return state.data.invoiceItems.filter((item) => item.invoice_id === id).sort((a, b) => a.position - b.position);
 }
@@ -1156,7 +1249,7 @@ async function renderRoute() {
   if (segments.length === 1 && listSections.includes(section)) return showListView(section);
   if (section === "clients") return renderClientRoute(segments, params);
   if (section === "projects") return renderProjectRoute(segments, params);
-  if (section === "inbox") return renderInboxRoute(segments);
+  if (section === "inbox") return renderEnquiryRoute(segments);
   if (section === "invoices") return renderInvoiceRouteV2(segments, params);
   if (section === "receipts") return segments.length === 1 ? renderBillingList("receipts") : renderPaymentRoute(segments);
   if (section === "debit-notes") return segments.length === 1 ? renderBillingList("debit-notes") : renderAdjustmentRoute("debit", segments, params);
@@ -1271,7 +1364,7 @@ async function saveRecordForm(form, { publishCollection = false } = {}) {
       if (error) throw error;
       await logActivity(null, id ? "updated" : "created", "client", data.id);
       const intakeId = parseRoute().params.get("intake");
-      if (intakeId) await state.supabase.from("intake_submissions").update({ status: "reviewing" }).eq("id", intakeId);
+      if (intakeId) await state.supabase.from("intake_submissions").update({ status: "in_review" }).eq("id", intakeId);
       destination = `clients/${data.id}`;
       toast(id ? "Client changes saved." : "Client added.");
     } else if (kind === "project") {
@@ -1820,6 +1913,13 @@ function closeSidebar() {
 }
 
 document.addEventListener("click", async (event) => {
+  const notificationRoute = event.target.closest("[data-notification-route]");
+  if (notificationRoute) {
+    $("#notification-panel").classList.add("hidden");
+    $("#notification-button").setAttribute("aria-expanded", "false");
+    go(notificationRoute.dataset.notificationRoute);
+    return;
+  }
   const routeTarget = event.target.closest("[data-route]");
   if (routeTarget) {
     event.preventDefault();
@@ -1935,6 +2035,40 @@ document.addEventListener("click", async (event) => {
       await refreshData();
     }
   }
+  const assignInquiry = event.target.closest("[data-assign-inquiry]");
+  if (assignInquiry) {
+    const { error } = await state.supabase.rpc("assign_inquiry", {
+      target_inquiry_id: assignInquiry.dataset.assignInquiry,
+      target_assignee: assignInquiry.dataset.assignee || null,
+    });
+    if (error) setScreenError(error.message);
+    else {
+      toast("Enquiry assignment updated.");
+      await refreshData();
+    }
+    return;
+  }
+  const inquiryStatus = event.target.closest("[data-inquiry-status]");
+  if (inquiryStatus) {
+    const nextStatus = inquiryStatus.dataset.nextStatus;
+    const confirmed = !["closed", "spam"].includes(nextStatus) || await confirmAction(
+      nextStatus === "spam" ? "Mark this enquiry as spam?" : "Close this enquiry?",
+      nextStatus === "spam" ? "It will leave the active queue and be excluded from conversion reporting." : "The ticket history will remain available.",
+      nextStatus === "spam" ? "Mark spam" : "Close",
+    );
+    if (!confirmed) return;
+    const { error } = await state.supabase.rpc("set_inquiry_status", {
+      target_inquiry_id: inquiryStatus.dataset.inquiryStatus,
+      target_status: nextStatus,
+      target_note: null,
+    });
+    if (error) setScreenError(error.message);
+    else {
+      toast(`Enquiry marked ${titleCase(nextStatus)}.`);
+      await refreshData();
+    }
+    return;
+  }
   const intakeStatus = event.target.closest("[data-intake-status]");
   if (intakeStatus) {
     const { error } = await state.supabase.from("intake_submissions").update({ status: intakeStatus.dataset.nextStatus }).eq("id", intakeStatus.dataset.intakeStatus);
@@ -1982,6 +2116,18 @@ document.addEventListener("input", (event) => {
 
 document.addEventListener("change", (event) => {
   const input = event.target;
+  if (input.matches("[data-inquiry-assignee]")) {
+    state.supabase.rpc("assign_inquiry", {
+      target_inquiry_id: input.dataset.inquiryAssignee,
+      target_assignee: input.value || null,
+    }).then(async ({ error }) => {
+      if (error) setScreenError(error.message);
+      else {
+        toast("Enquiry assignment updated.");
+        await refreshData();
+      }
+    });
+  }
   if (input.matches('[data-record-form="invoice"] [name="project_id"]')) syncInvoiceProjectFields();
   if (input.type === "file" && input.name.endsWith("_file") && input.files?.[0]) {
     const name = input.name.replace(/_file$/, "");
@@ -1995,6 +2141,23 @@ document.addEventListener("change", (event) => {
 });
 
 document.addEventListener("submit", async (event) => {
+  const inquiryMessageForm = event.target.closest("[data-inquiry-message]");
+  if (inquiryMessageForm) {
+    event.preventDefault();
+    const values = Object.fromEntries(new FormData(inquiryMessageForm).entries());
+    const { error } = await state.supabase.rpc("add_inquiry_message", {
+      target_inquiry_id: inquiryMessageForm.dataset.inquiryMessage,
+      target_body: values.body,
+      target_channel: values.channel,
+      target_direction: values.channel === "internal" ? "internal" : "outbound",
+    });
+    if (error) $(".screen-message", inquiryMessageForm).innerHTML = inlineError(error.message);
+    else {
+      toast("Enquiry update saved.");
+      await refreshData();
+    }
+    return;
+  }
   const recordForm = event.target.closest("[data-record-form]");
   if (recordForm) {
     event.preventDefault();
@@ -2062,6 +2225,20 @@ $("#password-form").addEventListener("submit", async (event) => {
 
 $("#password-dialog").addEventListener("cancel", (event) => event.preventDefault());
 $("#sign-out").addEventListener("click", () => state.supabase.auth.signOut());
+$("#notification-button").addEventListener("click", () => {
+  const panel = $("#notification-panel");
+  const open = panel.classList.toggle("hidden") === false;
+  $("#notification-button").setAttribute("aria-expanded", String(open));
+});
+$("#mark-all-notifications").addEventListener("click", async () => {
+  const { error } = await state.supabase.rpc("mark_all_notifications_read");
+  if (error) setScreenError(error.message);
+  else {
+    const now = new Date().toISOString();
+    state.data.notifications.forEach((notice) => { if (!notice.read_at) notice.read_at = now; });
+    renderNotifications();
+  }
+});
 $("#menu-button").addEventListener("click", openSidebar);
 $("#collapse-sidebar").addEventListener("click", toggleDesktopSidebar);
 $("#sidebar-backdrop").addEventListener("click", closeSidebar);
@@ -2088,8 +2265,8 @@ window.addEventListener("beforeunload", (event) => {
   }
 });
 
-["inbox-search", "inbox-filter"].forEach((id) => $(`#${id}`).addEventListener("input", () => {
-  persistListFilters("inbox", [["inbox-search", "search"], ["inbox-filter", "status"]]);
+["inbox-search", "inbox-filter", "inbox-assignee-filter"].forEach((id) => $(`#${id}`).addEventListener("input", () => {
+  persistListFilters("inbox", [["inbox-search", "search"], ["inbox-filter", "status"], ["inbox-assignee-filter", "assignee"]]);
   renderInbox();
 }));
 ["project-search", "project-filter"].forEach((id) => $(`#${id}`).addEventListener("input", () => {

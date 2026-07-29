@@ -748,29 +748,21 @@ const initCustomSelects = () => {
 // Scale proposal Double-CTA Switching path Form logic
 let scaleFormPath = 'event'; // 'event' or 'project'
 
-const submitIntake = async (payload) => {
-  const configResponse = await fetch('/api/config', { cache: 'no-store' });
-  const config = await configResponse.json().catch(() => ({}));
-  if (!configResponse.ok || !config.configured) {
-    throw new Error('Online enquiries are temporarily unavailable. Please contact the atelier directly.');
-  }
-
-  const response = await fetch(`${config.url}/rest/v1/intake_submissions`, {
+const submitInquiry = async (payload) => {
+  const response = await fetch('/api/inquiries', {
     method: 'POST',
     headers: {
-      apikey: config.anonKey,
-      Authorization: `Bearer ${config.anonKey}`,
-      'Content-Type': 'application/json',
-      Prefer: 'return=minimal'
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(payload)
   });
+  const detail = await response.json().catch(() => ({}));
   if (!response.ok) {
-    const detail = await response.json().catch(() => ({}));
-    throw new Error(detail.message || 'We could not submit your request. Please try again.');
+    throw new Error(detail.error || 'We could not create your ticket. Your details are still here—please try again.');
   }
+  return detail;
 };
-window.submitIntake = submitIntake;
+window.submitInquiry = submitInquiry;
 
 const initManagedContent = async () => {
   const home = window.OLYMPUS_CONTENT?.pages?.home;
@@ -1075,7 +1067,8 @@ const initSPARouter = () => {
   const pages = document.querySelectorAll('.spa-page');
   const navLinks = document.querySelectorAll('.nav-link');
 
-  const navigateTo = (pageId) => {
+  const navigateTo = (requestedPageId) => {
+    const pageId = requestedPageId === 'book' ? 'contact' : requestedPageId;
     pages.forEach(p => {
       if (p.id === `page-${pageId}`) {
         p.classList.add('active');

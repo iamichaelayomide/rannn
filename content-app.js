@@ -49,7 +49,7 @@
         <ul class="mt-6 space-y-2 text-xs text-neutral-300">
           ${(service.deliverables || deliverables[index] || []).map(item => `<li class="flex items-center gap-2"><span class="text-amber-400">✓</span>${escapeHtml(item)}</li>`).join('')}
         </ul>
-        <a href="#book" data-page="book" class="spa-nav-link text-xs font-bold uppercase tracking-wider text-amber-400 mt-auto pt-7">Brief this service →</a>
+        <a href="#contact?intent=project&service=${encodeURIComponent(service.title)}&source_cta=Service%20card" data-page="contact" class="spa-nav-link text-xs font-bold uppercase tracking-wider text-amber-400 mt-auto pt-7">Brief this service →</a>
       </article>
     `).join('');
   };
@@ -527,6 +527,188 @@
     }, true);
   };
 
+  const initUnifiedEnquiryFlow = () => {
+    const form = document.getElementById('unified-enquiry-form');
+    if (!form) return;
+
+    const intentInput = document.getElementById('enquiry-intent');
+    const intentButtons = [...document.querySelectorAll('[data-enquiry-intent]')];
+    const projectFields = document.getElementById('enquiry-project-fields');
+    const serviceSelect = document.getElementById('enquiry-service');
+    const status = document.getElementById('enquiry-form-error');
+    const submitButton = document.getElementById('enquiry-submit');
+    const formPanel = form;
+    const successPanel = document.getElementById('enquiry-success');
+    const successTicket = document.getElementById('enquiry-ticket-number');
+    const successEmail = document.getElementById('enquiry-email-status');
+    const continueWhatsapp = document.getElementById('enquiry-whatsapp-link');
+    const sourceCtaInput = document.getElementById('enquiry-source-cta');
+    const idempotencyInput = document.getElementById('enquiry-idempotency-key');
+    let turnstileWidgetId = null;
+
+    const makeIdempotencyKey = () => window.crypto?.randomUUID
+      ? window.crypto.randomUUID()
+      : `inq-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+    const paramsForHash = () => {
+      const raw = window.location.hash.replace(/^#/, '');
+      const [, query = ''] = raw.split('?');
+      return new URLSearchParams(query);
+    };
+
+    if (serviceSelect) {
+      serviceSelect.insertAdjacentHTML(
+        'beforeend',
+        content.services.map(service => `<option value="${escapeHtml(service.title)}">${escapeHtml(service.title)}</option>`).join('')
+      );
+    }
+
+    const selectIntent = value => {
+      const intent = ['general', 'project', 'event'].includes(value) ? value : 'general';
+      if (intentInput) intentInput.value = intent;
+      intentButtons.forEach(button => {
+        const active = button.dataset.enquiryIntent === intent;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+      if (projectFields) projectFields.classList.toggle('hidden', intent === 'general');
+      if (intent === 'event' && serviceSelect && !serviceSelect.value) serviceSelect.value = 'Event coverage';
+    };
+
+    const hydrateContext = () => {
+      const params = paramsForHash();
+      selectIntent(params.get('intent') || intentInput?.value || 'general');
+      const service = params.get('service');
+      if (serviceSelect && service) {
+        const matchingOption = [...serviceSelect.options].find(option => option.value.toLowerCase() === service.toLowerCase());
+        if (matchingOption) serviceSelect.value = matchingOption.value;
+      }
+      const preferred = params.get('preferred_channel');
+      const preferredSelect = document.getElementById('enquiry-channel');
+      if (preferredSelect && ['email', 'whatsapp', 'phone'].includes(preferred)) preferredSelect.value = preferred;
+      if (sourceCtaInput) sourceCtaInput.value = params.get('source_cta') || '';
+    };
+
+    intentButtons.forEach(button => button.addEventListener('click', () => selectIntent(button.dataset.enquiryIntent)));
+    window.addEventListener('hashchange', hydrateContext);
+    hydrateContext();
+
+    document.querySelectorAll('a[href^="#book"]').forEach(link => {
+      link.href = '#contact?intent=project&source_cta=Legacy%20booking%20CTA';
+      link.dataset.page = 'contact';
+    });
+
+    const proposalForm = document.getElementById('scale-proposal-form');
+    if (proposalForm) {
+      proposalForm.outerHTML = `
+        <div class="scale-enquiry-bridge">
+          <p class="text-sm text-neutral-400">Tell us what you are planning in one place. We will create a ticket before offering WhatsApp.</p>
+          <div class="flex flex-wrap gap-3 mt-5">
+            <a href="#contact?intent=event&source_cta=Event%20coverage%20section" data-page="contact" class="spa-nav-link primary-btn">Plan event coverage</a>
+            <a href="#contact?intent=project&source_cta=Project%20section" data-page="contact" class="spa-nav-link secondary-btn">Start a project</a>
+          </div>
+        </div>`;
+    }
+
+    const loadTurnstile = async () => {
+      const container = document.getElementById('turnstile-container');
+      if (!container) return;
+      const config = await fetch('/api/config', { cache: 'no-store' }).then(response => response.json()).catch(() => ({}));
+      if (!config.turnstileSiteKey) return;
+      const renderWidget = () => {
+        if (!window.turnstile || turnstileWidgetId !== null) return;
+        turnstileWidgetId = window.turnstile.render(container, {
+          sitekey: config.turnstileSiteKey,
+          theme: 'dark'
+        });
+      };
+      if (window.turnstile) return renderWidget();
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.async = true;
+      script.defer = true;
+      script.addEventListener('load', renderWidget, { once: true });
+      document.head.append(script);
+    };
+    loadTurnstile();
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const values = new FormData(form);
+      const email = String(values.get('email') || '').trim();
+      const phone = String(values.get('phone') || '').trim();
+      if (!email && !phone) {
+        status.textContent = 'Please add an email address or phone/WhatsApp number so we can reply.';
+        status.classList.remove('hidden');
+        document.getElementById('enquiry-email')?.focus();
+        return;
+      }
+
+      if (!idempotencyInput.value) idempotencyInput.value = makeIdempotencyKey();
+      status.classList.add('hidden');
+      submitButton.disabled = true;
+      submitButton.textContent = 'Creating your ticket…';
+
+      try {
+        const result = await window.submitInquiry({
+          site_key: 'olympus-atelier',
+          intent: values.get('intent'),
+          name: values.get('name'),
+          email,
+          phone,
+          preferred_channel: values.get('preferred_channel'),
+          service: values.get('service') || null,
+          budget: values.get('budget') || null,
+          preferred_date: values.get('preferred_date') || null,
+          timeline: values.get('timeline') || null,
+          location: values.get('location') || null,
+          message: values.get('message'),
+          consent: values.get('consent') === 'on',
+          source_page: window.location.hash.split('?')[0].replace(/^#/, '') || 'contact',
+          source_cta: values.get('source_cta') || null,
+          source_url: window.location.href,
+          referrer: document.referrer || null,
+          utm: Object.fromEntries([...new URL(window.location.href).searchParams.entries()].filter(([key]) => key.startsWith('utm_'))),
+          idempotency_key: values.get('idempotency_key'),
+          turnstile_token: values.get('cf-turnstile-response') || null,
+          website: values.get('website') || ''
+        });
+        successTicket.textContent = result.ticketNumber;
+        successEmail.textContent = result.acknowledgementState === 'sent'
+          ? 'A confirmation email is on its way.'
+          : email
+            ? 'Your ticket is saved. Email confirmation is temporarily unavailable, but the atelier can still see your enquiry.'
+            : 'Your ticket is saved and the atelier can now respond through your preferred channel.';
+        if (result.whatsappUrl) {
+          continueWhatsapp.href = result.whatsappUrl;
+          continueWhatsapp.classList.remove('hidden');
+        } else {
+          continueWhatsapp.classList.add('hidden');
+        }
+        formPanel.classList.add('hidden');
+        successPanel.classList.remove('hidden');
+        successPanel.focus();
+      } catch (error) {
+        status.textContent = error.message || 'We could not create your ticket. Your details are still here—please try again.';
+        status.classList.remove('hidden');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Create enquiry ticket';
+      }
+    });
+
+    document.getElementById('enquiry-start-again')?.addEventListener('click', () => {
+      form.reset();
+      idempotencyInput.value = makeIdempotencyKey();
+      formPanel.classList.remove('hidden');
+      successPanel.classList.add('hidden');
+      status.classList.add('hidden');
+      hydrateContext();
+      if (window.turnstile && turnstileWidgetId !== null) window.turnstile.reset(turnstileWidgetId);
+      document.getElementById('enquiry-name')?.focus();
+    });
+  };
+
   const hydrateFooter = () => {
     const footer = document.querySelector('footer');
     if (!footer) return;
@@ -553,7 +735,7 @@
         .map(([network, url]) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(titleCase(network))}" class="w-9 h-9 rounded-full border border-white/10 inline-flex items-center justify-center text-neutral-400 hover:text-amber-400 hover:border-amber-400/30"><iconify-icon icon="${socialIcons[network]}"></iconify-icon></a>`)
         .join('');
       const whatsappLink = content.siteConfig.whatsappNumber && content.siteConfig.whatsappDisplay
-        ? `<a href="${whatsappUrl(`Hello ${content.siteConfig.brandName}, I would like to discuss a project.`)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-amber-400/30 px-4 py-2 text-xs font-bold text-amber-400 hover:bg-amber-400/10"><iconify-icon icon="logos:whatsapp-icon"></iconify-icon>${escapeHtml(content.siteConfig.whatsappDisplay)}</a>`
+        ? `<a href="#contact?intent=general&preferred_channel=whatsapp&source_cta=Footer%20WhatsApp" data-page="contact" class="spa-nav-link inline-flex items-center gap-2 rounded-full border border-amber-400/30 px-4 py-2 text-xs font-bold text-amber-400 hover:bg-amber-400/10"><iconify-icon icon="logos:whatsapp-icon"></iconify-icon>${escapeHtml(content.siteConfig.whatsappDisplay)}</a>`
         : '';
       connectRow.innerHTML = `${whatsappLink}${content.siteConfig.email ? `<a href="mailto:${escapeHtml(content.siteConfig.email)}" class="text-xs text-neutral-400 hover:text-white">${escapeHtml(content.siteConfig.email)}</a>` : ''}${content.siteConfig.location ? `<span class="text-xs text-neutral-500">${escapeHtml(content.siteConfig.location)}</span>` : ''}${socialLinks ? `<span class="flex gap-2">${socialLinks}</span>` : ''}`;
     }
@@ -590,7 +772,7 @@
     document.getElementById('view-cac-certificate')?.addEventListener('click', () => {
       window.openOlympusPortfolioItem?.('157ouUK40lbUfM4xSL2Sc0E0gPQ4wnqcd');
     });
-    initWhatsAppForms();
+    initUnifiedEnquiryFlow();
     hydrateFooter();
     hydrateMetadata();
     window.addEventListener('hashchange', hydrateMetadata);

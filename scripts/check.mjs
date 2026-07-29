@@ -18,8 +18,10 @@ const requiredFiles = [
   "supabase/migrations/202607290001_accounting_documents.sql",
   "supabase/migrations/202607290003_repair_adjustment_draft_rpc.sql",
   "supabase/migrations/202607290005_preserve_crm_dashboard_interface.sql",
+  "supabase/migrations/202607300001_unified_enquiry_engine.sql",
   "api/invoice-pdf.js",
   "api/billing-document.js",
+  "api/inquiries.js",
 ];
 
 for (const file of requiredFiles) await access(file);
@@ -44,9 +46,30 @@ const admin = await readFile("admin.html", "utf8");
 const publicContentApi = await readFile("api/content.js", "utf8");
 const contentApp = await readFile("content-app.js", "utf8");
 const siteBootstrap = await readFile("site-bootstrap.js", "utf8");
+const publicIndex = await readFile("index.js", "utf8");
+const inquiryApi = await readFile("api/inquiries.js", "utf8");
+const inquiryMigration = await readFile("supabase/migrations/202607300001_unified_enquiry_engine.sql", "utf8");
 
 if (/window\.(prompt|alert|confirm)\s*\(/.test(`${dashboard}\n${portal}`)) {
   throw new Error("Native browser prompts are not allowed in the admin or client portal");
+}
+if (!publicIndex.includes("fetch('/api/inquiries'") || publicIndex.includes("/rest/v1/intake_submissions")) {
+  throw new Error("Public enquiries must use the validated server endpoint rather than direct Supabase inserts");
+}
+for (const required of ["unified-enquiry-form", "enquiry-ticket-number", "enquiry-whatsapp-link"]) {
+  if (!(await readFile("index.html", "utf8")).includes(required)) throw new Error(`Unified public enquiry flow is missing ${required}`);
+}
+if (contentApp.includes("initWhatsAppForms();")) {
+  throw new Error("Legacy forms must not auto-open WhatsApp or submit independently");
+}
+for (const required of ["verifyTurnstile", "idempotency_key", "create_public_inquiry", "acknowledgementState"]) {
+  if (!inquiryApi.includes(required)) throw new Error(`The enquiry API is missing ${required}`);
+}
+for (const required of ["inquiry_messages", "inquiry_events", "notifications", "notification_deliveries", "create_public_inquiry", "set_inquiry_status", "assign_inquiry", "get_inquiry_metrics"]) {
+  if (!inquiryMigration.includes(required)) throw new Error(`The enquiry migration is missing ${required}`);
+}
+for (const required of ["subscribeToEnquiries", "renderNotifications", "data-inquiry-message", "mark_inquiry_notifications_read"]) {
+  if (!dashboard.includes(required)) throw new Error(`The dashboard enquiry workspace is missing ${required}`);
 }
 if (/previewMarkup|\.srcdoc\s*=/.test(dashboard)) {
   throw new Error("CMS preview must use the real public website, not generated mock markup");
