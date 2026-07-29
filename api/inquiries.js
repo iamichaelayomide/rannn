@@ -100,9 +100,10 @@ async function ownerEmails() {
 }
 
 async function createDelivery({ inquiryId, channel, recipient, provider }) {
-  const rows = await supabaseRequest("/rest/v1/notification_deliveries?select=*", {
+  const path = "/rest/v1/notification_deliveries?on_conflict=inquiry_id,channel,recipient&select=*";
+  const rows = await supabaseRequest(path, {
     method: "POST",
-    prefer: "return=representation",
+    prefer: "resolution=ignore-duplicates,return=representation",
     body: {
       inquiry_id: inquiryId,
       channel,
@@ -112,7 +113,11 @@ async function createDelivery({ inquiryId, channel, recipient, provider }) {
       attempts: 0,
     },
   });
-  return rows[0];
+  if (rows[0]) return { record: rows[0], shouldSend: true };
+  const existing = await supabaseRequest(
+    `/rest/v1/notification_deliveries?inquiry_id=eq.${encodeURIComponent(inquiryId)}&channel=eq.${encodeURIComponent(channel)}&recipient=eq.${encodeURIComponent(recipient)}&select=*&limit=1`,
+  );
+  return { record: existing[0], shouldSend: false };
 }
 
 async function finishDelivery(id, values) {
@@ -125,12 +130,13 @@ async function finishDelivery(id, values) {
 }
 
 async function sendEmail({ inquiryId, recipient, subject, html }) {
-  const delivery = await createDelivery({
+  const { record: delivery, shouldSend } = await createDelivery({
     inquiryId,
     channel: "email",
     recipient,
     provider: "resend",
   });
+  if (!shouldSend) return { sent: delivery?.status === "sent", duplicate: true };
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     await finishDelivery(delivery.id, {
@@ -183,12 +189,13 @@ async function sendOwnerWhatsApp({ inquiryId, ticketNumber, name, intent }) {
   const templateName = process.env.WHATSAPP_ALERT_TEMPLATE;
   if (!recipient) return { sent: false, skipped: true };
 
-  const delivery = await createDelivery({
+  const { record: delivery, shouldSend } = await createDelivery({
     inquiryId,
     channel: "whatsapp",
     recipient,
     provider: "meta",
   });
+  if (!shouldSend) return { sent: delivery?.status === "sent", duplicate: true };
   if (!accessToken || !phoneNumberId || !templateName) {
     await finishDelivery(delivery.id, {
       status: "skipped",
