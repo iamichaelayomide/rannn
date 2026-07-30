@@ -712,7 +712,7 @@ dialog::backdrop { background: #000c; backdrop-filter: blur(5px); }
 }
 
 .balance-grid .balance-due {
-  border-color: var(--accent);
+  border-color: var(--gold);
 }
 
 @media (max-width: 720px) {
