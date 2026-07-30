@@ -91,6 +91,30 @@
         </section>
 
         <section class="view" data-view-panel="clients">
+          <section class="panel currency-consolidator">
+            <div>
+              <p class="eyebrow">Reporting currency</p>
+              <h2>One clear view of your money</h2>
+              <p class="muted">Choose how CRM totals are displayed. Original invoices and payments are never changed.</p>
+              <p class="currency-rate-status" id="currency-rate-status">Loading daily reference rates…</p>
+            </div>
+            <div class="currency-controls">
+              <label>Show CRM totals in
+                <select id="crm-display-currency">
+                  <option value="NGN">Nigerian naira (NGN)</option>
+                  <option value="USD">US dollar (USD)</option>
+                  <option value="GBP">British pound (GBP)</option>
+                </select>
+              </label>
+              <div class="currency-converter" aria-label="Currency converter">
+                <label>Amount<input id="converter-amount" type="number" min="0" step="0.01" value="1"></label>
+                <label>From<select id="converter-from"><option value="NGN">NGN</option><option value="USD">USD</option><option value="GBP">GBP</option></select></label>
+                <span class="converter-arrow" aria-hidden="true">→</span>
+                <label>To<select id="converter-to"><option value="USD">USD</option><option value="NGN">NGN</option><option value="GBP">GBP</option></select></label>
+                <output id="converter-result">—</output>
+              </div>
+            </div>
+          </section>
           <div class="metric-grid crm-metrics" id="crm-metrics">
             <article class="metric skeleton-card"></article><article class="metric skeleton-card"></article>
             <article class="metric skeleton-card"></article><article class="metric skeleton-card"></article>
@@ -98,7 +122,7 @@
           <section class="panel crm-chart-panel">
             <div class="panel-head">
               <div><p class="eyebrow">Last 12 months</p><h2>Clients and paid revenue</h2></div>
-              <label class="compact-label">Revenue currency<select id="crm-chart-currency"></select></label>
+              <span class="compact-label">Shown in <strong id="crm-chart-currency-label">NGN</strong></span>
             </div>
             <div id="crm-chart" class="crm-chart"></div>
           </section>

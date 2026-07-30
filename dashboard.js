@@ -8,7 +8,7 @@ const state = {
     projects: [], clients: [], invoices: [], invoiceItems: [], payments: [],
     adjustments: [], adjustmentItems: [], billingSettings: null, intake: [],
     milestones: [], invitations: [], members: [], activities: [],
-    inquiryMessages: [], inquiryEvents: [], notifications: [], inquiryMetrics: null,
+    inquiryMessages: [], inquiryEvents: [], notifications: [], inquiryMetrics: null, exchangeRates: null,
     pages: [], services: [], media: [], portfolio: [], profiles: [], revisions: [], crm: null,
   },
   view: "overview",
@@ -17,6 +17,9 @@ const state = {
   portfolioVisible: 24,
   previewPayload: null,
   dirty: false,
+  displayCurrency: ["NGN", "USD", "GBP"].includes(localStorage.getItem("olympus-reporting-currency"))
+    ? localStorage.getItem("olympus-reporting-currency")
+    : "NGN",
   notificationChannel: null,
 };
 
@@ -302,6 +305,13 @@ function applyRoleVisibility() {
 }
 
 async function refreshData({ preserveRoute = true } = {}) {
+  const exchangeRatesRequest = fetch("/api/exchange-rates", { cache: "no-store" })
+    .then(async (response) => {
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || "Rates unavailable");
+      return payload;
+    })
+    .catch((error) => ({ error: error.message || "Rates unavailable" }));
   const queries = [
     state.supabase.from("projects").select("*, clients(id,name,email,company), milestones(id,title,description,status,due_date,position,requires_approval,deliverables(id,title,description,file_url,version,status,client_note))").order("created_at", { ascending: false }),
     state.supabase.from("clients").select("*").order("created_at", { ascending: false }),
@@ -335,6 +345,7 @@ async function refreshData({ preserveRoute = true } = {}) {
     if (result.error) errors.push(result.error.message);
     else state.data[keys[index]] = result.data || [];
   });
+  state.data.exchangeRates = await exchangeRatesRequest;
   renderLists();
   if (preserveRoute) renderRoute();
   if (errors.length) setScreenError(errors[0]);
@@ -365,7 +376,7 @@ function renderOverview() {
   const metrics = [
     ["Active projects", active, `${state.data.projects.filter((project) => !project.archived_at).length} current projects`, "projects?status=active"],
     ["Awaiting approval", awaiting, awaiting ? "Client action required" : "Nothing waiting", "projects"],
-    ["Outstanding invoices", moneyTotals(totalsByCurrency(openInvoices.map((invoice) => ({ currency: invoice.currency, total: invoiceBalance(invoice).outstanding }))), "Nothing due"), `${openInvoices.length} due`, "invoices?status=open"],
+    ["Outstanding invoices", reportingMoney(totalsByCurrency(openInvoices.map((invoice) => ({ currency: invoice.currency, total: invoiceBalance(invoice).outstanding }))), "Nothing due"), `${openInvoices.length} due · ${exchangeRatesAvailable() ? `${state.displayCurrency} reporting` : "original currencies"}`, "invoices?status=open"],
     ["New enquiries", enquiries, enquiries ? "Review the inbox" : "Inbox is clear", "inbox?status=new"],
   ];
   $("#metrics").innerHTML = metrics.map(([label, value, note, route]) => `<button class="metric clickable-card" type="button" data-route="${route}"><span>${label}</span><strong>${value}</strong><small>${note}</small></button>`).join("");
@@ -506,6 +517,66 @@ function moneyTotals(totals, empty = "None") {
   return values.length ? values.map(([currency, total]) => money(total, currency)).join(" · ") : empty;
 }
 
+function exchangeRatesAvailable() {
+  const rates = state.data.exchangeRates?.rates;
+  return ["USD", "NGN", "GBP"].every((currency) => Number(rates?.[currency]) > 0);
+}
+
+function convertCurrency(amount, fromCurrency, toCurrency) {
+  const amountNumber = Number(amount);
+  if (!Number.isFinite(amountNumber)) return null;
+  if (fromCurrency === toCurrency) return amountNumber;
+  if (!exchangeRatesAvailable()) return null;
+  const rates = state.data.exchangeRates.rates;
+  if (!Number(rates[fromCurrency]) || !Number(rates[toCurrency])) return null;
+  return (amountNumber / Number(rates[fromCurrency])) * Number(rates[toCurrency]);
+}
+
+function consolidatedTotal(value, targetCurrency = state.displayCurrency) {
+  const entries = crmCurrencyEntries(value);
+  if (!entries.length) return 0;
+  if (!exchangeRatesAvailable()) return null;
+  const converted = entries.map((entry) => convertCurrency(entry.total, entry.currency, targetCurrency));
+  return converted.some((amount) => amount == null) ? null : converted.reduce((total, amount) => total + amount, 0);
+}
+
+function reportingMoney(value, empty = "None") {
+  const entries = crmCurrencyEntries(value);
+  if (!entries.length) return empty;
+  const consolidated = consolidatedTotal(entries);
+  if (consolidated == null) {
+    return moneyTotals(Object.fromEntries(entries.map((entry) => [entry.currency, entry.total])), empty);
+  }
+  return money(consolidated, state.displayCurrency);
+}
+
+function reportingCurrencyLabel() {
+  return exchangeRatesAvailable() ? state.displayCurrency : "original currencies";
+}
+
+function renderCurrencyTools() {
+  const displaySelect = $("#crm-display-currency");
+  if (!displaySelect) return;
+  displaySelect.value = state.displayCurrency;
+  $("#crm-chart-currency-label").textContent = state.displayCurrency;
+  const rateStatus = $("#currency-rate-status");
+  if (exchangeRatesAvailable()) {
+    rateStatus.textContent = `Daily reference rates from Frankfurter · ${formatDate(state.data.exchangeRates.date)} · Reporting estimate only`;
+    rateStatus.classList.remove("rate-error");
+  } else {
+    rateStatus.textContent = "Live rates are unavailable. Totals are shown in their original currencies so nothing is guessed.";
+    rateStatus.classList.add("rate-error");
+  }
+
+  const amount = Number($("#converter-amount").value);
+  const from = $("#converter-from").value;
+  const to = $("#converter-to").value;
+  const converted = convertCurrency(amount, from, to);
+  $("#converter-result").textContent = converted == null
+    ? "Rate unavailable"
+    : `${money(amount, from)} = ${money(converted, to)}`;
+}
+
 function clientPaidTotals(clientId) {
   const invoiceIds = new Set(clientInvoices(clientId).map((invoice) => invoice.id));
   return totalsByCurrency(state.data.payments.filter((payment) => invoiceIds.has(payment.invoice_id) && payment.status === "recorded").map((payment) => ({ currency: payment.currency, total: payment.amount })));
@@ -533,22 +604,21 @@ function syncSelectOptions(select, options, defaultLabel) {
 
 function renderCrmChart() {
   const months = state.data.crm?.months || state.data.crm?.monthly || [];
-  const select = $("#crm-chart-currency");
-  const currencies = crmCurrencies();
-  syncSelectOptions(select, currencies, "Clients only");
-  const currency = select.value;
+  const currency = state.displayCurrency;
+  const showRevenue = exchangeRatesAvailable();
   const clientMax = Math.max(1, ...months.map((item) => Number(item.clientsWorked || 0)));
-  const revenueValues = months.map((item) => Number(crmCurrencyEntries(item.revenue).find((entry) => entry.currency === currency)?.total || 0));
+  const revenueValues = months.map((item) => consolidatedTotal(item.revenue) ?? 0);
   const revenueMax = Math.max(1, ...revenueValues);
   $("#crm-chart").innerHTML = months.length ? months.map((item, index) => {
     const label = new Intl.DateTimeFormat("en-NG", { month: "short" }).format(new Date(`${item.month}T00:00:00`));
     const clients = Number(item.clientsWorked ?? item.clients ?? 0);
     const revenue = revenueValues[index];
-    return `<button class="crm-month" type="button" data-route="clients?worked=${escapeHtml(item.month)}" aria-label="${label}: ${clients} clients${currency ? `, ${money(revenue, currency)} paid` : ""}"><div class="crm-bars"><span class="client-bar" style="height:${Math.max(4, clients / clientMax * 100)}%"></span>${currency ? `<span class="revenue-bar" style="height:${Math.max(revenue ? 4 : 0, revenue / revenueMax * 100)}%"></span>` : ""}</div><strong>${clients}</strong><small>${label}</small>${currency ? `<em>${money(revenue, currency)}</em>` : ""}</button>`;
+    return `<button class="crm-month" type="button" data-route="clients?worked=${escapeHtml(item.month)}" aria-label="${label}: ${clients} clients${showRevenue ? `, ${money(revenue, currency)} paid` : ""}"><div class="crm-bars"><span class="client-bar" style="height:${Math.max(4, clients / clientMax * 100)}%"></span>${showRevenue ? `<span class="revenue-bar" style="height:${Math.max(revenue ? 4 : 0, revenue / revenueMax * 100)}%"></span>` : ""}</div><strong>${clients}</strong><small>${label}</small>${showRevenue ? `<em>${money(revenue, currency)}</em>` : ""}</button>`;
   }).join("") : emptyState("No monthly activity yet", "Projects and paid invoices will build this chart over time.");
 }
 
 function renderClients() {
+  renderCurrencyTools();
   syncSelectOptions($("#client-service-filter"), [...new Set(state.data.projects.map((project) => project.service).filter(Boolean))].sort(), "All services");
   syncSelectOptions($("#client-currency-filter"), crmCurrencies(), "Any currency");
   syncFilterFromRoute("client-search", "search");
@@ -564,11 +634,12 @@ function renderClients() {
   const currency = $("#client-currency-filter").value;
   const minPaid = Number($("#client-min-paid").value || 0);
   const crm = state.data.crm || {};
+  const reportingNote = exchangeRatesAvailable() ? `Converted to ${state.displayCurrency} for reporting` : "Shown in original currencies";
   $("#crm-metrics").innerHTML = [
     ["Active clients", crm.activeClients ?? crm.active_clients ?? 0, "With current work", "clients?filter=active"],
     ["Worked with this month", crm.clientsWorkedThisMonth ?? crm.worked_this_month ?? 0, `${crm.newClientsThisMonth || 0} new`, `clients?worked=${new Date().toISOString().slice(0, 7)}-01`],
-    ["Paid this month", moneyTotals(Object.fromEntries(crmCurrencyEntries(crm.paidThisMonth ?? crm.paid_this_month).map((item) => [item.currency, item.total])), "No payments"), "Separated by currency", "invoices?status=paid"],
-    ["Outstanding", moneyTotals(Object.fromEntries(crmCurrencyEntries(crm.outstanding).map((item) => [item.currency, item.total])), "Nothing due"), "Open and uncollectible", "clients?filter=outstanding"],
+    ["Paid this month", reportingMoney(crm.paidThisMonth ?? crm.paid_this_month, "No payments"), reportingNote, "invoices?status=paid"],
+    ["Outstanding", reportingMoney(crm.outstanding, "Nothing due"), reportingNote, "clients?filter=outstanding"],
   ].map(([label, value, note, route]) => `<button class="metric clickable-card" type="button" data-route="${route}"><span>${label}</span><strong>${escapeHtml(value)}</strong><small>${note}</small></button>`).join("");
   renderCrmChart();
   const workedMonth = parseRoute().params.get("worked");
@@ -603,7 +674,7 @@ function renderClients() {
   $("#client-table").innerHTML = clients.length ? clients.map((client) => {
     const projects = clientProjects(client.id);
     const paid = clientPaidTotals(client.id);
-    return `<tr class="clickable-table-row" tabindex="0" data-route="clients/${client.id}"><td><strong>${escapeHtml(client.name)}${demoBadge(client)}</strong><small>${escapeHtml(client.company || client.email || "No company added")}</small></td><td>${badge(client.archived_at ? "archived" : client.relationship_stage || "lead")}<small>${(client.tags || []).map((tag) => `#${escapeHtml(tag)}`).join(" ")}</small></td><td>${projects.length} project${projects.length === 1 ? "" : "s"}<small>${escapeHtml([...new Set(projects.map((project) => project.service).filter(Boolean))].join(", ") || "No work yet")}</small></td><td>${escapeHtml(moneyTotals(paid, "No payments"))}</td><td>${formatDate(client.next_follow_up_at)} ${icon("solar:arrow-right-linear")}</td></tr>`;
+    return `<tr class="clickable-table-row" tabindex="0" data-route="clients/${client.id}"><td><strong>${escapeHtml(client.name)}${demoBadge(client)}</strong><small>${escapeHtml(client.company || client.email || "No company added")}</small></td><td>${badge(client.archived_at ? "archived" : client.relationship_stage || "lead")}<small>${(client.tags || []).map((tag) => `#${escapeHtml(tag)}`).join(" ")}</small></td><td>${projects.length} project${projects.length === 1 ? "" : "s"}<small>${escapeHtml([...new Set(projects.map((project) => project.service).filter(Boolean))].join(", ") || "No work yet")}</small></td><td>${escapeHtml(reportingMoney(paid, "No payments"))}</td><td>${formatDate(client.next_follow_up_at)} ${icon("solar:arrow-right-linear")}</td></tr>`;
   }).join("") : `<tr><td colspan="5">${emptyState("No clients match", "Adjust the CRM filters or add a new client.", routeButton("clients/new", "Add client", "primary"))}</td></tr>`;
 }
 
@@ -721,11 +792,11 @@ function renderClientRoute(segments, params) {
   const tabMarkup = tabs.map((value) => `<button type="button" class="${tab === value ? "active" : ""}" ${tab === value ? 'aria-current="page"' : ""} data-route="clients/${client.id}?tab=${value}">${value === "notes" ? "Notes & follow-up" : titleCase(value)}</button>`).join("");
   let panel = "";
   if (tab === "overview") {
-    panel = `<div class="crm-profile-summary"><article><span>Lifetime paid</span><strong>${escapeHtml(moneyTotals(paid, "No payments"))}</strong></article><article><span>Outstanding</span><strong>${escapeHtml(moneyTotals(outstanding, "Nothing due"))}</strong></article><article><span>First project</span><strong>${datedProjects[0] ? formatDate(datedProjects[0].start_date || datedProjects[0].created_at) : "No projects"}</strong></article><article><span>Latest project</span><strong>${datedProjects.at(-1) ? formatDate(datedProjects.at(-1).start_date || datedProjects.at(-1).created_at) : "No projects"}</strong></article></div><div class="detail-grid"><section class="panel"><p class="eyebrow">Contact</p><h3>Client information</h3><dl class="detail-list"><div><dt>Email</dt><dd>${escapeHtml(client.email || "Not provided")}</dd></div><div><dt>Phone</dt><dd>${escapeHtml(client.phone || "Not provided")}</dd></div><div><dt>Company</dt><dd>${escapeHtml(client.company || "Not provided")}</dd></div><div><dt>Relationship</dt><dd>${badge(client.relationship_stage || "lead")}</dd></div></dl></section><section class="panel"><p class="eyebrow">Services delivered</p><h3>${projects.length} project${projects.length === 1 ? "" : "s"}</h3><div class="tag-list">${[...new Set(projects.map((project) => project.service).filter(Boolean))].map((service) => `<span class="tag">${escapeHtml(service)}</span>`).join("") || '<span class="muted">No services recorded yet.</span>'}</div></section></div>`;
+    panel = `<div class="crm-profile-summary"><article><span>Lifetime paid (${reportingCurrencyLabel()})</span><strong>${escapeHtml(reportingMoney(paid, "No payments"))}</strong></article><article><span>Outstanding (${reportingCurrencyLabel()})</span><strong>${escapeHtml(reportingMoney(outstanding, "Nothing due"))}</strong></article><article><span>First project</span><strong>${datedProjects[0] ? formatDate(datedProjects[0].start_date || datedProjects[0].created_at) : "No projects"}</strong></article><article><span>Latest project</span><strong>${datedProjects.at(-1) ? formatDate(datedProjects.at(-1).start_date || datedProjects.at(-1).created_at) : "No projects"}</strong></article></div><div class="detail-grid"><section class="panel"><p class="eyebrow">Contact</p><h3>Client information</h3><dl class="detail-list"><div><dt>Email</dt><dd>${escapeHtml(client.email || "Not provided")}</dd></div><div><dt>Phone</dt><dd>${escapeHtml(client.phone || "Not provided")}</dd></div><div><dt>Company</dt><dd>${escapeHtml(client.company || "Not provided")}</dd></div><div><dt>Relationship</dt><dd>${badge(client.relationship_stage || "lead")}</dd></div></dl></section><section class="panel"><p class="eyebrow">Services delivered</p><h3>${projects.length} project${projects.length === 1 ? "" : "s"}</h3><div class="tag-list">${[...new Set(projects.map((project) => project.service).filter(Boolean))].map((service) => `<span class="tag">${escapeHtml(service)}</span>`).join("") || '<span class="muted">No services recorded yet.</span>'}</div></section></div>`;
   } else if (tab === "projects") {
     panel = `<section class="panel"><div class="panel-head"><div><p class="eyebrow">Work history</p><h3>Projects</h3></div>${routeButton(`projects/new?client=${client.id}`, "Create project", "primary")}</div>${projects.length ? projects.map((project) => `<button class="item-row clickable-row" type="button" data-route="projects/${project.id}"><div><strong>${escapeHtml(project.title)}</strong><small>${escapeHtml(project.service || "General project")} · ${formatDate(project.start_date)} to ${formatDate(project.due_date)} · ${money(project.budget, project.currency)}</small></div>${project.archived_at ? badge("archived") : badge(project.status)}</button>`).join("") : emptyState("No projects yet", "Create a project when this client is ready.")}</section>`;
   } else if (tab === "billing") {
-    panel = `<div class="crm-profile-summary"><article><span>Paid</span><strong>${escapeHtml(moneyTotals(paid, "No payments"))}</strong></article><article><span>Outstanding</span><strong>${escapeHtml(moneyTotals(outstanding, "Nothing due"))}</strong></article></div><section class="panel"><div class="panel-head"><div><p class="eyebrow">Billing history</p><h3>Invoices</h3></div></div>${invoices.length ? invoices.map((invoice) => `<button class="item-row clickable-row" type="button" data-route="invoices/${invoice.id}"><div><strong>${escapeHtml(invoice.invoice_number)}</strong><small>${escapeHtml(invoice.projects?.title || "Project")} · ${money(invoice.total, invoice.currency)} · ${formatDate(invoice.paid_at || invoice.due_date)}</small></div>${badge(invoice.status)}</button>`).join("") : emptyState("No invoices", "Invoices linked to this client will appear here.")}</section>`;
+    panel = `<div class="crm-profile-summary"><article><span>Paid (${reportingCurrencyLabel()})</span><strong>${escapeHtml(reportingMoney(paid, "No payments"))}</strong></article><article><span>Outstanding (${reportingCurrencyLabel()})</span><strong>${escapeHtml(reportingMoney(outstanding, "Nothing due"))}</strong></article></div><section class="panel"><div class="panel-head"><div><p class="eyebrow">Billing history</p><h3>Invoices</h3></div></div>${invoices.length ? invoices.map((invoice) => `<button class="item-row clickable-row" type="button" data-route="invoices/${invoice.id}"><div><strong>${escapeHtml(invoice.invoice_number)}</strong><small>${escapeHtml(invoice.projects?.title || "Project")} · ${money(invoice.total, invoice.currency)} · ${formatDate(invoice.paid_at || invoice.due_date)}</small></div>${badge(invoice.status)}</button>`).join("") : emptyState("No invoices", "Invoices linked to this client will appear here.")}</section>`;
   } else if (tab === "activity") {
     panel = activityMarkup(activity);
   } else {
@@ -2280,7 +2351,16 @@ window.addEventListener("beforeunload", (event) => {
   ]);
   renderClients();
 }));
-$("#crm-chart-currency").addEventListener("change", renderCrmChart);
+$("#crm-display-currency").addEventListener("change", async (event) => {
+  state.displayCurrency = event.target.value;
+  localStorage.setItem("olympus-reporting-currency", state.displayCurrency);
+  renderOverview();
+  renderClients();
+  await renderRoute();
+});
+["converter-amount", "converter-from", "converter-to"].forEach((id) => {
+  $(`#${id}`).addEventListener("input", renderCurrencyTools);
+});
 ["invoice-search", "invoice-filter"].forEach((id) => $(`#${id}`).addEventListener("input", () => {
   persistListFilters("invoices", [["invoice-search", "search"], ["invoice-filter", "status"]]);
   renderInvoices();

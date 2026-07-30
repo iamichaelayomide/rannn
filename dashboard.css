@@ -304,6 +304,17 @@ dialog::backdrop { background: #000c; backdrop-filter: blur(5px); }
 .record-tabs button:hover, .record-tabs button:focus-visible { background: var(--surface-2); color: var(--text); }
 .record-tabs button.active { background: var(--gold); color: #14130e; font-weight: 700; }
 
+.currency-consolidator { display: grid; grid-template-columns: minmax(0, 1fr) minmax(420px, .9fr); gap: 28px; align-items: end; margin-bottom: 16px; }
+.currency-consolidator h2 { margin-bottom: 8px; }
+.currency-consolidator .muted { margin-bottom: 8px; }
+.currency-rate-status { margin: 0; color: #86d8b2; font-size: 11px; line-height: 1.5; }
+.currency-rate-status.rate-error { color: var(--danger); }
+.currency-controls { display: grid; gap: 14px; }
+.currency-converter { display: grid; grid-template-columns: minmax(90px, 1fr) 88px auto 88px; gap: 8px; align-items: end; }
+.currency-converter label { gap: 5px; }
+.currency-converter input, .currency-converter select { min-width: 0; padding: 10px; }
+.converter-arrow { display: grid; place-items: center; min-height: 42px; color: var(--gold); }
+.currency-converter output { grid-column: 1 / -1; min-height: 42px; display: flex; align-items: center; padding: 11px 13px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-2); color: var(--text); font-weight: 700; }
 .crm-chart-panel { margin-bottom: 16px; }
 .compact-label { display: grid; gap: 6px; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
 .compact-label select { min-width: 150px; }
@@ -405,6 +416,7 @@ dialog::backdrop { background: #000c; backdrop-filter: blur(5px); }
   .app:not(.sidebar-hidden) .menu-button { display: none; }
 }
 @media (max-width: 1050px) {
+  .currency-consolidator { grid-template-columns: 1fr; }
   .metric-grid { grid-template-columns: repeat(2, 1fr); }
   .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dashboard-grid, .portal-columns { grid-template-columns: 1fr; }
@@ -443,6 +455,9 @@ dialog::backdrop { background: #000c; backdrop-filter: blur(5px); }
   .compact-form { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
+  .currency-converter { grid-template-columns: 1fr 1fr; }
+  .currency-converter > label:first-child { grid-column: 1 / -1; }
+  .converter-arrow { display: none; }
   .metric-grid, .card-grid, .portfolio-admin-grid { grid-template-columns: 1fr; }
   .media-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .top-actions .button span { display: none; }

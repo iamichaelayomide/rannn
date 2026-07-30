@@ -23,6 +23,7 @@ const requiredFiles = [
   "api/invoice-pdf.js",
   "api/billing-document.js",
   "api/inquiries.js",
+  "api/exchange-rates.js",
 ];
 
 for (const file of requiredFiles) await access(file);
@@ -52,6 +53,7 @@ const publicIndex = await readFile("index.js", "utf8");
 const inquiryApi = await readFile("api/inquiries.js", "utf8");
 const inquiryMigration = await readFile("supabase/migrations/202607300001_unified_enquiry_engine.sql", "utf8");
 const inquiryDeliveryMigration = await readFile("supabase/migrations/202607300002_dedupe_inquiry_deliveries.sql", "utf8");
+const exchangeRatesApi = await readFile("api/exchange-rates.js", "utf8");
 
 if (/window\.(prompt|alert|confirm)\s*\(/.test(`${dashboard}\n${portal}`)) {
   throw new Error("Native browser prompts are not allowed in the admin or client portal");
@@ -61,6 +63,15 @@ if (dashboardCss.includes("var(--accent)")) {
 }
 if (!dashboardCss.includes(".billing-tabs button.active") || !dashboardCss.includes("background: var(--gold);")) {
   throw new Error("Billing tabs require a visible high-contrast selected state");
+}
+for (const required of ["api.frankfurter.dev/v2/rates", "reportingOnly", "SUPPORTED_CURRENCIES"]) {
+  if (!exchangeRatesApi.includes(required)) throw new Error(`The reporting-rate endpoint is missing ${required}`);
+}
+for (const required of ["convertCurrency", "consolidatedTotal", "olympus-reporting-currency", "crm-display-currency"]) {
+  if (!dashboard.includes(required)) throw new Error(`Currency consolidation is missing ${required}`);
+}
+for (const required of ["converter-amount", "converter-from", "converter-to", "currency-rate-status"]) {
+  if (!admin.includes(required)) throw new Error(`The built-in currency converter is missing ${required}`);
 }
 if (!publicIndex.includes("fetch('/api/inquiries'") || publicIndex.includes("/rest/v1/intake_submissions")) {
   throw new Error("Public enquiries must use the validated server endpoint rather than direct Supabase inserts");
