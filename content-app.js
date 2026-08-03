@@ -599,28 +599,114 @@
     });
 
     const proposalForm = document.getElementById('scale-proposal-form');
-    if (proposalForm) {
-      proposalForm.outerHTML = `
-        <div class="scale-enquiry-bridge">
-          <p class="text-sm text-neutral-400">Tell us what you are planning in one place. We will create a ticket before offering WhatsApp.</p>
-          <div class="flex flex-wrap gap-3 mt-5">
-            <a href="#contact?intent=event&source_cta=Event%20coverage%20section" data-page="contact" class="spa-nav-link primary-btn">Plan event coverage</a>
-            <a href="#contact?intent=project&source_cta=Project%20section" data-page="contact" class="spa-nav-link secondary-btn">Start a project</a>
-          </div>
-        </div>`;
+    if (proposalForm && !proposalForm.dataset.ticketFlowReady) {
+      proposalForm.dataset.ticketFlowReady = 'true';
+      proposalForm.dataset.idempotencyKey = makeIdempotencyKey();
+      proposalForm.addEventListener('submit', async event => {
+        event.preventDefault();
+        const statusNode = document.getElementById('proposal-form-status');
+        const proposalSubmit = document.getElementById('proposal-submit-btn');
+        const proposalSubmitText = document.getElementById('submit-btn-text');
+        const eventMode = !document.getElementById('form-block-event')?.classList.contains('hidden');
+        const name = document.getElementById('proposal-name')?.value.trim() || '';
+        const email = document.getElementById('proposal-email')?.value.trim() || '';
+        const message = document.getElementById('proposal-details')?.value.trim() || '';
+        const consent = document.getElementById('proposal-consent')?.checked === true;
+        const eventDate = document.getElementById('event-date')?.value || '';
+        const eventLocation = document.getElementById('event-location')?.value.trim() || '';
+        const projectBudget = document.getElementById('project-budget')?.value.trim() || '';
+        const projectArea = document.querySelector('#select-area-container .select-label')?.textContent.trim()
+          || document.getElementById('project-area')?.value
+          || 'Creative project';
+        const projectTimeline = document.querySelector('#select-timeline-container .select-label')?.textContent.trim()
+          || document.getElementById('project-timeline')?.value
+          || '';
+
+        if (!proposalForm.checkValidity() || !consent || message.length < 10) {
+          proposalForm.reportValidity();
+          statusNode.textContent = 'Please complete the required details and consent before sending.';
+          statusNode.classList.add('error');
+          return;
+        }
+
+        statusNode.textContent = 'Creating your enquiry ticket…';
+        statusNode.classList.remove('error', 'success');
+        proposalSubmit.disabled = true;
+        proposalSubmitText.textContent = 'Sending enquiry…';
+
+        try {
+          const values = new FormData(proposalForm);
+          const result = await window.submitInquiry({
+            site_key: 'olympus-atelier',
+            intent: eventMode ? 'event' : 'project',
+            name,
+            email,
+            phone: '',
+            preferred_channel: 'email',
+            title: eventMode ? 'Event coverage enquiry' : `${projectArea} enquiry`,
+            service: eventMode ? 'Event coverage' : projectArea,
+            budget: eventMode ? null : projectBudget,
+            preferred_date: eventMode ? eventDate : null,
+            timeline: eventMode ? null : projectTimeline,
+            location: eventMode ? eventLocation : null,
+            event_hours: eventMode ? document.getElementById('event-hours')?.value || null : null,
+            message,
+            consent,
+            source_page: window.location.hash.split('?')[0].replace(/^#/, '') || 'home',
+            source_cta: eventMode ? 'Embedded event form' : 'Embedded project form',
+            source_url: window.location.href,
+            referrer: document.referrer || null,
+            utm: Object.fromEntries([...new URL(window.location.href).searchParams.entries()].filter(([key]) => key.startsWith('utm_'))),
+            idempotency_key: proposalForm.dataset.idempotencyKey,
+            turnstile_token: values.get('cf-turnstile-response') || null,
+            website: document.getElementById('proposal-website')?.value || ''
+          });
+
+          statusNode.replaceChildren();
+          const confirmation = document.createElement('span');
+          confirmation.textContent = `Enquiry saved. Your reference is ${result.ticketNumber}. `;
+          statusNode.append(confirmation);
+          if (result.whatsappUrl) {
+            const whatsappLink = document.createElement('a');
+            whatsappLink.href = result.whatsappUrl;
+            whatsappLink.target = '_blank';
+            whatsappLink.rel = 'noopener noreferrer';
+            whatsappLink.textContent = 'Continue on WhatsApp';
+            statusNode.append(whatsappLink);
+          }
+          statusNode.classList.add('success');
+          proposalSubmitText.textContent = 'Enquiry sent';
+          proposalForm.dataset.idempotencyKey = makeIdempotencyKey();
+        } catch (error) {
+          statusNode.textContent = error.message || 'We could not create your ticket. Your details are still here—please try again.';
+          statusNode.classList.add('error');
+          proposalSubmit.disabled = false;
+          proposalSubmitText.textContent = eventMode ? 'Book Event Call' : 'Start Project';
+        }
+      });
     }
 
     const loadTurnstile = async () => {
       const container = document.getElementById('turnstile-container');
-      if (!container) return;
+      const scaleContainer = document.getElementById('scale-turnstile-container');
+      if (!container && !scaleContainer) return;
       const config = await fetch('/api/config', { cache: 'no-store' }).then(response => response.json()).catch(() => ({}));
       if (!config.turnstileSiteKey) return;
       const renderWidget = () => {
-        if (!window.turnstile || turnstileWidgetId !== null) return;
-        turnstileWidgetId = window.turnstile.render(container, {
-          sitekey: config.turnstileSiteKey,
-          theme: 'dark'
-        });
+        if (!window.turnstile) return;
+        if (container && turnstileWidgetId === null) {
+          turnstileWidgetId = window.turnstile.render(container, {
+            sitekey: config.turnstileSiteKey,
+            theme: 'dark'
+          });
+        }
+        if (scaleContainer && scaleContainer.dataset.turnstileRendered !== 'true') {
+          window.turnstile.render(scaleContainer, {
+            sitekey: config.turnstileSiteKey,
+            theme: 'dark'
+          });
+          scaleContainer.dataset.turnstileRendered = 'true';
+        }
       };
       if (window.turnstile) return renderWidget();
       const script = document.createElement('script');

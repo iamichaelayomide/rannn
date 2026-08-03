@@ -862,6 +862,7 @@ const validateScaleForm = () => {
   const nameVal = document.getElementById('proposal-name').value.trim();
   const emailVal = document.getElementById('proposal-email').value.trim();
   const detailsVal = document.getElementById('proposal-details').value.trim();
+  const consentGiven = document.getElementById('proposal-consent')?.checked === true;
 
   let isPathValid = false;
 
@@ -874,7 +875,7 @@ const validateScaleForm = () => {
     isPathValid = (budgetVal !== '');
   }
 
-  const isFormValid = (nameVal !== '' && emailVal !== '' && detailsVal !== '' && isPathValid);
+  const isFormValid = (nameVal !== '' && emailVal !== '' && detailsVal !== '' && isPathValid && consentGiven);
 
   if (isFormValid) {
     submitBtn.removeAttribute('disabled');
@@ -895,7 +896,8 @@ const setupFormValidationListeners = () => {
     'proposal-details',
     'event-date',
     'event-location',
-    'project-budget'
+    'project-budget',
+    'proposal-consent'
   ];
 
   inputs.forEach(id => {

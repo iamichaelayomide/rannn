@@ -1001,11 +1001,18 @@
                   <textarea id="proposal-details" rows="4" class="w-full glass-input px-4 py-3 rounded-xl text-sm placeholder-neutral-600" placeholder="Tell us about your goals and current challenges..." required></textarea>
                 </div>
 
+                <label class="enquiry-consent">
+                  <input type="checkbox" id="proposal-consent" required>
+                  <span>I agree that Olympus Atelier may contact me about this enquiry.</span>
+                </label>
+                <input type="text" id="proposal-website" class="enquiry-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <div id="scale-turnstile-container" class="flex justify-center"></div>
+
                 <button type="submit" id="proposal-submit-btn" class="w-full bg-[#f3f4f6] text-[#050505] font-semibold py-3.5 rounded-xl hover:bg-white active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 opacity-40 cursor-not-allowed" disabled>
                   <span id="submit-btn-text">Book Call</span>
                   <iconify-icon icon="solar:paper-plane-bold" class="text-sm"></iconify-icon>
                 </button>
-                <p id="proposal-form-status" class="text-xs text-neutral-400 text-center" role="status"></p>
+                <div id="proposal-form-status" class="scale-form-status text-xs text-neutral-400 text-center" role="status" aria-live="polite"></div>
               </form>
             </div>
           </div>

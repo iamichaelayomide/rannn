@@ -82,6 +82,15 @@ for (const required of ["unified-enquiry-form", "enquiry-ticket-number", "enquir
 if (contentApp.includes("initWhatsAppForms();")) {
   throw new Error("Legacy forms must not auto-open WhatsApp or submit independently");
 }
+if (contentApp.includes("proposalForm.outerHTML") || contentApp.includes("scale-enquiry-bridge")) {
+  throw new Error("The embedded event/project form must not be replaced by a passive CTA bridge");
+}
+for (const required of ["scale-proposal-form", "proposal-consent", "scale-turnstile-container"]) {
+  if (!(await readFile("index.html", "utf8")).includes(required)) throw new Error(`The embedded enquiry form is missing ${required}`);
+}
+for (const required of ["Embedded event form", "proposalForm.dataset.idempotencyKey", "window.submitInquiry"]) {
+  if (!contentApp.includes(required)) throw new Error(`The embedded enquiry ticket flow is missing ${required}`);
+}
 for (const required of ["verifyTurnstile", "idempotency_key", "create_public_inquiry", "acknowledgementState"]) {
   if (!inquiryApi.includes(required)) throw new Error(`The enquiry API is missing ${required}`);
 }
