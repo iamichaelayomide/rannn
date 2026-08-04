@@ -23,6 +23,22 @@ const mergePublishedContent = (published) => {
   const hasManagedServices = Array.isArray(published?.services);
   const hasManagedPortfolio = Array.isArray(published?.portfolioItems);
   const hasManagedGlobal = Boolean(pages.global?.content);
+  const managedTeam = hasManagedGlobal && Array.isArray(globalContent.team)
+    ? globalContent.team
+    : fallback.teamMembers;
+  const akinola = fallback.teamMembers.find((member) => member.name === "Akinola Okikiola");
+  const teamMembers = managedTeam.map((member) => {
+    if (!/^john\b/i.test(member.name || "")) return member;
+    return {
+      ...member,
+      qualification: /r\.MRTB/i.test(member.qualification || "")
+        ? member.qualification
+        : [member.qualification, "r.MRTB"].filter(Boolean).join(" · "),
+    };
+  });
+  if (akinola && !teamMembers.some((member) => member.name === akinola.name)) {
+    teamMembers.push(akinola);
+  }
 
   return {
     ...fallback,
@@ -52,7 +68,7 @@ const mergePublishedContent = (published) => {
     portfolioItems: hasManagedPortfolio
       ? managedPortfolio.map(toPortfolioItem)
       : fallback.portfolioItems,
-    teamMembers: hasManagedGlobal && Array.isArray(globalContent.team) ? globalContent.team : fallback.teamMembers,
+    teamMembers,
     socialProof: {
       ...fallback.socialProof,
       testimonials: hasManagedGlobal && Array.isArray(globalContent.testimonials)

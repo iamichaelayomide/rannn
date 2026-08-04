@@ -36,22 +36,186 @@
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
+  const renderWeddingPackages = () => {
+    const existing = document.getElementById('wedding-packages-modal');
+    if (existing) return existing;
+
+    const modal = document.createElement('div');
+    modal.id = 'wedding-packages-modal';
+    modal.className = 'wedding-packages-modal hidden';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'wedding-packages-title');
+    modal.innerHTML = `
+      <div class="wedding-packages-backdrop" data-wedding-close></div>
+      <div class="wedding-packages-panel" role="document">
+        <button type="button" class="wedding-packages-close" data-wedding-close aria-label="Close wedding packages">
+          <iconify-icon icon="solar:close-circle-linear"></iconify-icon>
+        </button>
+        <span class="wedding-packages-eyebrow">Wedding videography</span>
+        <h2 id="wedding-packages-title">Choose your coverage.</h2>
+        <p class="wedding-packages-intro">Three clear packages for capturing the full day, the moments between, and a polished final film.</p>
+        <div class="wedding-packages-grid">
+          ${(content.weddingPackages || []).map((item, index) => `
+            <article class="wedding-package${index === 1 ? ' wedding-package-featured' : ''}">
+              ${index === 1 ? '<span class="wedding-package-badge">Most popular</span>' : ''}
+              <span class="wedding-package-number">0${index + 1}</span>
+              <h3>${escapeHtml(item.name)}</h3>
+              <strong>${escapeHtml(item.price)}</strong>
+              <ul>
+                ${item.features.map(feature => `<li><iconify-icon icon="solar:check-circle-bold"></iconify-icon><span>${escapeHtml(feature)}</span></li>`).join('')}
+              </ul>
+              <a href="#contact?intent=project&service=${encodeURIComponent(`${item.name} Wedding Package`)}&source_cta=Wedding%20packages" data-page="contact" class="spa-nav-link wedding-package-cta">Choose ${escapeHtml(item.name)}</a>
+            </article>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    document.body.append(modal);
+
+    let previousFocus = null;
+    const close = () => {
+      modal.classList.add('hidden');
+      document.documentElement.style.overflow = '';
+      previousFocus?.focus?.();
+    };
+    const open = () => {
+      previousFocus = document.activeElement;
+      modal.classList.remove('hidden');
+      document.documentElement.style.overflow = 'hidden';
+      modal.querySelector('.wedding-packages-close')?.focus();
+    };
+    modal.querySelectorAll('[data-wedding-close]').forEach(button => button.addEventListener('click', close));
+    modal.addEventListener('keydown', event => {
+      if (event.key === 'Escape') close();
+      if (event.key !== 'Tab') return;
+      const focusable = [...modal.querySelectorAll('button, a[href]')];
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+    modal.querySelectorAll('.spa-nav-link').forEach(link => link.addEventListener('click', close));
+    modal.openWeddingPackages = open;
+    return modal;
+  };
+
   const renderServices = () => {
     const grid = document.getElementById('service-grid');
     if (!grid) return;
-    grid.innerHTML = content.services.map((service, index) => `
-      <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[310px]">
-        <div class="service-card-icon"><iconify-icon icon="${iconNames[index % iconNames.length]}"></iconify-icon></div>
-        <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400 mt-8">Service ${String(index + 1).padStart(2, '0')}</span>
-        <h3 class="text-2xl font-bold text-white mt-3">${escapeHtml(service.title)}</h3>
-        <p class="text-sm text-neutral-400 leading-relaxed mt-4">${escapeHtml(service.summary)}</p>
-        ${service.description ? `<p class="text-xs text-neutral-500 leading-relaxed mt-3">${escapeHtml(service.description)}</p>` : ''}
-        <ul class="mt-6 space-y-2 text-xs text-neutral-300">
-          ${(service.deliverables || deliverables[index] || []).map(item => `<li class="flex items-center gap-2"><span class="text-amber-400">✓</span>${escapeHtml(item)}</li>`).join('')}
-        </ul>
-        <a href="#contact?intent=project&service=${encodeURIComponent(service.title)}&source_cta=Service%20card" data-page="contact" class="spa-nav-link text-xs font-bold uppercase tracking-wider text-amber-400 mt-auto pt-7">Brief this service →</a>
-      </article>
-    `).join('');
+
+    const items = [...new Map(content.portfolioItems.map(item => [item.id, item])).values()];
+    const serviceDetails = new Map(content.services.map(service => [
+      service.id,
+      service.description || service.summary
+    ]));
+    const shelves = [
+      {
+        id: 'events',
+        title: 'Events & Celebrations',
+        description: 'Weddings, conferences, red carpets, celebrations, and the people who make them memorable.',
+        categories: ['events'],
+        wedding: true
+      },
+      {
+        id: 'film',
+        title: 'Film & Interviews',
+        description: 'Corporate stories, conversations, and cinematic edits shaped for attention.',
+        categories: ['film']
+      },
+      {
+        id: 'graphics',
+        title: 'Graphic Design',
+        description: 'Campaign identities, posters, social systems, and event worlds.',
+        categories: ['graphics']
+      },
+      {
+        id: 'editorial',
+        title: 'Editorial & Magazines',
+        description: 'Long-form publications, credentials, and print-ready visual systems.',
+        categories: ['editorial']
+      },
+      {
+        id: 'motion',
+        title: 'Motion Design',
+        description: 'Animated brand moments, launch visuals, and screen-ready movement.',
+        categories: ['motion']
+      }
+    ];
+
+    grid.innerHTML = shelves.map(shelf => {
+      const matches = items.filter(item => shelf.categories.includes(item.category));
+      const shelfDescription = serviceDetails.get(shelf.id) || shelf.description;
+      if (!matches.length && !shelf.wedding) return '';
+      return `
+        <section class="service-shelf" aria-labelledby="service-shelf-${escapeHtml(shelf.id)}">
+          <div class="service-shelf-header">
+            <div>
+              <span class="service-shelf-kicker">Olympus collection</span>
+              <h3 id="service-shelf-${escapeHtml(shelf.id)}">${escapeHtml(shelf.title)}</h3>
+              <p>${escapeHtml(shelfDescription)}</p>
+            </div>
+            <div class="service-shelf-controls" aria-label="${escapeHtml(shelf.title)} controls">
+              <button type="button" data-shelf-direction="-1" aria-label="Scroll ${escapeHtml(shelf.title)} left"><iconify-icon icon="solar:alt-arrow-left-linear"></iconify-icon></button>
+              <button type="button" data-shelf-direction="1" aria-label="Scroll ${escapeHtml(shelf.title)} right"><iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon></button>
+            </div>
+          </div>
+          <div class="service-shelf-track" tabindex="0" aria-label="${escapeHtml(shelf.title)} portfolio">
+            ${shelf.wedding ? `
+              <button type="button" class="service-title-card service-title-card-wedding" data-wedding-packages aria-label="View wedding videography packages">
+                <span class="service-title-card-noise"></span>
+                <span class="service-title-card-copy">
+                  <small>Wedding videography</small>
+                  <strong>Weddings</strong>
+                  <span>View packages <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon></span>
+                </span>
+              </button>
+            ` : ''}
+            ${matches.map(item => `
+              <button type="button" class="service-title-card" data-service-item-id="${escapeHtml(item.id)}" aria-label="View ${escapeHtml(item.title)}">
+                <img src="${escapeHtml(item.thumbnailSrc)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${fallbackImage}'">
+                <span class="service-title-card-shade"></span>
+                <span class="service-title-card-type"><iconify-icon icon="${item.mediaType === 'video' ? 'solar:play-circle-bold' : item.mediaType === 'pdf' ? 'solar:document-bold' : 'solar:gallery-bold'}"></iconify-icon>${escapeHtml(item.mediaType)}</span>
+                <span class="service-title-card-copy">
+                  <small>${escapeHtml(item.collection)} · ${escapeHtml(item.year)}</small>
+                  <strong>${escapeHtml(item.title)}</strong>
+                </span>
+              </button>
+            `).join('')}
+          </div>
+        </section>
+      `;
+    }).join('');
+
+    const weddingModal = renderWeddingPackages();
+    grid.querySelectorAll('[data-service-item-id]').forEach(card => card.addEventListener('click', () => {
+      window.openOlympusPortfolioItem?.(card.dataset.serviceItemId);
+    }));
+    grid.querySelectorAll('[data-wedding-packages]').forEach(card => card.addEventListener('click', () => {
+      weddingModal.openWeddingPackages?.();
+    }));
+    grid.querySelectorAll('.service-shelf').forEach(shelf => {
+      const track = shelf.querySelector('.service-shelf-track');
+      shelf.querySelectorAll('[data-shelf-direction]').forEach(button => button.addEventListener('click', () => {
+        track.scrollBy({
+          left: Number(button.dataset.shelfDirection) * Math.max(track.clientWidth * 0.82, 320),
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+        });
+      }));
+      track.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+        event.preventDefault();
+        track.scrollBy({
+          left: (event.key === 'ArrowRight' ? 1 : -1) * Math.max(track.clientWidth * 0.82, 320),
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+        });
+      });
+    });
   };
 
   const renderTeam = () => {
@@ -66,6 +230,7 @@
           <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400">${index === 0 ? 'Creative leadership' : 'Atelier team'}</span>
           <h3 class="text-2xl font-bold text-white mt-2">${escapeHtml(member.name)}</h3>
           <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400 mt-1">${escapeHtml(member.role)}</p>
+          ${member.qualification ? `<p class="text-[11px] font-mono uppercase tracking-wider text-amber-400/80 mt-2">${escapeHtml(member.qualification)}</p>` : ''}
           <p class="text-sm text-neutral-400 leading-relaxed mt-4">${escapeHtml(member.bio)}</p>
         </div>
       </article>

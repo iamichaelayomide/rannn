@@ -45,10 +45,45 @@ window.OLYMPUS_CONTENT = {
       "summary": "Responsive portfolio, campaign, and business websites designed to feel distinctive and perform reliably."
     }
   ],
+  "weddingPackages": [
+    {
+      "name": "Silver",
+      "price": "₦250,000",
+      "features": [
+        "Full-day wedding videography coverage",
+        "One videographer",
+        "Highlight and full video"
+      ]
+    },
+    {
+      "name": "Gold",
+      "price": "₦400,000",
+      "features": [
+        "Full-day wedding videography coverage",
+        "Two videographers",
+        "Highlight and full video",
+        "Online drive for viewing and sharing",
+        "Regular flash drive"
+      ]
+    },
+    {
+      "name": "Platinum",
+      "price": "₦800,000",
+      "features": [
+        "Full-day wedding videography coverage",
+        "Two videographers",
+        "Highlight and full video",
+        "Online drive for viewing and sharing",
+        "Portrait reel and landscape highlight",
+        "Customized flash drive"
+      ]
+    }
+  ],
   "teamMembers": [
     {
-      "name": "John",
+      "name": "John Ihua",
       "role": "Creative Lead",
+      "qualification": "B.PT (In view) · r.MRTB",
       "image": "assets/team/john.webp",
       "bio": "John leads Olympus Atelier's creative direction, shaping cohesive concepts across film, photography, design, and editorial production."
     },
@@ -69,6 +104,12 @@ window.OLYMPUS_CONTENT = {
       "role": "Website Designer",
       "image": "assets/team/ayomide.webp",
       "bio": "Designs and develops responsive digital experiences that extend Olympus Atelier's visual direction onto the web."
+    },
+    {
+      "name": "Akinola Okikiola",
+      "role": "Architecture (in View) · Graphics Designer",
+      "image": "assets/team/akinola-okikiola.jpeg",
+      "bio": "Brings architectural thinking and graphic design together to shape considered visual systems, layouts, and creative concepts."
     }
   ],
   "socialProof": {
