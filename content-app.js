@@ -19,6 +19,12 @@
     ['Conference coverage', 'Event highlight films', 'People & atmosphere'],
     ['Responsive interface design', 'Frontend development', 'Performance & launch support']
   ];
+  const serviceChoices = [...new Map([
+    { id: 'videography-editing', title: 'Videography/Video Editing' },
+    { id: 'video-editing', title: 'Video Editing Alone' },
+    { id: 'photography', title: 'Photography' },
+    ...content.services.filter(service => service.id !== 'photo-film')
+  ].map(service => [service.title.toLowerCase(), service])).values()];
 
   const escapeHtml = value => String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -116,17 +122,29 @@
     ]));
     const shelves = [
       {
-        id: 'events',
-        title: 'Events & Celebrations',
-        description: 'Weddings, conferences, red carpets, celebrations, and the people who make them memorable.',
-        categories: ['events'],
+        id: 'videography-editing',
+        title: 'Videography/Video Editing',
+        description: 'Weddings, corporate events, red carpets, podcasts, interviews, and complete films from capture through final edit.',
+        categories: ['events', 'film'],
         wedding: true
       },
       {
-        id: 'film',
-        title: 'Film & Interviews',
-        description: 'Corporate stories, conversations, and cinematic edits shaped for attention.',
-        categories: ['film']
+        id: 'video-editing',
+        title: 'Video Editing Alone',
+        description: 'Bring your existing footage. Olympus shapes the story, rhythm, colour, sound, and platform-ready final exports.',
+        categories: ['motion']
+      },
+      {
+        id: 'photography',
+        title: 'Photography',
+        description: 'Portraits, events, campaigns, products, and editorial stills with a polished, people-first visual direction.',
+        categories: [],
+        serviceCard: {
+          eyebrow: 'Portraits · Events · Campaigns',
+          title: 'Book a photography session',
+          service: 'Photography',
+          image: 'assets/media/prefooter-stage.webp'
+        }
       },
       {
         id: 'graphics',
@@ -139,19 +157,13 @@
         title: 'Editorial & Magazines',
         description: 'Long-form publications, credentials, and print-ready visual systems.',
         categories: ['editorial']
-      },
-      {
-        id: 'motion',
-        title: 'Motion Design',
-        description: 'Animated brand moments, launch visuals, and screen-ready movement.',
-        categories: ['motion']
       }
     ];
 
     grid.innerHTML = shelves.map(shelf => {
       const matches = items.filter(item => shelf.categories.includes(item.category));
       const shelfDescription = serviceDetails.get(shelf.id) || shelf.description;
-      if (!matches.length && !shelf.wedding) return '';
+      if (!matches.length && !shelf.wedding && !shelf.serviceCard) return '';
       return `
         <section class="service-shelf" aria-labelledby="service-shelf-${escapeHtml(shelf.id)}">
           <div class="service-shelf-header">
@@ -166,6 +178,17 @@
             </div>
           </div>
           <div class="service-shelf-track" tabindex="0" aria-label="${escapeHtml(shelf.title)} portfolio">
+            ${shelf.serviceCard ? `
+              <a href="#contact?intent=project&service=${encodeURIComponent(shelf.serviceCard.service)}&source_cta=Photography%20service" data-page="contact" class="spa-nav-link service-title-card service-title-card-booking" aria-label="${escapeHtml(shelf.serviceCard.title)}">
+                <img src="${escapeHtml(shelf.serviceCard.image)}" alt="" loading="lazy" decoding="async">
+                <span class="service-title-card-shade"></span>
+                <span class="service-title-card-copy">
+                  <small>${escapeHtml(shelf.serviceCard.eyebrow)}</small>
+                  <strong>${escapeHtml(shelf.serviceCard.title)}</strong>
+                  <span>Start a brief <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon></span>
+                </span>
+              </a>
+            ` : ''}
             ${shelf.wedding ? `
               <button type="button" class="service-title-card service-title-card-wedding" data-wedding-packages aria-label="View wedding videography packages">
                 <span class="service-title-card-noise"></span>
@@ -309,12 +332,14 @@
 
   const hydrateContactDetails = () => {
     const contact = content.pages?.contact?.content?.contact || {};
+    const callDisplay = content.siteConfig.callDisplay || contact.phone || '';
+    const callNumber = content.siteConfig.callNumber || callDisplay;
     const details = [
       contact.email || content.siteConfig.email
         ? ['solar:letter-linear', 'Email', contact.email || content.siteConfig.email, `mailto:${contact.email || content.siteConfig.email}`]
         : null,
-      contact.phone || content.siteConfig.whatsappDisplay
-        ? ['solar:phone-linear', 'Phone', contact.phone || content.siteConfig.whatsappDisplay, `tel:${String(contact.phone || content.siteConfig.whatsappDisplay).replace(/[^\d+]/g, '')}`]
+      callDisplay
+        ? ['solar:phone-linear', 'Call', callDisplay, `tel:${String(callNumber).replace(/[^\d+]/g, '')}`]
         : null,
       contact.location || content.siteConfig.location
         ? ['solar:map-point-linear', 'Location', contact.location || content.siteConfig.location, '']
@@ -597,7 +622,7 @@
   const initWhatsAppForms = () => {
     const serviceSelect = document.getElementById('booking-service');
     if (serviceSelect) {
-      serviceSelect.insertAdjacentHTML('beforeend', content.services.map(service => `<option value="${escapeHtml(service.title)}">${escapeHtml(service.title)}</option>`).join(''));
+      serviceSelect.insertAdjacentHTML('beforeend', serviceChoices.map(service => `<option value="${escapeHtml(service.title)}">${escapeHtml(service.title)}</option>`).join(''));
     }
 
     const persistIntake = (payload, statusId) => {
@@ -724,7 +749,7 @@
     if (serviceSelect) {
       serviceSelect.insertAdjacentHTML(
         'beforeend',
-        content.services.map(service => `<option value="${escapeHtml(service.title)}">${escapeHtml(service.title)}</option>`).join('')
+        serviceChoices.map(service => `<option value="${escapeHtml(service.title)}">${escapeHtml(service.title)}</option>`).join('')
       );
     }
 
@@ -968,7 +993,7 @@
     if (intro && footerIntro) intro.textContent = footerIntro;
     const expertiseHeading = [...footer.querySelectorAll('h5')].find(item => item.textContent.trim() === 'Expertise');
     const expertiseList = expertiseHeading?.nextElementSibling;
-    if (expertiseList) expertiseList.innerHTML = content.services.map(service => `<li><a href="#services" class="hover:text-white transition-colors spa-nav-link" data-page="services">${escapeHtml(service.title)}</a></li>`).join('');
+    if (expertiseList) expertiseList.innerHTML = serviceChoices.map(service => `<li><a href="#services" class="hover:text-white transition-colors spa-nav-link" data-page="services">${escapeHtml(service.title)}</a></li>`).join('');
 
     document.querySelectorAll('.site-logo-link').forEach(link => {
       link.setAttribute('aria-label', `${content.siteConfig.brandName} home`);
@@ -988,7 +1013,10 @@
       const whatsappLink = content.siteConfig.whatsappNumber && content.siteConfig.whatsappDisplay
         ? `<a href="#contact?intent=general&preferred_channel=whatsapp&source_cta=Footer%20WhatsApp" data-page="contact" class="spa-nav-link inline-flex items-center gap-2 rounded-full border border-amber-400/30 px-4 py-2 text-xs font-bold text-amber-400 hover:bg-amber-400/10"><iconify-icon icon="logos:whatsapp-icon"></iconify-icon>${escapeHtml(content.siteConfig.whatsappDisplay)}</a>`
         : '';
-      connectRow.innerHTML = `${whatsappLink}${content.siteConfig.email ? `<a href="mailto:${escapeHtml(content.siteConfig.email)}" class="text-xs text-neutral-400 hover:text-white">${escapeHtml(content.siteConfig.email)}</a>` : ''}${content.siteConfig.location ? `<span class="text-xs text-neutral-500">${escapeHtml(content.siteConfig.location)}</span>` : ''}${socialLinks ? `<span class="flex gap-2">${socialLinks}</span>` : ''}`;
+      const callLink = content.siteConfig.callNumber && content.siteConfig.callDisplay
+        ? `<a href="tel:${escapeHtml(content.siteConfig.callNumber)}" class="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs font-bold text-neutral-300 hover:border-amber-400/30 hover:text-amber-400"><iconify-icon icon="solar:phone-calling-linear"></iconify-icon>${escapeHtml(content.siteConfig.callDisplay)}</a>`
+        : '';
+      connectRow.innerHTML = `${whatsappLink}${callLink}${content.siteConfig.email ? `<a href="mailto:${escapeHtml(content.siteConfig.email)}" class="text-xs text-neutral-400 hover:text-white">${escapeHtml(content.siteConfig.email)}</a>` : ''}${content.siteConfig.location ? `<span class="text-xs text-neutral-500">${escapeHtml(content.siteConfig.location)}</span>` : ''}${socialLinks ? `<span class="flex gap-2">${socialLinks}</span>` : ''}`;
     }
     const copyright = connectHeading?.parentElement?.querySelector('p');
     if (copyright) copyright.textContent = `© ${new Date().getFullYear()} ${content.siteConfig.brandName}. All rights reserved.`;

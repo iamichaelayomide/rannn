@@ -3,6 +3,8 @@ window.OLYMPUS_CONTENT = {
     "brandName": "Olympus Atelier",
     "whatsappNumber": "2348087172313",
     "whatsappDisplay": "+234 808 717 2313",
+    "callNumber": "2347026456357",
+    "callDisplay": "07026456357",
     "email": null,
     "location": null,
     "socials": {
