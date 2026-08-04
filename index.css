@@ -1376,7 +1376,39 @@ html.lenis {
 .team-grid {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .team-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .team-grid .team-card {
+    grid-column: span 2;
+  }
+
+  .team-grid .team-card:last-child:nth-child(odd) {
+    grid-column: 2 / span 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .team-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .team-grid .team-card {
+    grid-column: span 2;
+  }
+
+  .team-grid .team-card:nth-last-child(2):nth-child(3n + 1) {
+    grid-column: 2 / span 2;
+  }
+
+  .team-grid .team-card:last-child:nth-child(odd) {
+    grid-column: 4 / span 2;
+  }
 }
 
 /* Wedding package viewer */

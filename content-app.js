@@ -224,7 +224,7 @@
     grid.innerHTML = content.teamMembers.map((member, index) => `
       <article class="team-card glass-card rounded-3xl overflow-hidden border border-white/10">
         <div class="aspect-[4/5] overflow-hidden bg-neutral-900">
-          <img src="${escapeHtml(member.image)}" alt="${escapeHtml(member.name)} — ${escapeHtml(member.role)} at Olympus Atelier" class="w-full h-full object-cover" loading="lazy" decoding="async">
+          <img src="${escapeHtml(member.image)}" alt="${escapeHtml(member.name)} — ${escapeHtml(member.role)} at Olympus Atelier" class="w-full h-full object-cover" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/team/photographer.webp'">
         </div>
         <div class="p-6">
           <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400">${index === 0 ? 'Creative leadership' : 'Atelier team'}</span>
