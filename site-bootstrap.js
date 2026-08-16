@@ -26,7 +26,7 @@ const mergePublishedContent = (published) => {
   const managedTeam = hasManagedGlobal && Array.isArray(globalContent.team)
     ? globalContent.team
     : fallback.teamMembers;
-  const akinola = fallback.teamMembers.find((member) => member.name === "Akinola Okikiola");
+  const akinola = fallback.teamMembers.find((member) => (member.name || "").includes("Akinola"));
   const teamMembers = managedTeam.map((member) => {
     if (!/^john\b/i.test(member.name || "")) return member;
     return {

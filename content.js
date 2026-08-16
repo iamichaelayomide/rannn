@@ -90,6 +90,18 @@ window.OLYMPUS_CONTENT = {
       "bio": "John leads Olympus Atelier's creative direction, shaping cohesive concepts across film, photography, design, and editorial production."
     },
     {
+      "name": "Akinola Okikiola (Kojo)",
+      "role": "Architecture (in View) · Graphics Designer",
+      "image": "assets/team/akinola-okikiola.jpeg",
+      "bio": "Brings architectural thinking and graphic design together to shape considered visual systems, layouts, and creative concepts."
+    },
+    {
+      "name": "Ayomide",
+      "role": "Website Designer",
+      "image": "assets/team/ayomide.webp",
+      "bio": "Designs and develops responsive digital experiences that extend Olympus Atelier's visual direction onto the web."
+    },
+    {
       "name": "Name coming soon",
       "role": "Photographer",
       "image": "assets/team/photographer.webp",
@@ -100,18 +112,6 @@ window.OLYMPUS_CONTENT = {
       "role": "Cinematographer / Editor / Visual Designer",
       "image": "assets/team/cinematographer-editor.webp",
       "bio": "Builds visual narratives from camera through post-production, motion, and final design delivery."
-    },
-    {
-      "name": "Ayomide",
-      "role": "Website Designer",
-      "image": "assets/team/ayomide.webp",
-      "bio": "Designs and develops responsive digital experiences that extend Olympus Atelier's visual direction onto the web."
-    },
-    {
-      "name": "Akinola Okikiola",
-      "role": "Architecture (in View) · Graphics Designer",
-      "image": "assets/team/akinola-okikiola.jpeg",
-      "bio": "Brings architectural thinking and graphic design together to shape considered visual systems, layouts, and creative concepts."
     }
   ],
   "socialProof": {
