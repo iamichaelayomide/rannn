@@ -110,12 +110,6 @@ window.OLYMPUS_CONTENT = {
             "qualification": "B.PT (In view)"
           },
           {
-            "bio": "Brings architectural thinking and graphic design together to shape considered visual systems, layouts, and creative concepts.",
-            "name": "Akinola Okikiola (Kojo)",
-            "role": "Architecture (in View) · Graphics Designer",
-            "image": "assets/team/akinola-okikiola.jpeg"
-          },
-          {
             "bio": "Builds visual narratives from camera through post-production, motion, and final design delivery.",
             "name": "Felix Divine",
             "role": "Cinematographer / Editor / Visual Designer",
@@ -142,6 +136,12 @@ window.OLYMPUS_CONTENT = {
             "role": "Creative Executive Assistant",
             "image": "assets/team/ekhosuehi-mabel.jpeg",
             "qualification": "BSc. Sociology and Anthropology"
+          },
+          {
+            "bio": "Brings architectural thinking and graphic design together to shape considered visual systems, layouts, and creative concepts.",
+            "name": "Akinola Okikiola",
+            "role": "Architecture (in View) · Graphics Designer",
+            "image": "assets/team/akinola-okikiola.jpeg"
           },
           {
             "bio": "",
@@ -318,12 +318,6 @@ window.OLYMPUS_CONTENT = {
       "role": "Creative Lead",
       "image": "assets/team/john.webp",
       "qualification": "B.PT (In view)"
-    },
-    {
-      "bio": "Brings architectural thinking and graphic design together to shape considered visual systems, layouts, and creative concepts.",
-      "name": "Akinola Okikiola (Kojo)",
-      "role": "Architecture (in View) · Graphics Designer",
-      "image": "assets/team/akinola-okikiola.jpeg"
     },
     {
       "bio": "Builds visual narratives from camera through post-production, motion, and final design delivery.",

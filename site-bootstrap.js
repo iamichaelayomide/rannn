@@ -26,9 +26,10 @@ const mergePublishedContent = (published) => {
   const managedTeam = hasManagedGlobal && Array.isArray(globalContent.team)
     ? globalContent.team
     : fallback.teamMembers;
-  const akinola = fallback.teamMembers.find((member) => (member.name || "").includes("Akinola"));
-  const filteredTeam = managedTeam.filter((member) => member.name !== "Kojo" && member.name !== "Name coming soon");
-  const teamMembers = filteredTeam.map((member) => {
+  const teamMembers = managedTeam.filter((member) => {
+    const name = (member.name || "").toLowerCase();
+    return !name.includes("kojo") && !name.includes("akinola") && !name.includes("coming soon");
+  }).map((member) => {
     if (!/^john\b/i.test(member.name || "")) return member;
     return {
       ...member,
@@ -37,9 +38,6 @@ const mergePublishedContent = (published) => {
         : [member.qualification, "r.MRTB"].filter(Boolean).join(" · "),
     };
   });
-  if (akinola && !teamMembers.some((member) => (member.name || "").includes("Akinola"))) {
-    teamMembers.splice(1, 0, akinola);
-  }
 
   return {
     ...fallback,

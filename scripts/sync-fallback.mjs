@@ -19,20 +19,10 @@ async function syncFallback() {
     description: s.description || ""
   }));
 
-  // Ensure Kojo/Akinola Okikiola position #2 ordering as requested by user
-  let teamMembers = globalContent.team || [];
-  
-  // Format team array cleanly
-  const akinolaIndex = teamMembers.findIndex((m) => (m.name || "").includes("Akinola"));
-  if (akinolaIndex > -1) {
-    const akinola = teamMembers.splice(akinolaIndex, 1)[0];
-    akinola.name = "Akinola Okikiola (Kojo)";
-    akinola.image = "assets/team/akinola-okikiola.jpeg";
-    teamMembers.splice(1, 0, akinola); // Position #2
-  }
-
-  // Remove redundant empty/placeholder team entries
-  teamMembers = teamMembers.filter((m) => (m.name && m.name !== "Kojo") || m.image);
+  let teamMembers = (globalContent.team || []).filter((member) => {
+    const name = (member.name || "").toLowerCase();
+    return !name.includes("kojo") && !name.includes("akinola") && !name.includes("coming soon");
+  });
 
   const portfolioItems = (supabaseData.portfolioItems || []).map((item) => ({
     id: item.legacy_id || item.id,
