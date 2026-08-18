@@ -169,8 +169,9 @@ function showListView(view) {
   state.route = [view];
   $$(".view").forEach((panel) => panel.classList.toggle("active", panel.dataset.viewPanel === view));
   $$(".nav-item").forEach((button) => button.classList.toggle("active", button.dataset.view === view));
-  $("#view-title").textContent = ({ invoices: "Billing", pages: "Pages", media: "Media library" })[view] || titleCase(view);
+  $("#view-title").textContent = ({ invoices: "Billing", pages: "Pages", media: "Media library", calendar: "Calendar" })[view] || titleCase(view);
   $("#view-eyebrow").textContent = ["pages", "portfolio", "services", "media", "team"].includes(view) ? "Administration" : "Workspace";
+  if (view === "calendar") renderCalendar();
   renderTopAction();
   closeSidebar();
 }
@@ -1385,7 +1386,7 @@ async function renderRoute() {
   const { segments, params } = parseRoute();
   state.route = segments;
   const section = segments[0] || "overview";
-  const listSections = ["overview", "inbox", "projects", "clients", "invoices", "pages", "portfolio", "services", "media", "team"];
+  const listSections = ["overview", "inbox", "projects", "calendar", "clients", "invoices", "pages", "portfolio", "services", "media", "team"];
   if (segments.length === 1 && listSections.includes(section)) return showListView(section);
   if (section === "clients") return renderClientRoute(segments, params);
   if (section === "projects") return renderProjectRoute(segments, params);
@@ -2053,6 +2054,42 @@ function closeSidebar() {
 }
 
 document.addEventListener("click", async (event) => {
+  const deleteProjectButton = event.target.closest("[data-delete-project]");
+  if (deleteProjectButton) {
+    event.stopPropagation();
+    event.preventDefault();
+    await deleteProjectRecord(deleteProjectButton.dataset.deleteProject);
+    return;
+  }
+  const convertInquiryButton = event.target.closest("[data-convert-inquiry]");
+  if (convertInquiryButton) {
+    event.stopPropagation();
+    event.preventDefault();
+    await convertInquiryToProject(convertInquiryButton.dataset.convertInquiry);
+    return;
+  }
+  if (event.target.closest("#prev-month-btn")) {
+    event.stopPropagation();
+    event.preventDefault();
+    calendarDate.setMonth(calendarDate.getMonth() - 1);
+    renderCalendar();
+    return;
+  }
+  if (event.target.closest("#next-month-btn")) {
+    event.stopPropagation();
+    event.preventDefault();
+    calendarDate.setMonth(calendarDate.getMonth() + 1);
+    renderCalendar();
+    return;
+  }
+  const calDateCell = event.target.closest("[data-cal-date]");
+  if (calDateCell && !event.target.closest("[data-route]")) {
+    event.stopPropagation();
+    event.preventDefault();
+    const selectedDate = calDateCell.dataset.calDate;
+    go(`projects/new?due_date=${selectedDate}`);
+    return;
+  }
   const notificationRoute = event.target.closest("[data-notification-route]");
   if (notificationRoute) {
     $("#notification-panel").classList.add("hidden");
@@ -2062,9 +2099,11 @@ document.addEventListener("click", async (event) => {
   }
   const routeTarget = event.target.closest("[data-route]");
   if (routeTarget) {
-    event.preventDefault();
-    go(routeTarget.dataset.route);
-    return;
+    if (!event.target.closest("button, a, select, input") || event.target.closest("[data-route]") === event.target || event.target.classList.contains("wide-button") || event.target.classList.contains("clickable-card") || event.target.classList.contains("clickable-table-row") || event.target.classList.contains("clickable-row")) {
+      event.preventDefault();
+      go(routeTarget.dataset.route);
+      return;
+    }
   }
   const nav = event.target.closest("[data-view]");
   if (nav) {
@@ -2125,29 +2164,6 @@ document.addEventListener("click", async (event) => {
   if (duplicate) await duplicateEntity(duplicate.dataset.duplicateCurrent, duplicate.dataset.id);
   const move = event.target.closest("[data-move-current]");
   if (move) await moveEntity(move.dataset.moveCurrent, move.dataset.id, move.dataset.direction);
-  const deleteProjectButton = event.target.closest("[data-delete-project]");
-  if (deleteProjectButton) {
-    event.stopPropagation();
-    event.preventDefault();
-    await deleteProjectRecord(deleteProjectButton.dataset.deleteProject);
-    return;
-  }
-  if (event.target.closest("#prev-month-btn")) {
-    calendarDate.setMonth(calendarDate.getMonth() - 1);
-    renderCalendar();
-    return;
-  }
-  if (event.target.closest("#next-month-btn")) {
-    calendarDate.setMonth(calendarDate.getMonth() + 1);
-    renderCalendar();
-    return;
-  }
-  const calDateCell = event.target.closest("[data-cal-date]");
-  if (calDateCell && !event.target.closest("[data-route]")) {
-    const selectedDate = calDateCell.dataset.calDate;
-    go(`projects/new?due_date=${selectedDate}`);
-    return;
-  }
   const archiveMediaButton = event.target.closest("[data-archive-media]");
   if (archiveMediaButton) await archiveMedia(archiveMediaButton.dataset.archiveMedia);
   const archiveProject = event.target.closest("[data-archive-project]");
