@@ -1094,10 +1094,10 @@ const initSPARouter = () => {
           'homepage-manifesto-section': ['home', 'services'],
           'portfolio-slider-section': ['home', 'services'],
           'scale-block': ['home', 'services', 'portfolio'],
-          'partners-section': ['home', 'services', 'about', 'contact'],
-          'testimonials-section': ['home', 'services', 'about', 'contact'],
-          'faq-section': ['home', 'services', 'about', 'contact'],
-          'global-prefooter-banner': ['home', 'services', 'portfolio', 'about', 'contact']
+          'partners-section': ['home', 'services', 'contact'],
+          'testimonials-section': ['home', 'services', 'contact'],
+          'faq-section': ['home', 'services', 'contact'],
+          'global-prefooter-banner': ['home', 'services', 'portfolio', 'contact']
         };
 
         Object.keys(modulesVisibility).forEach(id => {
