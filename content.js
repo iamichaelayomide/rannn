@@ -5,46 +5,276 @@ window.OLYMPUS_CONTENT = {
     "whatsappDisplay": "+234 808 717 2313",
     "callNumber": "2347026456357",
     "callDisplay": "07026456357",
-    "email": null,
-    "location": null,
+    "email": "hello@theolympusatelier.com",
+    "location": "Lagos · London",
     "socials": {
-      "instagram": null,
+      "instagram": "https://instagram.com/theolympusatelier",
       "tiktok": null,
       "x": null,
       "linkedin": null
+    }
+  },
+  "pages": {
+    "book": {
+      "slug": "book",
+      "title": "Book a session",
+      "content": {
+        "header": {
+          "body": "Give us the useful context—audience, deadline, deliverables, and budget range—and we will help define the clearest next step.",
+          "title": "Turn your idea into a workable production plan.",
+          "eyebrow": "Tell us the outcome"
+        }
+      },
+      "seo_title": "Plan a Creative Project | Olympus Atelier",
+      "seo_description": "Share your audience, deadline, deliverables, and budget range to start planning a creative production with Olympus Atelier."
     },
-    "placeholders": true
+    "home": {
+      "slug": "home",
+      "title": "Home",
+      "content": {
+        "hero": {
+          "body": "From event coverage and commercial film to campaign design, publications, and websites, we give your audience a clear reason to pay attention.",
+          "eyebrow": "Creative production for brands, events & institutions",
+          "title_line_one": "Make Your Story",
+          "title_line_two": "Worth Remembering",
+          "background_image": ""
+        },
+        "vision": {
+          "body": "Bring film, photography, design, editorial, motion, and web under one clear direction—so your message stays consistent from the first idea to the final delivery."
+        },
+        "manifesto": {
+          "body": "You are not hiring us to make things look busy. You are hiring us to help the right people notice, understand, remember, and act. Every frame, layout, interaction, and export should move that outcome forward."
+        }
+      },
+      "seo_title": "Creative Production, Event Coverage & Design | Olympus Atelier",
+      "seo_description": "Film, photography, event coverage, campaign design, editorial, motion, and websites shaped around your audience and business outcome."
+    },
+    "about": {
+      "slug": "about",
+      "title": "About",
+      "content": {
+        "header": {
+          "body": "Our compact team connects strategy, production, design, and delivery so you spend less time coordinating suppliers and more time moving the work forward.",
+          "image": "",
+          "title": "One accountable creative partner from brief to delivery.",
+          "eyebrow": "The team behind the work"
+        }
+      },
+      "seo_title": "About Olympus Atelier | Creative Production Team",
+      "seo_description": "Meet the team connecting strategy, film, photography, design, editorial, motion, and web from brief to delivery."
+    },
+    "global": {
+      "slug": "global",
+      "title": "Global content",
+      "content": {
+        "faqs": [
+          {
+            "answer": "Share the audience, objective, deadline, location if relevant, deliverables you expect, and a realistic budget range. If some details are still unclear, tell us what you know and we will help shape the brief.",
+            "question": "What should I include in my first enquiry?"
+          },
+          {
+            "answer": "Yes. We can connect film, photography, graphics, motion, editorial, event coverage, and web under one creative direction so the message stays consistent across every format.",
+            "question": "Can you handle more than one service in the same project?"
+          },
+          {
+            "answer": "Yes. Travel and logistics are scoped into the quote once the location, schedule, crew size, and coverage requirements are clear.",
+            "question": "Do you travel for shoots and events?"
+          },
+          {
+            "answer": "Timing depends on the scope. We agree the milestones, review points, and delivery dates before production begins, then flag any change that could affect the schedule.",
+            "question": "How long does a project take?"
+          },
+          {
+            "answer": "Deliverables are prepared for the channels you actually need, including high-resolution images, social-ready exports, review and master video files, print-ready PDFs, website assets, and editable source files where agreed.",
+            "question": "What files will we receive?"
+          }
+        ],
+        "site": {
+          "x": "",
+          "email": "",
+          "tiktok": "",
+          "linkedin": "",
+          "location": "",
+          "whatsapp": "+234 808 717 2313",
+          "instagram": "",
+          "brand_name": "Olympus Atelier",
+          "footer_intro": "Creative production for brands, events, institutions, and growing teams—planned around the audience you need to reach and the outcome you need to achieve.",
+          "whatsapp_number": "2348087172313"
+        },
+        "team": [
+          {
+            "bio": "John leads Olympus Atelier's creative direction, shaping cohesive concepts across film, photography, design, and editorial production.",
+            "name": "John Ihua",
+            "role": "Creative Lead",
+            "image": "assets/team/john.webp",
+            "qualification": "B.PT (In view)"
+          },
+          {
+            "bio": "Brings architectural thinking and graphic design together to shape considered visual systems, layouts, and creative concepts.",
+            "name": "Akinola Okikiola (Kojo)",
+            "role": "Architecture (in View) · Graphics Designer",
+            "image": "assets/team/akinola-okikiola.jpeg"
+          },
+          {
+            "bio": "Builds visual narratives from camera through post-production, motion, and final design delivery.",
+            "name": "Felix Divine",
+            "role": "Cinematographer / Editor / Visual Designer",
+            "image": "assets/team/cinematographer-editor.webp",
+            "qualification": ""
+          },
+          {
+            "bio": "Focused on people, events, and editorial moments — capturing energy and emotion with a sharp, instinctive eye.",
+            "name": "Plena",
+            "role": "Photographer",
+            "image": "assets/team/ibrahim.jpeg",
+            "qualification": "BDS (In View)"
+          },
+          {
+            "bio": "Designs and develops responsive digital experiences that extend Olympus Atelier's visual direction onto the web.",
+            "name": "Ayomide",
+            "role": "Website Designer",
+            "image": "assets/team/ayomide.webp",
+            "qualification": "B.MLS"
+          },
+          {
+            "bio": "Coordinates client communications, event schedules, and production operations at Olympus Atelier.",
+            "name": "Ekhosuehi Mabel",
+            "role": "Creative Executive Assistant",
+            "image": "assets/team/ekhosuehi-mabel.jpeg",
+            "qualification": "BSc. Sociology and Anthropology"
+          },
+          {
+            "bio": "",
+            "name": "Kojo",
+            "role": "Certified Drone Pilot and Seasoned Cinematographer ",
+            "image": "",
+            "qualification": ""
+          }
+        ],
+        "partners": [],
+        "testimonials": [
+          {
+            "name": "Stephen",
+            "role": "Growth Manager",
+            "quote": "John is good at what he does. He was able to capture our brand essence and come up with impressive concepts. His delivery is topnotch."
+          },
+          {
+            "name": "Omotosho Babatunde Gabriel",
+            "role": "Client",
+            "quote": "Their attention to detail and ability to tell a compelling story through visuals is unmatched. A truly premium experience."
+          },
+          {
+            "name": "Chioma Adeleke",
+            "role": "Brand Director, Aura",
+            "quote": "Olympus Atelier delivered a visual system that completely transformed our digital presence. Highly recommended."
+          },
+          {
+            "name": "Elena Rostova",
+            "role": "Director, Ledge",
+            "quote": "Olympus completely re-packaged our brand identity and interactive web layer."
+          },
+          {
+            "name": "Sophia Vance",
+            "role": "Manager, Kroma Agency",
+            "quote": "Outstanding communication and delivery timelines."
+          },
+          {
+            "name": "Liam Neale",
+            "role": "Founding Partner, Vektor",
+            "quote": "Their creative direction delivered a site that feels alive."
+          }
+        ]
+      },
+      "seo_title": null,
+      "seo_description": null
+    },
+    "contact": {
+      "slug": "contact",
+      "title": "Contact",
+      "content": {
+        "header": {
+          "body": "Share the audience, deadline, and outcome. We will respond within one business day with availability, useful questions, and the clearest next step.",
+          "title": "Tell us what success should look like.",
+          "eyebrow": "Start with your brief"
+        },
+        "contact": {
+          "email": "",
+          "phone": "",
+          "location": ""
+        }
+      },
+      "seo_title": "Contact Olympus Atelier | Plan Your Project",
+      "seo_description": "Tell Olympus Atelier about your audience, deadline, and desired outcome to start planning your event, campaign, publication, or website."
+    },
+    "services": {
+      "slug": "services",
+      "title": "Creative services grounded in real work.",
+      "content": {
+        "header": {
+          "body": "Whether you need to document an event, launch a campaign, explain an idea, or build a stronger digital presence, we shape the right mix of production and design around your goal.",
+          "title": "Creative support built around what you need to achieve.",
+          "eyebrow": "Choose your outcome"
+        }
+      },
+      "seo_title": "Creative Services for Brands, Events & Institutions | Olympus Atelier",
+      "seo_description": "Choose photography, film, event coverage, branding, editorial, motion, commercial, and website services based on the outcome you need."
+    },
+    "portfolio": {
+      "slug": "portfolio",
+      "title": "Portfolio",
+      "content": {
+        "header": {
+          "body": "Explore event coverage, campaign films, photography, editorial design, motion, branding, and websites created for real audiences and real moments.",
+          "title": "See what we can help you create.",
+          "eyebrow": "Proof, not promises"
+        }
+      },
+      "seo_title": "Creative Production Portfolio | Olympus Atelier",
+      "seo_description": "See event coverage, campaign films, photography, editorial, motion, branding, and website work by Olympus Atelier."
+    }
   },
   "services": [
     {
       "id": "photo-film",
       "title": "Photography & Film",
-      "summary": "Editorial photography, interviews, event films, and polished visual stories."
+      "summary": "Give your audience polished images and films that make people, products, and ideas feel credible.",
+      "description": "Ideal for executive interviews, brand stories, campaign shoots, portraits, and event highlights—planned for the platforms where the work will be seen."
     },
     {
       "id": "graphics",
       "title": "Graphics & Branding",
-      "summary": "Campaign systems, posters, identity assets, and social-first visual design."
+      "summary": "Turn one message into a clear visual system your audience can recognise across every touchpoint.",
+      "description": "Campaign identities, social graphics, event materials, posters, presentations, and brand-ready assets built to stay consistent."
     },
     {
       "id": "editorial",
       "title": "Editorial & Magazine Design",
-      "summary": "Long-form publications, magazine systems, certificates, and print-ready layouts."
+      "summary": "Make reports, magazines, programmes, and publications easy to navigate and worth keeping.",
+      "description": "We structure long-form content, refine visual hierarchy, and prepare professional digital and print-ready files."
     },
     {
       "id": "motion",
       "title": "Motion Design",
-      "summary": "Animated brand moments, launch visuals, explainers, and digital motion assets."
+      "summary": "Explain, announce, and promote your message with motion that earns attention quickly.",
+      "description": "Animated campaign assets, launch visuals, title sequences, explainers, and platform-ready cut-downs."
     },
     {
       "id": "events",
       "title": "Events & Conferences",
-      "summary": "End-to-end coverage for summits, celebrations, panels, and corporate gatherings."
+      "summary": "Capture the speakers, people, atmosphere, and key moments your event should be remembered for.",
+      "description": "Coverage can include photography, interviews, highlight films, same-event social content, and post-event delivery."
     },
     {
       "id": "web",
       "title": "Website Design & Development",
-      "summary": "Responsive portfolio, campaign, and business websites designed to feel distinctive and perform reliably."
+      "summary": "Turn interest into action with a distinctive website that explains your value and makes the next step obvious.",
+      "description": "Strategy, interface design, responsive frontend development, content structure, and launch support for portfolios, campaigns, and business sites."
+    },
+    {
+      "id": "ads-commercial",
+      "title": "Commercials & Brand Campaigns",
+      "summary": "Give your campaign a clear idea and cinematic execution built to move the right audience.",
+      "description": "From concept and scripting to production, editing, and platform versions, we create commercial content ready for launch."
     }
   ],
   "weddingPackages": [
@@ -83,124 +313,110 @@ window.OLYMPUS_CONTENT = {
   ],
   "teamMembers": [
     {
+      "bio": "John leads Olympus Atelier's creative direction, shaping cohesive concepts across film, photography, design, and editorial production.",
       "name": "John Ihua",
       "role": "Creative Lead",
-      "qualification": "B.PT (In view) · r.MRTB",
       "image": "assets/team/john.webp",
-      "bio": "John leads Olympus Atelier's creative direction, shaping cohesive concepts across film, photography, design, and editorial production."
+      "qualification": "B.PT (In view)"
     },
     {
+      "bio": "Brings architectural thinking and graphic design together to shape considered visual systems, layouts, and creative concepts.",
       "name": "Akinola Okikiola (Kojo)",
       "role": "Architecture (in View) · Graphics Designer",
-      "image": "assets/team/akinola-okikiola.jpeg",
-      "bio": "Brings architectural thinking and graphic design together to shape considered visual systems, layouts, and creative concepts."
+      "image": "assets/team/akinola-okikiola.jpeg"
     },
     {
+      "bio": "Builds visual narratives from camera through post-production, motion, and final design delivery.",
+      "name": "Felix Divine",
+      "role": "Cinematographer / Editor / Visual Designer",
+      "image": "assets/team/cinematographer-editor.webp",
+      "qualification": ""
+    },
+    {
+      "bio": "Focused on people, events, and editorial moments — capturing energy and emotion with a sharp, instinctive eye.",
+      "name": "Plena",
+      "role": "Photographer",
+      "image": "assets/team/ibrahim.jpeg",
+      "qualification": "BDS (In View)"
+    },
+    {
+      "bio": "Designs and develops responsive digital experiences that extend Olympus Atelier's visual direction onto the web.",
       "name": "Ayomide",
       "role": "Website Designer",
       "image": "assets/team/ayomide.webp",
-      "bio": "Designs and develops responsive digital experiences that extend Olympus Atelier's visual direction onto the web."
+      "qualification": "B.MLS"
     },
     {
-      "name": "Name coming soon",
-      "role": "Photographer",
-      "image": "assets/team/photographer.webp",
-      "bio": "Focused on people, events, and editorial moments with an energetic, human point of view."
-    },
-    {
-      "name": "Name coming soon",
-      "role": "Cinematographer / Editor / Visual Designer",
-      "image": "assets/team/cinematographer-editor.webp",
-      "bio": "Builds visual narratives from camera through post-production, motion, and final design delivery."
+      "bio": "Coordinates client communications, event schedules, and production operations at Olympus Atelier.",
+      "name": "Ekhosuehi Mabel",
+      "role": "Creative Executive Assistant",
+      "image": "assets/team/ekhosuehi-mabel.jpeg",
+      "qualification": "BSc. Sociology and Anthropology"
     }
   ],
+  "faqs": [
+    {
+      "answer": "Share the audience, objective, deadline, location if relevant, deliverables you expect, and a realistic budget range. If some details are still unclear, tell us what you know and we will help shape the brief.",
+      "question": "What should I include in my first enquiry?"
+    },
+    {
+      "answer": "Yes. We can connect film, photography, graphics, motion, editorial, event coverage, and web under one creative direction so the message stays consistent across every format.",
+      "question": "Can you handle more than one service in the same project?"
+    },
+    {
+      "answer": "Yes. Travel and logistics are scoped into the quote once the location, schedule, crew size, and coverage requirements are clear.",
+      "question": "Do you travel for shoots and events?"
+    },
+    {
+      "answer": "Timing depends on the scope. We agree the milestones, review points, and delivery dates before production begins, then flag any change that could affect the schedule.",
+      "question": "How long does a project take?"
+    },
+    {
+      "answer": "Deliverables are prepared for the channels you actually need, including high-resolution images, social-ready exports, review and master video files, print-ready PDFs, website assets, and editable source files where agreed.",
+      "question": "What files will we receive?"
+    }
+  ],
+  "partners": [],
   "socialProof": {
-    "placeholder": true,
-    "stats": [
-      {
-        "value": "1.2",
-        "suffix": "M+",
-        "label": "Media Views"
-      },
-      {
-        "value": "240",
-        "suffix": "+",
-        "label": "Projects Delivered"
-      },
-      {
-        "value": "99.8",
-        "suffix": "%",
-        "label": "Client Success"
-      },
-      {
-        "value": "15",
-        "suffix": "+",
-        "label": "Global Awards"
-      }
-    ],
+    "stats": [],
     "testimonials": [
       {
-        "quote": "Olympus completely re-packaged our brand identity and interactive web layer.",
+        "name": "Stephen",
+        "role": "Growth Manager",
+        "quote": "John is good at what he does. He was able to capture our brand essence and come up with impressive concepts. His delivery is topnotch."
+      },
+      {
+        "name": "Omotosho Babatunde Gabriel",
+        "role": "Client",
+        "quote": "Their attention to detail and ability to tell a compelling story through visuals is unmatched. A truly premium experience."
+      },
+      {
+        "name": "Chioma Adeleke",
+        "role": "Brand Director, Aura",
+        "quote": "Olympus Atelier delivered a visual system that completely transformed our digital presence. Highly recommended."
+      },
+      {
         "name": "Elena Rostova",
-        "role": "Director, Ledge"
+        "role": "Director, Ledge",
+        "quote": "Olympus completely re-packaged our brand identity and interactive web layer."
       },
       {
-        "quote": "Their video campaign captures exactly the raw intensity of our designs.",
-        "name": "David Miller",
-        "role": "Brand Lead, SynthDev"
-      },
-      {
-        "quote": "The customized campaign system increased our website conversions.",
-        "name": "Marcus Thorne",
-        "role": "CTO, Apex Systems"
-      },
-      {
-        "quote": "The editorial design layouts are beautiful and command attention.",
-        "name": "Clara Oswald",
-        "role": "Visual Lead, Zephyr"
-      },
-      {
-        "quote": "Their creative direction delivered a site that feels alive.",
-        "name": "Liam Neale",
-        "role": "Founding Partner, Vektor"
-      },
-      {
-        "quote": "Outstanding communication and delivery timelines.",
         "name": "Sophia Vance",
-        "role": "Manager, Kroma Agency"
+        "role": "Manager, Kroma Agency",
+        "quote": "Outstanding communication and delivery timelines."
+      },
+      {
+        "name": "Liam Neale",
+        "role": "Founding Partner, Vektor",
+        "quote": "Their creative direction delivered a site that feels alive."
       }
     ]
   },
-  "filters": [
-    {
-      "id": "all",
-      "label": "All work"
-    },
-    {
-      "id": "film",
-      "label": "Film"
-    },
-    {
-      "id": "events",
-      "label": "Events"
-    },
-    {
-      "id": "graphics",
-      "label": "Graphics"
-    },
-    {
-      "id": "editorial",
-      "label": "Editorial"
-    },
-    {
-      "id": "motion",
-      "label": "Motion"
-    }
-  ],
   "portfolioItems": [
     {
       "id": "1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO",
       "title": "Chuks Ezimadu - Green Carpet Interview",
+      "description": null,
       "category": "events",
       "collection": "CIoD Conference Green Carpet",
       "mediaType": "video",
@@ -214,6 +430,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1xv2SiAylmGIp9SgiRlK_pQ_zv-enBjoU",
       "title": "Franca Eqwuekwe - Green Carpet Interview",
+      "description": null,
       "category": "events",
       "collection": "CIoD Conference Green Carpet",
       "mediaType": "video",
@@ -227,6 +444,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Af5MhIV-76LJdx106s1RLbSWBu9H4lrR",
       "title": "Olukemi Peter - Green Carpet Interview",
+      "description": null,
       "category": "events",
       "collection": "CIoD Conference Green Carpet",
       "mediaType": "video",
@@ -240,6 +458,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1UWRIR8lmqtK_068iXv5AqqaowjnUjDNO",
       "title": "Oladipo Sadibo - Green Carpet Interview",
+      "description": null,
       "category": "events",
       "collection": "CIoD Conference Green Carpet",
       "mediaType": "video",
@@ -253,6 +472,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1fXJmYYFsaAqeOx_mYkZ_IotRc2aRS8t4",
       "title": "123",
+      "description": null,
       "category": "film",
       "collection": "Interviews & Corporate Film",
       "mediaType": "video",
@@ -266,6 +486,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Ed8rQMWC4K6H6xTXgvIz_CyqkfBccSOM",
       "title": "0703",
+      "description": null,
       "category": "film",
       "collection": "Interviews & Corporate Film",
       "mediaType": "video",
@@ -279,6 +500,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1igiq5y0iX3RmdKZSWO5M7zkeqnsmt0TS",
       "title": "CIOD PODCAST with Dr Pamela",
+      "description": null,
       "category": "film",
       "collection": "Interviews & Corporate Film",
       "mediaType": "video",
@@ -292,6 +514,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1iqvJs8BH3M8nznk_5q-TiK9HstiS3YGh",
       "title": "IMG 0773",
+      "description": null,
       "category": "film",
       "collection": "Interviews & Corporate Film",
       "mediaType": "video",
@@ -305,6 +528,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1uV1EMHGnixqz-LwrsXhEsWs12bZgi5jC",
       "title": "Mrs. Ifeyinwa Osime M.CIoD 1",
+      "description": null,
       "category": "film",
       "collection": "Interviews & Corporate Film",
       "mediaType": "video",
@@ -318,6 +542,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1wNoCc_8ce_9IdGpD37EC45SMsdz2VGet",
       "title": "new original",
+      "description": null,
       "category": "film",
       "collection": "Interviews & Corporate Film",
       "mediaType": "video",
@@ -331,6 +556,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1MKT7l1KNP_wL_JoY3IEFJk6wmJEAW24m",
       "title": "Teaser 2",
+      "description": null,
       "category": "film",
       "collection": "Interviews & Corporate Film",
       "mediaType": "video",
@@ -344,6 +570,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Ge3pHUlp4EZCMALBGHOqdYIEwUk5YnUp",
       "title": "Teaser Dr Pamela",
+      "description": null,
       "category": "film",
       "collection": "Interviews & Corporate Film",
       "mediaType": "video",
@@ -356,7 +583,8 @@ window.OLYMPUS_CONTENT = {
     },
     {
       "id": "1QVxxaIjwOcDxQXRNmyePhQPBEjkZgDry",
-      "title": "Tomisin Grandma 1",
+      "title": "Prof. Ajike Florence Osanyin Birthday Celebration",
+      "description": null,
       "category": "events",
       "collection": "Celebrations & Events",
       "mediaType": "video",
@@ -368,21 +596,9 @@ window.OLYMPUS_CONTENT = {
       "featured": true
     },
     {
-      "id": "157ouUK40lbUfM4xSL2Sc0E0gPQ4wnqcd",
-      "title": "CERTIFICATE - OLYMPUS ATELIER LTD",
-      "category": "editorial",
-      "collection": "Credentials",
-      "mediaType": "pdf",
-      "thumbnailSrc": "assets/portfolio/157ouUK40lbUfM4xSL2Sc0E0gPQ4wnqcd.webp",
-      "previewSrc": null,
-      "originalUrl": "https://drive.google.com/file/d/157ouUK40lbUfM4xSL2Sc0E0gPQ4wnqcd/view",
-      "alt": "CERTIFICATE - OLYMPUS ATELIER LTD — Credentials by Olympus Atelier",
-      "year": "2026",
-      "featured": true
-    },
-    {
       "id": "1CYrRzdDibyZBnE61j7ET9CMY3ccaqsiD",
       "title": "Africa Summit",
+      "description": null,
       "category": "events",
       "collection": "Conference Coverage",
       "mediaType": "video",
@@ -396,6 +612,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1L-nzRD_Q77Vcz8KTxuvTePu4K-KkLHHu",
       "title": "Ulaps Magazine 2024",
+      "description": null,
       "category": "editorial",
       "collection": "Magazine Design",
       "mediaType": "pdf",
@@ -404,12 +621,12 @@ window.OLYMPUS_CONTENT = {
       "originalUrl": "https://drive.google.com/file/d/1L-nzRD_Q77Vcz8KTxuvTePu4K-KkLHHu/view",
       "alt": "Ulaps Magazine 2024 — Magazine Design by Olympus Atelier",
       "year": "2024",
-      "featured": false,
-      "downloadUrl": "https://drive.usercontent.google.com/download?id=1L-nzRD_Q77Vcz8KTxuvTePu4K-KkLHHu&export=download&confirm=t"
+      "featured": false
     },
     {
       "id": "15Z1Hj69nZFdDDGWbDX5_YUZ3NIBq1OUX",
       "title": "Ulaps Magazine 2025- Epitherapy",
+      "description": null,
       "category": "editorial",
       "collection": "Magazine Design",
       "mediaType": "pdf",
@@ -418,12 +635,12 @@ window.OLYMPUS_CONTENT = {
       "originalUrl": "https://drive.google.com/file/d/15Z1Hj69nZFdDDGWbDX5_YUZ3NIBq1OUX/view",
       "alt": "Ulaps Magazine 2025- Epitherapy — Magazine Design by Olympus Atelier",
       "year": "2025",
-      "featured": true,
-      "downloadUrl": "https://drive.usercontent.google.com/download?id=15Z1Hj69nZFdDDGWbDX5_YUZ3NIBq1OUX&export=download&confirm=t"
+      "featured": true
     },
     {
       "id": "199tVx4cR2m23wKG-JDhXe4KKuQtZixKm",
       "title": "ULAPS MAGAZINE 2026",
+      "description": null,
       "category": "editorial",
       "collection": "Magazine Design",
       "mediaType": "pdf",
@@ -432,12 +649,12 @@ window.OLYMPUS_CONTENT = {
       "originalUrl": "https://drive.google.com/file/d/199tVx4cR2m23wKG-JDhXe4KKuQtZixKm/view",
       "alt": "ULAPS MAGAZINE 2026 — Magazine Design by Olympus Atelier",
       "year": "2026",
-      "featured": false,
-      "downloadUrl": "https://drive.usercontent.google.com/download?id=199tVx4cR2m23wKG-JDhXe4KKuQtZixKm&export=download&confirm=t"
+      "featured": false
     },
     {
       "id": "1qHAdquNAFo3xzKceDPG8qW0H8UdTwFh5",
       "title": "app",
+      "description": null,
       "category": "motion",
       "collection": "Motion Design",
       "mediaType": "video",
@@ -451,6 +668,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1XaiwlFKlzr6rbyoSK4IoLr5t79wE9m6r",
       "title": "motion 1",
+      "description": null,
       "category": "motion",
       "collection": "Motion Design",
       "mediaType": "video",
@@ -464,6 +682,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Ec5SK2NvNYIrJjAUG_XdXSeR4bASk5Pg",
       "title": "motion 2",
+      "description": null,
       "category": "motion",
       "collection": "Motion Design",
       "mediaType": "video",
@@ -477,6 +696,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1z-7USbZ6QXxYQZgEzMuDUy_9cvOcc6Xp",
       "title": "motion 3",
+      "description": null,
       "category": "motion",
       "collection": "Motion Design",
       "mediaType": "video",
@@ -490,6 +710,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1gJbVwUYB-8oPStbqAwxZ6Ja4nZmvvIY5",
       "title": "001",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -503,6 +724,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1A9JkTR6Avafm3yZzqPleNlTXmql4i88-",
       "title": "Adenike new month 2",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -516,6 +738,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1z3vdhbUKKTrqK2yMq3Lyb-u3RnZnsiv-",
       "title": "Adenike",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -529,6 +752,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1N8vcm7XOQFUT7B3Tbyg1eiASt1tT1TuY",
       "title": "arc 101 tut",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -542,6 +766,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1qPPMhabdsXO6AcPE3o8L00HS5wyKC5Yu",
       "title": "BIG JOSH",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -555,6 +780,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1HyuuFv_JdtMYMMvownWLvaM50Sl41u7N",
       "title": "BROWN 006 3",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -568,6 +794,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "16qJO-R6eTQTYvYZSguRMPCTClB8lT1KL",
       "title": "d banner 2",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -581,6 +808,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1rsbmd0gNDshomAfKo0R0dcYryKXRxPqz",
       "title": "DAPO CAMPAIGN bae",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -594,6 +822,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1ipylyIbLmzWta1cqMatikMJnKXycysBU",
       "title": "DAPO CAMPAIGN DOI MAIN",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -607,6 +836,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "17I1I6mmHRYsBdzWlSc6Dwj__AFJyysmr",
       "title": "DAPO CAMPAIGN JUNE 1",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -620,6 +850,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1cSrolmnqTAu052bDQz9Ru7febIUdiGMZ",
       "title": "DAPO CAMPAIGN JUNE 12",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -633,6 +864,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1VYOWHhY-B9oQVN3YEQVXhJp65Phgzv1Q",
       "title": "DAPO CAMPAIGN NAES 001",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -646,6 +878,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1hnKUtDC2s1EW8DryJqj1-rRgJg-74r6c",
       "title": "DAPO CAMPAIGN nm",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -659,6 +892,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1wtrzXumZw5LaKIubEJ5t6SIFLbrI5JNf",
       "title": "DAPO CAMPAIGN",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -672,6 +906,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "18b2TRY2RDowKSvvnPIgHf59sv44IKmc7",
       "title": "DAPO DOI2",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -685,6 +920,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1F-0-VE4Yg5-X2YnrXzb-nVErUzWSRdgp",
       "title": "dapoo",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -698,6 +934,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "10A3xT4MIBnYIbYaGicb06VEeq-DuLLJf",
       "title": "dicco3",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -711,6 +948,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1E8cQIEDmbDmCoEd2HXh1ioJP7FU10JSk",
       "title": "fola sls vote right",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -724,6 +962,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1RDcVmA0eRFMfcWG20wE4dCXC1pwau9w2",
       "title": "idannn",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -737,6 +976,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "19j3zdBnI4rbJsGlHemDNfHnhLrw_UhVh",
       "title": "iidan",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -750,6 +990,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "14vCTRgQgS7-FGaqVmBs6bov_JfldWP5e",
       "title": "IMG 20250808 155943",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -763,6 +1004,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1X-urJr1To-fVJOg-h4LldwYI-MmiV0Z7",
       "title": "IMG 20250808 160131",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -776,6 +1018,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1paedPT7YQKU_4Gt1IdCjF9L6cLLXRzRd",
       "title": "IMG 20250808 160157",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -789,6 +1032,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1XKjPespDSUnGlxymRvfTNuJh0eIUKK7q",
       "title": "IMG 20250808 160200",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -802,6 +1046,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1VWEA_dRg4bvRJopH28XI1Cy1FdzpVPHR",
       "title": "IMG 20250808 160451",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -815,6 +1060,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1xi8XKMuK5kr1WZCwDBNw6Msx2ZqDVnZx",
       "title": "INISOL 2z",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -828,6 +1074,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1FIH1QcGNM1QD1_oICzQ2rQCA5G3XZuSJ",
       "title": "OLOJO 2",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -841,6 +1088,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1w38Prhkmqn4zFvzBQzDiWRctrULdpNtE",
       "title": "tolu 1 final",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -854,6 +1102,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1sihH2eN4WMgL8udzqSBohRJ8f0hbBgzY",
       "title": "tolu 2 final",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -867,6 +1116,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Uv52QowX2tgGrV6GtcInN7-SrAlDnJWg",
       "title": "welcome to set dapo1",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -880,6 +1130,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1mtiWIfpMXaPA5mDkH8ySrlgpb5z9sq3K",
       "title": "WhatsApp Image 2026-06-03 at 22.45.22",
+      "description": null,
       "category": "graphics",
       "collection": "Election Campaigns",
       "mediaType": "image",
@@ -893,6 +1144,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1msMDNBUSQjkFLxPpbBWDfsaXg71pLcg7",
       "title": "FASA call for volunteers",
+      "description": null,
       "category": "graphics",
       "collection": "FASA Week",
       "mediaType": "image",
@@ -906,6 +1158,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1AXtWueCnBflEX5d-4AmD8fV90rUCuC40",
       "title": "FASA CFS",
+      "description": null,
       "category": "graphics",
       "collection": "FASA Week",
       "mediaType": "image",
@@ -919,6 +1172,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1QqrfLBQcaA83dgD4k6yPgMp9wCZ4x-XS",
       "title": "FASA fd",
+      "description": null,
       "category": "graphics",
       "collection": "FASA Week",
       "mediaType": "image",
@@ -932,6 +1186,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1bmDnecix1Z5157YpzjoY00hg-JuKrFvI",
       "title": "FASA freshers vs staylites",
+      "description": null,
       "category": "graphics",
       "collection": "FASA Week",
       "mediaType": "image",
@@ -945,6 +1200,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1vdWmSzPmmgwKnnO4LgV6BfKjfWSN7aCK",
       "title": "FASA FW 25",
+      "description": null,
       "category": "graphics",
       "collection": "FASA Week",
       "mediaType": "image",
@@ -958,6 +1214,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Hk-A9WF888nlQJGJGSIfusUO7OITPv5e",
       "title": "FASA mtt",
+      "description": null,
       "category": "graphics",
       "collection": "FASA Week",
       "mediaType": "image",
@@ -971,6 +1228,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "13-r8IawIw391C8cB8vifGIBra8xJHsf8",
       "title": "FASA week",
+      "description": null,
       "category": "graphics",
       "collection": "FASA Week",
       "mediaType": "image",
@@ -984,6 +1242,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "10_Mqm8M0qBHQcCR6UC42lym9nUUJVPU7",
       "title": "FASA3",
+      "description": null,
       "category": "graphics",
       "collection": "FASA Week",
       "mediaType": "image",
@@ -997,6 +1256,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1vw3GflL9qy9YfngL0jdOyGfI9IBcLSvZ",
       "title": "formlinepicks bam",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1010,6 +1270,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1ddjCP5dnGjZlpZsK02NrUv4526esAafu",
       "title": "formlinepicks wc",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1023,6 +1284,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1SoJdU0h5hBNsndZdThQcZnl8f0qHmynX",
       "title": "formlinepicks22",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1036,6 +1298,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "19bZAjbQZs3Mfmsh7CBXMzykSJvW8GBwl",
       "title": "DOMINK SZOZSZLAI",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1049,6 +1312,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1JwFFfjp7cetAE4J-XhNZaXLEvsmnPjXi",
       "title": "feb highlight cover",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1062,6 +1326,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1CUyRkxCBPwdx-GL648CSPP7sJtCBnPGv",
       "title": "FLP AD 1",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1075,6 +1340,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1NZYBEKnahZQ719DH1v9aO9T3VtIst4lw",
       "title": "FLP LOGO 1",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1088,6 +1354,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1ANNS06ksqM9xVtVlQfOvcevjcLQJMiWs",
       "title": "FLP NZ IG",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1101,6 +1368,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1fdxPy5_2pfz_efxSIgq952pBF1Gt4TBb",
       "title": "FLP STORY AD 1",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1114,6 +1382,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Xp_uYV238QarCbBDpGiyOfIqBAPieSIY",
       "title": "FLP STORY AD 3",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1127,6 +1396,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1yJp1hKHWm9Bzoebrl9i6IQgpRa-GJ25h",
       "title": "FORMLINE PICK LANDINGPAGE phone 2",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1140,6 +1410,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "151BYgPC8hmIdtjGC5eMktT0AlOlAYtXL",
       "title": "FORMLINE PICK LANDINGPAGE post 222",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1153,6 +1424,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1JAg9wZPEeNNiaJh9Vn3f7cs-hSQSahtD",
       "title": "FORMLINE PICK LANDINGPAGE 2",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1166,6 +1438,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1WPCuYHLB0uQrUA5O-K50DOPweYpBeIFo",
       "title": "FORMLINE PICK LANDINGPAGE phone 1",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1179,6 +1452,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1H8eAgzF5LNJlfczko70R2_GhAlF-Y4aj",
       "title": "formlinepicks 7wp",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1192,6 +1466,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1L2pFSZKGLva7qtEhxijP-mZ_4ETF55Sq",
       "title": "formlinepicks story ad 1",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1205,6 +1480,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1PFj5PRixVlLDuEMTUluLWTpdnY_3igF3",
       "title": "Formlinepicks Story1",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1218,6 +1494,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1t4Mr4A97FYLM0-hlj_5xyymfybxMFcEH",
       "title": "fra vs sweden 2",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1231,6 +1508,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Kf7OU2WcCuYzr7HDyCHhkf7w5syWC9QU",
       "title": "hugo",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1244,6 +1522,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1UfW5qUp1Av4BFpetSbp3fquRHtzW3Wrv",
       "title": "igpp",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1257,6 +1536,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1lUCikJqwDOS_AaIBsHykmZwrlI2hW01B",
       "title": "K. MBAPPE",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1270,6 +1550,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1f6elMiCTI1GJm5h_kDGXrOmt0oQbOWoE",
       "title": "ncaa",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1283,6 +1564,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1mmm9dBRP7gU989LbDXDaqsbIlisk4bfS",
       "title": "NOR VS FRA",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1296,6 +1578,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1I1TwYA3XovWwBAcoFbSfeb1TLcAWkpkY",
       "title": "PAR VS FRA 4",
+      "description": null,
       "category": "graphics",
       "collection": "Formline Picks",
       "mediaType": "image",
@@ -1309,6 +1592,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1lM_p9fTxdbV26IwWP_ERxB3fHMPy7Qg_",
       "title": "ASA DINNER ANTICIPATE",
+      "description": null,
       "category": "graphics",
       "collection": "General Posters",
       "mediaType": "image",
@@ -1322,6 +1606,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "15rhaZd-JppuuHNhLaBx80JNdaxzmbWYA",
       "title": "ASA WEEK 26",
+      "description": null,
       "category": "graphics",
       "collection": "General Posters",
       "mediaType": "image",
@@ -1335,6 +1620,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1EjBvn5WTD_yMTsg08T7gY7HvdvEkfabl",
       "title": "Aunt toun IV card",
+      "description": null,
       "category": "graphics",
       "collection": "General Posters",
       "mediaType": "image",
@@ -1348,6 +1634,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1vpEF7m8m_mSJB9p5P1OzOsvHl2sPSAc0",
       "title": "church bannerrr",
+      "description": null,
       "category": "graphics",
       "collection": "General Posters",
       "mediaType": "image",
@@ -1361,6 +1648,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1XnkYZRbC5Nv0R1_tDrar_WFgbG7WETL6",
       "title": "DENNY'S HAIRLINE3",
+      "description": null,
       "category": "graphics",
       "collection": "General Posters",
       "mediaType": "image",
@@ -1374,6 +1662,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1EDXY0DF9qa1-l3hm3AneTIQVlEZ0lDAA",
       "title": "esther",
+      "description": null,
       "category": "graphics",
       "collection": "General Posters",
       "mediaType": "image",
@@ -1387,6 +1676,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1LtkY68EJX26ifIK_bGZtWv4hXJCBmNqj",
       "title": "IMG 20250808 160410",
+      "description": null,
       "category": "graphics",
       "collection": "General Posters",
       "mediaType": "image",
@@ -1400,6 +1690,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1UgLwO6y9IJ6kqesSn914NSLQhr4kNm1P",
       "title": "Lonely at the top",
+      "description": null,
       "category": "graphics",
       "collection": "General Posters",
       "mediaType": "image",
@@ -1413,6 +1704,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1m4ncf2zznTnEGOunHpwhSGK-sT_VIAw5",
       "title": "mamashow bd3",
+      "description": null,
       "category": "graphics",
       "collection": "General Posters",
       "mediaType": "image",
@@ -1426,6 +1718,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1b12q8lac32zAudsO8J6DMQqLP5w5ssfA",
       "title": "NAES WEEK",
+      "description": null,
       "category": "graphics",
       "collection": "General Posters",
       "mediaType": "image",
@@ -1439,6 +1732,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1OX8ZrbuhE8Prk_wZbV9umVTRMe8UFRGr",
       "title": "VC BDAY",
+      "description": null,
       "category": "graphics",
       "collection": "General Posters",
       "mediaType": "image",
@@ -1452,6 +1746,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1NoTQ1QNBe-84KAkpLgfCvVjDY-Y88Wes",
       "title": "VOUT",
+      "description": null,
       "category": "graphics",
       "collection": "General Posters",
       "mediaType": "image",
@@ -1465,6 +1760,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Uf5dxRP9xhIa3lyqUL4abUt5UkDGf7-D",
       "title": "Fisayo exert",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1478,6 +1774,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1PTwXZB-uO5u1XHTtvsHCxFyOR3xbZm8-",
       "title": "JC EVENT OF THE WEEK",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1491,6 +1788,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1kQIuTtq7X0pNwXGS5F9F_wY8GCapFthY",
       "title": "JC PANELIST 2",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1504,6 +1802,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1YDHfmcQ9dfTszeB_exW4ajqk2mskpks7",
       "title": "jc thank you",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1517,6 +1816,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1E2JkOrRUzYYjFczX9BhmfBKEhxS2jyWA",
       "title": "JS anticipate",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1530,6 +1830,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1VP5v_WSr7rnGI0ZApCyYq_boMJc1kUHA",
       "title": "JS BANNER II",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1543,6 +1844,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1zVACfmCdMrRjRfojR5diuD1rGeWle06J",
       "title": "JS BANNER MCKP 1",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1556,6 +1858,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1gzGt36M2OCLsxa7XgTd3b603yfJ979X8",
       "title": "JS JOTTER FRONT",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1569,6 +1872,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1lZfLVdt0NPE5A6qeFzANLqldW0ES_AOl",
       "title": "JS jotter inside",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1582,6 +1886,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1ZIfW3Ogcp3qqw9xsBHjJ9BecMckodlLr",
       "title": "JS JOTTER",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1595,6 +1900,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1AnQ0mjnPhAsxGkLEZwrebv6vaNKV_Iy-",
       "title": "JS PANEL SESSION",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1608,6 +1914,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1TcbR-GOF2EZOykiktmnwTo5FMXpCPpih",
       "title": "JS REGISTRATION",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1621,6 +1928,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Z5uQt-4Rq1AHviq_3Fu6l_31iQVWx503",
       "title": "JS SPEAKER PSALMMY",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1634,6 +1942,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1gCfQ_CdhZ3PLFHFB9ciOFw4rZ2E060bn",
       "title": "JUDICIAL COUNCIL JOTTER MOCKUP",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1647,6 +1956,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1zVVyrErblo2mOACqvPCAi2rVVNa2zm9s",
       "title": "JUDICIAL COUNCIL SUMMIT MAIN 1",
+      "description": null,
       "category": "graphics",
       "collection": "Judicial Council Week",
       "mediaType": "image",
@@ -1660,6 +1970,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1C-DgmuL0hf2en-xgRVYDir5B18hdf-ww",
       "title": "A. ISAK",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1673,6 +1984,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "19esj4B0K33XyCpb3Rtb7rk7qilL0jvvO",
       "title": "ADEMOLA LOOKMAN",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1686,6 +1998,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "11k-aX44BpAO9qsrGPaYd4I3kUJOYRGwY",
       "title": "AIR SESKO",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1699,6 +2012,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1ZEPtNebHMdsuoUqk7LX-GYSNm0cKkMd0",
       "title": "ANTHONY EDWARDS",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1712,6 +2026,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "12rO2OtmwmtvSRaaeBPjCzPPvVO6I-rot",
       "title": "CANADA VS MOROCCO",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1725,6 +2040,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1wtAg5Yj0z2aVTcNw2PewlkguBdk3c6oI",
       "title": "Charles leclerc redit",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1738,6 +2054,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1PSA3r_LKikAA4p-IPQNJdU-h5j1r34Kh",
       "title": "CHELSEA CWC PREP",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1751,6 +2068,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1_3ZdvRp45_UHkk4mbCSkk_7f9TGdElZw",
       "title": "CHELSEA VS FULHAM",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1764,6 +2082,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1vSFoCJ-NnjMvxYGBBwFitIltpJonNGGV",
       "title": "CHELSEA VS LIVERPOOL",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1777,6 +2096,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Xr05b2ePwhMN--sBZ_QXvYPm2BlMhvD1",
       "title": "CHELSEA VS MAN UNITED",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1790,6 +2110,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "142RvVhOy0X9T3gh6deImuZxUlRKxZ5Be",
       "title": "CR7",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1803,6 +2124,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1F0rR1XcD_AA5sTT6T8qKu-pUysweNpK2",
       "title": "E. HAALAND",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1816,6 +2138,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1UQ3JZcq3aRg0poAJ0wgmG18T5EJOw5YS",
       "title": "EL CLASSICO",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1829,6 +2152,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1uiTolT_DV2Q0nNIVnL9qju88ilMlFcty",
       "title": "ESTEVAO",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1842,6 +2166,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1qbyDR89NMIIgUbw7g5WcrKs7GYLGFBqF",
       "title": "F. VALVERDE",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1855,6 +2180,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1x8mf6JDkow64VTLHdhWwfJc3Cp9UZBC2",
       "title": "G. RUSSEL",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1868,6 +2194,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1f5GYA2ISce0qVw-_GA_FnNiKNO4LB5Ea",
       "title": "IMG 20250808 160403",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1881,6 +2208,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "195BzODSacRpOfCYp4SifZOogPCCEfZe-",
       "title": "JA MORANT",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1894,6 +2222,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1jQGGL6CFsC4JvHnFVdtr4w5UXndUlUqS",
       "title": "KIMI ANTONELLI",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1907,6 +2236,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1D8iUMazENC3rJFF4QNhCIMnCNQraRE7G",
       "title": "KIMI",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1920,6 +2250,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1HtvYU_keCHQ_28-CULJtf9IZNe_POGZX",
       "title": "km10real",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1933,6 +2264,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1vBpMMiO-l0NzoMNRP7y_3HwCYbWKOnwd",
       "title": "LEWIS HAMILTON",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1946,6 +2278,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1yGhAEKn6_Wwzxe6CSn6A1t5P2LCt_7b5",
       "title": "MAN UNITED VS SEVILLA UEL",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1959,6 +2292,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1HPkDJ3pp9HdNEznTpkkEoV_Aw9qTAESI",
       "title": "MO SALAH",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1972,6 +2306,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1HmBJxlMzjvavctoQGVCMBhSUXg8y13BB",
       "title": "N. MADUEKE",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1985,6 +2320,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "11G1jo4MzGuprva5FpltoFwjqYfvYoQ05",
       "title": "NEY",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -1998,6 +2334,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1B7-30b_AhaBIDwe35GLDHBPXTI7WjuhQ",
       "title": "OBI TOPPIN",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -2011,6 +2348,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1gK4FFFo6tofKTCA_S-sXNjdwWG1Iprft",
       "title": "OLISE",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -2024,6 +2362,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1pQivqofr8b0Yz6_vpD_rCAdI6sgWzYZm",
       "title": "PRAISE MASEYI",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -2037,6 +2376,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1dHnHdRPmZOZHK3gBXDq5llD75vIwhr6N",
       "title": "PSG VS ARSENAL UCL",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -2050,6 +2390,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "12BwCJSl0iX9TPYB-IXoa_oKLcigeISsw",
       "title": "RUUD GULLIT",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -2063,6 +2404,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1rcdRIIWvPA9yQ_N5f-_AVSIXQlmhEb4T",
       "title": "S. CURRY",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -2076,6 +2418,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1-BSammCzXutc3kMqUJ50T52brtHn_U3T",
       "title": "SAVINHO",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -2089,6 +2432,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1zrjvkmzpIVMmJhHeY6UOKist9DXSkxYT",
       "title": "SCOTLAND VS MOROCCO",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -2102,6 +2446,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "19FU0_XCJCnwjM9E3dpIUZuJLAq3VMj9l",
       "title": "SGA",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -2115,6 +2460,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1otig4Bs23dAnWZbrhU5bzOq8ztYMDiGp",
       "title": "STEPHEN CURRY",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -2128,6 +2474,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1GGEdxm4s8mffh2bejL_fRHue2u6G49Jd",
       "title": "VIKTOR GYOKERES",
+      "description": null,
       "category": "graphics",
       "collection": "Sports Posters",
       "mediaType": "image",
@@ -2141,6 +2488,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1sUE3HaMfWN1hVntFb-5T4FfZeNmuzg_7",
       "title": "1 DTG",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2154,6 +2502,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1q8Q6ktK574pZH_teCg3BFmqLE-Cd-dwj",
       "title": "2DTG",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2167,6 +2516,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "15vOwJPPYuziq9jEcBh4EGKLWFvaSgI6q",
       "title": "3 dtg",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2180,6 +2530,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Yqc9iHHEAElp7a1nkKpWYy9tSFwGkp71",
       "title": "22DD",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2193,6 +2544,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "10oSaMeIJeaQiGc3zAv08-sJrmLjjkkyd",
       "title": "FB",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2206,6 +2558,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "10fji6jTsSdVLidJ14gWU3XKgM7Ekmode",
       "title": "FF",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2219,6 +2572,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1rSJcxmYTVep3QTVVKnX7BMh3JIx1tyzj",
       "title": "ID GAMES",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2232,6 +2586,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1prBRSq06JyYmmCS65s8RzdDdFOEmK-6d",
       "title": "OPC",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2245,6 +2600,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Pwv2SqxKZ-s-gC-8kgoT87cWUTpYd2ZE",
       "title": "TABLE",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2258,6 +2614,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1H5btZvV-GiwQQ52oBu57cg_owbaEn9Yx",
       "title": "track",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2271,6 +2628,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "15RigdclKrjgq7yJcLZcLz8JqD1ld6rWK",
       "title": "ULAPS 26",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2284,6 +2642,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1vlNeDJhEyBa2eZV-2s-huPxnc0kfuEPK",
       "title": "ULAPS 2026 MTS 2",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2297,6 +2656,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1sLylzCUYaiC_I5PWPWNAnh2WDJRtyfKh",
       "title": "ULAPS 2026 MTS 4",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2310,6 +2670,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1XfDXcc7zQY1F1cOtJ5ivwLu8ZEht_bZL",
       "title": "ULAPS 2026 MTS1",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2323,6 +2684,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1ZM4FhcWPip7rjb79BiSsSjzGLrv5_9CD",
       "title": "ULAPS 2026MTS 3",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2336,6 +2698,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1dP_yJ__BY2SnYYlJByUvW9G8094_GO1d",
       "title": "VL&t",
+      "description": null,
       "category": "graphics",
       "collection": "ULAPS Sports Week",
       "mediaType": "image",
@@ -2349,6 +2712,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1Wc8UdKPcuWzNW9wvqZLda1FDesi-KfE7",
       "title": "Caprisun party 2K",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2362,6 +2726,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "19hAKIPaaIwFZomwvMc0CK5UgVn9nxTQr",
       "title": "Caprisun party 3k5",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2375,6 +2740,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1oABT9NnnoWdZoZCrDCWBAycYGdPezruB",
       "title": "Caprisun party 4K",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2388,6 +2754,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1VAZbdEAifhnILiWojSZWdcnLDgQMBd1h",
       "title": "Caprisun party 8K",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2401,6 +2768,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1X3_ypb2D4TFY67XJzMk79le7IyxH46Em",
       "title": "Caprisun party artist",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2414,6 +2782,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1cgnpdyiYdUVSM44eAaFPy7M_jck67Ks_",
       "title": "Caprisun party demoo",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2427,6 +2796,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1GYIyyrUG2nIUMVM85x-GBSqLKqHmfTuZ",
       "title": "Caprisun party DJ LINE UP 2",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2440,6 +2810,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1HqstHo-oeyqF3Yn5-366h_CMAG7AJZOa",
       "title": "Caprisun party dj line up",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2453,6 +2824,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1vapGGwownsuEuhCW_Yer6umW4aSpmy4w",
       "title": "Caprisun party hype men",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2466,6 +2838,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1-XG8cTRc7ARDmbqcKclSmctBlyJWQ4J0",
       "title": "Caprisun party main with ticket",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2479,6 +2852,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1OTdSh3u2m_PkJfRA6CrrqmuK3yBd2nmN",
       "title": "Caprisun party main",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2492,6 +2866,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1ul4xHaqhiAHp9cLO3yhMZxmdIaXpE8ep",
       "title": "Caprisun party new ticket",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2505,6 +2880,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1_IM84RF13ow7h1dTmbFXZbaCiHPZcTRw",
       "title": "Caprisun party PATNERSHIP",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2518,6 +2894,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1NKlsG7qIzK-0F_2LWEcmufrTqNoFLdFv",
       "title": "Caprisun party proposaL",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2531,6 +2908,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1cnK4J_mih3FbRE4mEHdyPLrq-rDf-k0S",
       "title": "Caprisun party Thank you",
+      "description": null,
       "category": "graphics",
       "collection": "Caprisun Party",
       "mediaType": "image",
@@ -2544,6 +2922,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1tmz0E2JTedgrR3wSm5jug0k0ziR7TibS",
       "title": "mj bday",
+      "description": null,
       "category": "graphics",
       "collection": "SLUR Party",
       "mediaType": "image",
@@ -2557,6 +2936,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "18u8rkWt842MuCbPljFAq_WMBJdrEWPGQ",
       "title": "qjijro",
+      "description": null,
       "category": "graphics",
       "collection": "SLUR Party",
       "mediaType": "image",
@@ -2570,6 +2950,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1_Bqgish5nfpjCF9quXxdpDVBSH70pGuC",
       "title": "SLUR ANTICIPATE",
+      "description": null,
       "category": "graphics",
       "collection": "SLUR Party",
       "mediaType": "image",
@@ -2583,6 +2964,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1idtwErIztvaNCxKAH06jS2O7Hkro7hUD",
       "title": "SLUR banner",
+      "description": null,
       "category": "graphics",
       "collection": "SLUR Party",
       "mediaType": "image",
@@ -2596,6 +2978,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1NWGIVpm0zp52qZTot6XHI89rgkMCQPz2",
       "title": "SLUR dj lp",
+      "description": null,
       "category": "graphics",
       "collection": "SLUR Party",
       "mediaType": "image",
@@ -2609,6 +2992,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1rR5hYqWYGntoMKktnXxJQoy8VRSsbQMg",
       "title": "SLUR MAIN MAIN",
+      "description": null,
       "category": "graphics",
       "collection": "SLUR Party",
       "mediaType": "image",
@@ -2622,6 +3006,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "19PmLm7CMaGmj_uWx3AQrlFUJx4Oh30ER",
       "title": "SLUR pfp",
+      "description": null,
       "category": "graphics",
       "collection": "SLUR Party",
       "mediaType": "image",
@@ -2635,6 +3020,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1mRwgI7M0VxqoLsXh-sh-uyWSTEUW863U",
       "title": "SLUR ticket flyer",
+      "description": null,
       "category": "graphics",
       "collection": "SLUR Party",
       "mediaType": "image",
@@ -2648,6 +3034,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1uJOkU8KekQKO3i-wI__nwGiJhFS5Bz1Y",
       "title": "yuy",
+      "description": null,
       "category": "graphics",
       "collection": "SLUR Party",
       "mediaType": "image",
@@ -2661,6 +3048,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "19taZV54dZ3iBe3nXHU2ctO0mUEKLC_Un",
       "title": "STEEZE IN THE CITY BACKDROP SQUARE",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2674,6 +3062,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1BCEdpMbXy269AgUyGwrkDBBV-lbI9ZWv",
       "title": "STEEZE IN THE CITY CALL FOR VENDORS",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2687,6 +3076,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1_-bsi83549dL-P0akNlDmWarMbVVkhzy",
       "title": "STEEZE IN THE CITY HALOGEN",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2700,6 +3090,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1vinUYwNkyUgKn2XN65I7VuMkHMdhMqwg",
       "title": "STEEZE IN THE CITY lg",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2713,6 +3104,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "15a3E9sbX2I5r3FSXEh-csSAjdXfCH1iA",
       "title": "STEEZE IN THE CITY 1DTG",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2726,6 +3118,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1tg5l-hXteLTA1Zf3mcYp6xGYzmkzm350",
       "title": "STEEZE IN THE CITY 2DTG",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2739,6 +3132,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "110ewVnbpg6PD28S_lqBYH_Lq7njS070h",
       "title": "STEEZE IN THE CITY 3DTG",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2752,6 +3146,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1E-xv2yQ9y5CXYD5SOs6FARv_fOS_FtcH",
       "title": "STEEZE IN THE CITY 22",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2765,6 +3160,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1phKdrOlQ8Ak4k18CHgsc7cAoYsz0NrLO",
       "title": "STEEZE IN THE CITY 222",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2778,6 +3174,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1PVqzzNuKeIexENgouLmcOIfEJKeWg1Oj",
       "title": "STEEZE IN THE CITY BHETABOY",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2791,6 +3188,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1n9lojRMzaQLfQSoDg_C0U3YLlY6i4zSo",
       "title": "STEEZE IN THE CITY cfb",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2804,6 +3202,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "13mXKdP2ShOJ4e1IfWhdRAeY0jYR8tsnh",
       "title": "STEEZE IN THE CITY dp",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2817,6 +3216,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1FOcSle1zQCnNIuj8nUrqRAGCI_8GGQUd",
       "title": "STEEZE IN THE CITY IVY",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2830,6 +3230,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1ZDOo7vRVnTvyjHtMtdC2Qu71pOCJTZFA",
       "title": "STEEZE IN THE CITY MISKY",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2843,6 +3244,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1du1hQB10nBMOEUTq3M8YthOvM3Dc2dS-",
       "title": "STEEZE IN THE CITY SFR",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2856,6 +3258,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "127_cC9V7H0GIwhI4wzcNv8SV02NNmKdl",
       "title": "STEEZE IN THE CITY TY",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2869,6 +3272,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "1c9mGadTUruMCu0Fu45ntz_CS_nbjx59F",
       "title": "STEEZE IN THE CITYyy",
+      "description": null,
       "category": "graphics",
       "collection": "Steeze in the City",
       "mediaType": "image",
@@ -2879,11 +3283,5 @@ window.OLYMPUS_CONTENT = {
       "year": "2026",
       "featured": false
     }
-  ],
-  "homeFeaturedIds": [
-    "1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO",
-    "199tVx4cR2m23wKG-JDhXe4KKuQtZixKm",
-    "1A9JkTR6Avafm3yZzqPleNlTXmql4i88-",
-    "1qHAdquNAFo3xzKceDPG8qW0H8UdTwFh5"
   ]
 };
