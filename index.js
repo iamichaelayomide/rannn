@@ -1129,19 +1129,19 @@ const initSPARouter = () => {
     if (typeof lenis !== 'undefined' && lenis) lenis.scrollTo(0, { duration: 0.4 });
   };
 
-  // Nav links click triggers
-  document.querySelectorAll('.spa-nav-link, .nav-link').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const targetPage = link.getAttribute('data-page');
-      if (targetPage) {
-        e.preventDefault();
-        const requestedHash = link.getAttribute('href')?.replace(/^#/, '') || targetPage;
-        navigateTo(targetPage);
-        if (window.location.hash.substring(1) !== requestedHash) {
-          window.location.hash = requestedHash;
-        }
+  // Nav links click triggers with delegation for dynamic elements
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('.spa-nav-link, .nav-link');
+    if (!link) return;
+    const targetPage = link.getAttribute('data-page');
+    if (targetPage) {
+      e.preventDefault();
+      const requestedHash = link.getAttribute('href')?.replace(/^#/, '') || targetPage;
+      navigateTo(targetPage);
+      if (window.location.hash.substring(1) !== requestedHash) {
+        window.location.hash = requestedHash;
       }
-    });
+    }
   });
 
   // Watch URL Hash shifts

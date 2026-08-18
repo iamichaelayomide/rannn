@@ -351,6 +351,56 @@ async function refreshData({ preserveRoute = true } = {}) {
   if (errors.length) setScreenError(errors[0]);
 }
 
+let calendarDate = new Date();
+
+function renderCalendar() {
+  const grid = $("#calendar-grid");
+  if (!grid) return;
+
+  const year = calendarDate.getFullYear();
+  const month = calendarDate.getMonth();
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  
+  if ($("#calendar-month-title")) {
+    $("#calendar-month-title").textContent = `${monthNames[month]} ${year}`;
+  }
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+
+  const projects = state.data.projects || [];
+  const milestones = state.data.milestones || [];
+
+  let html = "";
+  for (let i = 0; i < firstDay; i++) {
+    html += `<div class="cal-day-cell cal-day-muted" style="min-height:90px;background:rgba(255,255,255,0.02);border-radius:10px;padding:8px;opacity:0.3;"></div>`;
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+    const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    
+    const dayProjects = projects.filter((p) => p.due_date && p.due_date.startsWith(dateStr));
+    const dayMilestones = milestones.filter((m) => m.due_date && m.due_date.startsWith(dateStr));
+
+    html += `
+      <div class="cal-day-cell ${isToday ? "cal-day-today" : ""}" data-cal-date="${dateStr}" style="min-height:90px;background:${isToday ? "rgba(241,132,58,0.15)" : "rgba(255,255,255,0.04)"};border:1px solid ${isToday ? "#f1843a" : "rgba(255,255,255,0.08)"};border-radius:10px;padding:8px;cursor:pointer;transition:all 0.15s ease;">
+        <div style="font-size:12px;font-weight:700;color:${isToday ? "#f1843a" : "#fff"};display:flex;justify-content:space-between;align-items:center;">
+          <span>${day}</span>
+          ${isToday ? `<span style="font-size:9px;background:#f1843a;color:#000;padding:1px 5px;border-radius:4px;font-weight:800;">TODAY</span>` : ""}
+        </div>
+        <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px;">
+          ${dayProjects.map((p) => `<div class="cal-event-chip" data-route="projects/${p.id}" style="font-size:10px;background:rgba(46,116,212,0.3);border-left:3px solid #2e74d4;padding:3px 5px;border-radius:4px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">📁 ${escapeHtml(p.title)}</div>`).join("")}
+          ${dayMilestones.map((m) => `<div class="cal-event-chip" data-route="projects/${m.project_id}" style="font-size:10px;background:rgba(47,166,118,0.3);border-left:3px solid #2fa676;padding:3px 5px;border-radius:4px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">🚩 ${escapeHtml(m.title)}</div>`).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  grid.innerHTML = html;
+}
+
 function renderLists() {
   $("#current-date").textContent = new Intl.DateTimeFormat("en-NG", { weekday: "long", day: "numeric", month: "long" }).format(new Date());
   $("#welcome-title").textContent = `Good ${new Date().getHours() < 12 ? "morning" : new Date().getHours() < 17 ? "afternoon" : "evening"}, ${(state.profile.full_name || "team").split(" ")[0]}.`;
@@ -359,6 +409,7 @@ function renderLists() {
   renderOverview();
   renderInbox();
   renderProjects();
+  renderCalendar();
   renderClients();
   renderInvoices();
   renderPages();
@@ -484,6 +535,24 @@ function projectProgress(project) {
   return Math.round((milestones.filter((item) => ["approved", "completed"].includes(item.status)).length / milestones.length) * 100);
 }
 
+async function deleteProjectRecord(projectId) {
+  const project = state.data.projects.find((p) => p.id === projectId);
+  if (!project) return;
+  const title = project.title || "this project";
+  if (!confirm(`Are you sure you want to delete "${title}"? This will permanently remove the project and its milestones.`)) return;
+
+  try {
+    const { error } = await state.supabase.from("projects").delete().eq("id", projectId);
+    if (error) throw error;
+    state.data.projects = state.data.projects.filter((p) => p.id !== projectId);
+    toast("Project deleted successfully.");
+    renderProjects();
+    go("projects");
+  } catch (err) {
+    alert(`Could not delete project: ${err.message || err.hint || err}`);
+  }
+}
+
 function renderProjects() {
   syncFilterFromRoute("project-search", "search");
   syncFilterFromRoute("project-filter", "status");
@@ -493,7 +562,7 @@ function renderProjects() {
     && [project.title, project.clients?.name, project.service].some((value) => String(value || "").toLowerCase().includes(term)));
   $("#project-grid").innerHTML = projects.length ? projects.map((project) => {
     const progress = projectProgress(project);
-    return `<button class="project-card clickable-card" type="button" data-route="projects/${project.id}">${project.archived_at ? badge("archived") : badge(project.status)}${demoBadge(project)}<h3>${escapeHtml(project.title)}</h3><p class="muted">${escapeHtml(project.clients?.name || "No client")} · ${escapeHtml(project.service || "General project")}</p><div class="progress" aria-label="${progress}% complete"><span style="width:${progress}%"></span></div><div class="meta"><span>${progress}% complete</span><span>Due ${formatDate(project.due_date)}</span></div><span class="button secondary wide-button">Open project</span></button>`;
+    return `<div class="project-card clickable-card" tabindex="0" data-route="projects/${project.id}">${project.archived_at ? badge("archived") : badge(project.status)}${demoBadge(project)}<h3>${escapeHtml(project.title)}</h3><p class="muted">${escapeHtml(project.clients?.name || "No client")} · ${escapeHtml(project.service || "General project")}</p><div class="progress" aria-label="${progress}% complete"><span style="width:${progress}%"></span></div><div class="meta"><span>${progress}% complete</span><span>Due ${formatDate(project.due_date)}</span></div><div class="card-actions" style="display:flex;gap:8px;margin-top:12px;"><button class="button secondary wide-button" type="button" data-route="projects/${project.id}">Open project</button><button class="button destructive text-button" type="button" data-delete-project="${project.id}">Delete</button></div></div>`;
   }).join("") : emptyState("No projects match", "Adjust the filters or create a new client project.", routeButton("projects/new", "New project", "primary"));
 }
 
@@ -869,7 +938,7 @@ function renderProjectRoute(segments, params) {
   } else {
     panel = activityMarkup(activity);
   }
-  const actions = `${!isArchived ? routeButton(`projects/${project.id}/edit`, "Edit project") : ""}<button class="button ${isArchived ? "secondary" : "destructive"}" type="button" data-archive-project="${project.id}" data-archived="${isArchived}">${isArchived ? "Restore project" : "Archive project"}</button>`;
+  const actions = `${!isArchived ? routeButton(`projects/${project.id}/edit`, "Edit project") : ""}<button class="button ${isArchived ? "secondary" : "destructive"}" type="button" data-archive-project="${project.id}" data-archived="${isArchived}">${isArchived ? "Restore project" : "Archive project"}</button><button class="button destructive" type="button" data-delete-project="${project.id}">Delete project</button>`;
   $("#record-screen").innerHTML = recordHeader("projects", "Projects", project.title, `${project.clients?.name || "No client"} · ${progress}% complete`, actions)
     + `${isArchived ? `<div class="archive-banner">${icon("solar:archive-linear")}<div><strong>Archived project</strong><p>This record is read-only but remains in client history and financial reports.</p></div></div>` : ""}`
     + `<div class="project-summary"><button type="button" class="clickable-card" data-route="clients/${project.client_id}"><span class="muted">Client</span><strong>${escapeHtml(project.clients?.name || "Not assigned")}</strong></button><div><span class="muted">Due</span><strong>${formatDate(project.due_date)}</strong></div><div><span class="muted">Budget</span><strong>${money(project.budget, project.currency)}</strong></div><div><span class="muted">Status</span>${badge(project.status)}</div></div>`
@@ -2056,6 +2125,29 @@ document.addEventListener("click", async (event) => {
   if (duplicate) await duplicateEntity(duplicate.dataset.duplicateCurrent, duplicate.dataset.id);
   const move = event.target.closest("[data-move-current]");
   if (move) await moveEntity(move.dataset.moveCurrent, move.dataset.id, move.dataset.direction);
+  const deleteProjectButton = event.target.closest("[data-delete-project]");
+  if (deleteProjectButton) {
+    event.stopPropagation();
+    event.preventDefault();
+    await deleteProjectRecord(deleteProjectButton.dataset.deleteProject);
+    return;
+  }
+  if (event.target.closest("#prev-month-btn")) {
+    calendarDate.setMonth(calendarDate.getMonth() - 1);
+    renderCalendar();
+    return;
+  }
+  if (event.target.closest("#next-month-btn")) {
+    calendarDate.setMonth(calendarDate.getMonth() + 1);
+    renderCalendar();
+    return;
+  }
+  const calDateCell = event.target.closest("[data-cal-date]");
+  if (calDateCell && !event.target.closest("[data-route]")) {
+    const selectedDate = calDateCell.dataset.calDate;
+    go(`projects/new?due_date=${selectedDate}`);
+    return;
+  }
   const archiveMediaButton = event.target.closest("[data-archive-media]");
   if (archiveMediaButton) await archiveMedia(archiveMediaButton.dataset.archiveMedia);
   const archiveProject = event.target.closest("[data-archive-project]");
