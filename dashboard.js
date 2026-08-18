@@ -171,7 +171,19 @@ function showListView(view) {
   $$(".nav-item").forEach((button) => button.classList.toggle("active", button.dataset.view === view));
   $("#view-title").textContent = ({ invoices: "Billing", pages: "Pages", media: "Media library", calendar: "Calendar" })[view] || titleCase(view);
   $("#view-eyebrow").textContent = ["pages", "portfolio", "services", "media", "team"].includes(view) ? "Administration" : "Workspace";
+  
+  if (view === "overview") renderOverview();
+  if (view === "inbox") renderInbox();
+  if (view === "projects") renderProjects();
   if (view === "calendar") renderCalendar();
+  if (view === "clients") renderClients();
+  if (view === "invoices") renderInvoices();
+  if (view === "pages") renderPages();
+  if (view === "portfolio") renderPortfolio();
+  if (view === "services") renderServices();
+  if (view === "media") renderMedia();
+  if (view === "team") renderTeam();
+
   renderTopAction();
   closeSidebar();
 }
@@ -295,8 +307,8 @@ async function enterWorkspace() {
 
 function applyRoleVisibility() {
   const role = state.profile.role;
-  const canFinance = ["owner", "finance"].includes(role);
-  const canContent = ["owner", "content_manager"].includes(role);
+  const canFinance = ["owner", "finance", "project_manager", "contributor"].includes(role);
+  const canContent = ["owner", "content_manager", "project_manager", "contributor"].includes(role);
   const canManageEnquiries = ["owner", "project_manager", "contributor"].includes(role);
   $$('[data-view="inbox"], [data-view-panel="inbox"], .notification-center').forEach((element) => element.classList.toggle("hidden", !canManageEnquiries));
   $$('[data-view="invoices"], [data-view-panel="invoices"]').forEach((element) => element.classList.toggle("hidden", !canFinance));
