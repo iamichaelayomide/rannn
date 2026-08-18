@@ -578,7 +578,7 @@
     const status = document.getElementById('portfolio-result-status');
     if (!grid || !filters || !loadMore) return;
 
-    const items = [...new Map(content.portfolioItems.map(item => [item.id, item])).values()];
+    const items = [...new Map((content.portfolioItems || []).map(item => [item.id, item])).values()];
     let activeFilter = 'all';
     let visibleCount = 12;
 
@@ -586,28 +586,41 @@
     const render = () => {
       const matches = filteredItems();
       const visible = matches.slice(0, visibleCount);
-      grid.innerHTML = visible.map(item => `
+      grid.innerHTML = visible.map(item => {
+        const thumb = item.thumbnailSrc || item.thumbnail_src || fallbackImage;
+        const mediaType = item.mediaType || item.media_type || 'image';
+        const altText = item.alt || item.alt_text || item.title || '';
+        return `
         <button type="button" class="portfolio-item archive-card text-left group" data-item-id="${escapeHtml(item.id)}" aria-label="View ${escapeHtml(item.title)}">
           <span class="archive-card-media">
-            <img src="${escapeHtml(item.thumbnailSrc)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${fallbackImage}'">
+            <img src="${escapeHtml(thumb)}" alt="${escapeHtml(altText)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${fallbackImage}'">
             <span class="archive-card-overlay"></span>
-            <span class="archive-card-type"><iconify-icon icon="${item.mediaType === 'video' ? 'solar:play-circle-bold' : item.mediaType === 'pdf' ? 'solar:document-bold' : 'solar:gallery-bold'}"></iconify-icon>${escapeHtml(item.mediaType)}</span>
+            <span class="archive-card-type"><iconify-icon icon="${mediaType === 'video' ? 'solar:play-circle-bold' : mediaType === 'pdf' ? 'solar:document-bold' : 'solar:gallery-bold'}"></iconify-icon>${escapeHtml(mediaType)}</span>
           </span>
           <span class="archive-card-copy">
-            <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400">${escapeHtml(item.collection)} · ${escapeHtml(item.year)}</span>
+            <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400">${escapeHtml(item.collection || '')} · ${escapeHtml(item.year || '')}</span>
             <strong>${escapeHtml(item.title)}</strong>
           </span>
         </button>
-      `).join('');
+      `;
+      }).join('');
       grid.querySelectorAll('[data-item-id]').forEach(card => card.addEventListener('click', () => window.openOlympusPortfolioItem(card.dataset.itemId)));
       loadMore.classList.toggle('hidden', visible.length >= matches.length);
-      status.textContent = `Showing ${visible.length} of ${matches.length}`;
+      if (status) status.textContent = `Showing ${visible.length} of ${matches.length}`;
       if (window.gsap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         gsap.fromTo(grid.children, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.025, ease: 'power2.out' });
       }
     };
 
-    filters.innerHTML = content.filters.map(filter => `<button type="button" class="archive-filter${filter.id === 'all' ? ' active' : ''}" data-filter="${escapeHtml(filter.id)}">${escapeHtml(filter.label)}</button>`).join('');
+    const filterList = content.filters || [
+      { id: 'all', label: 'All Work' },
+      { id: 'film', label: 'Film & Photography' },
+      { id: 'events', label: 'Events & Conferences' },
+      { id: 'graphics', label: 'Graphics & Branding' },
+      { id: 'editorial', label: 'Editorial' },
+      { id: 'motion', label: 'Motion Design' }
+    ];
+    filters.innerHTML = filterList.map(filter => `<button type="button" class="archive-filter${filter.id === 'all' ? ' active' : ''}" data-filter="${escapeHtml(filter.id)}">${escapeHtml(filter.label)}</button>`).join('');
     filters.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
       activeFilter = button.dataset.filter;
       visibleCount = 12;
