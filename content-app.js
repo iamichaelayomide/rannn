@@ -24,7 +24,7 @@
     { id: 'videography-editing', title: 'Videography/Video Editing' },
     { id: 'video-editing', title: 'Video Editing Alone' },
     { id: 'photography', title: 'Photography' },
-    ...content.services.filter(service => service.id !== 'photo-film')
+    ...(content.services || []).filter(service => service.id !== 'photo-film')
   ].map(service => [service.title.toLowerCase(), service])).values()];
 
   const escapeHtml = value => String(value ?? '')
@@ -116,7 +116,7 @@
     const grid = document.getElementById('service-grid');
     if (!grid) return;
 
-    grid.innerHTML = content.services.map((service, index) => `
+    grid.innerHTML = (content.services || []).map((service, index) => `
       <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[310px]">
         <div class="service-card-icon"><iconify-icon icon="${iconNames[index % iconNames.length]}"></iconify-icon></div>
         <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400 mt-8">Service ${String(index + 1).padStart(2, '0')}</span>
@@ -165,7 +165,7 @@
   const renderTeam = () => {
     const grid = document.getElementById('team-grid');
     if (!grid) return;
-    grid.innerHTML = content.teamMembers.map((member, index) => `
+    grid.innerHTML = (content.teamMembers || []).map((member, index) => `
       <article class="team-card glass-card rounded-3xl overflow-hidden border border-white/10">
         <div class="aspect-[4/5] overflow-hidden bg-neutral-900">
           <img src="${escapeHtml(member.image)}" alt="${escapeHtml(member.name)} — ${escapeHtml(member.role)} at Olympus Atelier" class="w-full h-full object-cover" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/team/photographer.webp'">
