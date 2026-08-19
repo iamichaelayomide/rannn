@@ -13,6 +13,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
+  <!-- HTML2PDF CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -188,13 +191,17 @@
       </div>
 
       <div class="flex flex-wrap items-center gap-2.5">
-        <button id="btn-print" type="button" class="inline-flex items-center gap-2 bg-white text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:bg-neutral-200 transition-colors shadow-lg shadow-white/5">
-          <iconify-icon icon="solar:printer-bold" class="text-base"></iconify-icon>
-          <span>Print / PDF</span>
+        <button id="btn-download-pdf" type="button" class="inline-flex items-center gap-2 bg-white text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:bg-neutral-200 transition-colors shadow-lg shadow-white/5">
+          <iconify-icon icon="solar:download-square-bold" class="text-base"></iconify-icon>
+          <span>Download PDF</span>
         </button>
         <button id="btn-whatsapp-share" type="button" class="inline-flex items-center gap-2 bg-gold-gradient text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:scale-[1.02] transition-transform shadow-lg shadow-amber-500/10">
           <iconify-icon icon="logos:whatsapp-icon" class="text-base"></iconify-icon>
-          <span>Share WhatsApp</span>
+          <span>Send PDF via WhatsApp</span>
+        </button>
+        <button id="btn-print" type="button" class="inline-flex items-center gap-2 bg-neutral-900 border border-white/10 text-neutral-300 font-semibold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:text-white hover:border-white/20 transition-all">
+          <iconify-icon icon="solar:printer-bold" class="text-base"></iconify-icon>
+          <span>Print</span>
         </button>
         <button id="btn-copy-summary" type="button" class="inline-flex items-center gap-2 bg-neutral-900 border border-white/10 text-neutral-300 font-semibold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:text-white hover:border-white/20 transition-all">
           <iconify-icon icon="solar:copy-linear" class="text-base"></iconify-icon>
@@ -808,10 +815,52 @@
           }
         });
 
-        // Print / PDF
-        document.getElementById('btn-print')?.addEventListener('click', () => {
-          window.print();
-        });
+        // Generate PDF Blob helper
+        const generatePdfBlob = async () => {
+          const element = document.getElementById('invoice-sheet');
+          const invNumber = document.getElementById('inv-number').value.trim() || 'OLY-2026-001';
+          const filename = `Invoice-${invNumber}.pdf`;
+
+          if (typeof html2pdf === 'undefined') {
+            throw new Error('PDF generator library loading');
+          }
+
+          const opt = {
+            margin: [8, 8, 8, 8],
+            filename: filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: '#090909' },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+          };
+
+          return await html2pdf().set(opt).from(element).output('blob');
+        };
+
+        // Download PDF
+        const downloadPdf = async () => {
+          const invNumber = document.getElementById('inv-number').value.trim() || 'OLY-2026-001';
+          const filename = `Invoice-${invNumber}.pdf`;
+          showToast('Generating official PDF invoice...');
+
+          try {
+            const element = document.getElementById('invoice-sheet');
+            const opt = {
+              margin: [8, 8, 8, 8],
+              filename: filename,
+              image: { type: 'jpeg', quality: 0.98 },
+              html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: '#090909' },
+              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            await html2pdf().set(opt).from(element).save();
+            showToast('PDF downloaded successfully!');
+          } catch (err) {
+            console.error('PDF download error:', err);
+            window.print();
+          }
+        };
+
+        document.getElementById('btn-download-pdf')?.addEventListener('click', downloadPdf);
+        document.getElementById('btn-print')?.addEventListener('click', () => window.print());
 
         // Build plain-text WhatsApp summary
         const buildWhatsAppSummary = () => {
@@ -853,20 +902,50 @@
             `• Account Number: ${bankAccount}`,
             `• Account Name: ${bankBeneficiary}`,
             '',
-            '✨ _Thank you for choosing Olympus Atelier. Please reply to this message with your proof of transfer upon settlement._'
+            '✨ _Thank you for choosing Olympus Atelier. Please find your official invoice attached._'
           ].filter(Boolean);
 
           return lines.join('\n');
         };
 
-        // WhatsApp Share
-        document.getElementById('btn-whatsapp-share')?.addEventListener('click', () => {
+        // WhatsApp Share (Native PDF File Sharing + Fallback)
+        document.getElementById('btn-whatsapp-share')?.addEventListener('click', async () => {
+          const invNumber = document.getElementById('inv-number').value.trim() || 'OLY-2026-001';
           const clientPhone = document.getElementById('client-phone').value.trim().replace(/[^0-9]/g, '');
           const msg = buildWhatsAppSummary();
           const targetNumber = clientPhone || '2348087172313';
-          const url = `https://wa.me/${targetNumber}?text=${encodeURIComponent(msg)}`;
-          window.open(url, '_blank', 'noopener,noreferrer');
-          showToast('Opening WhatsApp with pre-filled invoice...');
+
+          showToast('Preparing invoice PDF for WhatsApp...');
+
+          try {
+            const pdfBlob = await generatePdfBlob();
+            const filename = `Invoice-${invNumber}.pdf`;
+            const pdfFile = new File([pdfBlob], filename, { type: 'application/pdf' });
+
+            // Check if browser supports sharing PDF file directly
+            if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+              await navigator.share({
+                files: [pdfFile],
+                title: `Invoice ${invNumber} — Olympus Atelier`,
+                text: msg
+              });
+              showToast('Invoice PDF shared successfully!');
+              return;
+            }
+          } catch (err) {
+            console.warn('Native file share notice:', err);
+          }
+
+          // Fallback for browsers that do not support direct file attachments in Web Share:
+          // 1. Download PDF to device
+          downloadPdf();
+
+          // 2. Open WhatsApp chat with pre-filled message
+          setTimeout(() => {
+            const url = `https://wa.me/${targetNumber}?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+            showToast('Invoice downloaded! WhatsApp chat opened to attach PDF.');
+          }, 800);
         });
 
         // Copy Summary
