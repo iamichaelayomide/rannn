@@ -6,6 +6,18 @@
   --color-gold-light: #FFE082;
   --color-gold-mid: #D4AF37;
   --color-gold-dark: #8C6D1F;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Emil Design Engineering: Responsive button press feedback */
+button:active,
+a.spa-nav-link:active,
+.wedding-package-cta:active,
+.btn-primary:active {
+  transform: scale(0.97);
+  transition: transform 160ms var(--ease-out);
 }
 
 .enquiry-honeypot {
@@ -209,7 +221,7 @@ h3, h4, .font-display {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: #ffffff;
-  transition: all 0.3s ease;
+  transition: border-color 160ms var(--ease-out), background 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
 }
 
 .glass-input:focus {
@@ -396,7 +408,7 @@ html.lenis {
   font-size: 10px;
   font-family: 'Inter', sans-serif;
   color: #737373;
-  transition: all 0.3s ease;
+  transition: border-color 160ms var(--ease-out), background 160ms var(--ease-out), color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
 }
 .process-step-active .process-indicator-dot {
   background: var(--color-gold-mid);
