@@ -134,6 +134,27 @@
       </article>
     `).join('');
 
+    const renderWeddingSection = () => {
+      const container = document.getElementById('wedding-packages-grid');
+      if (!container) return;
+      container.innerHTML = (content.weddingPackages || []).map((item, index) => `
+        <article class="wedding-package glass-card border-gold-gradient rounded-3xl p-8 flex flex-col justify-between ${index === 1 ? 'relative border-amber-400/50 shadow-xl shadow-amber-500/10' : ''}">
+          ${index === 1 ? '<span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gold-gradient text-neutral-950 text-[10px] font-bold uppercase tracking-widest px-4 py-1 rounded-full font-mono">Most popular</span>' : ''}
+          <div>
+            <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400">Package 0${index + 1}</span>
+            <h3 class="text-2xl font-bold text-white mt-2">${escapeHtml(item.name)}</h3>
+            <strong class="text-3xl font-extrabold text-amber-400 mt-4 block font-display">${escapeHtml(item.price)}</strong>
+            <ul class="mt-6 space-y-3 text-xs text-neutral-300">
+              ${item.features.map(feature => `<li class="flex items-center gap-2.5"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400 text-sm flex-shrink-0"></iconify-icon><span>${escapeHtml(feature)}</span></li>`).join('')}
+            </ul>
+          </div>
+          <a href="#contact?intent=project&service=${encodeURIComponent(`${item.name} Wedding Package`)}&source_cta=Wedding%20packages%20section" data-page="contact" class="spa-nav-link inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-6 py-3.5 rounded-full text-xs uppercase tracking-wider mt-8 hover:scale-105 transition-transform w-full text-center">Book ${escapeHtml(item.name)} Package</a>
+        </article>
+      `).join('');
+    };
+
+    renderWeddingSection();
+
     const weddingModal = renderWeddingPackages();
     grid.querySelectorAll('[data-open-wedding-modal]').forEach(btn => {
       btn.addEventListener('click', () => weddingModal.openWeddingPackages());
