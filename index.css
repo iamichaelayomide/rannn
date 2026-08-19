@@ -329,6 +329,34 @@ html.lenis {
   transform: translateY(30px);
 }
 
+/* Emil Design Engineering: Lightweight GPU-accelerated scroll reveals */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 260ms var(--ease-out), transform 260ms var(--ease-out);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-on-scroll.stagger-1 { transition-delay: 40ms; }
+.reveal-on-scroll.stagger-2 { transition-delay: 80ms; }
+.reveal-on-scroll.stagger-3 { transition-delay: 120ms; }
+.reveal-on-scroll.stagger-4 { transition-delay: 160ms; }
+.reveal-on-scroll.stagger-5 { transition-delay: 200ms; }
+.reveal-on-scroll.stagger-6 { transition-delay: 240ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 /* Tab filter transitions */
 .portfolio-item {
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);

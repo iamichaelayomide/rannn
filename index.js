@@ -1194,7 +1194,7 @@ const initBookingPaths = () => {
   });
 };
 
-// GSAP generic scroll reveals
+// GSAP & Emil Design Engineering lightweight scroll reveals
 const initScrollRevealClasses = () => {
   const elements = document.querySelectorAll('.gsap-reveal');
   elements.forEach(el => {
@@ -1210,6 +1210,29 @@ const initScrollRevealClasses = () => {
       }
     });
   });
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.08,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    const observeReveals = () => {
+      document.querySelectorAll('.reveal-on-scroll:not(.is-revealed)').forEach(el => observer.observe(el));
+    };
+
+    observeReveals();
+    window.observeScrollReveals = observeReveals;
+  } else {
+    document.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-revealed'));
+  }
 };
 
 // Hero Title Liquid Warp coordinates tracking

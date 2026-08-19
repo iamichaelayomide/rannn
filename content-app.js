@@ -543,16 +543,31 @@
       { id: 'editorial', label: 'Editorial' },
       { id: 'motion', label: 'Motion Design' }
     ];
-    filters.innerHTML = filterList.map(filter => `<button type="button" class="archive-filter${filter.id === 'all' ? ' active' : ''}" data-filter="${escapeHtml(filter.id)}">${escapeHtml(filter.label)}</button>`).join('');
+
+    const getFilterCount = (catId) => catId === 'all' ? items.length : items.filter(item => item.category === catId).length;
+
+    filters.innerHTML = filterList.map(filter => `
+      <button type="button" class="archive-filter${filter.id === 'all' ? ' active' : ''}" data-filter="${escapeHtml(filter.id)}">
+        <span>${escapeHtml(filter.label)}</span>
+        <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(${getFilterCount(filter.id)})</span>
+      </button>
+    `).join('');
+
     filters.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
       activeFilter = button.dataset.filter;
       visibleCount = 12;
       filters.querySelectorAll('.archive-filter').forEach(item => item.classList.toggle('active', item === button));
       render();
+      window.observeScrollReveals?.();
     }));
-    loadMore.addEventListener('click', () => { visibleCount += 12; render(); });
+    loadMore.addEventListener('click', () => {
+      visibleCount += 12;
+      render();
+      window.observeScrollReveals?.();
+    });
     initPortfolioLightbox(items);
     render();
+    window.observeScrollReveals?.();
   };
 
   const initWhatsAppForms = () => {

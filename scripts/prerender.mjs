@@ -31,7 +31,7 @@ const escapeHtml = value => String(value ?? '')
   .replaceAll("'", '&#039;');
 
 const serviceCardsHtml = content.services.map((service, index) => `
-          <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[310px]">
+          <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[310px] reveal-on-scroll stagger-${(index % 3) + 1}">
             <div class="service-card-icon"><iconify-icon icon="${iconNames[index % iconNames.length]}"></iconify-icon></div>
             <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400 mt-8">Service ${String(index + 1).padStart(2, '0')}</span>
             <h3 class="text-2xl font-bold text-white mt-3">${escapeHtml(service.title)}</h3>
@@ -49,7 +49,7 @@ const serviceCardsHtml = content.services.map((service, index) => `
           </article>`).join('\n');
 
 const weddingPackagesHtml = (content.weddingPackages || []).map((item, index) => `
-            <article class="wedding-package glass-card border-gold-gradient rounded-3xl p-8 flex flex-col justify-between ${index === 1 ? 'relative border-amber-400/50 shadow-xl shadow-amber-500/10' : ''}">
+            <article class="wedding-package glass-card border-gold-gradient rounded-3xl p-8 flex flex-col justify-between reveal-on-scroll stagger-${index + 1} ${index === 1 ? 'relative border-amber-400/50 shadow-xl shadow-amber-500/10' : ''}">
               ${index === 1 ? '<span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gold-gradient text-neutral-950 text-[10px] font-bold uppercase tracking-widest px-4 py-1 rounded-full font-mono">Most popular</span>' : ''}
               <div>
                 <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400">Package 0${index + 1}</span>
@@ -63,7 +63,7 @@ const weddingPackagesHtml = (content.weddingPackages || []).map((item, index) =>
             </article>`).join('\n');
 
 const teamHtml = content.teamMembers.map((member, index) => `
-          <article class="team-card glass-card rounded-3xl overflow-hidden border border-white/10">
+          <article class="team-card glass-card rounded-3xl overflow-hidden border border-white/10 reveal-on-scroll stagger-${(index % 3) + 1}">
             <div class="aspect-[4/5] overflow-hidden bg-neutral-900">
               <img src="${escapeHtml(member.image)}" alt="${escapeHtml(member.name)} — ${escapeHtml(member.role)} at Olympus Atelier" class="w-full h-full object-cover" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/team/photographer.webp'">
             </div>
@@ -87,14 +87,20 @@ const filterList = [
   { id: 'motion', label: 'Motion Design' }
 ];
 
-const filtersHtml = filterList.map(filter => `<button type="button" class="archive-filter${filter.id === 'all' ? ' active' : ''}" data-filter="${escapeHtml(filter.id)}">${escapeHtml(filter.label)}</button>`).join('\n        ');
+const getFilterCount = (catId) => catId === 'all' ? content.portfolioItems.length : content.portfolioItems.filter(item => item.category === catId).length;
 
-const initialPortfolioHtml = content.portfolioItems.slice(0, 12).map(item => {
+const filtersHtml = filterList.map(filter => `
+        <button type="button" class="archive-filter${filter.id === 'all' ? ' active' : ''}" data-filter="${escapeHtml(filter.id)}">
+          <span>${escapeHtml(filter.label)}</span>
+          <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(${getFilterCount(filter.id)})</span>
+        </button>`).join('\n');
+
+const initialPortfolioHtml = content.portfolioItems.slice(0, 12).map((item, index) => {
   const thumb = item.thumbnailSrc || item.thumbnail_src || fallbackImage;
   const mediaType = item.mediaType || item.media_type || 'image';
   const altText = item.alt || item.alt_text || item.title || '';
   return `
-          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="${escapeHtml(item.id)}" aria-label="View ${escapeHtml(item.title)}">
+          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-${(index % 3) + 1}" data-item-id="${escapeHtml(item.id)}" aria-label="View ${escapeHtml(item.title)}">
             <span class="archive-card-media">
               <img src="${escapeHtml(thumb)}" alt="${escapeHtml(altText)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${fallbackImage}'">
               <span class="archive-card-overlay"></span>
@@ -124,7 +130,7 @@ html = html.replace(
 // Replace portfolio-filters
 html = html.replace(
   /<div id="portfolio-filters"[^>]*>[\s\S]*?<\/div>/,
-  `<div id="portfolio-filters" class="flex flex-wrap gap-3 mb-10" aria-label="Filter portfolio">\n        ${filtersHtml}\n        </div>`
+  `<div id="portfolio-filters" class="flex flex-wrap gap-3 mb-10" aria-label="Filter portfolio">\n${filtersHtml}\n        </div>`
 );
 
 // Replace portfolio-grid
@@ -140,4 +146,4 @@ html = html.replace(
 );
 
 fs.writeFileSync('index.html', html);
-console.log('Successfully pre-rendered static content into index.html!');
+console.log('Successfully pre-rendered static content with scroll reveals and category counts into index.html!');
