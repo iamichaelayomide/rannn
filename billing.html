@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Billing &amp; Invoice Generator — Olympus Atelier</title>
-  <meta name="description" content="Generate, preview, print, and share official invoices from Olympus Atelier.">
+  <title>Billing &amp; Accounting Generator — Olympus Atelier</title>
+  <meta name="description" content="Official Olympus Atelier billing generator for invoices, receipts, debit notes, and credit notes with direct PDF downloads and WhatsApp sharing.">
   <link rel="icon" href="assets/olympus-logo.svg" type="image/svg+xml">
 
   <!-- Fonts & Icons -->
@@ -31,15 +31,10 @@
           },
           colors: {
             neutral: {
-              950: '#060606',
-              900: '#0c0c0c',
-              850: '#141414',
-              800: '#1c1c1c',
-            },
-            gold: {
-              400: '#f59e0b',
-              500: '#d97706',
-              600: '#b45309',
+              950: '#050505',
+              900: '#0b0b0b',
+              850: '#121212',
+              800: '#1a1a1a',
             }
           }
         }
@@ -56,7 +51,7 @@
     }
 
     body {
-      background-color: #060606;
+      background-color: #050505;
       color: #f3f4f6;
       font-family: var(--font-sans);
       min-height: 100vh;
@@ -64,17 +59,17 @@
     }
 
     .glass-card {
-      background: rgba(18, 18, 18, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(14, 14, 14, 0.78);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .glass-card-gold {
-      background: rgba(18, 18, 18, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(212, 175, 55, 0.22);
+      background: rgba(14, 14, 14, 0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(212, 175, 55, 0.25);
     }
 
     .glass-input {
@@ -85,65 +80,44 @@
     }
 
     .glass-input:focus {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(212, 175, 55, 0.5);
+      background: rgba(255, 255, 255, 0.065);
+      border-color: rgba(212, 175, 55, 0.55);
       outline: none;
-      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.16);
     }
 
     .bg-gold-gradient {
       background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
     }
 
-    .text-gold-gradient {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .border-gold-gradient {
+      border: 1px solid rgba(212, 175, 55, 0.25);
     }
 
-    /* Print styling: clean white-page document output */
+    .tab-btn.active {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #050505;
+      font-weight: 700;
+    }
+
+    /* Print & PDF styling */
     @media print {
       body {
         background: #ffffff !important;
-        color: #111827 !important;
+        color: #000000 !important;
         padding: 0 !important;
         margin: 0 !important;
       }
-
       .no-print {
         display: none !important;
       }
-
       #invoice-sheet {
         box-shadow: none !important;
         border: none !important;
         padding: 0 !important;
         width: 100% !important;
-        max-width: 100% !important;
         background: #ffffff !important;
-        color: #111827 !important;
-      }
-
-      .print-invert-bg {
-        background: #f9fafb !important;
-        border-color: #e5e7eb !important;
-      }
-
-      .print-text-dark {
-        color: #111827 !important;
-      }
-
-      .print-text-muted {
-        color: #4b5563 !important;
-      }
-
-      .print-border {
-        border-color: #e5e7eb !important;
-      }
-
-      .print-gold-badge {
-        background: #111827 !important;
-        color: #ffffff !important;
+        color: #000000 !important;
       }
     }
   </style>
@@ -165,17 +139,18 @@
           <span class="font-serif font-bold tracking-[0.18em] text-sm uppercase">Olympus Atelier</span>
         </a>
         <span class="text-neutral-600 text-sm">/</span>
-        <span class="text-amber-400 font-mono text-xs uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">Billing &amp; Invoice Generator</span>
+        <span class="text-amber-400 font-mono text-xs uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">Billing &amp; Accounting</span>
       </div>
 
       <div class="flex items-center gap-3">
+        <button id="btn-toggle-history" type="button" class="inline-flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 border border-white/10 text-white text-xs font-semibold px-4 py-2.5 rounded-full transition-all">
+          <iconify-icon icon="solar:history-bold" class="text-base text-amber-400"></iconify-icon>
+          <span>Client &amp; Document History</span>
+          <span id="history-badge" class="bg-amber-500/20 text-amber-400 text-[10px] font-mono px-1.5 py-0.5 rounded-full">0</span>
+        </button>
         <a href="/" class="hidden sm:inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-400 hover:text-white transition-colors px-3 py-2">
-          <span>Back to Site</span>
+          <span>Main Site</span>
           <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon>
-        </a>
-        <a href="https://wa.me/2348087172313" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 border border-white/10 text-white text-xs font-semibold px-4 py-2.5 rounded-full transition-all">
-          <iconify-icon icon="logos:whatsapp-icon" class="text-base"></iconify-icon>
-          <span>WhatsApp Atelier</span>
         </a>
       </div>
     </div>
@@ -183,14 +158,32 @@
 
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 lg:py-12">
 
-    <!-- Top Action Bar -->
-    <div class="no-print flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <!-- Document Mode Switcher & Top Action Bar -->
+    <div class="no-print flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
       <div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-display tracking-tight">Invoice Generator</h1>
-        <p class="text-neutral-400 text-xs sm:text-sm mt-1">Enter client and deliverable details to generate an official invoice, download PDF, or share instantly via WhatsApp.</p>
+        <div class="flex flex-wrap items-center gap-2 mb-3" role="tablist" aria-label="Document Type">
+          <button type="button" class="tab-btn active px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-wider bg-white/5 border border-white/10 transition-all" data-doc-type="invoice">
+            Invoice
+          </button>
+          <button type="button" class="tab-btn px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-wider bg-white/5 border border-white/10 transition-all text-neutral-400 hover:text-white" data-doc-type="receipt">
+            Receipt
+          </button>
+          <button type="button" class="tab-btn px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-wider bg-white/5 border border-white/10 transition-all text-neutral-400 hover:text-white" data-doc-type="debit">
+            Debit Note
+          </button>
+          <button type="button" class="tab-btn px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-wider bg-white/5 border border-white/10 transition-all text-neutral-400 hover:text-white" data-doc-type="credit">
+            Credit Note
+          </button>
+        </div>
+        <p id="doc-type-description" class="text-neutral-400 text-xs sm:text-sm">Generate and track official client invoices with custom deliverables, rates, and settlement instructions.</p>
       </div>
 
+      <!-- Action Buttons -->
       <div class="flex flex-wrap items-center gap-2.5">
+        <button id="btn-save-doc" type="button" class="inline-flex items-center gap-2 bg-neutral-900 border border-white/10 text-neutral-200 font-semibold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:text-white hover:border-amber-400/40 transition-all">
+          <iconify-icon icon="solar:diskette-bold" class="text-base text-amber-400"></iconify-icon>
+          <span>Save Document</span>
+        </button>
         <button id="btn-download-pdf" type="button" class="inline-flex items-center gap-2 bg-white text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:bg-neutral-200 transition-colors shadow-lg shadow-white/5">
           <iconify-icon icon="solar:download-square-bold" class="text-base"></iconify-icon>
           <span>Download PDF</span>
@@ -199,41 +192,73 @@
           <iconify-icon icon="logos:whatsapp-icon" class="text-base"></iconify-icon>
           <span>Send PDF via WhatsApp</span>
         </button>
-        <button id="btn-print" type="button" class="inline-flex items-center gap-2 bg-neutral-900 border border-white/10 text-neutral-300 font-semibold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:text-white hover:border-white/20 transition-all">
-          <iconify-icon icon="solar:printer-bold" class="text-base"></iconify-icon>
-          <span>Print</span>
-        </button>
-        <button id="btn-copy-summary" type="button" class="inline-flex items-center gap-2 bg-neutral-900 border border-white/10 text-neutral-300 font-semibold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:text-white hover:border-white/20 transition-all">
-          <iconify-icon icon="solar:copy-linear" class="text-base"></iconify-icon>
-          <span>Copy Summary</span>
-        </button>
       </div>
     </div>
 
-    <!-- Generator Grid -->
+    <!-- History Drawer (Slide-over Modal) -->
+    <div id="history-drawer" class="no-print fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden transition-opacity">
+      <div class="fixed inset-y-0 right-0 max-w-md w-full bg-neutral-950 border-l border-white/10 p-6 shadow-2xl flex flex-col justify-between overflow-y-auto">
+        <div>
+          <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+            <div class="flex items-center gap-2.5">
+              <iconify-icon icon="solar:history-bold" class="text-amber-400 text-xl"></iconify-icon>
+              <h3 class="text-base font-bold text-white uppercase font-mono tracking-wider">Document History</h3>
+            </div>
+            <button id="btn-close-history" type="button" class="text-neutral-500 hover:text-white p-2 rounded-lg">
+              <iconify-icon icon="solar:close-circle-linear" class="text-xl"></iconify-icon>
+            </button>
+          </div>
+
+          <!-- Search & Filter -->
+          <div class="mb-4 space-y-2">
+            <input id="history-search" type="text" placeholder="Search client name or document #..." class="glass-input w-full px-3.5 py-2.5 rounded-xl text-xs font-mono placeholder-neutral-600">
+            <div class="flex items-center gap-2 text-[10px] font-mono text-neutral-400">
+              <span>Filter:</span>
+              <button type="button" class="history-filter-pill active text-amber-400 font-bold" data-filter="all">All</button>
+              <span>·</span>
+              <button type="button" class="history-filter-pill" data-filter="invoice">Invoices</button>
+              <span>·</span>
+              <button type="button" class="history-filter-pill" data-filter="receipt">Receipts</button>
+            </div>
+          </div>
+
+          <!-- History Item List -->
+          <div id="history-list" class="space-y-3">
+            <!-- Dynamically injected -->
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-white/10 mt-6 flex items-center justify-between text-xs font-mono">
+          <button id="btn-clear-history" type="button" class="text-neutral-500 hover:text-red-400 transition-colors">Clear history</button>
+          <span id="history-count" class="text-neutral-400">0 documents saved</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Workspace Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-      <!-- LEFT: Editor Form Controls (No-Print) -->
+      <!-- LEFT: Editor Form Controls -->
       <div class="no-print lg:col-span-6 space-y-6">
 
-        <!-- 1. Invoice Metadata -->
+        <!-- 1. Metadata -->
         <section class="glass-card rounded-3xl p-6 sm:p-7 space-y-5">
           <div class="flex items-center justify-between border-b border-white/5 pb-4">
             <div class="flex items-center gap-2.5">
               <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-              <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-white">Invoice Information</h2>
+              <h2 id="section-meta-title" class="text-sm font-bold uppercase tracking-wider font-mono text-white">Invoice Information</h2>
             </div>
             <button id="btn-reset" type="button" class="text-[11px] font-mono text-neutral-500 hover:text-amber-400 transition-colors">Reset form</button>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label for="inv-number" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Invoice #</label>
-              <input id="inv-number" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="OLY-2026-001">
+              <label for="doc-number" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Document #</label>
+              <input id="doc-number" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="OLY-INV-001">
             </div>
             <div>
-              <label for="inv-currency" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Currency</label>
-              <select id="inv-currency" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
+              <label for="doc-currency" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Currency</label>
+              <select id="doc-currency" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
                 <option value="NGN">NGN (₦) — Nigerian Naira</option>
                 <option value="USD">USD ($) — US Dollar</option>
                 <option value="GBP">GBP (£) — British Pound</option>
@@ -241,22 +266,43 @@
               </select>
             </div>
             <div>
-              <label for="inv-date" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Issue Date</label>
-              <input id="inv-date" type="date" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
+              <label for="doc-date" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Date Issued</label>
+              <input id="doc-date" type="date" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
             </div>
-            <div>
-              <label for="inv-due-date" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Payment Due Date</label>
-              <input id="inv-due-date" type="date" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
+            <div id="due-date-container">
+              <label for="doc-due-date" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Payment Due Date</label>
+              <input id="doc-due-date" type="date" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
             </div>
           </div>
 
-          <div>
-            <label for="inv-status" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Payment Status</label>
-            <select id="inv-status" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
+          <div id="receipt-details-container" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-white/5 pt-4">
+            <div>
+              <label for="doc-payment-method" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Payment Method</label>
+              <select id="doc-payment-method" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
+                <option value="Direct Bank Transfer">Direct Bank Transfer</option>
+                <option value="Wire Transfer / Swift">Wire Transfer / Swift</option>
+                <option value="Online Card Payment">Online Card Payment</option>
+                <option value="Cash / Cheque">Cash / Cheque</option>
+              </select>
+            </div>
+            <div>
+              <label for="doc-payment-ref" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Transaction Ref / Note</label>
+              <input id="doc-payment-ref" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. TRF-2026-891">
+            </div>
+          </div>
+
+          <div id="reason-container" class="hidden">
+            <label for="doc-reason" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Reason for Adjustment / Note</label>
+            <input id="doc-reason" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. Additional equipment & shoot day extension">
+          </div>
+
+          <div id="status-container">
+            <label for="doc-status" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Status Badge</label>
+            <select id="doc-status" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
               <option value="PENDING PAYMENT">Pending Payment</option>
-              <option value="70% DEPOSIT PAID">70% Deposit Paid (Production Active)</option>
+              <option value="70% DEPOSIT PAID">70% Deposit Paid (In Production)</option>
               <option value="PAID IN FULL">Paid in Full</option>
-              <option value="DRAFT PROPOSAL">Draft Proposal</option>
+              <option value="DRAFT">Draft</option>
             </select>
           </div>
         </section>
@@ -271,7 +317,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2">
               <label for="client-name" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Client Full Name *</label>
-              <input id="client-name" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. Adebayo Ogunlesi" required>
+              <input id="client-name" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. Dr. Adebayo Ogunlesi" required>
             </div>
             <div>
               <label for="client-company" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Company / Organization</label>
@@ -292,23 +338,23 @@
           </div>
         </section>
 
-        <!-- 3. Line Items & Deliverables -->
+        <!-- 3. Deliverables & Line Items -->
         <section class="glass-card rounded-3xl p-6 sm:p-7 space-y-5">
           <div class="flex items-center justify-between border-b border-white/5 pb-4">
             <div class="flex items-center gap-2.5">
               <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-              <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-white">Deliverables &amp; Services</h2>
+              <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-white">Deliverables &amp; Scope</h2>
             </div>
             <div class="flex items-center gap-2">
               <select id="preset-services" class="glass-input px-2.5 py-1.5 rounded-lg text-xs font-mono text-amber-400">
                 <option value="">+ Quick Presets...</option>
-                <option value="Wedding Videography — Silver Coverage|1|250000">Wedding — Silver (₦250k)</option>
-                <option value="Wedding Videography — Gold Coverage|1|400000">Wedding — Gold (₦400k)</option>
-                <option value="Wedding Videography — Platinum Cinema Coverage|1|800000">Wedding — Platinum (₦800k)</option>
-                <option value="Commercial Video Editing & Color Grade|1|150000">Video Editing Alone</option>
-                <option value="Editorial & Campaign Photography Session|1|200000">Photography Session</option>
-                <option value="Brand Identity & Design System|1|300000">Brand Identity System</option>
-                <option value="Full-Day Conference / Event Media Coverage|1|350000">Event Full Coverage</option>
+                <option value="Wedding Videography — Silver Coverage (Full Day Capture, Teaser Reel & Color Grade)|1|250000">Wedding — Silver (₦250k)</option>
+                <option value="Wedding Videography — Gold Coverage (Multi-Cam Capture, Highlight Film & Aerial Drone)|1|400000">Wedding — Gold (₦400k)</option>
+                <option value="Wedding Videography — Platinum Cinema Coverage (Full 3-Day Celebration & 4K Cinema Delivery)|1|800000">Wedding — Platinum (₦800k)</option>
+                <option value="Commercial Video Post-Production, Audio Mastering & DaVinci Color Grade|1|150000">Video Editing Alone</option>
+                <option value="Editorial & Portrait Photography Session (Retouched High-Res Deliverables)|1|200000">Photography Session</option>
+                <option value="Brand Identity, Visual Guidelines & Design System|1|300000">Brand Identity System</option>
+                <option value="Full-Day Conference / Event Media & Highlight Coverage|1|350000">Event Full Coverage</option>
                 <option value="Motion Graphics & 3D Visual Asset Package|1|250000">Motion Design Package</option>
               </select>
             </div>
@@ -328,30 +374,30 @@
         <section class="glass-card rounded-3xl p-6 sm:p-7 space-y-4">
           <div class="flex items-center gap-2.5 border-b border-white/5 pb-4">
             <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-            <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-white">Adjustments &amp; Deposits</h2>
+            <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-white">Adjustments &amp; Payments</h2>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label for="inv-discount" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Discount Amount</label>
-              <input id="inv-discount" type="number" min="0" step="any" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" placeholder="0">
+              <label for="doc-discount" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Discount Amount</label>
+              <input id="doc-discount" type="number" min="0" step="any" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" placeholder="0">
             </div>
             <div>
-              <label for="inv-tax" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Tax / VAT (%)</label>
-              <input id="inv-tax" type="number" min="0" max="100" step="any" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" placeholder="0">
+              <label for="doc-tax" class="block text-xs font-mono uppercase text-neutral-400 mb-2">VAT / Tax (%)</label>
+              <input id="doc-tax" type="number" min="0" max="100" step="any" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" placeholder="0">
             </div>
             <div class="sm:col-span-2">
-              <label for="inv-deposit" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Amount Paid / Deposit</label>
-              <input id="inv-deposit" type="number" min="0" step="any" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" placeholder="0">
+              <label for="doc-deposit" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Amount Paid / Deposit Received</label>
+              <input id="doc-deposit" type="number" min="0" step="any" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" placeholder="0">
             </div>
           </div>
         </section>
 
-        <!-- 5. Bank Account & Terms -->
+        <!-- 5. Bank Account & Settlement Policy -->
         <section class="glass-card rounded-3xl p-6 sm:p-7 space-y-4">
           <div class="flex items-center gap-2.5 border-b border-white/5 pb-4">
             <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-            <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-white">Bank Settlement Details &amp; Terms</h2>
+            <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-white">Bank Settlement &amp; Terms</h2>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -368,8 +414,8 @@
               <input id="bank-beneficiary" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="Olympus Atelier / Michael Ayomide">
             </div>
             <div class="sm:col-span-2">
-              <label for="inv-notes" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Terms &amp; Settlement Notes</label>
-              <textarea id="inv-notes" rows="3" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-xs leading-relaxed font-sans">70% mobilization deposit required prior to production commencement. Remaining 30% balance payable upon preview delivery of watermarked draft. Final high-resolution uncompressed files and cloud drive transfer are released immediately upon full settlement.</textarea>
+              <label for="doc-notes" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Terms &amp; Settlement Policy</label>
+              <textarea id="doc-notes" rows="3" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-xs leading-relaxed font-sans">70% mobilization deposit required prior to production commencement. Remaining 30% balance payable upon preview delivery of watermarked draft. Final high-resolution uncompressed files and cloud drive transfer are released immediately upon full settlement.</textarea>
             </div>
           </div>
         </section>
@@ -377,35 +423,35 @@
       </div>
 
 
-      <!-- RIGHT: Live Document Sheet (Printable Area) -->
+      <!-- RIGHT: Live Document Sheet (Exact Atelier Format) -->
       <div class="lg:col-span-6 sticky top-24">
         
         <div class="no-print flex items-center justify-between mb-3 px-2">
           <span class="text-xs font-mono uppercase tracking-widest text-neutral-400 flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Live Document Preview
+            Authentic Atelier Preview
           </span>
-          <span class="text-[11px] font-mono text-neutral-500">A4 Printable Format</span>
+          <span class="text-[11px] font-mono text-neutral-500">Official A4 Vector Output</span>
         </div>
 
-        <div id="invoice-sheet" class="glass-card-gold rounded-3xl p-6 sm:p-10 shadow-2xl text-neutral-200 transition-all border border-amber-500/20 bg-neutral-950/90 relative overflow-hidden">
+        <div id="invoice-sheet" class="glass-card-gold rounded-3xl p-6 sm:p-10 shadow-2xl text-neutral-200 border border-amber-500/25 bg-neutral-950 relative overflow-hidden">
           
           <!-- Document Background Watermark -->
-          <div class="absolute -right-16 -top-16 opacity-5 pointer-events-none select-none">
+          <div class="absolute -right-12 -top-12 opacity-[0.03] pointer-events-none select-none">
             <img src="assets/olympus-logo.svg" alt="" class="w-96 h-96">
           </div>
 
           <!-- Document Header -->
-          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-6 border-b border-white/10 pb-8 relative z-10 print-border">
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-6 border-b border-white/10 pb-8 relative z-10">
             <div>
               <div class="flex items-center gap-3">
                 <img src="assets/olympus-logo.svg" alt="Olympus Atelier" class="w-10 h-10">
                 <div>
-                  <h3 class="font-serif text-lg sm:text-xl font-extrabold uppercase tracking-[0.16em] text-white print-text-dark">Olympus Atelier</h3>
-                  <p class="text-[10px] font-mono uppercase tracking-widest text-amber-400 print-text-muted">Film · Photography · Brand Systems</p>
+                  <h3 class="font-serif text-lg sm:text-xl font-extrabold uppercase tracking-[0.16em] text-white">Olympus Atelier</h3>
+                  <p class="text-[10px] font-mono uppercase tracking-widest text-amber-400">Film · Photography · Brand Systems</p>
                 </div>
               </div>
-              <div class="text-[11px] text-neutral-400 mt-4 space-y-0.5 print-text-muted">
+              <div class="text-[11px] text-neutral-400 mt-4 space-y-0.5">
                 <p>Lagos, Nigeria · Global Commissions</p>
                 <p>hello@theolympusatelier.com · +234 808 717 2313</p>
                 <p class="font-mono text-[10px] text-neutral-500">Registered Enterprise · RC 7445892</p>
@@ -413,82 +459,97 @@
             </div>
 
             <div class="sm:text-right">
-              <span id="preview-badge-status" class="inline-block font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 mb-3 print-gold-badge">
+              <span id="preview-badge-status" class="inline-block font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 mb-3">
                 PENDING PAYMENT
               </span>
-              <h2 class="text-3xl font-extrabold text-white font-display tracking-tight print-text-dark">INVOICE</h2>
-              <p id="preview-inv-number" class="text-sm font-mono text-amber-400 font-semibold mt-1 print-text-dark">OLY-2026-001</p>
+              <h2 id="preview-doc-title" class="text-3xl font-extrabold text-white font-display tracking-tight">INVOICE</h2>
+              <p id="preview-doc-number" class="text-sm font-mono text-amber-400 font-semibold mt-1">OLY-INV-001</p>
             </div>
           </div>
 
           <!-- Document Meta & Client Box -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 py-6 border-b border-white/10 relative z-10 print-border text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 py-6 border-b border-white/10 relative z-10 text-xs">
             <div>
-              <span class="font-mono text-[10px] uppercase tracking-widest text-amber-400 block mb-1.5 print-text-muted">Billed To:</span>
-              <h4 id="preview-client-name" class="text-base font-bold text-white print-text-dark">Client Name</h4>
-              <p id="preview-client-company" class="text-neutral-300 font-medium print-text-dark"></p>
-              <p id="preview-client-phone" class="text-neutral-400 mt-1 print-text-muted"></p>
-              <p id="preview-client-email" class="text-neutral-400 print-text-muted"></p>
-              <p id="preview-client-address" class="text-neutral-400 print-text-muted"></p>
+              <span class="font-mono text-[10px] uppercase tracking-widest text-amber-400 block mb-1.5">CLIENT</span>
+              <h4 id="preview-client-name" class="text-base font-bold text-white">Client Name</h4>
+              <p id="preview-client-company" class="text-neutral-300 font-medium"></p>
+              <p id="preview-client-phone" class="text-neutral-400 mt-1"></p>
+              <p id="preview-client-email" class="text-neutral-400"></p>
+              <p id="preview-client-address" class="text-neutral-400"></p>
             </div>
 
             <div class="sm:text-right space-y-1.5 font-mono text-[11px]">
               <div class="flex sm:justify-end gap-3">
-                <span class="text-neutral-500 print-text-muted">Issue Date:</span>
-                <span id="preview-inv-date" class="text-white font-semibold print-text-dark">-</span>
+                <span class="text-neutral-500">DOCUMENT NO.</span>
+                <span id="preview-doc-number-meta" class="text-white font-bold">OLY-INV-001</span>
               </div>
               <div class="flex sm:justify-end gap-3">
-                <span class="text-neutral-500 print-text-muted">Due Date:</span>
-                <span id="preview-inv-due-date" class="text-white font-semibold print-text-dark">-</span>
+                <span class="text-neutral-500">DATE:</span>
+                <span id="preview-doc-date" class="text-white font-semibold">-</span>
+              </div>
+              <div id="preview-due-date-row" class="flex sm:justify-end gap-3">
+                <span class="text-neutral-500">DUE DATE:</span>
+                <span id="preview-doc-due-date" class="text-white font-semibold">-</span>
+              </div>
+              <div id="preview-payment-method-row" class="flex sm:justify-end gap-3 hidden">
+                <span class="text-neutral-500">METHOD:</span>
+                <span id="preview-payment-method" class="text-emerald-400 font-semibold">Direct Bank Transfer</span>
               </div>
               <div class="flex sm:justify-end gap-3">
-                <span class="text-neutral-500 print-text-muted">Currency:</span>
-                <span id="preview-inv-currency" class="text-amber-400 font-semibold print-text-dark">NGN (₦)</span>
+                <span class="text-neutral-500">CURRENCY:</span>
+                <span id="preview-doc-currency" class="text-amber-400 font-semibold">NGN (₦)</span>
               </div>
             </div>
           </div>
 
+          <!-- Reason / Adjustment Line (Debit / Credit Notes) -->
+          <div id="preview-reason-box" class="py-4 border-b border-white/10 relative z-10 text-xs hidden">
+            <span class="font-mono text-[10px] uppercase tracking-widest text-amber-400 block mb-1">REASON / SCOPE ADJUSTMENT</span>
+            <p id="preview-reason" class="text-neutral-300 font-sans"></p>
+          </div>
+
           <!-- Deliverables Table -->
-          <div class="py-6 border-b border-white/10 relative z-10 print-border overflow-x-auto">
+          <div class="py-6 border-b border-white/10 relative z-10 overflow-x-auto">
             <table class="w-full text-left text-xs">
               <thead>
-                <tr class="border-b border-white/10 text-neutral-400 font-mono text-[10px] uppercase tracking-wider print-border print-text-muted">
-                  <th class="py-2.5 pr-4 font-semibold">Description</th>
-                  <th class="py-2.5 px-3 text-center font-semibold">Qty</th>
-                  <th class="py-2.5 px-3 text-right font-semibold">Rate</th>
-                  <th class="py-2.5 pl-3 text-right font-semibold">Amount</th>
+                <tr class="border-b border-white/10 text-neutral-400 font-mono text-[10px] uppercase tracking-wider">
+                  <th class="py-2.5 pr-2 font-semibold w-8">ITEM</th>
+                  <th class="py-2.5 px-3 font-semibold">DELIVERABLES</th>
+                  <th class="py-2.5 px-3 text-center font-semibold w-12">QTY</th>
+                  <th class="py-2.5 px-3 text-right font-semibold">PRICE</th>
+                  <th class="py-2.5 pl-3 text-right font-semibold">AMOUNT</th>
                 </tr>
               </thead>
-              <tbody id="preview-items-body" class="divide-y divide-white/5 font-sans print-border">
+              <tbody id="preview-items-body" class="divide-y divide-white/5 font-sans">
                 <!-- Preview items inserted here -->
               </tbody>
             </table>
           </div>
 
           <!-- Totals Summary -->
-          <div class="py-6 border-b border-white/10 relative z-10 print-border flex justify-end">
+          <div class="py-6 border-b border-white/10 relative z-10 flex justify-end">
             <div class="w-full sm:w-72 space-y-2 text-xs font-mono">
-              <div class="flex justify-between text-neutral-400 print-text-muted">
+              <div class="flex justify-between text-neutral-400">
                 <span>Subtotal</span>
-                <span id="preview-subtotal" class="text-white font-medium print-text-dark">₦0.00</span>
+                <span id="preview-subtotal" class="text-white font-medium">₦0.00</span>
               </div>
               <div id="preview-discount-row" class="flex justify-between text-emerald-400 hidden">
                 <span>Discount</span>
                 <span id="preview-discount">-₦0.00</span>
               </div>
-              <div id="preview-tax-row" class="flex justify-between text-neutral-400 hidden print-text-muted">
-                <span>Tax / VAT</span>
+              <div id="preview-tax-row" class="flex justify-between text-neutral-400 hidden">
+                <span>VAT / Tax</span>
                 <span id="preview-tax">+₦0.00</span>
               </div>
-              <div class="border-t border-white/10 pt-2 flex justify-between text-sm font-bold text-white print-border print-text-dark">
-                <span>Total Due</span>
-                <span id="preview-grand-total" class="text-amber-400 print-text-dark font-display text-base">₦0.00</span>
+              <div class="border-t border-white/10 pt-2 flex justify-between text-sm font-bold text-white">
+                <span id="preview-total-label">Total Amount</span>
+                <span id="preview-grand-total" class="text-amber-400 font-display text-base">₦0.00</span>
               </div>
-              <div id="preview-deposit-row" class="flex justify-between text-neutral-400 hidden pt-1 print-text-muted">
+              <div id="preview-deposit-row" class="flex justify-between text-neutral-400 hidden pt-1">
                 <span>Amount Paid</span>
                 <span id="preview-deposit" class="text-emerald-400">₦0.00</span>
               </div>
-              <div id="preview-balance-row" class="border-t border-dashed border-white/10 pt-2 flex justify-between text-xs font-bold text-amber-300 hidden print-border print-text-dark">
+              <div id="preview-balance-row" class="border-t border-dashed border-white/10 pt-2 flex justify-between text-xs font-bold text-amber-300 hidden">
                 <span>Balance Remaining</span>
                 <span id="preview-balance">₦0.00</span>
               </div>
@@ -497,32 +558,32 @@
 
           <!-- Bank & Terms Settlement -->
           <div class="pt-6 relative z-10 space-y-4 text-xs">
-            <div class="bg-white/5 rounded-2xl p-4 border border-white/5 print-invert-bg print-border">
-              <span class="font-mono text-[10px] uppercase tracking-widest text-amber-400 block mb-2 print-text-muted">Official Payment Account:</span>
+            <div class="bg-white/5 rounded-2xl p-4 border border-white/5">
+              <span class="font-mono text-[10px] uppercase tracking-widest text-amber-400 block mb-2">OFFICIAL SETTLEMENT ACCOUNT</span>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 font-mono text-[11px]">
                 <div>
-                  <span class="text-neutral-500 block text-[9px] uppercase print-text-muted">Bank</span>
-                  <strong id="preview-bank-name" class="text-white print-text-dark">OPay / Zenith Bank</strong>
+                  <span class="text-neutral-500 block text-[9px] uppercase">Bank</span>
+                  <strong id="preview-bank-name" class="text-white">OPay / Zenith Bank</strong>
                 </div>
                 <div>
-                  <span class="text-neutral-500 block text-[9px] uppercase print-text-muted">Account Number</span>
-                  <strong id="preview-bank-account" class="text-amber-400 print-text-dark font-bold text-sm">8087172313</strong>
+                  <span class="text-neutral-500 block text-[9px] uppercase">Account Number</span>
+                  <strong id="preview-bank-account" class="text-amber-400 font-bold text-sm">8087172313</strong>
                 </div>
                 <div>
-                  <span class="text-neutral-500 block text-[9px] uppercase print-text-muted">Beneficiary</span>
-                  <strong id="preview-bank-beneficiary" class="text-white print-text-dark">Michael Ayomide / Olympus</strong>
+                  <span class="text-neutral-500 block text-[9px] uppercase">Beneficiary</span>
+                  <strong id="preview-bank-beneficiary" class="text-white">Michael Ayomide / Olympus</strong>
                 </div>
               </div>
             </div>
 
-            <div class="text-[11px] text-neutral-400 leading-relaxed print-text-muted">
-              <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-1 print-text-muted">Terms &amp; Conditions:</span>
+            <div class="text-[11px] text-neutral-400 leading-relaxed">
+              <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-1">PAYMENT POLICY &amp; TERMS:</span>
               <p id="preview-notes">70% mobilization deposit required prior to production commencement. Remaining 30% balance payable upon preview delivery of watermarked draft.</p>
             </div>
 
-            <div class="pt-4 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[10px] font-mono text-neutral-500 print-border print-text-muted">
-              <span>Thank you for choosing Olympus Atelier.</span>
-              <span>Authorized Signature: <strong class="text-neutral-300 font-serif print-text-dark">Olympus Atelier Executive Direction</strong></span>
+            <div class="pt-4 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[10px] font-mono text-neutral-500">
+              <span>Olympus Atelier · Executive Production Direction</span>
+              <span>Lagos, Nigeria · +234 808 717 2313</span>
             </div>
           </div>
 
@@ -536,7 +597,10 @@
 
   <script>
     (() => {
-      // Currency formatting helpers
+      const STORAGE_KEY = 'olympus_atelier_billing_history_v1';
+
+      let currentDocType = 'invoice'; // 'invoice', 'receipt', 'debit', 'credit'
+
       const currencySymbols = {
         NGN: '₦',
         USD: '$',
@@ -563,11 +627,11 @@
         }, 3200);
       };
 
-      // State
+      // State items
       let items = [
         {
           id: 'item-1',
-          description: 'Wedding Videography — Gold Coverage (Full Day Capture, Highlight Film & Color Grade)',
+          description: 'Wedding Videography — Gold Coverage (Multi-Cam Capture, Highlight Film & Aerial Drone)',
           quantity: 1,
           rate: 400000
         }
@@ -579,10 +643,17 @@
         dueDate.setDate(today.getDate() + 7);
 
         const formatDateInput = (d) => d.toISOString().split('T')[0];
-        document.getElementById('inv-date').value = formatDateInput(today);
-        document.getElementById('inv-due-date').value = formatDateInput(dueDate);
+        document.getElementById('doc-date').value = formatDateInput(today);
+        document.getElementById('doc-due-date').value = formatDateInput(dueDate);
       };
 
+      const escapeHtml = (str) => String(str ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;');
+
+      // Render line items input
       const renderLineItemsInput = () => {
         const container = document.getElementById('line-items-container');
         if (!container) return;
@@ -610,7 +681,7 @@
           </div>
         `).join('');
 
-        // Bind input listeners
+        // Event listeners
         container.querySelectorAll('.item-desc').forEach((input, i) => {
           input.addEventListener('input', (e) => {
             items[i].description = e.target.value;
@@ -638,18 +709,75 @@
         });
       };
 
-      const escapeHtml = (str) => String(str ?? '')
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;');
+      const setDocType = (type) => {
+        currentDocType = type;
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.docType === type);
+        });
+
+        const titleMap = {
+          invoice: 'INVOICE',
+          receipt: 'RECEIPT',
+          debit: 'DEBIT NOTE',
+          credit: 'CREDIT NOTE'
+        };
+
+        const prefixMap = {
+          invoice: 'OLY-INV',
+          receipt: 'OLY-REC',
+          debit: 'OLY-DEB',
+          credit: 'OLY-CRD'
+        };
+
+        const descMap = {
+          invoice: 'Generate and track official client invoices with custom deliverables, rates, and settlement instructions.',
+          receipt: 'Issue an official payment receipt acknowledging funds received for a project or wedding package.',
+          debit: 'Issue a debit note for project scope additions, overtime, or extra production assets.',
+          credit: 'Issue a credit note for discounts, fee waivers, or scope adjustments.'
+        };
+
+        document.getElementById('doc-type-description').textContent = descMap[type] || '';
+        document.getElementById('preview-doc-title').textContent = titleMap[type] || 'DOCUMENT';
+        document.getElementById('section-meta-title').textContent = `${titleMap[type]} Information`;
+
+        // Update default doc number prefix if default
+        const docNumInput = document.getElementById('doc-number');
+        if (/^OLY-(INV|REC|DEB|CRD)-\d+$/i.test(docNumInput.value) || docNumInput.value.startsWith('OLY-')) {
+          docNumInput.value = `${prefixMap[type]}-${String(Date.now()).slice(-4)}`;
+        }
+
+        const isReceipt = type === 'receipt';
+        const isNote = type === 'debit' || type === 'credit';
+
+        document.getElementById('due-date-container').classList.toggle('hidden', isReceipt);
+        document.getElementById('receipt-details-container').classList.toggle('hidden', !isReceipt);
+        document.getElementById('reason-container').classList.toggle('hidden', !isNote);
+        document.getElementById('status-container').classList.toggle('hidden', isReceipt);
+
+        document.getElementById('preview-due-date-row').classList.toggle('hidden', isReceipt);
+        document.getElementById('preview-payment-method-row').classList.toggle('hidden', !isReceipt);
+        document.getElementById('preview-reason-box').classList.toggle('hidden', !isNote);
+
+        if (isReceipt) {
+          document.getElementById('doc-status').value = 'PAID IN FULL';
+          document.getElementById('preview-badge-status').textContent = 'PAYMENT RECEIVED';
+          document.getElementById('preview-total-label').textContent = 'Total Amount Received';
+        } else {
+          document.getElementById('preview-total-label').textContent = 'Total Amount';
+        }
+
+        updatePreview();
+      };
 
       const updatePreview = () => {
-        const currency = document.getElementById('inv-currency').value || 'NGN';
-        const invNumber = document.getElementById('inv-number').value.trim() || 'OLY-2026-001';
-        const status = document.getElementById('inv-status').value || 'PENDING PAYMENT';
-        const date = document.getElementById('inv-date').value;
-        const dueDate = document.getElementById('inv-due-date').value;
+        const currency = document.getElementById('doc-currency').value || 'NGN';
+        const docNumber = document.getElementById('doc-number').value.trim() || 'OLY-INV-001';
+        const status = document.getElementById('doc-status').value || 'PENDING PAYMENT';
+        const date = document.getElementById('doc-date').value;
+        const dueDate = document.getElementById('doc-due-date').value;
+        const paymentMethod = document.getElementById('doc-payment-method').value;
+        const paymentRef = document.getElementById('doc-payment-ref').value.trim();
+        const reason = document.getElementById('doc-reason').value.trim();
 
         const clientName = document.getElementById('client-name').value.trim() || 'Client / Recipient Name';
         const clientCompany = document.getElementById('client-company').value.trim();
@@ -657,21 +785,26 @@
         const clientEmail = document.getElementById('client-email').value.trim();
         const clientAddress = document.getElementById('client-address').value.trim();
 
-        const discountVal = Number(document.getElementById('inv-discount').value || 0);
-        const taxRate = Number(document.getElementById('inv-tax').value || 0);
-        const depositVal = Number(document.getElementById('inv-deposit').value || 0);
+        const discountVal = Number(document.getElementById('doc-discount').value || 0);
+        const taxRate = Number(document.getElementById('doc-tax').value || 0);
+        const depositVal = Number(document.getElementById('doc-deposit').value || 0);
 
         const bankName = document.getElementById('bank-name').value.trim();
         const bankAccount = document.getElementById('bank-account').value.trim();
         const bankBeneficiary = document.getElementById('bank-beneficiary').value.trim();
-        const notes = document.getElementById('inv-notes').value.trim();
+        const notes = document.getElementById('doc-notes').value.trim();
 
-        // Update headers & meta
-        document.getElementById('preview-inv-number').textContent = invNumber;
-        document.getElementById('preview-badge-status').textContent = status;
-        document.getElementById('preview-inv-currency').textContent = `${currency} (${currencySymbols[currency] || ''})`;
-        document.getElementById('preview-inv-date').textContent = date ? new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
-        document.getElementById('preview-inv-due-date').textContent = dueDate ? new Date(dueDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
+        // Meta headers
+        document.getElementById('preview-doc-number').textContent = docNumber;
+        document.getElementById('preview-doc-number-meta').textContent = docNumber;
+        if (currentDocType !== 'receipt') {
+          document.getElementById('preview-badge-status').textContent = status;
+        }
+        document.getElementById('preview-doc-currency').textContent = `${currency} (${currencySymbols[currency] || ''})`;
+        document.getElementById('preview-doc-date').textContent = date ? new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
+        document.getElementById('preview-doc-due-date').textContent = dueDate ? new Date(dueDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
+        document.getElementById('preview-payment-method').textContent = `${paymentMethod}${paymentRef ? ` (Ref: ${paymentRef})` : ''}`;
+        document.getElementById('preview-reason').textContent = reason || 'No specific adjustment reason given.';
 
         // Client
         document.getElementById('preview-client-name').textContent = clientName;
@@ -683,15 +816,16 @@
         // Render table
         let subtotal = 0;
         const tbody = document.getElementById('preview-items-body');
-        tbody.innerHTML = items.map(item => {
+        tbody.innerHTML = items.map((item, idx) => {
           const rowTotal = (Number(item.quantity) || 0) * (Number(item.rate) || 0);
           subtotal += rowTotal;
           return `
             <tr class="hover:bg-white/5 transition-colors">
-              <td class="py-3 pr-4 text-white print-text-dark font-medium leading-relaxed">${escapeHtml(item.description || 'Deliverable / Service')}</td>
-              <td class="py-3 px-3 text-center text-neutral-400 print-text-dark font-mono">${item.quantity || 1}</td>
-              <td class="py-3 px-3 text-right text-neutral-400 print-text-dark font-mono">${formatMoney(item.rate, currency)}</td>
-              <td class="py-3 pl-3 text-right text-amber-300 print-text-dark font-mono font-semibold">${formatMoney(rowTotal, currency)}</td>
+              <td class="py-3 pr-2 text-neutral-500 font-mono text-[10px]">${String(idx + 1).padStart(2, '0')}</td>
+              <td class="py-3 px-3 text-white font-medium leading-relaxed">${escapeHtml(item.description || 'Deliverable / Service')}</td>
+              <td class="py-3 px-3 text-center text-neutral-400 font-mono">${item.quantity || 1}</td>
+              <td class="py-3 px-3 text-right text-neutral-400 font-mono">${formatMoney(item.rate, currency)}</td>
+              <td class="py-3 pl-3 text-right text-amber-300 font-mono font-semibold">${formatMoney(rowTotal, currency)}</td>
             </tr>
           `;
         }).join('');
@@ -725,7 +859,7 @@
 
         const depositRow = document.getElementById('preview-deposit-row');
         const balanceRow = document.getElementById('preview-balance-row');
-        if (depositVal > 0) {
+        if (depositVal > 0 && currentDocType !== 'receipt') {
           depositRow.classList.remove('hidden');
           document.getElementById('preview-deposit').textContent = formatMoney(depositVal, currency);
 
@@ -743,13 +877,324 @@
         document.getElementById('preview-notes').textContent = notes || 'Thank you for choosing Olympus Atelier.';
       };
 
-      // Form bindings
+      // History Management
+      const getHistory = () => {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        } catch {
+          return [];
+        }
+      };
+
+      const saveToHistory = () => {
+        const docNumber = document.getElementById('doc-number').value.trim() || `OLY-${Date.now()}`;
+        const clientName = document.getElementById('client-name').value.trim() || 'Client';
+        const clientCompany = document.getElementById('client-company').value.trim();
+        const clientPhone = document.getElementById('client-phone').value.trim();
+        const clientEmail = document.getElementById('client-email').value.trim();
+        const clientAddress = document.getElementById('client-address').value.trim();
+        const currency = document.getElementById('doc-currency').value || 'NGN';
+        const date = document.getElementById('doc-date').value;
+        const dueDate = document.getElementById('doc-due-date').value;
+        const status = document.getElementById('doc-status').value;
+        const paymentMethod = document.getElementById('doc-payment-method').value;
+        const paymentRef = document.getElementById('doc-payment-ref').value;
+        const reason = document.getElementById('doc-reason').value;
+        const discount = Number(document.getElementById('doc-discount').value || 0);
+        const tax = Number(document.getElementById('doc-tax').value || 0);
+        const deposit = Number(document.getElementById('doc-deposit').value || 0);
+
+        let subtotal = 0;
+        items.forEach(it => { subtotal += (Number(it.quantity) || 0) * (Number(it.rate) || 0); });
+        const total = Math.max(0, subtotal - discount) * (1 + tax / 100);
+
+        const docRecord = {
+          id: `doc-${Date.now()}`,
+          type: currentDocType,
+          docNumber,
+          clientName,
+          clientCompany,
+          clientPhone,
+          clientEmail,
+          clientAddress,
+          currency,
+          date,
+          dueDate,
+          status,
+          paymentMethod,
+          paymentRef,
+          reason,
+          discount,
+          tax,
+          deposit,
+          items: JSON.parse(JSON.stringify(items)),
+          total,
+          updatedAt: new Date().toISOString()
+        };
+
+        const list = getHistory();
+        const existingIdx = list.findIndex(d => d.docNumber === docNumber);
+        if (existingIdx >= 0) {
+          list[existingIdx] = docRecord;
+        } else {
+          list.unshift(docRecord);
+        }
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+        updateHistoryUI();
+        showToast(`Saved ${currentDocType.toUpperCase()} (${docNumber}) to history!`);
+      };
+
+      const loadFromHistory = (doc) => {
+        setDocType(doc.type || 'invoice');
+        document.getElementById('doc-number').value = doc.docNumber || '';
+        document.getElementById('client-name').value = doc.clientName || '';
+        document.getElementById('client-company').value = doc.clientCompany || '';
+        document.getElementById('client-phone').value = doc.clientPhone || '';
+        document.getElementById('client-email').value = doc.clientEmail || '';
+        document.getElementById('client-address').value = doc.clientAddress || '';
+        document.getElementById('doc-currency').value = doc.currency || 'NGN';
+        document.getElementById('doc-date').value = doc.date || '';
+        document.getElementById('doc-due-date').value = doc.dueDate || '';
+        document.getElementById('doc-status').value = doc.status || 'PENDING PAYMENT';
+        document.getElementById('doc-payment-method').value = doc.paymentMethod || 'Direct Bank Transfer';
+        document.getElementById('doc-payment-ref').value = doc.paymentRef || '';
+        document.getElementById('doc-reason').value = doc.reason || '';
+        document.getElementById('doc-discount').value = doc.discount || '';
+        document.getElementById('doc-tax').value = doc.tax || '';
+        document.getElementById('doc-deposit').value = doc.deposit || '';
+
+        if (Array.isArray(doc.items) && doc.items.length) {
+          items = JSON.parse(JSON.stringify(doc.items));
+        }
+
+        renderLineItemsInput();
+        updatePreview();
+        document.getElementById('history-drawer').classList.add('hidden');
+        showToast(`Loaded ${doc.docNumber} (${doc.clientName})`);
+      };
+
+      const convertInvoiceToReceipt = (invDoc) => {
+        setDocType('receipt');
+        document.getElementById('doc-number').value = `OLY-REC-${String(Date.now()).slice(-4)}`;
+        document.getElementById('client-name').value = invDoc.clientName || '';
+        document.getElementById('client-company').value = invDoc.clientCompany || '';
+        document.getElementById('client-phone').value = invDoc.clientPhone || '';
+        document.getElementById('client-email').value = invDoc.clientEmail || '';
+        document.getElementById('client-address').value = invDoc.clientAddress || '';
+        document.getElementById('doc-currency').value = invDoc.currency || 'NGN';
+        document.getElementById('doc-date').value = new Date().toISOString().split('T')[0];
+        document.getElementById('doc-status').value = 'PAID IN FULL';
+        document.getElementById('doc-payment-method').value = 'Direct Bank Transfer';
+        document.getElementById('doc-payment-ref').value = `Settlement for ${invDoc.docNumber}`;
+        document.getElementById('doc-discount').value = invDoc.discount || '';
+        document.getElementById('doc-tax').value = invDoc.tax || '';
+        document.getElementById('doc-deposit').value = invDoc.total || '';
+
+        if (Array.isArray(invDoc.items)) {
+          items = JSON.parse(JSON.stringify(invDoc.items));
+        }
+
+        renderLineItemsInput();
+        updatePreview();
+        document.getElementById('history-drawer').classList.add('hidden');
+        showToast(`Converted ${invDoc.docNumber} to Receipt!`);
+      };
+
+      const updateHistoryUI = () => {
+        const list = getHistory();
+        const countBadge = document.getElementById('history-badge');
+        const countFooter = document.getElementById('history-count');
+        const container = document.getElementById('history-list');
+        const searchTerm = (document.getElementById('history-search')?.value || '').toLowerCase().trim();
+        const activeFilter = document.querySelector('.history-filter-pill.active')?.dataset.filter || 'all';
+
+        if (countBadge) countBadge.textContent = list.length;
+        if (countFooter) countFooter.textContent = `${list.length} document${list.length === 1 ? '' : 's'} saved`;
+
+        if (!container) return;
+
+        const filtered = list.filter(item => {
+          const matchesSearch = !searchTerm ||
+            item.clientName?.toLowerCase().includes(searchTerm) ||
+            item.docNumber?.toLowerCase().includes(searchTerm) ||
+            item.clientCompany?.toLowerCase().includes(searchTerm);
+
+          const matchesFilter = activeFilter === 'all' || item.type === activeFilter;
+          return matchesSearch && matchesFilter;
+        });
+
+        if (!filtered.length) {
+          container.innerHTML = `
+            <div class="text-center py-10 text-neutral-500 font-mono text-xs">
+              <iconify-icon icon="solar:folder-open-linear" class="text-3xl mb-2 block"></iconify-icon>
+              <span>No documents found</span>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = filtered.map(item => `
+          <div class="glass-card rounded-2xl p-4 border border-white/5 hover:border-amber-400/30 transition-all space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                item.type === 'receipt' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                item.type === 'invoice' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
+                'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+              }">${item.type}</span>
+              <span class="text-[10px] font-mono text-neutral-500">${item.date || ''}</span>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-white">${escapeHtml(item.clientName)}</h4>
+              ${item.clientCompany ? `<p class="text-xs text-neutral-400">${escapeHtml(item.clientCompany)}</p>` : ''}
+              <div class="flex items-center justify-between mt-1 font-mono text-xs">
+                <span class="text-amber-400 font-semibold">${item.docNumber}</span>
+                <strong class="text-white">${formatMoney(item.total, item.currency)}</strong>
+              </div>
+            </div>
+            <div class="pt-2 border-t border-white/5 flex items-center justify-between gap-1 text-[11px] font-mono">
+              <button type="button" class="btn-load-doc text-neutral-300 hover:text-white flex items-center gap-1 py-1 px-2 rounded hover:bg-white/5" data-num="${item.docNumber}">
+                <iconify-icon icon="solar:pen-linear"></iconify-icon> Edit
+              </button>
+              ${item.type === 'invoice' ? `
+                <button type="button" class="btn-make-receipt text-emerald-400 hover:text-emerald-300 flex items-center gap-1 py-1 px-2 rounded hover:bg-emerald-500/10" data-num="${item.docNumber}">
+                  <iconify-icon icon="solar:bill-check-bold"></iconify-icon> Receipt
+                </button>
+              ` : ''}
+              <button type="button" class="btn-delete-doc text-neutral-500 hover:text-red-400 p-1 rounded" data-num="${item.docNumber}">
+                <iconify-icon icon="solar:trash-bin-trash-linear"></iconify-icon>
+              </button>
+            </div>
+          </div>
+        `).join('');
+
+        // Bind history item buttons
+        container.querySelectorAll('.btn-load-doc').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const found = list.find(d => d.docNumber === btn.dataset.num);
+            if (found) loadFromHistory(found);
+          });
+        });
+
+        container.querySelectorAll('.btn-make-receipt').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const found = list.find(d => d.docNumber === btn.dataset.num);
+            if (found) convertInvoiceToReceipt(found);
+          });
+        });
+
+        container.querySelectorAll('.btn-delete-doc').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (confirm(`Delete document ${btn.dataset.num}?`)) {
+              const updated = list.filter(d => d.docNumber !== btn.dataset.num);
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+              updateHistoryUI();
+              showToast('Document removed from history');
+            }
+          });
+        });
+      };
+
+      // Direct PDF Generator (Streams file download without browser print pop-up)
+      const downloadPdf = async () => {
+        const docNumber = document.getElementById('doc-number').value.trim() || 'OLY-DOC-001';
+        const filename = `Olympus-${currentDocType.toUpperCase()}-${docNumber}.pdf`;
+        showToast(`Generating high-resolution ${currentDocType.toUpperCase()} PDF...`);
+
+        try {
+          const element = document.getElementById('invoice-sheet');
+          const opt = {
+            margin: [8, 8, 8, 8],
+            filename: filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: '#050505' },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+          };
+          await html2pdf().set(opt).from(element).save();
+          showToast('PDF downloaded directly to device!');
+          saveToHistory();
+        } catch (err) {
+          console.error('PDF download error:', err);
+          showToast('Direct PDF export failed. Opening print format...');
+          window.print();
+        }
+      };
+
+      // Generate PDF Blob for Web Share
+      const generatePdfBlob = async () => {
+        const element = document.getElementById('invoice-sheet');
+        const docNumber = document.getElementById('doc-number').value.trim() || 'OLY-DOC-001';
+        const filename = `Olympus-${currentDocType.toUpperCase()}-${docNumber}.pdf`;
+
+        const opt = {
+          margin: [8, 8, 8, 8],
+          filename: filename,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: '#050505' },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        return await html2pdf().set(opt).from(element).output('blob');
+      };
+
+      // Plain-text WhatsApp summary builder
+      const buildWhatsAppSummary = () => {
+        const currency = document.getElementById('doc-currency').value || 'NGN';
+        const docNumber = document.getElementById('doc-number').value.trim() || 'OLY-DOC-001';
+        const clientName = document.getElementById('client-name').value.trim() || 'Client';
+        const dueDate = document.getElementById('doc-due-date').value;
+        const bankName = document.getElementById('bank-name').value.trim() || 'OPay';
+        const bankAccount = document.getElementById('bank-account').value.trim() || '8087172313';
+        const bankBeneficiary = document.getElementById('bank-beneficiary').value.trim() || 'Olympus Atelier';
+
+        let subtotal = 0;
+        const itemLines = items.map((it, idx) => {
+          const rowTotal = (Number(it.quantity) || 0) * (Number(it.rate) || 0);
+          subtotal += rowTotal;
+          return `${idx + 1}. *${it.description}* (Qty: ${it.quantity}) — ${formatMoney(rowTotal, currency)}`;
+        });
+
+        const discountVal = Number(document.getElementById('doc-discount').value || 0);
+        const taxRate = Number(document.getElementById('doc-tax').value || 0);
+        const depositVal = Number(document.getElementById('doc-deposit').value || 0);
+        const grandTotal = Math.max(0, subtotal - discountVal) * (1 + taxRate / 100);
+        const balance = Math.max(0, grandTotal - depositVal);
+
+        const titleText = currentDocType === 'receipt' ? 'OFFICIAL PAYMENT RECEIPT' :
+          currentDocType === 'debit' ? 'OFFICIAL DEBIT NOTE' :
+          currentDocType === 'credit' ? 'OFFICIAL CREDIT NOTE' : 'OFFICIAL INVOICE';
+
+        const lines = [
+          `🏛️ *OLYMPUS ATELIER — ${titleText}*`,
+          `📄 *Document Ref:* ${docNumber}`,
+          `👤 *Client:* ${clientName}`,
+          currentDocType !== 'receipt' ? `📅 *Due Date:* ${dueDate ? new Date(dueDate).toLocaleDateString('en-GB') : 'Immediate'}` : '✅ *Payment Status:* Full Payment Received',
+          '',
+          '📋 *DELIVERABLES & SCOPE:*',
+          ...itemLines,
+          '',
+          `💵 *Total Amount:* ${formatMoney(grandTotal, currency)}`,
+          depositVal > 0 && currentDocType !== 'receipt' ? `✅ *Deposit Paid:* ${formatMoney(depositVal, currency)}\n⏳ *Balance Remaining:* ${formatMoney(balance, currency)}` : '',
+          '',
+          '🏦 *SETTLEMENT DETAILS:*',
+          `• Bank: ${bankName}`,
+          `• Account Number: ${bankAccount}`,
+          `• Account Name: ${bankBeneficiary}`,
+          '',
+          `✨ _Thank you for choosing Olympus Atelier. Please find your official ${currentDocType.toUpperCase()} attached._`
+        ].filter(Boolean);
+
+        return lines.join('\n');
+      };
+
+      // Form Bindings & Listeners
       const bindFormInputs = () => {
         const inputIds = [
-          'inv-number', 'inv-currency', 'inv-status', 'inv-date', 'inv-due-date',
+          'doc-number', 'doc-currency', 'doc-status', 'doc-date', 'doc-due-date',
+          'doc-payment-method', 'doc-payment-ref', 'doc-reason',
           'client-name', 'client-company', 'client-phone', 'client-email', 'client-address',
-          'inv-discount', 'inv-tax', 'inv-deposit',
-          'bank-name', 'bank-account', 'bank-beneficiary', 'inv-notes'
+          'doc-discount', 'doc-tax', 'doc-deposit',
+          'bank-name', 'bank-account', 'bank-beneficiary', 'doc-notes'
         ];
 
         inputIds.forEach(id => {
@@ -758,6 +1203,11 @@
             el.addEventListener('input', updatePreview);
             el.addEventListener('change', updatePreview);
           }
+        });
+
+        // Tab type switch
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.addEventListener('click', () => setDocType(btn.dataset.docType));
         });
 
         // Add line item
@@ -791,11 +1241,11 @@
 
         // Reset
         document.getElementById('btn-reset')?.addEventListener('click', () => {
-          if (confirm('Reset invoice generator to default?')) {
+          if (confirm('Reset form to default?')) {
             items = [
               {
                 id: 'item-1',
-                description: 'Wedding Videography — Gold Coverage (Full Day Capture, Highlight Film & Color Grade)',
+                description: 'Wedding Videography — Gold Coverage (Multi-Cam Capture, Highlight Film & Aerial Drone)',
                 quantity: 1,
                 rate: 400000
               }
@@ -805,157 +1255,91 @@
             document.getElementById('client-phone').value = '';
             document.getElementById('client-email').value = '';
             document.getElementById('client-address').value = '';
-            document.getElementById('inv-discount').value = '';
-            document.getElementById('inv-tax').value = '';
-            document.getElementById('inv-deposit').value = '';
+            document.getElementById('doc-discount').value = '';
+            document.getElementById('doc-tax').value = '';
+            document.getElementById('doc-deposit').value = '';
+            document.getElementById('doc-reason').value = '';
             initDates();
+            setDocType('invoice');
             renderLineItemsInput();
             updatePreview();
-            showToast('Invoice form reset');
+            showToast('Form reset');
           }
         });
 
-        // Generate PDF Blob helper
-        const generatePdfBlob = async () => {
-          const element = document.getElementById('invoice-sheet');
-          const invNumber = document.getElementById('inv-number').value.trim() || 'OLY-2026-001';
-          const filename = `Invoice-${invNumber}.pdf`;
-
-          if (typeof html2pdf === 'undefined') {
-            throw new Error('PDF generator library loading');
-          }
-
-          const opt = {
-            margin: [8, 8, 8, 8],
-            filename: filename,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: '#090909' },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-          };
-
-          return await html2pdf().set(opt).from(element).output('blob');
-        };
+        // Save
+        document.getElementById('btn-save-doc')?.addEventListener('click', saveToHistory);
 
         // Download PDF
-        const downloadPdf = async () => {
-          const invNumber = document.getElementById('inv-number').value.trim() || 'OLY-2026-001';
-          const filename = `Invoice-${invNumber}.pdf`;
-          showToast('Generating official PDF invoice...');
-
-          try {
-            const element = document.getElementById('invoice-sheet');
-            const opt = {
-              margin: [8, 8, 8, 8],
-              filename: filename,
-              image: { type: 'jpeg', quality: 0.98 },
-              html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: '#090909' },
-              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            await html2pdf().set(opt).from(element).save();
-            showToast('PDF downloaded successfully!');
-          } catch (err) {
-            console.error('PDF download error:', err);
-            window.print();
-          }
-        };
-
         document.getElementById('btn-download-pdf')?.addEventListener('click', downloadPdf);
-        document.getElementById('btn-print')?.addEventListener('click', () => window.print());
 
-        // Build plain-text WhatsApp summary
-        const buildWhatsAppSummary = () => {
-          const currency = document.getElementById('inv-currency').value || 'NGN';
-          const invNumber = document.getElementById('inv-number').value.trim() || 'OLY-2026-001';
-          const clientName = document.getElementById('client-name').value.trim() || 'Client';
-          const dueDate = document.getElementById('inv-due-date').value;
-          const bankName = document.getElementById('bank-name').value.trim() || 'OPay';
-          const bankAccount = document.getElementById('bank-account').value.trim() || '8087172313';
-          const bankBeneficiary = document.getElementById('bank-beneficiary').value.trim() || 'Olympus Atelier';
-
-          let subtotal = 0;
-          const itemLines = items.map((it, idx) => {
-            const rowTotal = (Number(it.quantity) || 0) * (Number(it.rate) || 0);
-            subtotal += rowTotal;
-            return `${idx + 1}. *${it.description}* (Qty: ${it.quantity}) — ${formatMoney(rowTotal, currency)}`;
-          });
-
-          const discountVal = Number(document.getElementById('inv-discount').value || 0);
-          const taxRate = Number(document.getElementById('inv-tax').value || 0);
-          const depositVal = Number(document.getElementById('inv-deposit').value || 0);
-          const grandTotal = Math.max(0, subtotal - discountVal) * (1 + taxRate / 100);
-          const balance = Math.max(0, grandTotal - depositVal);
-
-          const lines = [
-            '🏛️ *OLYMPUS ATELIER — OFFICIAL INVOICE*',
-            `📄 *Invoice Reference:* ${invNumber}`,
-            `👤 *Client:* ${clientName}`,
-            `📅 *Due Date:* ${dueDate ? new Date(dueDate).toLocaleDateString('en-GB') : 'Immediate'}`,
-            '',
-            '📋 *DELIVERABLES & SCOPE:*',
-            ...itemLines,
-            '',
-            `💵 *Total Amount:* ${formatMoney(grandTotal, currency)}`,
-            depositVal > 0 ? `✅ *Deposit Paid:* ${formatMoney(depositVal, currency)}\n⏳ *Balance Remaining:* ${formatMoney(balance, currency)}` : '',
-            '',
-            '🏦 *PAYMENT SETTLEMENT DETAILS:*',
-            `• Bank: ${bankName}`,
-            `• Account Number: ${bankAccount}`,
-            `• Account Name: ${bankBeneficiary}`,
-            '',
-            '✨ _Thank you for choosing Olympus Atelier. Please find your official invoice attached._'
-          ].filter(Boolean);
-
-          return lines.join('\n');
-        };
-
-        // WhatsApp Share (Native PDF File Sharing + Fallback)
+        // WhatsApp Share
         document.getElementById('btn-whatsapp-share')?.addEventListener('click', async () => {
-          const invNumber = document.getElementById('inv-number').value.trim() || 'OLY-2026-001';
+          const docNumber = document.getElementById('doc-number').value.trim() || 'OLY-DOC-001';
           const clientPhone = document.getElementById('client-phone').value.trim().replace(/[^0-9]/g, '');
           const msg = buildWhatsAppSummary();
           const targetNumber = clientPhone || '2348087172313';
 
-          showToast('Preparing invoice PDF for WhatsApp...');
+          showToast('Preparing PDF for WhatsApp sharing...');
+          saveToHistory();
 
           try {
             const pdfBlob = await generatePdfBlob();
-            const filename = `Invoice-${invNumber}.pdf`;
+            const filename = `Olympus-${currentDocType.toUpperCase()}-${docNumber}.pdf`;
             const pdfFile = new File([pdfBlob], filename, { type: 'application/pdf' });
 
-            // Check if browser supports sharing PDF file directly
             if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
               await navigator.share({
                 files: [pdfFile],
-                title: `Invoice ${invNumber} — Olympus Atelier`,
+                title: `Olympus Atelier ${currentDocType.toUpperCase()} ${docNumber}`,
                 text: msg
               });
-              showToast('Invoice PDF shared successfully!');
+              showToast('PDF shared to WhatsApp!');
               return;
             }
           } catch (err) {
-            console.warn('Native file share notice:', err);
+            console.warn('Native share notice:', err);
           }
 
-          // Fallback for browsers that do not support direct file attachments in Web Share:
-          // 1. Download PDF to device
+          // Fallback: Download file directly and open WhatsApp chat
           downloadPdf();
-
-          // 2. Open WhatsApp chat with pre-filled message
           setTimeout(() => {
             const url = `https://wa.me/${targetNumber}?text=${encodeURIComponent(msg)}`;
             window.open(url, '_blank', 'noopener,noreferrer');
-            showToast('Invoice downloaded! WhatsApp chat opened to attach PDF.');
+            showToast('PDF downloaded! WhatsApp opened to send.');
           }, 800);
         });
 
-        // Copy Summary
-        document.getElementById('btn-copy-summary')?.addEventListener('click', () => {
-          const summary = buildWhatsAppSummary();
-          navigator.clipboard.writeText(summary).then(() => {
-            showToast('Invoice summary copied to clipboard!');
-          }).catch(() => {
-            showToast('Unable to copy to clipboard');
+        // Drawer toggle
+        document.getElementById('btn-toggle-history')?.addEventListener('click', () => {
+          updateHistoryUI();
+          document.getElementById('history-drawer').classList.remove('hidden');
+        });
+        document.getElementById('btn-close-history')?.addEventListener('click', () => {
+          document.getElementById('history-drawer').classList.add('hidden');
+        });
+        document.getElementById('history-drawer')?.addEventListener('click', (e) => {
+          if (e.target === document.getElementById('history-drawer')) {
+            document.getElementById('history-drawer').classList.add('hidden');
+          }
+        });
+
+        // History search & filters
+        document.getElementById('history-search')?.addEventListener('input', updateHistoryUI);
+        document.querySelectorAll('.history-filter-pill').forEach(pill => {
+          pill.addEventListener('click', () => {
+            document.querySelectorAll('.history-filter-pill').forEach(p => p.classList.remove('active', 'text-amber-400', 'font-bold'));
+            pill.classList.add('active', 'text-amber-400', 'font-bold');
+            updateHistoryUI();
           });
+        });
+
+        document.getElementById('btn-clear-history')?.addEventListener('click', () => {
+          if (confirm('Clear all saved documents and client history?')) {
+            localStorage.removeItem(STORAGE_KEY);
+            updateHistoryUI();
+            showToast('History cleared');
+          }
         });
       };
 
@@ -963,7 +1347,8 @@
       initDates();
       renderLineItemsInput();
       bindFormInputs();
-      updatePreview();
+      setDocType('invoice');
+      updateHistoryUI();
     })();
   </script>
 </body>
