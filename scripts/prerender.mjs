@@ -36,15 +36,15 @@ const escapeHtml = value => String(value ?? '')
 
 const serviceCardsHtml = content.services.map((service, index) => `
           <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[310px] reveal-on-scroll stagger-${(index % 3) + 1}">
-            <div class="service-card-icon"><iconify-icon icon="${iconNames[index % iconNames.length]}"></iconify-icon></div>
+            <div class="service-card-icon"><iconify-icon icon="${service.icon || iconNames[index % iconNames.length]}"></iconify-icon></div>
             <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400 mt-8">Service ${String(index + 1).padStart(2, '0')}</span>
             <h3 class="text-2xl font-bold text-white mt-3">${escapeHtml(service.title)}</h3>
             <p class="text-sm text-neutral-400 leading-relaxed mt-4">${escapeHtml(service.summary)}</p>
             ${service.description ? `<p class="text-xs text-neutral-500 leading-relaxed mt-3">${escapeHtml(service.description)}</p>` : ''}
             <ul class="mt-6 space-y-2 text-xs text-neutral-300">
-              ${(service.deliverables || deliverables[index] || []).map(item => `<li class="flex items-center gap-2"><span class="text-amber-400">✓</span>${escapeHtml(item)}</li>`).join('')}
+              ${(service.deliverables || []).map(item => `<li class="flex items-center gap-2"><span class="text-amber-400">✓</span>${escapeHtml(item)}</li>`).join('')}
             </ul>
-            ${(service.title || '').toLowerCase().includes('wedding') || (service.title || '').toLowerCase().includes('videography') ? `
+            ${(service.title || '').toLowerCase().includes('wedding') ? `
               <button type="button" class="wedding-package-trigger inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-5 py-3 rounded-full text-xs uppercase tracking-wider mt-6 hover:scale-105 transition-transform" data-open-wedding-modal="true">
                 View Wedding Packages
               </button>
@@ -174,6 +174,180 @@ ${initialPortfolioHtml}
         </div>
       </div>
     </section>`;
+
+// Replace Capabilities Deck Cards in baseHtml
+const capabilitiesDeckHtml = `
+          <!-- Reset Stack button on top right -->
+          <button id="restack-deck-btn" class="absolute top-[-60px] right-0 bg-white/5 border border-white/10 hover:border-white/20 text-neutral-400 hover:text-white px-4 py-2 rounded-xl text-xs font-semibold tracking-wider uppercase transition-all duration-300 flex items-center gap-2 hidden">
+            <iconify-icon icon="solar:round-transfer-horizontal-bold" class="text-sm"></iconify-icon>
+            <span>Restack Deck</span>
+          </button>
+
+          <!-- Card 1: Wedding Highlights -->
+          <div class="capabilities-card bg-blur-gradient-1 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="0">
+            <div class="sweep-shine"></div>
+            <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
+            <div class="hover-icon-topright text-gold-gradient">
+              <iconify-icon icon="solar:videocamera-record-bold-duotone" class="text-xl"></iconify-icon>
+            </div>
+            <div class="card-content-wrapper h-full flex flex-col justify-between relative z-10 w-full transition-opacity duration-300">
+              <div class="overflow-hidden">
+                <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gold-gradient mb-6 card-icon-wrapper">
+                  <iconify-icon icon="solar:videocamera-record-bold-duotone" class="text-xl"></iconify-icon>
+                </div>
+                <div class="relative h-[200px] overflow-hidden">
+                  <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Wedding Highlights</h3>
+                    <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
+                      Full-day wedding cinema capture, emotional narrative flow, ceremony highlights, and color grading.
+                    </p>
+                  </div>
+                  <div class="deliverables-content-block absolute inset-0 translate-y-[100px] opacity-0 transition-all duration-500 flex flex-col justify-center space-y-3">
+                    <span class="text-[9px] font-mono text-gold-gradient uppercase tracking-widest">Pillar Deliverables:</span>
+                    <ul class="space-y-2 text-[10px] font-mono text-neutral-300">
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Full-day Wedding Cinema</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Highlight &amp; Teaser Films</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Colour-graded Delivery</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center mt-4 border-t border-white/5 pt-4">
+                <a href="#services" class="text-xs font-bold text-gold-gradient uppercase tracking-widest flex items-center gap-1.5 spa-nav-link" data-page="services">
+                  Learn More <iconify-icon icon="solar:arrow-right-linear" class="text-xs"></iconify-icon>
+                </a>
+                <span class="text-[9px] font-mono text-neutral-500 uppercase select-none text-right">Pillar 01</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Events & Conferences -->
+          <div class="capabilities-card bg-blur-gradient-2 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="1">
+            <div class="sweep-shine"></div>
+            <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
+            <div class="hover-icon-topright text-gold-gradient">
+              <iconify-icon icon="solar:calendar-bold-duotone" class="text-xl"></iconify-icon>
+            </div>
+            <div class="card-content-wrapper h-full flex flex-col justify-between relative z-10 w-full transition-opacity duration-300">
+              <div class="overflow-hidden">
+                <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gold-gradient mb-6 card-icon-wrapper">
+                  <iconify-icon icon="solar:calendar-bold-duotone" class="text-xl"></iconify-icon>
+                </div>
+                <div class="relative h-[200px] overflow-hidden">
+                  <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Events &amp; Conferences</h3>
+                    <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
+                      Capturing summits, conferences, festivals, and live celebrations with people-first cinematic direction.
+                    </p>
+                  </div>
+                  <div class="deliverables-content-block absolute inset-0 translate-y-[100px] opacity-0 transition-all duration-500 flex flex-col justify-center space-y-3">
+                    <span class="text-[9px] font-mono text-gold-gradient uppercase tracking-widest">Pillar Deliverables:</span>
+                    <ul class="space-y-2 text-[10px] font-mono text-neutral-300">
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Conference Coverage</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Event Highlight Films</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Atmosphere &amp; Interviews</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center mt-4 border-t border-white/5 pt-4">
+                <a href="#services" class="text-xs font-bold text-gold-gradient uppercase tracking-widest flex items-center gap-1.5 spa-nav-link" data-page="services">
+                  Learn More <iconify-icon icon="solar:arrow-right-linear" class="text-xs"></iconify-icon>
+                </a>
+                <span class="text-[9px] font-mono text-neutral-500 uppercase select-none text-right">Pillar 02</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Photography & Film -->
+          <div class="capabilities-card bg-blur-gradient-3 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="2">
+            <div class="sweep-shine"></div>
+            <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
+            <div class="hover-icon-topright text-gold-gradient">
+              <iconify-icon icon="solar:camera-bold-duotone" class="text-xl"></iconify-icon>
+            </div>
+            <div class="card-content-wrapper h-full flex flex-col justify-between relative z-10 w-full transition-opacity duration-300">
+              <div class="overflow-hidden">
+                <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gold-gradient mb-6 card-icon-wrapper">
+                  <iconify-icon icon="solar:camera-bold-duotone" class="text-xl"></iconify-icon>
+                </div>
+                <div class="relative h-[200px] overflow-hidden">
+                  <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Photography &amp; Film</h3>
+                    <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
+                      Editorial photography, commercial film, executive interviews, and raw stylized post-production.
+                    </p>
+                  </div>
+                  <div class="deliverables-content-block absolute inset-0 translate-y-[100px] opacity-0 transition-all duration-500 flex flex-col justify-center space-y-3">
+                    <span class="text-[9px] font-mono text-gold-gradient uppercase tracking-widest">Pillar Deliverables:</span>
+                    <ul class="space-y-2 text-[10px] font-mono text-neutral-300">
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Editorial Photography</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Commercial Production</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Color-Graded Delivery</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center mt-4 border-t border-white/5 pt-4">
+                <a href="#services" class="text-xs font-bold text-gold-gradient uppercase tracking-widest flex items-center gap-1.5 spa-nav-link" data-page="services">
+                  Learn More <iconify-icon icon="solar:arrow-right-linear" class="text-xs"></iconify-icon>
+                </a>
+                <span class="text-[9px] font-mono text-neutral-500 uppercase select-none text-right">Pillar 03</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: Graphics & Branding -->
+          <div class="capabilities-card bg-blur-gradient-4 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="3">
+            <div class="sweep-shine"></div>
+            <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
+            <div class="hover-icon-topright text-gold-gradient">
+              <iconify-icon icon="solar:palette-bold-duotone" class="text-xl"></iconify-icon>
+            </div>
+            <div class="card-content-wrapper h-full flex flex-col justify-between relative z-10 w-full transition-opacity duration-300">
+              <div class="overflow-hidden">
+                <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gold-gradient mb-6 card-icon-wrapper">
+                  <iconify-icon icon="solar:palette-bold-duotone" class="text-xl"></iconify-icon>
+                </div>
+                <div class="relative h-[200px] overflow-hidden">
+                  <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Graphics &amp; Branding</h3>
+                    <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
+                      Brand identity systems, campaign design, editorial magazines, motion visuals, and digital web design.
+                    </p>
+                  </div>
+                  <div class="deliverables-content-block absolute inset-0 translate-y-[100px] opacity-0 transition-all duration-500 flex flex-col justify-center space-y-3">
+                    <span class="text-[9px] font-mono text-gold-gradient uppercase tracking-widest">Pillar Deliverables:</span>
+                    <ul class="space-y-2 text-[10px] font-mono text-neutral-300">
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Brand Identity Systems</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Magazine &amp; Print Layouts</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Web Design &amp; Motion</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center mt-4 border-t border-white/5 pt-4">
+                <a href="#services" class="text-xs font-bold text-gold-gradient uppercase tracking-widest flex items-center gap-1.5 spa-nav-link" data-page="services">
+                  Learn More <iconify-icon icon="solar:arrow-right-linear" class="text-xs"></iconify-icon>
+                </a>
+                <span class="text-[9px] font-mono text-neutral-500 uppercase select-none text-right">Pillar 04</span>
+              </div>
+            </div>
+          </div>
+`;
+
+html = html.replace(
+  /<div class="relative w-full min-h-\[460px\] mt-12" id="capabilities-deck-container">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>\s*<\/div>\s*<\/div>\s*<\/div>/,
+  `<div class="relative w-full min-h-[460px] mt-12" id="capabilities-deck-container">${capabilitiesDeckHtml}\n        </div>`
+);
+
+// Fallback replace for capabilities deck container if regex didn't match
+if (!html.includes('data-card-idx="0"') || html.includes('Photography & Video')) {
+  html = html.replace(
+    /<div class="relative w-full min-h-\[460px\] mt-12" id="capabilities-deck-container">[\s\S]*?<!-- PAGE 2: SERVICES -->/,
+    `<div class="relative w-full min-h-[460px] mt-12" id="capabilities-deck-container">${capabilitiesDeckHtml}\n        </div>\n      </div>\n    </div>\n\n    </section>\n\n    <!-- PAGE 2: SERVICES -->`
+  );
+}
 
 // Replace PAGE 2 in baseHtml
 html = html.replace(/<!-- PAGE 2: SERVICES -->[\s\S]*?<\/section>/, servicesSection.trim());

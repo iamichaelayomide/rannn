@@ -239,63 +239,117 @@ window.OLYMPUS_CONTENT = {
       "title": "Wedding Highlights",
       "summary": "Full-day wedding coverage, highlight films, cinematic editing, and online sharing prepared for memory and celebration.",
       "description": "Capture every emotion, atmosphere, and key moment with dedicated videography, professional audio, and polished post-production.",
-      "portfolioCategory": "wedding-highlights"
-    },
-    {
-      "id": "editing-alone",
-      "title": "Video Editing Alone",
-      "summary": "Bring your existing footage. Olympus shapes the pacing, color grading, audio design, and platform-ready final exports.",
-      "description": "High-end post-production for creators, brands, and agencies with raw media seeking professional editorial direction.",
-      "portfolioCategory": "editing-alone"
-    },
-    {
-      "id": "photo-film",
-      "title": "Photography & Film",
-      "summary": "Give your audience polished images and films that make people, products, and ideas feel credible.",
-      "description": "Ideal for executive interviews, brand stories, campaign shoots, portraits, and event highlights—planned for the platforms where the work will be seen.",
-      "portfolioCategory": "film"
-    },
-    {
-      "id": "graphics",
-      "title": "Graphics & Branding",
-      "summary": "Turn one message into a clear visual system your audience can recognise across every touchpoint.",
-      "description": "Campaign identities, social graphics, event materials, posters, presentations, and brand-ready assets built to stay consistent.",
-      "portfolioCategory": "graphics"
-    },
-    {
-      "id": "editorial",
-      "title": "Editorial & Magazine Design",
-      "summary": "Make reports, magazines, programmes, and publications easy to navigate and worth keeping.",
-      "description": "We structure long-form content, refine visual hierarchy, and prepare professional digital and print-ready files.",
-      "portfolioCategory": "editorial"
-    },
-    {
-      "id": "motion",
-      "title": "Motion Design",
-      "summary": "Explain, announce, and promote your message with motion that earns attention quickly.",
-      "description": "Animated campaign assets, launch visuals, title sequences, explainers, and platform-ready cut-downs.",
-      "portfolioCategory": "motion"
+      "portfolioCategory": "wedding-highlights",
+      "icon": "solar:videocamera-record-bold-duotone",
+      "deliverables": [
+        "Full-day wedding coverage",
+        "Highlight & teaser cinematic films",
+        "Colour-graded delivery"
+      ]
     },
     {
       "id": "events",
       "title": "Events & Conferences",
       "summary": "Capture the speakers, people, atmosphere, and key moments your event should be remembered for.",
       "description": "Coverage can include photography, interviews, highlight films, same-event social content, and post-event delivery.",
-      "portfolioCategory": "events"
+      "portfolioCategory": "events",
+      "icon": "solar:calendar-bold-duotone",
+      "deliverables": [
+        "Conference & summit coverage",
+        "Event highlight films & atmosphere",
+        "Interviews & speaker recaps"
+      ]
     },
     {
-      "id": "web",
-      "title": "Website Design & Development",
-      "summary": "Turn interest into action with a distinctive website that explains your value and makes the next step obvious.",
-      "description": "Strategy, interface design, responsive frontend development, content structure, and launch support for portfolios, campaigns, and business sites.",
-      "portfolioCategory": "graphics"
+      "id": "editing-alone",
+      "title": "Video Editing Alone",
+      "summary": "Bring your existing footage. Olympus shapes the pacing, color grading, audio design, and platform-ready final exports.",
+      "description": "High-end post-production for creators, brands, and agencies with raw media seeking professional editorial direction.",
+      "portfolioCategory": "editing-alone",
+      "icon": "solar:play-circle-bold-duotone",
+      "deliverables": [
+        "Pacing, narrative & rhythm editing",
+        "DaVinci Resolve color grading",
+        "Platform-ready multi-aspect exports"
+      ]
+    },
+    {
+      "id": "photo-film",
+      "title": "Photography & Film",
+      "summary": "Give your audience polished images and films that make people, products, and ideas feel credible.",
+      "description": "Ideal for executive interviews, brand stories, campaign shoots, portraits, and event highlights—planned for the platforms where the work will be seen.",
+      "portfolioCategory": "film",
+      "icon": "solar:camera-bold-duotone",
+      "deliverables": [
+        "Editorial & portrait photography",
+        "Executive interviews & campaign films",
+        "High-res retouched delivery"
+      ]
     },
     {
       "id": "ads-commercial",
       "title": "Commercials & Brand Campaigns",
       "summary": "Give your campaign a clear idea and cinematic execution built to move the right audience.",
       "description": "From concept and scripting to production, editing, and platform versions, we create commercial content ready for launch.",
-      "portfolioCategory": "film"
+      "portfolioCategory": "film",
+      "icon": "solar:clapperboard-play-bold-duotone",
+      "deliverables": [
+        "Concept, scripting & storyboard",
+        "Cinematic 4K production",
+        "Social & broadcast master cuts"
+      ]
+    },
+    {
+      "id": "graphics",
+      "title": "Graphics & Branding",
+      "summary": "Turn one message into a clear visual system your audience can recognise across every touchpoint.",
+      "description": "Campaign identities, social graphics, event materials, posters, presentations, and brand-ready assets built to stay consistent.",
+      "portfolioCategory": "graphics",
+      "icon": "solar:palette-bold-duotone",
+      "deliverables": [
+        "Brand identity systems & logos",
+        "Social & event campaign posters",
+        "Brand-ready asset packages"
+      ]
+    },
+    {
+      "id": "editorial",
+      "title": "Editorial & Magazine Design",
+      "summary": "Make reports, magazines, programmes, and publications easy to navigate and worth keeping.",
+      "description": "We structure long-form content, refine visual hierarchy, and prepare professional digital and print-ready files.",
+      "portfolioCategory": "editorial",
+      "icon": "solar:notebook-bold-duotone",
+      "deliverables": [
+        "Magazine systems & publications",
+        "Print-ready typographic layouts",
+        "Digital report & certificate design"
+      ]
+    },
+    {
+      "id": "motion",
+      "title": "Motion Design",
+      "summary": "Explain, announce, and promote your message with motion that earns attention quickly.",
+      "description": "Animated campaign assets, launch visuals, title sequences, explainers, and platform-ready cut-downs.",
+      "portfolioCategory": "motion",
+      "icon": "solar:magic-stick-3-bold-duotone",
+      "deliverables": [
+        "Animated 2D/3D campaign visuals",
+        "Launch sequences & brand motion",
+        "Platform-ready kinetic cut-downs"
+      ]
+    },
+    {
+      "id": "web",
+      "title": "Website Design & Development",
+      "summary": "Turn interest into action with a distinctive website that explains your value and makes the next step obvious.",
+      "description": "Strategy, interface design, responsive frontend development, content structure, and launch support for portfolios, campaigns, and business sites.",
+      "portfolioCategory": "graphics",
+      "icon": "solar:code-square-bold-duotone",
+      "deliverables": [
+        "Responsive interface & UX design",
+        "Performant frontend engineering",
+        "CMS, portfolio & launch support"
+      ]
     }
   ],
   "weddingPackages": [
