@@ -39,6 +39,32 @@ const mergePublishedContent = (published) => {
     };
   });
 
+  const servicesList = hasManagedServices
+    ? managedServices.map((service, index) => ({
+        id: service.slug || service.id,
+        title: service.title,
+        summary: service.summary || service.description || "",
+        description: service.description || "",
+        deliverables: service.deliverables || fallback.services.find((s) => s.id === (service.slug || service.id))?.deliverables || fallback.services[index]?.deliverables || [],
+      }))
+    : [...fallback.services];
+
+  fallback.services.forEach((fs) => {
+    if (!servicesList.some((s) => s.id === fs.id)) {
+      servicesList.push(fs);
+    }
+  });
+
+  const portfolioList = hasManagedPortfolio
+    ? managedPortfolio.map(toPortfolioItem)
+    : [...fallback.portfolioItems];
+
+  fallback.portfolioItems.forEach((fp) => {
+    if (!portfolioList.some((p) => p.id === fp.id)) {
+      portfolioList.push(fp);
+    }
+  });
+
   return {
     ...fallback,
     pages,
@@ -56,18 +82,8 @@ const mergePublishedContent = (published) => {
         linkedin: globalContent.site?.linkedin ?? fallback.siteConfig.socials?.linkedin,
       },
     },
-    services: hasManagedServices
-      ? managedServices.map((service, index) => ({
-          id: service.slug || service.id,
-          title: service.title,
-          summary: service.summary || service.description || "",
-          description: service.description || "",
-          deliverables: service.deliverables || fallback.services.find((s) => s.id === (service.slug || service.id))?.deliverables || fallback.services[index]?.deliverables || [],
-        }))
-      : fallback.services,
-    portfolioItems: hasManagedPortfolio
-      ? managedPortfolio.map(toPortfolioItem)
-      : fallback.portfolioItems,
+    services: servicesList,
+    portfolioItems: portfolioList,
     teamMembers,
     socialProof: {
       ...fallback.socialProof,

@@ -1,6 +1,7 @@
 (() => {
-  const content = window.OLYMPUS_CONTENT;
-  if (!content) return;
+  const content = new Proxy({}, {
+    get: (_, prop) => (window.OLYMPUS_CONTENT || {})[prop]
+  });
 
   const fallbackImage = 'assets/portfolio-fallback.svg';
   const iconNames = [
