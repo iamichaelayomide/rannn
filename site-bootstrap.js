@@ -57,11 +57,12 @@ const mergePublishedContent = (published) => {
       },
     },
     services: hasManagedServices
-      ? managedServices.map((service) => ({
+      ? managedServices.map((service, index) => ({
           id: service.slug || service.id,
           title: service.title,
           summary: service.summary || service.description || "",
           description: service.description || "",
+          deliverables: service.deliverables || fallback.services.find((s) => s.id === (service.slug || service.id))?.deliverables || fallback.services[index]?.deliverables || [],
         }))
       : fallback.services,
     portfolioItems: hasManagedPortfolio
@@ -109,3 +110,4 @@ if (isPrivatePreview) {
 
 await import("./index.js");
 await import("./content-app.js");
+window.initOlympusContentApp?.();

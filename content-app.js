@@ -1017,8 +1017,10 @@
     initUnifiedEnquiryFlow();
     hydrateFooter();
     hydrateMetadata();
-    window.addEventListener('hashchange', hydrateMetadata);
+    window.initOlympusContentApp = initializeManagedContent;
   };
+
+  window.initOlympusContentApp = initializeManagedContent;
 
   if (document.readyState === 'loading') {
     window.addEventListener('DOMContentLoaded', initializeManagedContent, { once: true });
