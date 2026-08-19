@@ -72,7 +72,7 @@
               <ul>
                 ${item.features.map(feature => `<li><iconify-icon icon="solar:check-circle-bold"></iconify-icon><span>${escapeHtml(feature)}</span></li>`).join('')}
               </ul>
-              <a href="#contact?intent=project&service=${encodeURIComponent(`${item.name} Wedding Package`)}&budget=${encodeURIComponent(item.price)}&message=${encodeURIComponent(`I would like to book the ${item.name} Wedding Package (${item.price}) for full-day wedding videography coverage.`)}&source_cta=Wedding%20packages` data-page="contact" class="spa-nav-link wedding-package-cta">Book ${escapeHtml(item.name)} (${escapeHtml(item.price)})</a>
+              <a href="#contact?intent=project&service=${encodeURIComponent(`${item.name} Wedding Package`)}&budget=${encodeURIComponent(item.price)}&message=${encodeURIComponent(`I would like to book the ${item.name} Wedding Package (${item.price}) for full-day wedding videography coverage.`)}&source_cta=Wedding%20packages" data-page="contact" class="spa-nav-link wedding-package-cta">Book ${escapeHtml(item.name)} (${escapeHtml(item.price)})</a>
             </article>
           `).join('')}
         </div>

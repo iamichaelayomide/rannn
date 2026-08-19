@@ -587,49 +587,49 @@
         </div>
         <div id="portfolio-filters" class="flex flex-wrap gap-3 mb-10" aria-label="Filter portfolio">
 
-        <button type="button" class="archive-filter active" data-filter="all">
+        <button type="button" class="archive-filter active" data-filter="all" onclick="window.setPortfolioCategory('all')">
           <span>All Work</span>
           <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(215)</span>
         </button>
 
-        <button type="button" class="archive-filter" data-filter="wedding-highlights">
+        <button type="button" class="archive-filter" data-filter="wedding-highlights" onclick="window.setPortfolioCategory('wedding-highlights')">
           <span>Wedding Highlights</span>
           <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(5)</span>
         </button>
 
-        <button type="button" class="archive-filter" data-filter="editing-alone">
+        <button type="button" class="archive-filter" data-filter="editing-alone" onclick="window.setPortfolioCategory('editing-alone')">
           <span>Video Editing Alone</span>
           <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(5)</span>
         </button>
 
-        <button type="button" class="archive-filter" data-filter="film">
+        <button type="button" class="archive-filter" data-filter="film" onclick="window.setPortfolioCategory('film')">
           <span>Film &amp; Photography</span>
           <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(12)</span>
         </button>
 
-        <button type="button" class="archive-filter" data-filter="events">
+        <button type="button" class="archive-filter" data-filter="events" onclick="window.setPortfolioCategory('events')">
           <span>Events &amp; Conferences</span>
           <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(20)</span>
         </button>
 
-        <button type="button" class="archive-filter" data-filter="graphics">
+        <button type="button" class="archive-filter" data-filter="graphics" onclick="window.setPortfolioCategory('graphics')">
           <span>Graphics &amp; Branding</span>
           <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(143)</span>
         </button>
 
-        <button type="button" class="archive-filter" data-filter="editorial">
+        <button type="button" class="archive-filter" data-filter="editorial" onclick="window.setPortfolioCategory('editorial')">
           <span>Editorial</span>
           <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(19)</span>
         </button>
 
-        <button type="button" class="archive-filter" data-filter="motion">
+        <button type="button" class="archive-filter" data-filter="motion" onclick="window.setPortfolioCategory('motion')">
           <span>Motion Design</span>
           <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(11)</span>
         </button>
         </div>
         <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" aria-live="polite">
 
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-1" data-item-id="wedding-highlight-cinematic-01" aria-label="View Cinematic Wedding Highlight Film">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="wedding-highlight-cinematic-01" onclick="window.openOlympusPortfolioItem('wedding-highlight-cinematic-01')" aria-label="View Cinematic Wedding Highlight Film">
             <span class="archive-card-media">
               <img src="assets/portfolio/1-BSammCzXutc3kMqUJ50T52brtHn_U3T.webp" alt="Cinematic Wedding Highlight Film by Olympus Atelier" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/portfolio-fallback.svg'">
               <span class="archive-card-overlay"></span>
@@ -641,7 +641,7 @@
             </span>
           </button>
 
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-2" data-item-id="wedding-highlight-traditional-02" aria-label="View Traditional &amp; White Wedding Ceremony">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="wedding-highlight-traditional-02" onclick="window.openOlympusPortfolioItem('wedding-highlight-traditional-02')" aria-label="View Traditional &amp; White Wedding Ceremony">
             <span class="archive-card-media">
               <img src="assets/portfolio/10A3xT4MIBnYIbYaGicb06VEeq-DuLLJf.webp" alt="Traditional &amp; White Wedding Ceremony by Olympus Atelier" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/portfolio-fallback.svg'">
               <span class="archive-card-overlay"></span>
@@ -653,7 +653,7 @@
             </span>
           </button>
 
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-3" data-item-id="wedding-highlight-couple-03" aria-label="View Pre-Wedding Visual Teaser &amp; Vows">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="wedding-highlight-couple-03" onclick="window.openOlympusPortfolioItem('wedding-highlight-couple-03')" aria-label="View Pre-Wedding Visual Teaser &amp; Vows">
             <span class="archive-card-media">
               <img src="assets/portfolio/10_Mqm8M0qBHQcCR6UC42lym9nUUJVPU7.webp" alt="Pre-Wedding Visual Teaser by Olympus Atelier" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/portfolio-fallback.svg'">
               <span class="archive-card-overlay"></span>
@@ -665,7 +665,7 @@
             </span>
           </button>
 
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-1" data-item-id="wedding-highlight-reception-04" aria-label="View Grand Reception &amp; Afterparty Highlight">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="wedding-highlight-reception-04" onclick="window.openOlympusPortfolioItem('wedding-highlight-reception-04')" aria-label="View Grand Reception &amp; Afterparty Highlight">
             <span class="archive-card-media">
               <img src="assets/portfolio/11G1jo4MzGuprva5FpltoFwjqYfvYoQ05.webp" alt="Grand Reception Highlight by Olympus Atelier" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/portfolio-fallback.svg'">
               <span class="archive-card-overlay"></span>
@@ -677,7 +677,7 @@
             </span>
           </button>
 
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-2" data-item-id="editing-alone-commercial-01" aria-label="View Commercial Brand Montage &amp; Grade">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="editing-alone-commercial-01" onclick="window.openOlympusPortfolioItem('editing-alone-commercial-01')" aria-label="View Commercial Brand Montage &amp; Grade">
             <span class="archive-card-media">
               <img src="assets/portfolio/12rO2OtmwmtvSRaaeBPjCzPPvVO6I-rot.webp" alt="Commercial Brand Montage by Olympus Atelier" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/portfolio-fallback.svg'">
               <span class="archive-card-overlay"></span>
@@ -689,7 +689,7 @@
             </span>
           </button>
 
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-3" data-item-id="editing-alone-podcast-02" aria-label="View Multi-Cam Podcast &amp; Interview Cut">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="editing-alone-podcast-02" onclick="window.openOlympusPortfolioItem('editing-alone-podcast-02')" aria-label="View Multi-Cam Podcast &amp; Interview Cut">
             <span class="archive-card-media">
               <img src="assets/portfolio/13-r8IawIw391C8cB8vifGIBra8xJHsf8.webp" alt="Multi-Cam Podcast Cut by Olympus Atelier" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/portfolio-fallback.svg'">
               <span class="archive-card-overlay"></span>
@@ -701,7 +701,7 @@
             </span>
           </button>
 
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-1" data-item-id="editing-alone-reel-03" aria-label="View High-Impact Social &amp; Campaign Reel">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="editing-alone-reel-03" onclick="window.openOlympusPortfolioItem('editing-alone-reel-03')" aria-label="View High-Impact Social &amp; Campaign Reel">
             <span class="archive-card-media">
               <img src="assets/portfolio/142RvVhOy0X9T3gh6deImuZxUlRKxZ5Be.webp" alt="Social Campaign Reel Edit by Olympus Atelier" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/portfolio-fallback.svg'">
               <span class="archive-card-overlay"></span>
@@ -713,7 +713,7 @@
             </span>
           </button>
 
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-2" data-item-id="editing-alone-documentary-04" aria-label="View Documentary Story Cut &amp; Color Finishing">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="editing-alone-documentary-04" onclick="window.openOlympusPortfolioItem('editing-alone-documentary-04')" aria-label="View Documentary Story Cut &amp; Color Finishing">
             <span class="archive-card-media">
               <img src="assets/portfolio/15RigdclKrjgq7yJcLZcLz8JqD1ld6rWK.webp" alt="Documentary Story Cut by Olympus Atelier" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/portfolio-fallback.svg'">
               <span class="archive-card-overlay"></span>
@@ -725,7 +725,7 @@
             </span>
           </button>
 
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-3" data-item-id="1V3iS3FUXxQBentD7IZ7gfZhLEvienxAU" aria-label="View Wedding Highlight Film">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="1V3iS3FUXxQBentD7IZ7gfZhLEvienxAU" onclick="window.openOlympusPortfolioItem('1V3iS3FUXxQBentD7IZ7gfZhLEvienxAU')" aria-label="View Wedding Highlight Film">
             <span class="archive-card-media">
               <img src="assets/portfolio/16qJO-R6eTQTYvYZSguRMPCTClB8lT1KL.webp" alt="Wedding Highlight Film by Olympus Atelier" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/portfolio-fallback.svg'">
               <span class="archive-card-overlay"></span>
@@ -737,7 +737,7 @@
             </span>
           </button>
 
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-1" data-item-id="1j_D4ePzhUsHBXyORwNFJoTbMrjSFgvCU" aria-label="View Video Editing &amp; Post-Production">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="1j_D4ePzhUsHBXyORwNFJoTbMrjSFgvCU" onclick="window.openOlympusPortfolioItem('1j_D4ePzhUsHBXyORwNFJoTbMrjSFgvCU')" aria-label="View Video Editing &amp; Post-Production">
             <span class="archive-card-media">
               <img src="assets/portfolio/18b2TRY2RDowKSvvnPIgHf59sv44IKmc7.webp" alt="Video Editing Alone by Olympus Atelier" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/portfolio-fallback.svg'">
               <span class="archive-card-overlay"></span>
@@ -749,7 +749,7 @@
             </span>
           </button>
 
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-2" data-item-id="1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO" aria-label="View Chuks Ezimadu - Green Carpet Interview">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO" onclick="window.openOlympusPortfolioItem('1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO')" aria-label="View Chuks Ezimadu - Green Carpet Interview">
             <span class="archive-card-media">
               <img src="assets/portfolio/1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO.webp" alt="Chuks Ezimadu speaking during a CIoD conference green carpet interview" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/portfolio-fallback.svg'">
               <span class="archive-card-overlay"></span>
@@ -761,7 +761,7 @@
             </span>
           </button>
 
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-3" data-item-id="1xv2SiAylmGIp9SgiRlK_pQ_zv-enBjoU" aria-label="View Franca Eqwuekwe - Green Carpet Interview">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="1xv2SiAylmGIp9SgiRlK_pQ_zv-enBjoU" onclick="window.openOlympusPortfolioItem('1xv2SiAylmGIp9SgiRlK_pQ_zv-enBjoU')" aria-label="View Franca Eqwuekwe - Green Carpet Interview">
             <span class="archive-card-media">
               <img src="assets/portfolio/1xv2SiAylmGIp9SgiRlK_pQ_zv-enBjoU.webp" alt="Franca Eqwuekwe in conversation during a CIoD conference green carpet interview" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/portfolio-fallback.svg'">
               <span class="archive-card-overlay"></span>

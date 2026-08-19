@@ -94,7 +94,7 @@ const filterList = [
 const getFilterCount = (catId) => catId === 'all' ? content.portfolioItems.length : content.portfolioItems.filter(item => item.category === catId).length;
 
 const filtersHtml = filterList.map(filter => `
-        <button type="button" class="archive-filter${filter.id === 'all' ? ' active' : ''}" data-filter="${escapeHtml(filter.id)}">
+        <button type="button" class="archive-filter${filter.id === 'all' ? ' active' : ''}" data-filter="${escapeHtml(filter.id)}" onclick="window.setPortfolioCategory('${escapeHtml(filter.id)}')">
           <span>${escapeHtml(filter.label)}</span>
           <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(${getFilterCount(filter.id)})</span>
         </button>`).join('\n');
@@ -104,7 +104,7 @@ const initialPortfolioHtml = content.portfolioItems.slice(0, 12).map((item, inde
   const mediaType = item.mediaType || item.media_type || 'image';
   const altText = item.alt || item.alt_text || item.title || '';
   return `
-          <button type="button" class="portfolio-item archive-card text-left group reveal-on-scroll stagger-${(index % 3) + 1}" data-item-id="${escapeHtml(item.id)}" aria-label="View ${escapeHtml(item.title)}">
+          <button type="button" class="portfolio-item archive-card text-left group" data-item-id="${escapeHtml(item.id)}" onclick="window.openOlympusPortfolioItem('${escapeHtml(item.id)}')" aria-label="View ${escapeHtml(item.title)}">
             <span class="archive-card-media">
               <img src="${escapeHtml(thumb)}" alt="${escapeHtml(altText)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${fallbackImage}'">
               <span class="archive-card-overlay"></span>
@@ -188,4 +188,4 @@ html = html.replace(
 );
 
 fs.writeFileSync('index.html', html);
-console.log('Successfully pre-rendered pristine index.html with clean sections!');
+console.log('Successfully pre-rendered pristine index.html with interactive onclick triggers!');
