@@ -246,7 +246,7 @@ window.OLYMPUS_CONTENT = {
       "title": "Video Editing Alone",
       "summary": "Bring your existing footage. Olympus shapes the pacing, color grading, audio design, and platform-ready final exports.",
       "description": "High-end post-production for creators, brands, and agencies with raw media seeking professional editorial direction.",
-      "portfolioCategory": "all"
+      "portfolioCategory": "editing-alone"
     },
     {
       "id": "photo-film",
@@ -260,42 +260,42 @@ window.OLYMPUS_CONTENT = {
       "title": "Graphics & Branding",
       "summary": "Turn one message into a clear visual system your audience can recognise across every touchpoint.",
       "description": "Campaign identities, social graphics, event materials, posters, presentations, and brand-ready assets built to stay consistent.",
-      "portfolioCategory": "all"
+      "portfolioCategory": "graphics"
     },
     {
       "id": "editorial",
       "title": "Editorial & Magazine Design",
       "summary": "Make reports, magazines, programmes, and publications easy to navigate and worth keeping.",
       "description": "We structure long-form content, refine visual hierarchy, and prepare professional digital and print-ready files.",
-      "portfolioCategory": "all"
+      "portfolioCategory": "editorial"
     },
     {
       "id": "motion",
       "title": "Motion Design",
       "summary": "Explain, announce, and promote your message with motion that earns attention quickly.",
       "description": "Animated campaign assets, launch visuals, title sequences, explainers, and platform-ready cut-downs.",
-      "portfolioCategory": "all"
+      "portfolioCategory": "motion"
     },
     {
       "id": "events",
       "title": "Events & Conferences",
       "summary": "Capture the speakers, people, atmosphere, and key moments your event should be remembered for.",
       "description": "Coverage can include photography, interviews, highlight films, same-event social content, and post-event delivery.",
-      "portfolioCategory": "all"
+      "portfolioCategory": "events"
     },
     {
       "id": "web",
       "title": "Website Design & Development",
       "summary": "Turn interest into action with a distinctive website that explains your value and makes the next step obvious.",
       "description": "Strategy, interface design, responsive frontend development, content structure, and launch support for portfolios, campaigns, and business sites.",
-      "portfolioCategory": "all"
+      "portfolioCategory": "graphics"
     },
     {
       "id": "ads-commercial",
       "title": "Commercials & Brand Campaigns",
       "summary": "Give your campaign a clear idea and cinematic execution built to move the right audience.",
       "description": "From concept and scripting to production, editing, and platform versions, we create commercial content ready for launch.",
-      "portfolioCategory": "all"
+      "portfolioCategory": "film"
     }
   ],
   "weddingPackages": [

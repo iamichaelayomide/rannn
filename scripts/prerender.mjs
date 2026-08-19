@@ -32,14 +32,21 @@ const escapeHtml = value => String(value ?? '')
 
 const serviceToCategoryMap = {
   'wedding-highlights': 'wedding-highlights',
+  'editing-alone': 'editing-alone',
   'video-editing': 'editing-alone',
   'videography-editing': 'editing-alone',
   'photo-film': 'film',
+  'graphics': 'graphics',
   'graphics-branding': 'graphics',
+  'editorial': 'editorial',
   'editorial-magazines': 'editorial',
+  'motion': 'motion',
   'motion-design': 'motion',
+  'events': 'events',
   'events-conferences': 'events',
+  'web': 'graphics',
   'interactive-web': 'graphics',
+  'ads-commercial': 'film',
   'commercials': 'film'
 };
 
