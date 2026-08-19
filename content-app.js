@@ -1017,7 +1017,7 @@
     initUnifiedEnquiryFlow();
     hydrateFooter();
     hydrateMetadata();
-    window.initOlympusContentApp = initializeManagedContent;
+    window.addEventListener('hashchange', hydrateMetadata);
   };
 
   window.initOlympusContentApp = initializeManagedContent;
