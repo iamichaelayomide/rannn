@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing &amp; Invoice Generator — Olympus Atelier</title>
+  <meta name="description" content="Generate, preview, print, and share official invoices from Olympus Atelier.">
+  <link rel="icon" href="assets/olympus-logo.svg" type="image/svg+xml">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+            serif: ['"Cinzel"', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            neutral: {
+              950: '#060606',
+              900: '#0c0c0c',
+              850: '#141414',
+              800: '#1c1c1c',
+            },
+            gold: {
+              400: '#f59e0b',
+              500: '#d97706',
+              600: '#b45309',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-serif: 'Cinzel', serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    body {
+      background-color: #060606;
+      color: #f3f4f6;
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .glass-card {
+      background: rgba(18, 18, 18, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-card-gold {
+      background: rgba(18, 18, 18, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(212, 175, 55, 0.22);
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transition: all 0.2s ease;
+    }
+
+    .glass-input:focus {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(212, 175, 55, 0.5);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+    }
+
+    .bg-gold-gradient {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+    }
+
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Print styling: clean white-page document output */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #111827 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      #invoice-sheet {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+      }
+
+      .print-invert-bg {
+        background: #f9fafb !important;
+        border-color: #e5e7eb !important;
+      }
+
+      .print-text-dark {
+        color: #111827 !important;
+      }
+
+      .print-text-muted {
+        color: #4b5563 !important;
+      }
+
+      .print-border {
+        border-color: #e5e7eb !important;
+      }
+
+      .print-gold-badge {
+        background: #111827 !important;
+        color: #ffffff !important;
+      }
+    }
+  </style>
+</head>
+<body class="selection:bg-amber-500/30 selection:text-amber-200">
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 bg-neutral-900 border border-amber-500/30 text-white px-5 py-3.5 rounded-2xl shadow-2xl">
+    <iconify-icon icon="solar:check-circle-bold" class="text-amber-400 text-xl flex-shrink-0"></iconify-icon>
+    <span id="toast-message" class="text-xs font-medium">Notification</span>
+  </div>
+
+  <!-- Header -->
+  <header class="no-print border-b border-white/5 bg-neutral-950/80 backdrop-blur-xl sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="/" class="flex items-center gap-3 text-white hover:opacity-80 transition-opacity">
+          <img src="assets/olympus-logo.svg" alt="Olympus Atelier" class="w-8 h-8">
+          <span class="font-serif font-bold tracking-[0.18em] text-sm uppercase">Olympus Atelier</span>
+        </a>
+        <span class="text-neutral-600 text-sm">/</span>
+        <span class="text-amber-400 font-mono text-xs uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">Billing &amp; Invoice Generator</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="/" class="hidden sm:inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-400 hover:text-white transition-colors px-3 py-2">
+          <span>Back to Site</span>
+          <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon>
+        </a>
+        <a href="https://wa.me/2348087172313" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 border border-white/10 text-white text-xs font-semibold px-4 py-2.5 rounded-full transition-all">
+          <iconify-icon icon="logos:whatsapp-icon" class="text-base"></iconify-icon>
+          <span>WhatsApp Atelier</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 lg:py-12">
+
+    <!-- Top Action Bar -->
+    <div class="no-print flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-display tracking-tight">Invoice Generator</h1>
+        <p class="text-neutral-400 text-xs sm:text-sm mt-1">Enter client and deliverable details to generate an official invoice, download PDF, or share instantly via WhatsApp.</p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2.5">
+        <button id="btn-print" type="button" class="inline-flex items-center gap-2 bg-white text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:bg-neutral-200 transition-colors shadow-lg shadow-white/5">
+          <iconify-icon icon="solar:printer-bold" class="text-base"></iconify-icon>
+          <span>Print / PDF</span>
+        </button>
+        <button id="btn-whatsapp-share" type="button" class="inline-flex items-center gap-2 bg-gold-gradient text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:scale-[1.02] transition-transform shadow-lg shadow-amber-500/10">
+          <iconify-icon icon="logos:whatsapp-icon" class="text-base"></iconify-icon>
+          <span>Share WhatsApp</span>
+        </button>
+        <button id="btn-copy-summary" type="button" class="inline-flex items-center gap-2 bg-neutral-900 border border-white/10 text-neutral-300 font-semibold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:text-white hover:border-white/20 transition-all">
+          <iconify-icon icon="solar:copy-linear" class="text-base"></iconify-icon>
+          <span>Copy Summary</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Generator Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- LEFT: Editor Form Controls (No-Print) -->
+      <div class="no-print lg:col-span-6 space-y-6">
+
+        <!-- 1. Invoice Metadata -->
+        <section class="glass-card rounded-3xl p-6 sm:p-7 space-y-5">
+          <div class="flex items-center justify-between border-b border-white/5 pb-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-white">Invoice Information</h2>
+            </div>
+            <button id="btn-reset" type="button" class="text-[11px] font-mono text-neutral-500 hover:text-amber-400 transition-colors">Reset form</button>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="inv-number" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Invoice #</label>
+              <input id="inv-number" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="OLY-2026-001">
+            </div>
+            <div>
+              <label for="inv-currency" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Currency</label>
+              <select id="inv-currency" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
+                <option value="NGN">NGN (₦) — Nigerian Naira</option>
+                <option value="USD">USD ($) — US Dollar</option>
+                <option value="GBP">GBP (£) — British Pound</option>
+                <option value="EUR">EUR (€) — Euro</option>
+              </select>
+            </div>
+            <div>
+              <label for="inv-date" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Issue Date</label>
+              <input id="inv-date" type="date" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
+            </div>
+            <div>
+              <label for="inv-due-date" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Payment Due Date</label>
+              <input id="inv-due-date" type="date" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
+            </div>
+          </div>
+
+          <div>
+            <label for="inv-status" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Payment Status</label>
+            <select id="inv-status" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm">
+              <option value="PENDING PAYMENT">Pending Payment</option>
+              <option value="70% DEPOSIT PAID">70% Deposit Paid (Production Active)</option>
+              <option value="PAID IN FULL">Paid in Full</option>
+              <option value="DRAFT PROPOSAL">Draft Proposal</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- 2. Client Information -->
+        <section class="glass-card rounded-3xl p-6 sm:p-7 space-y-5">
+          <div class="flex items-center gap-2.5 border-b border-white/5 pb-4">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-white">Client / Billed To</h2>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="sm:col-span-2">
+              <label for="client-name" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Client Full Name *</label>
+              <input id="client-name" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. Adebayo Ogunlesi" required>
+            </div>
+            <div>
+              <label for="client-company" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Company / Organization</label>
+              <input id="client-company" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. Apex Visuals Ltd">
+            </div>
+            <div>
+              <label for="client-phone" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Phone / WhatsApp</label>
+              <input id="client-phone" type="tel" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm placeholder-neutral-600" placeholder="+234 ...">
+            </div>
+            <div class="sm:col-span-2">
+              <label for="client-email" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Email Address</label>
+              <input id="client-email" type="email" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm placeholder-neutral-600" placeholder="client@example.com">
+            </div>
+            <div class="sm:col-span-2">
+              <label for="client-address" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Address / City</label>
+              <input id="client-address" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm placeholder-neutral-600" placeholder="e.g. Victoria Island, Lagos">
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Line Items & Deliverables -->
+        <section class="glass-card rounded-3xl p-6 sm:p-7 space-y-5">
+          <div class="flex items-center justify-between border-b border-white/5 pb-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-white">Deliverables &amp; Services</h2>
+            </div>
+            <div class="flex items-center gap-2">
+              <select id="preset-services" class="glass-input px-2.5 py-1.5 rounded-lg text-xs font-mono text-amber-400">
+                <option value="">+ Quick Presets...</option>
+                <option value="Wedding Videography — Silver Coverage|1|250000">Wedding — Silver (₦250k)</option>
+                <option value="Wedding Videography — Gold Coverage|1|400000">Wedding — Gold (₦400k)</option>
+                <option value="Wedding Videography — Platinum Cinema Coverage|1|800000">Wedding — Platinum (₦800k)</option>
+                <option value="Commercial Video Editing & Color Grade|1|150000">Video Editing Alone</option>
+                <option value="Editorial & Campaign Photography Session|1|200000">Photography Session</option>
+                <option value="Brand Identity & Design System|1|300000">Brand Identity System</option>
+                <option value="Full-Day Conference / Event Media Coverage|1|350000">Event Full Coverage</option>
+                <option value="Motion Graphics & 3D Visual Asset Package|1|250000">Motion Design Package</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="line-items-container" class="space-y-3">
+            <!-- Dynamic Line Item Rows -->
+          </div>
+
+          <button id="btn-add-item" type="button" class="w-full border border-dashed border-white/20 hover:border-amber-400/50 hover:bg-amber-400/5 text-neutral-300 hover:text-amber-300 py-3 rounded-2xl text-xs font-mono uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+            <iconify-icon icon="solar:add-circle-linear" class="text-lg"></iconify-icon>
+            <span>Add Deliverable Line</span>
+          </button>
+        </section>
+
+        <!-- 4. Financial Calculations -->
+        <section class="glass-card rounded-3xl p-6 sm:p-7 space-y-4">
+          <div class="flex items-center gap-2.5 border-b border-white/5 pb-4">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-white">Adjustments &amp; Deposits</h2>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="inv-discount" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Discount Amount</label>
+              <input id="inv-discount" type="number" min="0" step="any" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" placeholder="0">
+            </div>
+            <div>
+              <label for="inv-tax" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Tax / VAT (%)</label>
+              <input id="inv-tax" type="number" min="0" max="100" step="any" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" placeholder="0">
+            </div>
+            <div class="sm:col-span-2">
+              <label for="inv-deposit" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Amount Paid / Deposit</label>
+              <input id="inv-deposit" type="number" min="0" step="any" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" placeholder="0">
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Bank Account & Terms -->
+        <section class="glass-card rounded-3xl p-6 sm:p-7 space-y-4">
+          <div class="flex items-center gap-2.5 border-b border-white/5 pb-4">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-white">Bank Settlement Details &amp; Terms</h2>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="bank-name" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Bank Name</label>
+              <input id="bank-name" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="OPay / Zenith Bank">
+            </div>
+            <div>
+              <label for="bank-account" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Account Number</label>
+              <input id="bank-account" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="8087172313">
+            </div>
+            <div class="sm:col-span-2">
+              <label for="bank-beneficiary" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Account Name / Beneficiary</label>
+              <input id="bank-beneficiary" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="Olympus Atelier / Michael Ayomide">
+            </div>
+            <div class="sm:col-span-2">
+              <label for="inv-notes" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Terms &amp; Settlement Notes</label>
+              <textarea id="inv-notes" rows="3" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-xs leading-relaxed font-sans">70% mobilization deposit required prior to production commencement. Remaining 30% balance payable upon preview delivery of watermarked draft. Final high-resolution uncompressed files and cloud drive transfer are released immediately upon full settlement.</textarea>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+
+      <!-- RIGHT: Live Document Sheet (Printable Area) -->
+      <div class="lg:col-span-6 sticky top-24">
+        
+        <div class="no-print flex items-center justify-between mb-3 px-2">
+          <span class="text-xs font-mono uppercase tracking-widest text-neutral-400 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Live Document Preview
+          </span>
+          <span class="text-[11px] font-mono text-neutral-500">A4 Printable Format</span>
+        </div>
+
+        <div id="invoice-sheet" class="glass-card-gold rounded-3xl p-6 sm:p-10 shadow-2xl text-neutral-200 transition-all border border-amber-500/20 bg-neutral-950/90 relative overflow-hidden">
+          
+          <!-- Document Background Watermark -->
+          <div class="absolute -right-16 -top-16 opacity-5 pointer-events-none select-none">
+            <img src="assets/olympus-logo.svg" alt="" class="w-96 h-96">
+          </div>
+
+          <!-- Document Header -->
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-6 border-b border-white/10 pb-8 relative z-10 print-border">
+            <div>
+              <div class="flex items-center gap-3">
+                <img src="assets/olympus-logo.svg" alt="Olympus Atelier" class="w-10 h-10">
+                <div>
+                  <h3 class="font-serif text-lg sm:text-xl font-extrabold uppercase tracking-[0.16em] text-white print-text-dark">Olympus Atelier</h3>
+                  <p class="text-[10px] font-mono uppercase tracking-widest text-amber-400 print-text-muted">Film · Photography · Brand Systems</p>
+                </div>
+              </div>
+              <div class="text-[11px] text-neutral-400 mt-4 space-y-0.5 print-text-muted">
+                <p>Lagos, Nigeria · Global Commissions</p>
+                <p>hello@theolympusatelier.com · +234 808 717 2313</p>
+                <p class="font-mono text-[10px] text-neutral-500">Registered Enterprise · RC 7445892</p>
+              </div>
+            </div>
+
+            <div class="sm:text-right">
+              <span id="preview-badge-status" class="inline-block font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 mb-3 print-gold-badge">
+                PENDING PAYMENT
+              </span>
+              <h2 class="text-3xl font-extrabold text-white font-display tracking-tight print-text-dark">INVOICE</h2>
+              <p id="preview-inv-number" class="text-sm font-mono text-amber-400 font-semibold mt-1 print-text-dark">OLY-2026-001</p>
+            </div>
+          </div>
+
+          <!-- Document Meta & Client Box -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 py-6 border-b border-white/10 relative z-10 print-border text-xs">
+            <div>
+              <span class="font-mono text-[10px] uppercase tracking-widest text-amber-400 block mb-1.5 print-text-muted">Billed To:</span>
+              <h4 id="preview-client-name" class="text-base font-bold text-white print-text-dark">Client Name</h4>
+              <p id="preview-client-company" class="text-neutral-300 font-medium print-text-dark"></p>
+              <p id="preview-client-phone" class="text-neutral-400 mt-1 print-text-muted"></p>
+              <p id="preview-client-email" class="text-neutral-400 print-text-muted"></p>
+              <p id="preview-client-address" class="text-neutral-400 print-text-muted"></p>
+            </div>
+
+            <div class="sm:text-right space-y-1.5 font-mono text-[11px]">
+              <div class="flex sm:justify-end gap-3">
+                <span class="text-neutral-500 print-text-muted">Issue Date:</span>
+                <span id="preview-inv-date" class="text-white font-semibold print-text-dark">-</span>
+              </div>
+              <div class="flex sm:justify-end gap-3">
+                <span class="text-neutral-500 print-text-muted">Due Date:</span>
+                <span id="preview-inv-due-date" class="text-white font-semibold print-text-dark">-</span>
+              </div>
+              <div class="flex sm:justify-end gap-3">
+                <span class="text-neutral-500 print-text-muted">Currency:</span>
+                <span id="preview-inv-currency" class="text-amber-400 font-semibold print-text-dark">NGN (₦)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Deliverables Table -->
+          <div class="py-6 border-b border-white/10 relative z-10 print-border overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead>
+                <tr class="border-b border-white/10 text-neutral-400 font-mono text-[10px] uppercase tracking-wider print-border print-text-muted">
+                  <th class="py-2.5 pr-4 font-semibold">Description</th>
+                  <th class="py-2.5 px-3 text-center font-semibold">Qty</th>
+                  <th class="py-2.5 px-3 text-right font-semibold">Rate</th>
+                  <th class="py-2.5 pl-3 text-right font-semibold">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="preview-items-body" class="divide-y divide-white/5 font-sans print-border">
+                <!-- Preview items inserted here -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Totals Summary -->
+          <div class="py-6 border-b border-white/10 relative z-10 print-border flex justify-end">
+            <div class="w-full sm:w-72 space-y-2 text-xs font-mono">
+              <div class="flex justify-between text-neutral-400 print-text-muted">
+                <span>Subtotal</span>
+                <span id="preview-subtotal" class="text-white font-medium print-text-dark">₦0.00</span>
+              </div>
+              <div id="preview-discount-row" class="flex justify-between text-emerald-400 hidden">
+                <span>Discount</span>
+                <span id="preview-discount">-₦0.00</span>
+              </div>
+              <div id="preview-tax-row" class="flex justify-between text-neutral-400 hidden print-text-muted">
+                <span>Tax / VAT</span>
+                <span id="preview-tax">+₦0.00</span>
+              </div>
+              <div class="border-t border-white/10 pt-2 flex justify-between text-sm font-bold text-white print-border print-text-dark">
+                <span>Total Due</span>
+                <span id="preview-grand-total" class="text-amber-400 print-text-dark font-display text-base">₦0.00</span>
+              </div>
+              <div id="preview-deposit-row" class="flex justify-between text-neutral-400 hidden pt-1 print-text-muted">
+                <span>Amount Paid</span>
+                <span id="preview-deposit" class="text-emerald-400">₦0.00</span>
+              </div>
+              <div id="preview-balance-row" class="border-t border-dashed border-white/10 pt-2 flex justify-between text-xs font-bold text-amber-300 hidden print-border print-text-dark">
+                <span>Balance Remaining</span>
+                <span id="preview-balance">₦0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bank & Terms Settlement -->
+          <div class="pt-6 relative z-10 space-y-4 text-xs">
+            <div class="bg-white/5 rounded-2xl p-4 border border-white/5 print-invert-bg print-border">
+              <span class="font-mono text-[10px] uppercase tracking-widest text-amber-400 block mb-2 print-text-muted">Official Payment Account:</span>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 font-mono text-[11px]">
+                <div>
+                  <span class="text-neutral-500 block text-[9px] uppercase print-text-muted">Bank</span>
+                  <strong id="preview-bank-name" class="text-white print-text-dark">OPay / Zenith Bank</strong>
+                </div>
+                <div>
+                  <span class="text-neutral-500 block text-[9px] uppercase print-text-muted">Account Number</span>
+                  <strong id="preview-bank-account" class="text-amber-400 print-text-dark font-bold text-sm">8087172313</strong>
+                </div>
+                <div>
+                  <span class="text-neutral-500 block text-[9px] uppercase print-text-muted">Beneficiary</span>
+                  <strong id="preview-bank-beneficiary" class="text-white print-text-dark">Michael Ayomide / Olympus</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-[11px] text-neutral-400 leading-relaxed print-text-muted">
+              <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-1 print-text-muted">Terms &amp; Conditions:</span>
+              <p id="preview-notes">70% mobilization deposit required prior to production commencement. Remaining 30% balance payable upon preview delivery of watermarked draft.</p>
+            </div>
+
+            <div class="pt-4 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[10px] font-mono text-neutral-500 print-border print-text-muted">
+              <span>Thank you for choosing Olympus Atelier.</span>
+              <span>Authorized Signature: <strong class="text-neutral-300 font-serif print-text-dark">Olympus Atelier Executive Direction</strong></span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    (() => {
+      // Currency formatting helpers
+      const currencySymbols = {
+        NGN: '₦',
+        USD: '$',
+        GBP: '£',
+        EUR: '€'
+      };
+
+      const formatMoney = (amount, currency = 'NGN') => {
+        const symbol = currencySymbols[currency] || '₦';
+        const num = Number(amount || 0);
+        return symbol + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      };
+
+      const showToast = (message) => {
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toast-message');
+        if (!toast || !toastMsg) return;
+        toastMsg.textContent = message;
+        toast.classList.remove('translate-y-20', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+        setTimeout(() => {
+          toast.classList.remove('translate-y-0', 'opacity-100');
+          toast.classList.add('translate-y-20', 'opacity-0');
+        }, 3200);
+      };
+
+      // State
+      let items = [
+        {
+          id: 'item-1',
+          description: 'Wedding Videography — Gold Coverage (Full Day Capture, Highlight Film & Color Grade)',
+          quantity: 1,
+          rate: 400000
+        }
+      ];
+
+      const initDates = () => {
+        const today = new Date();
+        const dueDate = new Date();
+        dueDate.setDate(today.getDate() + 7);
+
+        const formatDateInput = (d) => d.toISOString().split('T')[0];
+        document.getElementById('inv-date').value = formatDateInput(today);
+        document.getElementById('inv-due-date').value = formatDateInput(dueDate);
+      };
+
+      const renderLineItemsInput = () => {
+        const container = document.getElementById('line-items-container');
+        if (!container) return;
+
+        container.innerHTML = items.map((item, index) => `
+          <div class="glass-card rounded-2xl p-4 space-y-3 relative group border border-white/5 hover:border-white/15 transition-colors" data-index="${index}">
+            <div class="flex items-start justify-between gap-3">
+              <input type="text" class="item-desc glass-input w-full px-3 py-2 rounded-xl text-sm placeholder-neutral-600 font-sans" placeholder="Deliverable description..." value="${escapeHtml(item.description)}">
+              ${items.length > 1 ? `
+                <button type="button" class="btn-remove-item text-neutral-500 hover:text-red-400 p-2 rounded-lg transition-colors flex-shrink-0" title="Delete item">
+                  <iconify-icon icon="solar:trash-bin-trash-linear" class="text-base"></iconify-icon>
+                </button>
+              ` : ''}
+            </div>
+            <div class="grid grid-cols-2 gap-3 font-mono">
+              <div>
+                <label class="block text-[10px] uppercase text-neutral-500 mb-1">Quantity</label>
+                <input type="number" min="1" step="any" class="item-qty glass-input w-full px-3 py-1.5 rounded-lg text-xs" value="${item.quantity}">
+              </div>
+              <div>
+                <label class="block text-[10px] uppercase text-neutral-500 mb-1">Unit Rate</label>
+                <input type="number" min="0" step="any" class="item-rate glass-input w-full px-3 py-1.5 rounded-lg text-xs" value="${item.rate}">
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        // Bind input listeners
+        container.querySelectorAll('.item-desc').forEach((input, i) => {
+          input.addEventListener('input', (e) => {
+            items[i].description = e.target.value;
+            updatePreview();
+          });
+        });
+        container.querySelectorAll('.item-qty').forEach((input, i) => {
+          input.addEventListener('input', (e) => {
+            items[i].quantity = Number(e.target.value || 0);
+            updatePreview();
+          });
+        });
+        container.querySelectorAll('.item-rate').forEach((input, i) => {
+          input.addEventListener('input', (e) => {
+            items[i].rate = Number(e.target.value || 0);
+            updatePreview();
+          });
+        });
+        container.querySelectorAll('.btn-remove-item').forEach((btn, i) => {
+          btn.addEventListener('click', () => {
+            items.splice(i, 1);
+            renderLineItemsInput();
+            updatePreview();
+          });
+        });
+      };
+
+      const escapeHtml = (str) => String(str ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;');
+
+      const updatePreview = () => {
+        const currency = document.getElementById('inv-currency').value || 'NGN';
+        const invNumber = document.getElementById('inv-number').value.trim() || 'OLY-2026-001';
+        const status = document.getElementById('inv-status').value || 'PENDING PAYMENT';
+        const date = document.getElementById('inv-date').value;
+        const dueDate = document.getElementById('inv-due-date').value;
+
+        const clientName = document.getElementById('client-name').value.trim() || 'Client / Recipient Name';
+        const clientCompany = document.getElementById('client-company').value.trim();
+        const clientPhone = document.getElementById('client-phone').value.trim();
+        const clientEmail = document.getElementById('client-email').value.trim();
+        const clientAddress = document.getElementById('client-address').value.trim();
+
+        const discountVal = Number(document.getElementById('inv-discount').value || 0);
+        const taxRate = Number(document.getElementById('inv-tax').value || 0);
+        const depositVal = Number(document.getElementById('inv-deposit').value || 0);
+
+        const bankName = document.getElementById('bank-name').value.trim();
+        const bankAccount = document.getElementById('bank-account').value.trim();
+        const bankBeneficiary = document.getElementById('bank-beneficiary').value.trim();
+        const notes = document.getElementById('inv-notes').value.trim();
+
+        // Update headers & meta
+        document.getElementById('preview-inv-number').textContent = invNumber;
+        document.getElementById('preview-badge-status').textContent = status;
+        document.getElementById('preview-inv-currency').textContent = `${currency} (${currencySymbols[currency] || ''})`;
+        document.getElementById('preview-inv-date').textContent = date ? new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
+        document.getElementById('preview-inv-due-date').textContent = dueDate ? new Date(dueDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
+
+        // Client
+        document.getElementById('preview-client-name').textContent = clientName;
+        document.getElementById('preview-client-company').textContent = clientCompany;
+        document.getElementById('preview-client-phone').textContent = clientPhone ? `Phone: ${clientPhone}` : '';
+        document.getElementById('preview-client-email').textContent = clientEmail ? `Email: ${clientEmail}` : '';
+        document.getElementById('preview-client-address').textContent = clientAddress;
+
+        // Render table
+        let subtotal = 0;
+        const tbody = document.getElementById('preview-items-body');
+        tbody.innerHTML = items.map(item => {
+          const rowTotal = (Number(item.quantity) || 0) * (Number(item.rate) || 0);
+          subtotal += rowTotal;
+          return `
+            <tr class="hover:bg-white/5 transition-colors">
+              <td class="py-3 pr-4 text-white print-text-dark font-medium leading-relaxed">${escapeHtml(item.description || 'Deliverable / Service')}</td>
+              <td class="py-3 px-3 text-center text-neutral-400 print-text-dark font-mono">${item.quantity || 1}</td>
+              <td class="py-3 px-3 text-right text-neutral-400 print-text-dark font-mono">${formatMoney(item.rate, currency)}</td>
+              <td class="py-3 pl-3 text-right text-amber-300 print-text-dark font-mono font-semibold">${formatMoney(rowTotal, currency)}</td>
+            </tr>
+          `;
+        }).join('');
+
+        // Totals
+        const discountAmount = discountVal;
+        const subAfterDiscount = Math.max(0, subtotal - discountAmount);
+        const taxAmount = (subAfterDiscount * taxRate) / 100;
+        const grandTotal = subAfterDiscount + taxAmount;
+        const balanceRemaining = Math.max(0, grandTotal - depositVal);
+
+        document.getElementById('preview-subtotal').textContent = formatMoney(subtotal, currency);
+
+        const discountRow = document.getElementById('preview-discount-row');
+        if (discountVal > 0) {
+          discountRow.classList.remove('hidden');
+          document.getElementById('preview-discount').textContent = `-${formatMoney(discountVal, currency)}`;
+        } else {
+          discountRow.classList.add('hidden');
+        }
+
+        const taxRow = document.getElementById('preview-tax-row');
+        if (taxRate > 0) {
+          taxRow.classList.remove('hidden');
+          document.getElementById('preview-tax').textContent = `+${formatMoney(taxAmount, currency)} (${taxRate}%)`;
+        } else {
+          taxRow.classList.add('hidden');
+        }
+
+        document.getElementById('preview-grand-total').textContent = formatMoney(grandTotal, currency);
+
+        const depositRow = document.getElementById('preview-deposit-row');
+        const balanceRow = document.getElementById('preview-balance-row');
+        if (depositVal > 0) {
+          depositRow.classList.remove('hidden');
+          document.getElementById('preview-deposit').textContent = formatMoney(depositVal, currency);
+
+          balanceRow.classList.remove('hidden');
+          document.getElementById('preview-balance').textContent = formatMoney(balanceRemaining, currency);
+        } else {
+          depositRow.classList.add('hidden');
+          balanceRow.classList.add('hidden');
+        }
+
+        // Bank info & notes
+        document.getElementById('preview-bank-name').textContent = bankName || 'OPay / Zenith Bank';
+        document.getElementById('preview-bank-account').textContent = bankAccount || '8087172313';
+        document.getElementById('preview-bank-beneficiary').textContent = bankBeneficiary || 'Olympus Atelier';
+        document.getElementById('preview-notes').textContent = notes || 'Thank you for choosing Olympus Atelier.';
+      };
+
+      // Form bindings
+      const bindFormInputs = () => {
+        const inputIds = [
+          'inv-number', 'inv-currency', 'inv-status', 'inv-date', 'inv-due-date',
+          'client-name', 'client-company', 'client-phone', 'client-email', 'client-address',
+          'inv-discount', 'inv-tax', 'inv-deposit',
+          'bank-name', 'bank-account', 'bank-beneficiary', 'inv-notes'
+        ];
+
+        inputIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.addEventListener('input', updatePreview);
+            el.addEventListener('change', updatePreview);
+          }
+        });
+
+        // Add line item
+        document.getElementById('btn-add-item')?.addEventListener('click', () => {
+          items.push({
+            id: `item-${Date.now()}`,
+            description: '',
+            quantity: 1,
+            rate: 0
+          });
+          renderLineItemsInput();
+          updatePreview();
+        });
+
+        // Quick presets
+        document.getElementById('preset-services')?.addEventListener('change', (e) => {
+          const val = e.target.value;
+          if (!val) return;
+          const [desc, qty, rate] = val.split('|');
+          items.push({
+            id: `item-${Date.now()}`,
+            description: desc,
+            quantity: Number(qty) || 1,
+            rate: Number(rate) || 0
+          });
+          e.target.value = '';
+          renderLineItemsInput();
+          updatePreview();
+          showToast('Added deliverable preset');
+        });
+
+        // Reset
+        document.getElementById('btn-reset')?.addEventListener('click', () => {
+          if (confirm('Reset invoice generator to default?')) {
+            items = [
+              {
+                id: 'item-1',
+                description: 'Wedding Videography — Gold Coverage (Full Day Capture, Highlight Film & Color Grade)',
+                quantity: 1,
+                rate: 400000
+              }
+            ];
+            document.getElementById('client-name').value = '';
+            document.getElementById('client-company').value = '';
+            document.getElementById('client-phone').value = '';
+            document.getElementById('client-email').value = '';
+            document.getElementById('client-address').value = '';
+            document.getElementById('inv-discount').value = '';
+            document.getElementById('inv-tax').value = '';
+            document.getElementById('inv-deposit').value = '';
+            initDates();
+            renderLineItemsInput();
+            updatePreview();
+            showToast('Invoice form reset');
+          }
+        });
+
+        // Print / PDF
+        document.getElementById('btn-print')?.addEventListener('click', () => {
+          window.print();
+        });
+
+        // Build plain-text WhatsApp summary
+        const buildWhatsAppSummary = () => {
+          const currency = document.getElementById('inv-currency').value || 'NGN';
+          const invNumber = document.getElementById('inv-number').value.trim() || 'OLY-2026-001';
+          const clientName = document.getElementById('client-name').value.trim() || 'Client';
+          const dueDate = document.getElementById('inv-due-date').value;
+          const bankName = document.getElementById('bank-name').value.trim() || 'OPay';
+          const bankAccount = document.getElementById('bank-account').value.trim() || '8087172313';
+          const bankBeneficiary = document.getElementById('bank-beneficiary').value.trim() || 'Olympus Atelier';
+
+          let subtotal = 0;
+          const itemLines = items.map((it, idx) => {
+            const rowTotal = (Number(it.quantity) || 0) * (Number(it.rate) || 0);
+            subtotal += rowTotal;
+            return `${idx + 1}. *${it.description}* (Qty: ${it.quantity}) — ${formatMoney(rowTotal, currency)}`;
+          });
+
+          const discountVal = Number(document.getElementById('inv-discount').value || 0);
+          const taxRate = Number(document.getElementById('inv-tax').value || 0);
+          const depositVal = Number(document.getElementById('inv-deposit').value || 0);
+          const grandTotal = Math.max(0, subtotal - discountVal) * (1 + taxRate / 100);
+          const balance = Math.max(0, grandTotal - depositVal);
+
+          const lines = [
+            '🏛️ *OLYMPUS ATELIER — OFFICIAL INVOICE*',
+            `📄 *Invoice Reference:* ${invNumber}`,
+            `👤 *Client:* ${clientName}`,
+            `📅 *Due Date:* ${dueDate ? new Date(dueDate).toLocaleDateString('en-GB') : 'Immediate'}`,
+            '',
+            '📋 *DELIVERABLES & SCOPE:*',
+            ...itemLines,
+            '',
+            `💵 *Total Amount:* ${formatMoney(grandTotal, currency)}`,
+            depositVal > 0 ? `✅ *Deposit Paid:* ${formatMoney(depositVal, currency)}\n⏳ *Balance Remaining:* ${formatMoney(balance, currency)}` : '',
+            '',
+            '🏦 *PAYMENT SETTLEMENT DETAILS:*',
+            `• Bank: ${bankName}`,
+            `• Account Number: ${bankAccount}`,
+            `• Account Name: ${bankBeneficiary}`,
+            '',
+            '✨ _Thank you for choosing Olympus Atelier. Please reply to this message with your proof of transfer upon settlement._'
+          ].filter(Boolean);
+
+          return lines.join('\n');
+        };
+
+        // WhatsApp Share
+        document.getElementById('btn-whatsapp-share')?.addEventListener('click', () => {
+          const clientPhone = document.getElementById('client-phone').value.trim().replace(/[^0-9]/g, '');
+          const msg = buildWhatsAppSummary();
+          const targetNumber = clientPhone || '2348087172313';
+          const url = `https://wa.me/${targetNumber}?text=${encodeURIComponent(msg)}`;
+          window.open(url, '_blank', 'noopener,noreferrer');
+          showToast('Opening WhatsApp with pre-filled invoice...');
+        });
+
+        // Copy Summary
+        document.getElementById('btn-copy-summary')?.addEventListener('click', () => {
+          const summary = buildWhatsAppSummary();
+          navigator.clipboard.writeText(summary).then(() => {
+            showToast('Invoice summary copied to clipboard!');
+          }).catch(() => {
+            showToast('Unable to copy to clipboard');
+          });
+        });
+      };
+
+      // Bootstrap
+      initDates();
+      renderLineItemsInput();
+      bindFormInputs();
+      updatePreview();
+    })();
+  </script>
+</body>
+</html>

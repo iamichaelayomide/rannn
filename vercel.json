@@ -42,6 +42,7 @@
     }
   ],
   "rewrites": [
+    { "source": "/billing", "destination": "/billing.html" },
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/portal", "destination": "/portal.html" }
   ]
