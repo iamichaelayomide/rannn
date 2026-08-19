@@ -71,7 +71,7 @@
               <ul>
                 ${item.features.map(feature => `<li><iconify-icon icon="solar:check-circle-bold"></iconify-icon><span>${escapeHtml(feature)}</span></li>`).join('')}
               </ul>
-              <a href="#contact?intent=project&service=${encodeURIComponent(`${item.name} Wedding Package`)}&source_cta=Wedding%20packages" data-page="contact" class="spa-nav-link wedding-package-cta">Choose ${escapeHtml(item.name)}</a>
+              <a href="#contact?intent=project&service=${encodeURIComponent(`${item.name} Wedding Package`)}&budget=${encodeURIComponent(item.price)}&message=${encodeURIComponent(`I would like to book the ${item.name} Wedding Package (${item.price}) for full-day wedding videography coverage.`)}&source_cta=Wedding%20packages` data-page="contact" class="spa-nav-link wedding-package-cta">Book ${escapeHtml(item.name)} (${escapeHtml(item.price)})</a>
             </article>
           `).join('')}
         </div>
@@ -148,7 +148,7 @@
               ${item.features.map(feature => `<li class="flex items-center gap-2.5"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400 text-sm flex-shrink-0"></iconify-icon><span>${escapeHtml(feature)}</span></li>`).join('')}
             </ul>
           </div>
-          <a href="#contact?intent=project&service=${encodeURIComponent(`${item.name} Wedding Package`)}&source_cta=Wedding%20packages%20section" data-page="contact" class="spa-nav-link inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-6 py-3.5 rounded-full text-xs uppercase tracking-wider mt-8 hover:scale-105 transition-transform w-full text-center">Book ${escapeHtml(item.name)} Package</a>
+          <a href="#contact?intent=project&service=${encodeURIComponent(`${item.name} Wedding Package`)}&budget=${encodeURIComponent(item.price)}&message=${encodeURIComponent(`I would like to book the ${item.name} Wedding Package (${item.price}) for full-day wedding videography coverage.`)}&source_cta=Wedding%20packages%20section" data-page="contact" class="spa-nav-link inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-6 py-3.5 rounded-full text-xs uppercase tracking-wider mt-8 hover:scale-105 transition-transform w-full text-center">Book ${escapeHtml(item.name)} (${escapeHtml(item.price)})</a>
         </article>
       `).join('');
     };
@@ -700,12 +700,40 @@
 
     const hydrateContext = () => {
       const params = paramsForHash();
-      selectIntent(params.get('intent') || intentInput?.value || 'general');
       const service = params.get('service');
+      const budget = params.get('budget');
+      const message = params.get('message') || params.get('details');
+      const timeline = params.get('timeline') || params.get('date');
+
+      selectIntent(params.get('intent') || (service || budget ? 'project' : intentInput?.value || 'general'));
+
       if (serviceSelect && service) {
-        const matchingOption = [...serviceSelect.options].find(option => option.value.toLowerCase() === service.toLowerCase());
-        if (matchingOption) serviceSelect.value = matchingOption.value;
+        let matchingOption = [...serviceSelect.options].find(option => option.value.toLowerCase() === service.toLowerCase());
+        if (!matchingOption) {
+          serviceSelect.insertAdjacentHTML('beforeend', `<option value="${escapeHtml(service)}">${escapeHtml(service)}</option>`);
+          matchingOption = serviceSelect.options[serviceSelect.options.length - 1];
+        }
+        serviceSelect.value = matchingOption.value;
       }
+
+      const enquiryBudget = document.getElementById('enquiry-budget');
+      if (enquiryBudget && budget) enquiryBudget.value = budget;
+
+      const bookingBudget = document.getElementById('booking-budget');
+      if (bookingBudget && budget) bookingBudget.value = budget;
+
+      const enquiryMessage = document.getElementById('enquiry-message');
+      if (enquiryMessage && message) enquiryMessage.value = message;
+
+      const bookingDetails = document.getElementById('booking-details');
+      if (bookingDetails && message) bookingDetails.value = message;
+
+      const enquiryTimeline = document.getElementById('enquiry-timeline');
+      if (enquiryTimeline && timeline) enquiryTimeline.value = timeline;
+
+      const bookingDate = document.getElementById('booking-date');
+      if (bookingDate && timeline) bookingDate.value = timeline;
+
       const preferred = params.get('preferred_channel');
       const preferredSelect = document.getElementById('enquiry-channel');
       if (preferredSelect && ['email', 'whatsapp', 'phone'].includes(preferred)) preferredSelect.value = preferred;
