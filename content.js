@@ -429,20 +429,6 @@ window.OLYMPUS_CONTENT = {
   },
   "portfolioItems": [
     {
-      "id": "1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y",
-      "title": "Wedding Highlight Film (wedding(6).mov)",
-      "description": "Cinematic wedding highlight film, emotional narrative capture, and professional grade.",
-      "category": "wedding-highlights",
-      "collection": "Wedding Highlights",
-      "year": "2025",
-      "mediaType": "video",
-      "thumbnailSrc": "assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp",
-      "previewSrc": "assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp",
-      "originalUrl": "https://drive.google.com/file/d/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y/view",
-      "alt": "Wedding Highlight Film wedding(6).mov by Olympus Atelier",
-      "featured": true
-    },
-    {
       "id": "1V3iS3FUXxQBentD7IZ7gfZhLEvienxAU",
       "title": "Wedding Highlights Collection (Full Folder)",
       "description": "Complete archive of wedding highlight films, ceremony moments, and reception reels.",
