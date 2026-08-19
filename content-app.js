@@ -534,6 +534,8 @@
 
     const filterList = content.filters || [
       { id: 'all', label: 'All Work' },
+      { id: 'wedding-highlights', label: 'Wedding Highlights' },
+      { id: 'editing-alone', label: 'Video Editing Alone' },
       { id: 'film', label: 'Film & Photography' },
       { id: 'events', label: 'Events & Conferences' },
       { id: 'graphics', label: 'Graphics & Branding' },

@@ -235,6 +235,18 @@ window.OLYMPUS_CONTENT = {
   },
   "services": [
     {
+      "id": "wedding-highlights",
+      "title": "Wedding Highlights",
+      "summary": "Full-day wedding coverage, highlight films, cinematic editing, and online sharing prepared for memory and celebration.",
+      "description": "Capture every emotion, atmosphere, and key moment with dedicated videography, professional audio, and polished post-production."
+    },
+    {
+      "id": "editing-alone",
+      "title": "Video Editing Alone",
+      "summary": "Bring your existing footage. Olympus shapes the pacing, color grading, audio design, and platform-ready final exports.",
+      "description": "High-end post-production for creators, brands, and agencies with raw media seeking professional editorial direction."
+    },
+    {
       "id": "photo-film",
       "title": "Photography & Film",
       "summary": "Give your audience polished images and films that make people, products, and ideas feel credible.",
@@ -407,6 +419,34 @@ window.OLYMPUS_CONTENT = {
     ]
   },
   "portfolioItems": [
+    {
+      "id": "1V3iS3FUXxQBentD7IZ7gfZhLEvienxAU",
+      "title": "Wedding Highlight Film",
+      "description": "Full-day wedding videography coverage and cinematic highlight edit.",
+      "category": "wedding-highlights",
+      "collection": "Wedding Highlights",
+      "mediaType": "video",
+      "thumbnailSrc": "assets/media/prefooter-stage.webp",
+      "previewSrc": null,
+      "originalUrl": "https://drive.google.com/drive/folders/1V3iS3FUXxQBentD7IZ7gfZhLEvienxAU",
+      "alt": "Wedding Highlight Film by Olympus Atelier",
+      "year": "2025",
+      "featured": true
+    },
+    {
+      "id": "1j_D4ePzhUsHBXyORwNFJoTbMrjSFgvCU",
+      "title": "Video Editing & Post-Production",
+      "description": "Professional video editing, color grading, and audio design for existing footage.",
+      "category": "editing-alone",
+      "collection": "Video Editing Alone",
+      "mediaType": "video",
+      "thumbnailSrc": "assets/media/hero-bg.webp",
+      "previewSrc": null,
+      "originalUrl": "https://drive.google.com/drive/folders/1j_D4ePzhUsHBXyORwNFJoTbMrjSFgvCU",
+      "alt": "Video Editing Alone by Olympus Atelier",
+      "year": "2025",
+      "featured": true
+    },
     {
       "id": "1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO",
       "title": "Chuks Ezimadu - Green Carpet Interview",
