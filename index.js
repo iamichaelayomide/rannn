@@ -1131,7 +1131,7 @@ const initSPARouter = () => {
 
   // Nav links click triggers with delegation for dynamic elements
   document.addEventListener('click', (e) => {
-    const link = e.target.closest('.spa-nav-link, .nav-link');
+    const link = e.target.closest('.spa-nav-link, .nav-link, .mobile-nav-link');
     if (!link) return;
     const targetPage = link.getAttribute('data-page');
     if (targetPage) {
