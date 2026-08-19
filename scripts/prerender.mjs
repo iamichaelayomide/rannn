@@ -187,5 +187,15 @@ html = html.replace(
   `<div id="team-grid" class="team-grid" aria-label="Olympus Atelier team">\n${teamHtml}\n        </div>`
 );
 
+// Update WhatsApp Enquiry Button in Contact Form
+html = html.replace(
+  /<button id="enquiry-submit"[^>]*>[\s\S]*?<\/button>\s*<p class="text-xs text-neutral-500 text-center">[\s\S]*?<\/p>/,
+  `<button id="enquiry-submit" type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] transition-transform duration-300 shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
+              <span>Send Request via WhatsApp</span>
+              <iconify-icon icon="logos:whatsapp-icon" class="text-xl"></iconify-icon>
+            </button>
+            <p class="text-xs text-neutral-400 text-center">Your details will be pre-filled automatically on WhatsApp for instant messaging.</p>`
+);
+
 fs.writeFileSync('index.html', html);
 console.log('Successfully pre-rendered pristine index.html with interactive onclick triggers!');

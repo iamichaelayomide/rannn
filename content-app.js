@@ -967,42 +967,101 @@
       script.addEventListener('load', renderWidget, { once: true });
       document.head.append(script);
     };
-    loadTurnstile();
+    const buildEnquiryWhatsappMessage = ({ name, email, phone, service, budget, timeline, location, message, intent }) => {
+      const lines = [];
+      lines.push('🌟 *NEW REQUEST — OLYMPUS ATELIER*');
+      lines.push('');
+      if (name) lines.push(`👤 *Client Name:* ${name}`);
+      if (phone) lines.push(`📱 *WhatsApp / Phone:* ${phone}`);
+      if (email) lines.push(`📧 *Email:* ${email}`);
+      lines.push('');
+      if (service) lines.push(`🎯 *Service Requested:* ${service}`);
+      if (budget) lines.push(`💰 *Budget / Selected Package:* ${budget}`);
+      if (timeline) lines.push(`📅 *Preferred Date / Timeline:* ${timeline}`);
+      if (location) lines.push(`📍 *Location / Venue:* ${location}`);
+      if (intent && intent !== 'general') lines.push(`🏷️ *Request Type:* ${intent === 'project' ? 'Start a Project' : intent === 'event' ? 'Event Coverage' : 'General Enquiry'}`);
+      lines.push('');
+      if (message) {
+        lines.push('📝 *Project Brief & Details:*');
+        lines.push(message);
+      }
+      return lines.join('\n');
+    };
 
     form.addEventListener('submit', async event => {
       event.preventDefault();
       const values = new FormData(form);
+      const name = String(values.get('name') || '').trim();
       const email = String(values.get('email') || '').trim();
       const phone = String(values.get('phone') || '').trim();
-      if (!email && !phone) {
-        status.textContent = 'Please add an email address or phone/WhatsApp number so we can reply.';
+      const service = String(values.get('service') || '').trim();
+      const budget = String(values.get('budget') || '').trim();
+      const timeline = String(values.get('timeline') || '').trim();
+      const location = String(values.get('location') || '').trim();
+      const message = String(values.get('message') || '').trim();
+      const intent = String(values.get('intent') || 'general');
+
+      if (!name) {
+        status.textContent = 'Please enter your name.';
         status.classList.remove('hidden');
-        document.getElementById('enquiry-email')?.focus();
+        document.getElementById('enquiry-name')?.focus();
         return;
       }
 
-      if (!idempotencyInput.value) idempotencyInput.value = makeIdempotencyKey();
-      status.classList.add('hidden');
-      submitButton.disabled = true;
-      submitButton.textContent = 'Creating your ticket…';
+      if (!email && !phone) {
+        status.textContent = 'Please add an email address or phone/WhatsApp number so we can reply.';
+        status.classList.remove('hidden');
+        document.getElementById('enquiry-phone')?.focus();
+        return;
+      }
 
+      status.classList.add('hidden');
+
+      // 1. Build formatted WhatsApp message
+      const waMessage = buildEnquiryWhatsappMessage({
+        name,
+        email,
+        phone,
+        service,
+        budget,
+        timeline,
+        location,
+        message,
+        intent
+      });
+      const waUrl = whatsappUrl(waMessage);
+
+      // 2. Immediately launch WhatsApp
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+
+      // 3. Switch to confirmation screen
+      if (continueWhatsapp) {
+        continueWhatsapp.href = waUrl;
+        continueWhatsapp.classList.remove('hidden');
+      }
+      formPanel.classList.add('hidden');
+      successPanel.classList.remove('hidden');
+      successPanel.focus();
+
+      // 4. Save ticket in background (non-blocking)
+      if (!idempotencyInput.value) idempotencyInput.value = makeIdempotencyKey();
       try {
         const result = await window.submitInquiry({
           site_key: 'olympus-atelier',
-          intent: values.get('intent'),
-          name: values.get('name'),
+          intent,
+          name,
           email,
           phone,
-          preferred_channel: values.get('preferred_channel'),
-          service: values.get('service') || null,
-          budget: values.get('budget') || null,
+          preferred_channel: values.get('preferred_channel') || 'whatsapp',
+          service: service || null,
+          budget: budget || null,
           preferred_date: values.get('preferred_date') || null,
-          timeline: values.get('timeline') || null,
-          location: values.get('location') || null,
-          message: values.get('message'),
+          timeline: timeline || null,
+          location: location || null,
+          message,
           consent: values.get('consent') === 'on',
           source_page: window.location.hash.split('?')[0].replace(/^#/, '') || 'contact',
-          source_cta: values.get('source_cta') || null,
+          source_cta: values.get('source_cta') || 'WhatsApp Enquiry Form',
           source_url: window.location.href,
           referrer: document.referrer || null,
           utm: Object.fromEntries([...new URL(window.location.href).searchParams.entries()].filter(([key]) => key.startsWith('utm_'))),
@@ -1010,27 +1069,11 @@
           turnstile_token: values.get('cf-turnstile-response') || null,
           website: values.get('website') || ''
         });
-        successTicket.textContent = result.ticketNumber;
-        successEmail.textContent = result.acknowledgementState === 'sent'
-          ? 'A confirmation email is on its way.'
-          : email
-            ? 'Your ticket is saved. Email confirmation is temporarily unavailable, but the atelier can still see your enquiry.'
-            : 'Your ticket is saved and the atelier can now respond through your preferred channel.';
-        if (result.whatsappUrl) {
-          continueWhatsapp.href = result.whatsappUrl;
-          continueWhatsapp.classList.remove('hidden');
-        } else {
-          continueWhatsapp.classList.add('hidden');
+        if (result?.ticketNumber) {
+          successTicket.textContent = result.ticketNumber;
         }
-        formPanel.classList.add('hidden');
-        successPanel.classList.remove('hidden');
-        successPanel.focus();
-      } catch (error) {
-        status.textContent = error.message || 'We could not create your ticket. Your details are still here—please try again.';
-        status.classList.remove('hidden');
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Create enquiry ticket';
+      } catch (err) {
+        console.warn('Background ticket save notice:', err.message);
       }
     });
 

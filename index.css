@@ -1479,7 +1479,9 @@ html.lenis {
   display: flex;
   inset: 0;
   justify-content: center;
-  overflow-y: auto;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain;
   padding: clamp(1rem, 4vw, 3rem);
   position: fixed;
   z-index: 80;
@@ -1490,24 +1492,27 @@ html.lenis {
 }
 
 .wedding-packages-backdrop {
-  background: rgba(2, 2, 2, 0.9);
+  background: rgba(2, 2, 2, 0.92);
   backdrop-filter: blur(18px);
   inset: 0;
   position: fixed;
+  z-index: 1;
 }
 
 .wedding-packages-panel {
   background:
-    radial-gradient(circle at 50% 0%, rgba(170, 9, 27, 0.2), transparent 34%),
+    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.16), transparent 38%),
     #090909;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.22);
   border-radius: clamp(1.25rem, 3vw, 2rem);
-  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.85);
   max-width: 74rem;
-  overflow: hidden;
+  overflow: visible !important;
   padding: clamp(1.4rem, 4vw, 3.2rem);
   position: relative;
+  margin: 2rem auto;
   width: 100%;
+  z-index: 2;
 }
 
 .wedding-packages-close {
