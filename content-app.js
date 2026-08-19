@@ -429,32 +429,35 @@
       video.removeAttribute('src');
       driveFrame.removeAttribute('src');
 
-      if (item.mediaType === 'video' && item.previewSrc) {
+      const isMp4 = item.mediaType === 'video' && item.previewSrc && item.previewSrc.endsWith('.mp4');
+      const isPdf = item.mediaType === 'pdf' && item.previewSrc && item.previewSrc.endsWith('.pdf');
+      const driveFileId = item.originalUrl ? (item.originalUrl.match(/\/file\/d\/([^/]+)/)?.[1] || item.originalUrl.match(/id=([^&]+)/)?.[1]) : null;
+      const driveFolderId = item.originalUrl ? item.originalUrl.match(/\/folders\/([^/?]+)/)?.[1] : null;
+
+      if (isMp4) {
         video.src = item.previewSrc;
         video.poster = item.thumbnailSrc;
         video.classList.remove('hidden');
         video.load();
-      } else if (item.mediaType === 'video' && item.originalUrl) {
-        const driveId = item.originalUrl.match(/\/file\/d\/([^/]+)/)?.[1];
-        if (driveId) {
-          driveFrame.src = `https://drive.google.com/file/d/${driveId}/preview`;
-          driveFrame.title = `${item.title} video player`;
-          driveFrame.classList.remove('hidden');
-        }
-      } else if (item.mediaType === 'pdf' && item.previewSrc) {
+      } else if (isPdf) {
         driveFrame.src = `${item.previewSrc}#page=1&view=FitH`;
         driveFrame.title = `${item.title} PDF reader`;
         driveFrame.classList.remove('hidden');
-      } else if (item.mediaType === 'pdf' && item.originalUrl) {
-        const driveId = item.originalUrl.match(/\/file\/d\/([^/]+)/)?.[1];
-        if (driveId) {
-          driveFrame.src = `https://drive.google.com/file/d/${driveId}/preview`;
-          driveFrame.title = `${item.title} PDF reader`;
-          driveFrame.classList.remove('hidden');
-        }
+      } else if (item.mediaType === 'video' && driveFileId) {
+        driveFrame.src = `https://drive.google.com/file/d/${driveFileId}/preview`;
+        driveFrame.title = `${item.title} video player`;
+        driveFrame.classList.remove('hidden');
+      } else if (driveFolderId) {
+        driveFrame.src = `https://drive.google.com/embeddedfolderview?id=${driveFolderId}#grid`;
+        driveFrame.title = `${item.title} Google Drive Folder`;
+        driveFrame.classList.remove('hidden');
+      } else if (item.mediaType === 'pdf' && driveFileId) {
+        driveFrame.src = `https://drive.google.com/file/d/${driveFileId}/preview`;
+        driveFrame.title = `${item.title} PDF document`;
+        driveFrame.classList.remove('hidden');
       } else {
-        image.src = item.thumbnailSrc || fallbackImage;
-        image.alt = item.alt;
+        image.src = item.previewSrc || item.thumbnailSrc || fallbackImage;
+        image.alt = item.alt || item.title;
         image.onerror = () => { image.src = fallbackImage; };
         image.classList.remove('hidden');
       }
@@ -465,7 +468,9 @@
           ? 'Download full PDF ↗'
           : item.mediaType === 'video'
             ? 'Open full video in Drive ↗'
-            : 'Open original in Drive ↗';
+            : driveFolderId
+              ? 'Open folder in Google Drive ↗'
+              : 'Open original in Drive ↗';
         original.classList.remove('hidden');
         original.classList.add('inline-flex');
       } else {
@@ -628,6 +633,13 @@
       if (!btn) return;
       e.preventDefault();
       setFilter(btn.dataset.filter, true);
+    });
+
+    grid.addEventListener('click', (e) => {
+      const card = e.target.closest('[data-item-id]');
+      if (!card) return;
+      e.preventDefault();
+      window.openOlympusPortfolioItem(card.dataset.itemId);
     });
 
     loadMore.addEventListener('click', () => {
