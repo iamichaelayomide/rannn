@@ -188,4 +188,4 @@ html = html.replace(
 );
 
 fs.writeFileSync('index.html', html);
-console.log('Successfully pre-rendered pristine index.html with clean sections!');
+console.log('Successfully rebuilt clean, pristine index.html with NO duplicate sections!');
