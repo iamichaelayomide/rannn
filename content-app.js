@@ -112,12 +112,27 @@
     return modal;
   };
 
+  const serviceToCategoryMap = {
+    'wedding-highlights': 'wedding-highlights',
+    'video-editing': 'editing-alone',
+    'videography-editing': 'editing-alone',
+    'photo-film': 'film',
+    'graphics-branding': 'graphics',
+    'editorial-magazines': 'editorial',
+    'motion-design': 'motion',
+    'events-conferences': 'events',
+    'interactive-web': 'graphics',
+    'commercials': 'film'
+  };
+
   const renderServices = () => {
     const grid = document.getElementById('service-grid');
     if (!grid) return;
 
-    grid.innerHTML = (content.services || []).map((service, index) => `
-      <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[310px]">
+    grid.innerHTML = (content.services || []).map((service, index) => {
+      const cat = service.portfolioCategory || serviceToCategoryMap[service.id] || 'all';
+      return `
+      <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[340px] reveal-on-scroll stagger-${(index % 3) + 1}">
         <div class="service-card-icon"><iconify-icon icon="${iconNames[index % iconNames.length]}"></iconify-icon></div>
         <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400 mt-8">Service ${String(index + 1).padStart(2, '0')}</span>
         <h3 class="text-2xl font-bold text-white mt-3">${escapeHtml(service.title)}</h3>
@@ -131,15 +146,24 @@
             View Wedding Packages
           </button>
         ` : ''}
-        <a href="#contact?intent=project&service=${encodeURIComponent(service.title)}&source_cta=Service%20card" data-page="contact" class="spa-nav-link text-xs font-bold uppercase tracking-wider text-amber-400 mt-auto pt-7">Brief this service →</a>
+        <div class="mt-auto pt-7 flex flex-col gap-2 border-t border-white/5">
+          <a href="#portfolio?category=${encodeURIComponent(cat)}" data-page="portfolio" class="spa-nav-link text-xs font-bold uppercase tracking-wider text-amber-400 hover:text-white transition-colors flex items-center justify-between">
+            <span>View ${escapeHtml(service.title)} Work</span>
+            <span>→</span>
+          </a>
+          <a href="#contact?intent=project&service=${encodeURIComponent(service.title)}&source_cta=Service%20card" data-page="contact" class="spa-nav-link text-[11px] uppercase tracking-wider text-neutral-400 hover:text-amber-400 transition-colors">
+            Brief this service
+          </a>
+        </div>
       </article>
-    `).join('');
+      `;
+    }).join('');
 
     const renderWeddingSection = () => {
       const container = document.getElementById('wedding-packages-grid');
       if (!container) return;
       container.innerHTML = (content.weddingPackages || []).map((item, index) => `
-        <article class="wedding-package glass-card border-gold-gradient rounded-3xl p-8 flex flex-col justify-between ${index === 1 ? 'relative border-amber-400/50 shadow-xl shadow-amber-500/10' : ''}">
+        <article class="wedding-package glass-card border-gold-gradient rounded-3xl p-8 flex flex-col justify-between reveal-on-scroll stagger-${index + 1} ${index === 1 ? 'relative border-amber-400/50 shadow-xl shadow-amber-500/10' : ''}">
           ${index === 1 ? '<span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gold-gradient text-neutral-950 text-[10px] font-bold uppercase tracking-widest px-4 py-1 rounded-full font-mono">Most popular</span>' : ''}
           <div>
             <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400">Package 0${index + 1}</span>
@@ -544,21 +568,56 @@
       { id: 'motion', label: 'Motion Design' }
     ];
 
+    const getInitialFilter = () => {
+      const rawHash = window.location.hash.substring(1);
+      const query = rawHash.includes('?') ? rawHash.split('?')[1] : window.location.search;
+      const params = new URLSearchParams(query);
+      const catParam = params.get('category') || params.get('tab');
+      if (catParam) {
+        const found = filterList.find(f => f.id === catParam || f.id.includes(catParam));
+        if (found) return found.id;
+      }
+      return 'all';
+    };
+
+    activeFilter = getInitialFilter();
+
     const getFilterCount = (catId) => catId === 'all' ? items.length : items.filter(item => item.category === catId).length;
 
     filters.innerHTML = filterList.map(filter => `
-      <button type="button" class="archive-filter${filter.id === 'all' ? ' active' : ''}" data-filter="${escapeHtml(filter.id)}">
+      <button type="button" class="archive-filter${filter.id === activeFilter ? ' active' : ''}" data-filter="${escapeHtml(filter.id)}">
         <span>${escapeHtml(filter.label)}</span>
         <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(${getFilterCount(filter.id)})</span>
       </button>
     `).join('');
 
-    filters.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
-      activeFilter = button.dataset.filter;
+    const setFilter = (newFilter, updateHash = false) => {
+      activeFilter = newFilter;
       visibleCount = 12;
-      filters.querySelectorAll('.archive-filter').forEach(item => item.classList.toggle('active', item === button));
+      filters.querySelectorAll('.archive-filter').forEach(item => {
+        item.classList.toggle('active', item.dataset.filter === newFilter);
+      });
       render();
       window.observeScrollReveals?.();
+      if (updateHash) {
+        const targetHash = newFilter === 'all' ? 'portfolio' : `portfolio?category=${encodeURIComponent(newFilter)}`;
+        if (window.location.hash.substring(1) !== targetHash) {
+          history.replaceState(null, '', `#${targetHash}`);
+        }
+      }
+    };
+
+    window.setPortfolioCategory = (cat) => setFilter(cat, true);
+
+    window.addEventListener('hashchange', () => {
+      const currentCategory = getInitialFilter();
+      if (currentCategory !== activeFilter) {
+        setFilter(currentCategory, false);
+      }
+    });
+
+    filters.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
+      setFilter(button.dataset.filter, true);
     }));
     loadMore.addEventListener('click', () => {
       visibleCount += 12;

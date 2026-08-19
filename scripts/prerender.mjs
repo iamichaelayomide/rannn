@@ -30,8 +30,23 @@ const escapeHtml = value => String(value ?? '')
   .replaceAll('"', '&quot;')
   .replaceAll("'", '&#039;');
 
-const serviceCardsHtml = content.services.map((service, index) => `
-          <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[310px] reveal-on-scroll stagger-${(index % 3) + 1}">
+const serviceToCategoryMap = {
+  'wedding-highlights': 'wedding-highlights',
+  'video-editing': 'editing-alone',
+  'videography-editing': 'editing-alone',
+  'photo-film': 'film',
+  'graphics-branding': 'graphics',
+  'editorial-magazines': 'editorial',
+  'motion-design': 'motion',
+  'events-conferences': 'events',
+  'interactive-web': 'graphics',
+  'commercials': 'film'
+};
+
+const serviceCardsHtml = content.services.map((service, index) => {
+  const cat = service.portfolioCategory || serviceToCategoryMap[service.id] || 'all';
+  return `
+          <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[340px] reveal-on-scroll stagger-${(index % 3) + 1}">
             <div class="service-card-icon"><iconify-icon icon="${iconNames[index % iconNames.length]}"></iconify-icon></div>
             <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400 mt-8">Service ${String(index + 1).padStart(2, '0')}</span>
             <h3 class="text-2xl font-bold text-white mt-3">${escapeHtml(service.title)}</h3>
@@ -45,8 +60,17 @@ const serviceCardsHtml = content.services.map((service, index) => `
                 View Wedding Packages
               </button>
             ` : ''}
-            <a href="#contact?intent=project&amp;service=${encodeURIComponent(service.title)}&amp;source_cta=Service%20card" data-page="contact" class="spa-nav-link text-xs font-bold uppercase tracking-wider text-amber-400 mt-auto pt-7">Brief this service →</a>
-          </article>`).join('\n');
+            <div class="mt-auto pt-7 flex flex-col gap-2 border-t border-white/5">
+              <a href="#portfolio?category=${encodeURIComponent(cat)}" data-page="portfolio" class="spa-nav-link text-xs font-bold uppercase tracking-wider text-amber-400 hover:text-white transition-colors flex items-center justify-between">
+                <span>View ${escapeHtml(service.title)} Work</span>
+                <span>→</span>
+              </a>
+              <a href="#contact?intent=project&amp;service=${encodeURIComponent(service.title)}&amp;source_cta=Service%20card" data-page="contact" class="spa-nav-link text-[11px] uppercase tracking-wider text-neutral-400 hover:text-amber-400 transition-colors">
+                Brief this service
+              </a>
+            </div>
+          </article>`;
+}).join('\n');
 
 const weddingPackagesHtml = (content.weddingPackages || []).map((item, index) => `
             <article class="wedding-package glass-card border-gold-gradient rounded-3xl p-8 flex flex-col justify-between reveal-on-scroll stagger-${index + 1} ${index === 1 ? 'relative border-amber-400/50 shadow-xl shadow-amber-500/10' : ''}">
@@ -146,4 +170,4 @@ html = html.replace(
 );
 
 fs.writeFileSync('index.html', html);
-console.log('Successfully pre-rendered static content with scroll reveals and category counts into index.html!');
+console.log('Successfully pre-rendered static content with real WebP images and category links into index.html!');
