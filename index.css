@@ -1107,12 +1107,22 @@ html.lenis {
   transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 }
 
-.archive-filter:hover,
-.archive-filter:focus-visible,
+.archive-filter:hover {
+  color: #ffffff;
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.12);
+}
+
+.archive-filter:focus-visible {
+  outline: 2px solid var(--color-gold-mid);
+  outline-offset: 2px;
+}
+
 .archive-filter.active {
-  color: #050505;
-  border-color: rgba(255, 224, 130, 0.5);
-  background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold-mid), var(--color-gold-dark));
+  color: #050505 !important;
+  border-color: rgba(255, 224, 130, 0.8) !important;
+  background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold-mid), var(--color-gold-dark)) !important;
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.25);
 }
 
 .archive-card {

@@ -623,9 +623,13 @@
       }
     });
 
-    filters.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
-      setFilter(button.dataset.filter, true);
-    }));
+    filters.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-filter]');
+      if (!btn) return;
+      e.preventDefault();
+      setFilter(btn.dataset.filter, true);
+    });
+
     loadMore.addEventListener('click', () => {
       visibleCount += 12;
       render();
