@@ -127,9 +127,9 @@ const servicesSection = `
       <div class="max-w-7xl mx-auto px-6 py-16 lg:py-24 space-y-20">
         <div>
           <div class="max-w-3xl mb-12">
-            <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Services &amp; Capabilities</span>
-            <h2 class="h2-editorial font-extrabold text-white mt-3">Visual systems built for real impact.</h2>
-            <p class="text-neutral-400 text-base md:text-lg mt-5 leading-relaxed">From film and photography to brand design, publications, motion, and web interfaces—explore our core services and deliverables.</p>
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Disciplines &amp; Commissions</span>
+            <h2 class="h2-editorial font-extrabold text-white mt-3">Cinematography &amp; Visual Systems</h2>
+            <p class="text-neutral-400 text-base md:text-lg mt-5 leading-relaxed">From wedding cinema and event coverage to post-production, brand identities, and digital interfaces—every commission is shaped with high-fidelity craft.</p>
           </div>
           <div id="service-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-live="polite">
 ${serviceCardsHtml}

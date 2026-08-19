@@ -33,17 +33,17 @@ window.OLYMPUS_CONTENT = {
       "title": "Home",
       "content": {
         "hero": {
-          "body": "From event coverage and commercial film to campaign design, publications, and websites, we give your audience a clear reason to pay attention.",
-          "eyebrow": "Creative production for brands, events & institutions",
-          "title_line_one": "Make Your Story",
-          "title_line_two": "Worth Remembering",
+          "body": "We direct, capture, edit, and craft visual media for weddings, cultural events, editorial campaigns, and visionary brands.",
+          "eyebrow": "Olympus Atelier · Direction, Cinematography & Visual Systems",
+          "title_line_one": "Stories Crafted With",
+          "title_line_two": "Precision & Soul",
           "background_image": ""
         },
         "vision": {
-          "body": "Bring film, photography, design, editorial, motion, and web under one clear direction—so your message stays consistent from the first idea to the final delivery."
+          "body": "We believe media should outlive the moment. From intimate wedding highlights to major summits and brand cinema, Olympus shapes light, rhythm, and sound into timeless visual works."
         },
         "manifesto": {
-          "body": "You are not hiring us to make things look busy. You are hiring us to help the right people notice, understand, remember, and act. Every frame, layout, interaction, and export should move that outcome forward."
+          "body": "You are not hiring us for generic footage. You are hiring us to capture feeling, atmosphere, and prestige. Every cut, color grade, and frame is tailored to endure."
         }
       },
       "seo_title": "Creative Production, Event Coverage & Design | Olympus Atelier",
