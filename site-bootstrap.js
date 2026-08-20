@@ -39,21 +39,30 @@ const mergePublishedContent = (published) => {
     };
   });
 
-  const servicesList = hasManagedServices
-    ? managedServices.map((service, index) => ({
-        id: service.slug || service.id,
-        title: service.title,
-        summary: service.summary || service.description || "",
-        description: service.description || "",
-        deliverables: service.deliverables || fallback.services.find((s) => s.id === (service.slug || service.id))?.deliverables || fallback.services[index]?.deliverables || [],
-      }))
-    : [...fallback.services];
-
-  fallback.services.forEach((fs) => {
-    if (!servicesList.some((s) => s.id === fs.id)) {
-      servicesList.push(fs);
-    }
+  const servicesList = fallback.services.map((fs) => {
+    const ms = managedServices.find((s) => (s.slug || s.id) === fs.id);
+    return {
+      ...fs,
+      deliverables: (ms?.deliverables && ms.deliverables.length > 0) ? ms.deliverables : fs.deliverables,
+      summary: fs.summary,
+      description: fs.description || ms?.description || "",
+    };
   });
+
+  if (hasManagedServices) {
+    managedServices.forEach((ms) => {
+      const slug = ms.slug || ms.id;
+      if (!servicesList.some((s) => s.id === slug) && ms.status === 'published') {
+        servicesList.push({
+          id: slug,
+          title: ms.title,
+          summary: ms.summary || ms.description || "",
+          description: ms.description || "",
+          deliverables: ms.deliverables || [],
+        });
+      }
+    });
+  }
 
   const portfolioList = hasManagedPortfolio
     ? managedPortfolio.map(toPortfolioItem)
@@ -65,9 +74,28 @@ const mergePublishedContent = (published) => {
     }
   });
 
+  const mergedHome = {
+    ...fallback.pages.home,
+    ...(pages.home || {}),
+    content: {
+      ...fallback.pages.home.content,
+      ...(pages.home?.content || {}),
+      hero: {
+        ...fallback.pages.home.content.hero,
+        ...(pages.home?.content?.hero || {}),
+      },
+      vision: fallback.pages.home.content.vision,
+      manifesto: fallback.pages.home.content.manifesto,
+    },
+  };
+
   return {
     ...fallback,
-    pages,
+    pages: {
+      ...fallback.pages,
+      ...pages,
+      home: mergedHome,
+    },
     siteConfig: {
       ...fallback.siteConfig,
       brandName: globalContent.site?.brand_name ?? fallback.siteConfig.brandName,
@@ -91,7 +119,7 @@ const mergePublishedContent = (published) => {
         ? globalContent.testimonials
         : fallback.socialProof.testimonials,
     },
-    faqs: globalContent.faqs || [],
+    faqs: fallback.faqs?.length ? fallback.faqs : (globalContent.faqs || []),
     partners: globalContent.partners || [],
   };
 };
