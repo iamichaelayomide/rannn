@@ -33,35 +33,35 @@ window.OLYMPUS_CONTENT = {
       "title": "Home",
       "content": {
         "hero": {
-          "body": "We direct, capture, edit, and craft visual media for weddings, cultural events, editorial campaigns, and visionary brands.",
-          "eyebrow": "Olympus Atelier · Direction, Cinematography & Visual Systems",
-          "title_line_one": "Stories Crafted With",
-          "title_line_two": "Precision & Soul",
+          "body": "Full-day wedding coverage, high-profile event cinematography, and professional post-production crafted with emotion, pacing, and color-graded precision.",
+          "eyebrow": "Olympus Atelier · Weddings, Events & Post-Production",
+          "title_line_one": "Cinematic Direction For",
+          "title_line_two": "Weddings, Events & Film",
           "background_image": ""
         },
         "vision": {
-          "body": "We believe media should outlive the moment. From intimate wedding highlights to major summits and brand cinema, Olympus shapes light, rhythm, and sound into timeless visual works."
+          "body": "We direct, film, and edit timeless visual stories. Specializing in luxury weddings, multi-camera event coverage, and high-end video post-production, Olympus combines intentional pacing with cinema-grade color to create films that outlive the moment."
         },
         "manifesto": {
-          "body": "You are not hiring us for generic footage. You are hiring us to capture feeling, atmosphere, and prestige. Every cut, color grade, and frame is tailored to endure."
+          "body": "We don't just shoot footage; we craft memories and stories into lasting visual cinema. From three-day wedding celebrations and global summits to shaping raw client rushes into broadcast-ready edits, every frame is cut with purpose."
         }
       },
-      "seo_title": "Creative Production, Event Coverage & Design | Olympus Atelier",
-      "seo_description": "Film, photography, event coverage, campaign design, editorial, motion, and websites shaped around your audience and business outcome."
+      "seo_title": "Wedding Videography, Event Cinematography & Video Editing | Olympus Atelier",
+      "seo_description": "Full-day wedding coverage, event cinematography, video editing, and visual production by Olympus Atelier."
     },
     "about": {
       "slug": "about",
       "title": "About",
       "content": {
         "header": {
-          "body": "Our compact team connects strategy, production, design, and delivery so you spend less time coordinating suppliers and more time moving the work forward.",
+          "body": "A dedicated cinema and post-production atelier focused on capturing weddings, cultural moments, summits, and video edits with uncompromising craft.",
           "image": "",
-          "title": "One accountable creative partner from brief to delivery.",
-          "eyebrow": "The team behind the work"
+          "title": "Dedicated visual direction from first capture to final master.",
+          "eyebrow": "The Atelier Behind The Work"
         }
       },
-      "seo_title": "About Olympus Atelier | Creative Production Team",
-      "seo_description": "Meet the team connecting strategy, film, photography, design, editorial, motion, and web from brief to delivery."
+      "seo_title": "About Olympus Atelier | Cinema & Post-Production",
+      "seo_description": "Meet the cinema and post-production team behind Olympus Atelier."
     },
     "global": {
       "slug": "global",
@@ -69,24 +69,24 @@ window.OLYMPUS_CONTENT = {
       "content": {
         "faqs": [
           {
-            "answer": "Share the audience, objective, deadline, location if relevant, deliverables you expect, and a realistic budget range. If some details are still unclear, tell us what you know and we will help shape the brief.",
+            "answer": "Share your event date, location, coverage timeline, and deliverables you need (e.g. Wedding Highlight Film, Teaser Reel, Full Video, or Post-Production for existing footage). We will prepare a clear proposal.",
             "question": "What should I include in my first enquiry?"
           },
           {
-            "answer": "Yes. We can connect film, photography, graphics, motion, editorial, event coverage, and web under one creative direction so the message stays consistent across every format.",
-            "question": "Can you handle more than one service in the same project?"
+            "answer": "Yes. We offer dedicated Video Editing Alone where you provide raw media from your cameras or phones, and we shape pacing, DaVinci Resolve color grading, audio design, and export broadcast-ready files.",
+            "question": "Can I hire Olympus for video editing alone?"
           },
           {
-            "answer": "Yes. Travel and logistics are scoped into the quote once the location, schedule, crew size, and coverage requirements are clear.",
-            "question": "Do you travel for shoots and events?"
+            "answer": "Yes. We travel across Nigeria, the UK, and internationally for destination weddings, summits, and client productions. Travel and logistics are transparently scoped into the quote.",
+            "question": "Do you travel for weddings and destination events?"
           },
           {
-            "answer": "Timing depends on the scope. We agree the milestones, review points, and delivery dates before production begins, then flag any change that could affect the schedule.",
-            "question": "How long does a project take?"
+            "answer": "Wedding highlight teaser reels are delivered within 7–14 days. Full-length wedding films, event masters, and edited deliverables are finalized and delivered within 3–4 weeks via private online drive.",
+            "question": "What is the turnaround time for wedding and event films?"
           },
           {
-            "answer": "Deliverables are prepared for the channels you actually need, including high-resolution images, social-ready exports, review and master video files, print-ready PDFs, website assets, and editable source files where agreed.",
-            "question": "What files will we receive?"
+            "answer": "You receive high-bitrate 4K and 1080p master video files, social cut-downs (9:16 vertical), full ceremony/reception recordings, and high-resolution retouched media hosted on a secure private drive.",
+            "question": "What files will we receive upon completion?"
           }
         ],
         "site": {
@@ -98,7 +98,7 @@ window.OLYMPUS_CONTENT = {
           "whatsapp": "+234 808 717 2313",
           "instagram": "",
           "brand_name": "Olympus Atelier",
-          "footer_intro": "Creative production for brands, events, institutions, and growing teams—planned around the audience you need to reach and the outcome you need to achieve.",
+          "footer_intro": "Cinematic direction, wedding videography, multi-camera event coverage, and post-production for clients and brands worldwide.",
           "whatsapp_number": "2348087172313"
         },
         "team": [
@@ -224,9 +224,9 @@ window.OLYMPUS_CONTENT = {
       "title": "Portfolio",
       "content": {
         "header": {
-          "body": "Explore event coverage, campaign films, photography, editorial design, motion, branding, and websites created for real audiences and real moments.",
-          "title": "See what we can help you create.",
-          "eyebrow": "Proof, not promises"
+          "body": "Explore our body of work spanning wedding highlights, event coverage, video editing showcases, brand films, motion visuals, and design.",
+          "title": "Work Crafted to Endure.",
+          "eyebrow": "Atelier Archive"
         }
       },
       "seo_title": "Creative Production Portfolio | Olympus Atelier",
@@ -237,7 +237,7 @@ window.OLYMPUS_CONTENT = {
     {
       "id": "wedding-highlights",
       "title": "Wedding Highlights",
-      "summary": "Full-day wedding coverage, highlight films, cinematic editing, and online sharing prepared for memory and celebration.",
+      "summary": "Full-day wedding cinema capture, highlight films, cinematic editing, and online sharing prepared for memory and celebration.",
       "description": "Capture every emotion, atmosphere, and key moment with dedicated videography, professional audio, and polished post-production.",
       "portfolioCategory": "wedding-highlights",
       "icon": "solar:videocamera-record-bold-duotone",
@@ -274,55 +274,16 @@ window.OLYMPUS_CONTENT = {
       ]
     },
     {
-      "id": "photo-film",
-      "title": "Photography & Film",
-      "summary": "Give your audience polished images and films that make people, products, and ideas feel credible.",
-      "description": "Ideal for executive interviews, brand stories, campaign shoots, portraits, and event highlights—planned for the platforms where the work will be seen.",
-      "portfolioCategory": "film",
-      "icon": "solar:camera-bold-duotone",
-      "deliverables": [
-        "Editorial & portrait photography",
-        "Executive interviews & campaign films",
-        "High-res retouched delivery"
-      ]
-    },
-    {
       "id": "ads-commercial",
-      "title": "Commercials & Brand Campaigns",
-      "summary": "Give your campaign a clear idea and cinematic execution built to move the right audience.",
-      "description": "From concept and scripting to production, editing, and platform versions, we create commercial content ready for launch.",
+      "title": "Commercials & Brand Video",
+      "summary": "Give your campaign a clear cinematic narrative built to captivate and convert your audience.",
+      "description": "From concept and scripting to multi-camera production, editing, and platform versions, we create commercial video ready for broadcast and web.",
       "portfolioCategory": "film",
       "icon": "solar:clapperboard-play-bold-duotone",
       "deliverables": [
         "Concept, scripting & storyboard",
         "Cinematic 4K production",
         "Social & broadcast master cuts"
-      ]
-    },
-    {
-      "id": "graphics",
-      "title": "Graphics & Branding",
-      "summary": "Turn one message into a clear visual system your audience can recognise across every touchpoint.",
-      "description": "Campaign identities, social graphics, event materials, posters, presentations, and brand-ready assets built to stay consistent.",
-      "portfolioCategory": "graphics",
-      "icon": "solar:palette-bold-duotone",
-      "deliverables": [
-        "Brand identity systems & logos",
-        "Social & event campaign posters",
-        "Brand-ready asset packages"
-      ]
-    },
-    {
-      "id": "editorial",
-      "title": "Editorial & Magazine Design",
-      "summary": "Make reports, magazines, programmes, and publications easy to navigate and worth keeping.",
-      "description": "We structure long-form content, refine visual hierarchy, and prepare professional digital and print-ready files.",
-      "portfolioCategory": "editorial",
-      "icon": "solar:notebook-bold-duotone",
-      "deliverables": [
-        "Magazine systems & publications",
-        "Print-ready typographic layouts",
-        "Digital report & certificate design"
       ]
     },
     {
@@ -349,6 +310,45 @@ window.OLYMPUS_CONTENT = {
         "Responsive interface & UX design",
         "Performant frontend engineering",
         "CMS, portfolio & launch support"
+      ]
+    },
+    {
+      "id": "graphics",
+      "title": "Graphics & Branding",
+      "summary": "Turn one message into a clear visual system your audience can recognise across every touchpoint.",
+      "description": "Campaign identities, social graphics, event materials, posters, presentations, and brand-ready assets built to stay consistent.",
+      "portfolioCategory": "graphics",
+      "icon": "solar:palette-bold-duotone",
+      "deliverables": [
+        "Brand identity systems & logos",
+        "Social & event campaign posters",
+        "Brand-ready asset packages"
+      ]
+    },
+    {
+      "id": "photo-film",
+      "title": "Photography & Portraits",
+      "summary": "Editorial portraiture, campaign photography, and polished event stills captured with natural light and refined grading.",
+      "description": "Ideal for executive portraits, brand lookbooks, campaign shoots, and event photo coverage delivered in high-resolution.",
+      "portfolioCategory": "film",
+      "icon": "solar:camera-bold-duotone",
+      "deliverables": [
+        "Editorial & portrait photography",
+        "Executive & campaign lookbooks",
+        "High-res retouched delivery"
+      ]
+    },
+    {
+      "id": "editorial",
+      "title": "Editorial & Magazine Design",
+      "summary": "Make reports, magazines, programmes, and publications easy to navigate and worth keeping.",
+      "description": "We structure long-form content, refine visual hierarchy, and prepare professional digital and print-ready files.",
+      "portfolioCategory": "editorial",
+      "icon": "solar:notebook-bold-duotone",
+      "deliverables": [
+        "Magazine systems & publications",
+        "Print-ready typographic layouts",
+        "Digital report & certificate design"
       ]
     }
   ],

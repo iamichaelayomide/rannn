@@ -223,7 +223,7 @@
     const manifesto = document.getElementById('manifesto-word-reveal');
     if (manifesto && homeContent.manifesto?.body) manifesto.textContent = homeContent.manifesto.body;
 
-    const capabilityIndexes = [0, 1, 2, 5];
+    const capabilityIndexes = [0, 1, 2, 3];
     document.querySelectorAll('.capabilities-card').forEach((card, cardIndex) => {
       const serviceIndex = capabilityIndexes[cardIndex] ?? cardIndex;
       const service = content.services[serviceIndex];
@@ -234,8 +234,10 @@
       if (title) title.textContent = service.title;
       if (body) body.textContent = service.summary;
       card.querySelectorAll('.deliverables-content-block li').forEach((li, liIndex) => {
-        const icon = li.querySelector('iconify-icon')?.outerHTML || '';
-        li.innerHTML = `${icon}${escapeHtml(deliverables[serviceIndex][liIndex] || '')}`;
+        const icon = li.querySelector('iconify-icon')?.outerHTML || '<iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>';
+        if (service.deliverables?.[liIndex]) {
+          li.innerHTML = `${icon}${escapeHtml(service.deliverables[liIndex])}`;
+        }
       });
     });
 

@@ -128,8 +128,8 @@ const servicesSection = `
         <div>
           <div class="max-w-3xl mb-12">
             <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Disciplines &amp; Commissions</span>
-            <h2 class="h2-editorial font-extrabold text-white mt-3">Cinematography &amp; Visual Systems</h2>
-            <p class="text-neutral-400 text-base md:text-lg mt-5 leading-relaxed">From wedding cinema and event coverage to post-production, brand identities, and digital interfaces—every commission is shaped with high-fidelity craft.</p>
+            <h2 class="h2-editorial font-extrabold text-white mt-3">Cinematography, Events &amp; Post-Production</h2>
+            <p class="text-neutral-400 text-base md:text-lg mt-5 leading-relaxed">From full-day wedding cinema and multi-camera event coverage to high-end video editing, commercial campaigns, and digital systems—every commission is shaped with intentional craft.</p>
           </div>
           <div id="service-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-live="polite">
 ${serviceCardsHtml}
@@ -259,31 +259,31 @@ const capabilitiesDeckHtml = `
             </div>
           </div>
 
-          <!-- Card 3: Photography & Film -->
+          <!-- Card 3: Video Editing Alone -->
           <div class="capabilities-card bg-blur-gradient-3 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="2">
             <div class="sweep-shine"></div>
             <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
             <div class="hover-icon-topright text-gold-gradient">
-              <iconify-icon icon="solar:camera-bold-duotone" class="text-xl"></iconify-icon>
+              <iconify-icon icon="solar:play-circle-bold-duotone" class="text-xl"></iconify-icon>
             </div>
             <div class="card-content-wrapper h-full flex flex-col justify-between relative z-10 w-full transition-opacity duration-300">
               <div class="overflow-hidden">
                 <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gold-gradient mb-6 card-icon-wrapper">
-                  <iconify-icon icon="solar:camera-bold-duotone" class="text-xl"></iconify-icon>
+                  <iconify-icon icon="solar:play-circle-bold-duotone" class="text-xl"></iconify-icon>
                 </div>
                 <div class="relative h-[200px] overflow-hidden">
                   <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
-                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Photography &amp; Film</h3>
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Video Editing Alone</h3>
                     <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
-                      Editorial photography, commercial film, executive interviews, and raw stylized post-production.
+                      Bring your existing footage. We shape pacing, DaVinci Resolve color grading, audio, and platform-ready exports.
                     </p>
                   </div>
                   <div class="deliverables-content-block absolute inset-0 translate-y-[100px] opacity-0 transition-all duration-500 flex flex-col justify-center space-y-3">
                     <span class="text-[9px] font-mono text-gold-gradient uppercase tracking-widest">Pillar Deliverables:</span>
                     <ul class="space-y-2 text-[10px] font-mono text-neutral-300">
-                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Editorial Photography</li>
-                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Commercial Production</li>
-                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Color-Graded Delivery</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Pacing &amp; Narrative Flow</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>DaVinci Color Grading</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Multi-aspect Deliveries</li>
                     </ul>
                   </div>
                 </div>
@@ -297,31 +297,31 @@ const capabilitiesDeckHtml = `
             </div>
           </div>
 
-          <!-- Card 4: Graphics & Branding -->
+          <!-- Card 4: Commercials & Brand Video -->
           <div class="capabilities-card bg-blur-gradient-4 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="3">
             <div class="sweep-shine"></div>
             <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
             <div class="hover-icon-topright text-gold-gradient">
-              <iconify-icon icon="solar:palette-bold-duotone" class="text-xl"></iconify-icon>
+              <iconify-icon icon="solar:clapperboard-play-bold-duotone" class="text-xl"></iconify-icon>
             </div>
             <div class="card-content-wrapper h-full flex flex-col justify-between relative z-10 w-full transition-opacity duration-300">
               <div class="overflow-hidden">
                 <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gold-gradient mb-6 card-icon-wrapper">
-                  <iconify-icon icon="solar:palette-bold-duotone" class="text-xl"></iconify-icon>
+                  <iconify-icon icon="solar:clapperboard-play-bold-duotone" class="text-xl"></iconify-icon>
                 </div>
                 <div class="relative h-[200px] overflow-hidden">
                   <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
-                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Graphics &amp; Branding</h3>
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Commercials &amp; Brand Video</h3>
                     <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
-                      Brand identity systems, campaign design, editorial magazines, motion visuals, and digital web design.
+                      Cinematic brand campaigns, executive interviews, and promotional video designed to captivate your audience.
                     </p>
                   </div>
                   <div class="deliverables-content-block absolute inset-0 translate-y-[100px] opacity-0 transition-all duration-500 flex flex-col justify-center space-y-3">
                     <span class="text-[9px] font-mono text-gold-gradient uppercase tracking-widest">Pillar Deliverables:</span>
                     <ul class="space-y-2 text-[10px] font-mono text-neutral-300">
-                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Brand Identity Systems</li>
-                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Magazine &amp; Print Layouts</li>
-                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Web Design &amp; Motion</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Scripting &amp; Production</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>4K Cinema Cameras</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Social &amp; Broadcast Cuts</li>
                     </ul>
                   </div>
                 </div>
@@ -335,6 +335,85 @@ const capabilitiesDeckHtml = `
             </div>
           </div>
 `;
+
+// Home Hero, Vision & Stats Section
+const homeHeroAndVisionHtml = `
+      <!-- Hero Section -->
+      <div id="managed-home-hero" class="max-w-7xl mx-auto px-6 py-16 sm:py-20 lg:py-36 text-center flex flex-col items-center relative">
+        <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <span id="managed-hero-eyebrow" class="text-xs font-bold text-amber-400 uppercase tracking-[0.3em] mb-6 block font-mono">Olympus Atelier · Weddings, Events &amp; Post-Production</span>
+        
+        <h1 class="h1-editorial font-extrabold uppercase tracking-tighter text-white max-w-4xl mb-8 flex flex-col liquid-hero-text cursor-pointer">
+          <span id="managed-hero-title-one">Cinematic Direction For</span>
+          <span id="managed-hero-title-two" class="text-gold-gradient">Weddings, Events &amp; Film</span>
+        </h1>
+
+        <p id="managed-hero-body" class="text-neutral-300 text-base md:text-lg max-w-2xl font-light leading-relaxed mb-8 sm:mb-12">
+          Full-day wedding coverage, high-profile event cinematography, and professional post-production crafted with emotion, pacing, and color-graded precision.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+          <a href="#contact?intent=project&amp;source_cta=Home%20Hero" class="w-full sm:w-auto inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-8 py-4 rounded-full transition-transform duration-300 hover:-translate-y-0.5 shadow-lg shadow-amber-500/10 spa-nav-link" data-page="contact">
+            Start A Project
+          </a>
+          <a href="#services" class="w-full sm:w-auto inline-flex items-center justify-center glass-card text-white font-semibold px-8 py-4 rounded-full hover:bg-white/5 transition-transform duration-300 hover:-translate-y-0.5 border-gold-gradient spa-nav-link" data-page="services">
+            Our Services
+          </a>
+        </div>
+        <button type="button" id="view-cac-certificate" aria-label="See our CAC registration certificate" aria-controls="lightbox-modal" class="mt-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-400 hover:text-amber-400 transition-colors">
+          <iconify-icon icon="solar:verified-check-bold-duotone" class="text-lg text-amber-400"></iconify-icon>
+          CAC registered · RC 7445892 · See Certificate
+        </button>
+      </div>
+
+      <!-- Center Statement Block -->
+      <div class="max-w-4xl mx-auto px-6 py-16 text-center border-t border-white/5">
+        <div class="flex items-center justify-center gap-2 mb-6">
+          <span class="w-2 h-2 bg-amber-400 rounded-full"></span>
+          <span class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400 font-mono">Our Vision</span>
+        </div>
+        <p id="word-reveal-paragraph" class="text-xl md:text-3xl font-medium tracking-tight leading-relaxed text-neutral-200 font-display">
+          We direct, film, and edit timeless visual stories. Specializing in luxury weddings, multi-camera event coverage, and high-end video post-production, Olympus combines intentional pacing with cinema-grade color to create films that outlive the moment.
+        </p>
+      </div>
+
+      <!-- Trust Bar / Stats -->
+      <div class="border-y border-white/5 bg-neutral-950/40 backdrop-blur-md py-12" id="trust-stats-section">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-8 text-center">
+          <div class="flex flex-col items-center">
+            <span class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gold-gradient font-display flex items-center justify-center">
+              <span class="stat-roll-number" data-target="240" data-decimals="0">0</span>+
+            </span>
+            <span class="text-xs text-neutral-400 uppercase tracking-widest mt-2 font-mono">Works Delivered</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-display flex items-center justify-center">
+              <span class="stat-roll-number" data-target="100" data-decimals="0">0</span>%
+            </span>
+            <span class="text-xs text-neutral-400 uppercase tracking-widest mt-2 font-mono">On-Time Delivery</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-display flex items-center justify-center">
+              <span class="stat-roll-number" data-target="4" data-decimals="0">0</span>K
+            </span>
+            <span class="text-xs text-neutral-400 uppercase tracking-widest mt-2 font-mono">Cinema Grade Masters</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gold-gradient font-display flex items-center justify-center">
+              <span class="stat-roll-number" data-target="15" data-decimals="0">0</span>+
+            </span>
+            <span class="text-xs text-neutral-400 uppercase tracking-widest mt-2 font-mono">Industry Awards</span>
+          </div>
+        </div>
+      </div>
+`;
+
+// Replace Home Hero, Vision & Stats
+html = html.replace(
+  /<!-- Hero Section -->[\s\S]*?<!-- Capabilities Card Stack section/,
+  `${homeHeroAndVisionHtml.trim()}\n\n      <!-- Capabilities Card Stack section`
+);
 
 html = html.replace(
   /<div class="relative w-full min-h-\[460px\] mt-12" id="capabilities-deck-container">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>\s*<\/div>\s*<\/div>\s*<\/div>/,
