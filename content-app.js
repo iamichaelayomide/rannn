@@ -602,7 +602,7 @@
       }).join('');
       grid.querySelectorAll('[data-item-id]').forEach(card => card.addEventListener('click', () => window.openOlympusPortfolioItem(card.dataset.itemId)));
       loadMore.classList.toggle('hidden', visible.length >= matches.length);
-      if (status) status.textContent = `Showing ${visible.length} of ${matches.length}`;
+      if (status) status.textContent = '';
       if (window.gsap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         gsap.fromTo(grid.children, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.025, ease: 'power2.out' });
       }
@@ -634,12 +634,9 @@
 
     activeFilter = getInitialFilter();
 
-    const getFilterCount = (catId) => catId === 'all' ? items.length : items.filter(item => item.category === catId).length;
-
     filters.innerHTML = filterList.map(filter => `
       <button type="button" class="archive-filter${filter.id === activeFilter ? ' active' : ''}" data-filter="${escapeHtml(filter.id)}">
         <span>${escapeHtml(filter.label)}</span>
-        <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(${getFilterCount(filter.id)})</span>
       </button>
     `).join('');
 

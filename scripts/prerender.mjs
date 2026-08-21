@@ -91,12 +91,9 @@ const filterList = [
   { id: 'motion', label: 'Motion Design' }
 ];
 
-const getFilterCount = (catId) => catId === 'all' ? content.portfolioItems.length : content.portfolioItems.filter(item => item.category === catId).length;
-
 const filtersHtml = filterList.map(filter => `
         <button type="button" class="archive-filter${filter.id === 'all' ? ' active' : ''}" data-filter="${escapeHtml(filter.id)}" onclick="window.setPortfolioCategory('${escapeHtml(filter.id)}')">
           <span>${escapeHtml(filter.label)}</span>
-          <span class="filter-count font-mono text-[11px] opacity-70 ml-1.5">(${getFilterCount(filter.id)})</span>
         </button>`).join('\n');
 
 const initialPortfolioHtml = content.portfolioItems.slice(0, 12).map((item, index) => {
