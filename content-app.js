@@ -644,7 +644,11 @@
       activeFilter = newFilter;
       visibleCount = 12;
       filters.querySelectorAll('.archive-filter').forEach(item => {
-        item.classList.toggle('active', item.dataset.filter === newFilter);
+        const isActive = item.dataset.filter === newFilter;
+        item.classList.toggle('active', isActive);
+        if (isActive) {
+          item.scrollIntoView?.({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
       });
       render();
       window.observeScrollReveals?.();

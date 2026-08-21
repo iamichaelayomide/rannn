@@ -535,15 +535,16 @@
     <!-- PAGE 3: PORTFOLIO -->
     <section id="page-portfolio" class="spa-page">
       <div class="max-w-7xl mx-auto px-6 py-16 lg:py-24">
-        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8">
           <div class="max-w-3xl">
-            <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Full archive</span>
-            <h2 class="selected-work-title text-white mt-4">Work built to be seen.</h2>
-            <p class="text-neutral-400 mt-4 leading-relaxed">Explore films, event coverage, campaign graphics, publications, and motion work. Lightweight previews load here; original long-form files remain available in Drive.</p>
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Full Archive</span>
+            <h2 class="selected-work-title text-white mt-3">Work built to be seen.</h2>
+            <p class="text-neutral-400 text-sm md:text-base mt-3 leading-relaxed font-light">Explore our body of work spanning weddings, event coverage, video editing showcases, brand films, motion visuals, and design.</p>
           </div>
           <p id="portfolio-result-status" class="text-xs font-mono uppercase tracking-widest text-neutral-500" aria-live="polite"></p>
         </div>
-        <div id="portfolio-filters" class="flex flex-wrap gap-3 mb-10" aria-label="Filter portfolio">
+        <div class="relative mb-8">
+          <div id="portfolio-filters" class="flex gap-2.5 pb-2" aria-label="Filter portfolio">
 
         <button type="button" class="archive-filter active" data-filter="all" onclick="window.setPortfolioCategory('all')">
           <span>All Work</span>
@@ -576,6 +577,7 @@
         <button type="button" class="archive-filter" data-filter="motion" onclick="window.setPortfolioCategory('motion')">
           <span>Motion Design</span>
         </button>
+          </div>
         </div>
         <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" aria-live="polite">
 

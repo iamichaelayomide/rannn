@@ -1093,24 +1093,69 @@ html.lenis {
   font-size: 1.35rem;
 }
 
+#portfolio-filters {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  #portfolio-filters {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  #portfolio-filters::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  #portfolio-filters {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+}
+
 .archive-filter {
-  min-height: 42px;
+  min-height: 40px;
   border-radius: 999px;
-  padding: 0.65rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  color: rgba(255, 255, 255, 0.55);
-  background: rgba(255, 255, 255, 0.025);
+  padding: 0.55rem 1.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .archive-filter:hover {
   color: #ffffff;
   border-color: rgba(212, 175, 55, 0.4);
-  background: rgba(212, 175, 55, 0.12);
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-1px);
+}
+
+.archive-filter:active {
+  transform: scale(0.96);
 }
 
 .archive-filter:focus-visible {
@@ -1120,9 +1165,10 @@ html.lenis {
 
 .archive-filter.active {
   color: #050505 !important;
-  border-color: rgba(255, 224, 130, 0.8) !important;
+  border-color: rgba(255, 224, 130, 0.9) !important;
   background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold-mid), var(--color-gold-dark)) !important;
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.35);
+  font-weight: 800;
 }
 
 .archive-card {
