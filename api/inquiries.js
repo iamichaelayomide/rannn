@@ -377,16 +377,29 @@ export default async function handler(request, response) {
     const baseUrl = publicUrl(request);
     const adminUrl = `${baseUrl}/admin#inbox/${result.inquiry_id}`;
     const whatsappNumber = process.env.WHATSAPP_PUBLIC_NUMBER || DEFAULT_WHATSAPP_NUMBER;
-    const whatsappMessage = [
-      "Hello Olympus Atelier, I have submitted an enquiry.",
+    const whatsappLines = [
+      `Hi Olympus Atelier, I am ${normalizedName || "a client"}.`,
       "",
-      `Reference: ${ticketNumber}`,
-      `Name: ${normalizedName}`,
-      `Type: ${intent}`,
-      payload.service ? `Service: ${payload.service}` : null,
+      payload.service
+        ? `I would like to make an enquiry regarding *${payload.service}*.`
+        : "I would like to make an enquiry regarding a creative visual project with the atelier.",
       "",
-      normalizedMessage,
-    ].filter(Boolean).join("\n");
+      "Here are the details of my request:",
+      payload.service ? `• *Service:* ${payload.service}` : null,
+      payload.budget ? `• *Budget / Selected Package:* ${payload.budget}` : null,
+      payload.timeline || payload.preferred_date ? `• *Preferred Date / Timeline:* ${payload.timeline || payload.preferred_date}` : null,
+      payload.location ? `• *Location / Venue:* ${payload.location}` : null,
+      normalizedPhone ? `• *Phone / WhatsApp:* ${normalizedPhone}` : null,
+      normalizedEmail ? `• *Email:* ${normalizedEmail}` : null,
+      ticketNumber ? `• *Enquiry Reference:* ${ticketNumber}` : null,
+    ].filter(Boolean);
+
+    if (normalizedMessage) {
+      whatsappLines.push("");
+      whatsappLines.push("📝 *Project Brief & Details:*");
+      whatsappLines.push(normalizedMessage);
+    }
+    const whatsappMessage = whatsappLines.join("\n");
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
     let acknowledgement = normalizedEmail ? "queued" : "not_requested";

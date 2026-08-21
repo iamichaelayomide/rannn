@@ -34,11 +34,47 @@
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
 
-  const whatsappUrl = message =>
-    `https://wa.me/${content.siteConfig.whatsappNumber}?text=${encodeURIComponent(message)}`;
+  const whatsappUrl = message => {
+    const number = content.siteConfig?.whatsappNumber || '2348087172313';
+    return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+  };
+
+  const buildEnquiryWhatsappMessage = ({ name, email, phone, service, budget, timeline, location, message, intent, preferred_channel }) => {
+    const lines = [];
+    const clientName = name && name.trim() ? name.trim() : 'a client';
+    lines.push(`Hi Olympus Atelier, I am ${clientName}.`);
+    lines.push('');
+    if (service && service.trim()) {
+      lines.push(`I would like to make an enquiry regarding *${service.trim()}*.`);
+    } else {
+      lines.push('I would like to make an enquiry regarding a creative project with the atelier.');
+    }
+    lines.push('');
+    lines.push('Here are the details of my request:');
+    if (service && service.trim()) lines.push(`• *Service:* ${service.trim()}`);
+    if (budget && budget.trim()) lines.push(`• *Budget / Selected Package:* ${budget.trim()}`);
+    if (timeline && timeline.trim()) lines.push(`• *Preferred Date / Timeline:* ${timeline.trim()}`);
+    if (location && location.trim()) lines.push(`• *Location / Venue:* ${location.trim()}`);
+    if (phone && phone.trim()) lines.push(`• *Phone / WhatsApp:* ${phone.trim()}`);
+    if (email && email.trim()) lines.push(`• *Email:* ${email.trim()}`);
+    if (preferred_channel && preferred_channel.trim() && preferred_channel.trim().toLowerCase() !== 'whatsapp') {
+      lines.push(`• *Preferred Reply Channel:* ${preferred_channel.trim()}`);
+    }
+    if (intent && !['general', 'project', 'event'].includes(intent.toLowerCase().trim())) {
+      lines.push(`• *Request Type:* ${intent.trim()}`);
+    }
+    if (message && message.trim()) {
+      lines.push('');
+      lines.push('📝 *Project Brief & Details:*');
+      lines.push(message.trim());
+    }
+    return lines.join('\n');
+  };
 
   const openWhatsapp = (message, sourceForm = null) => {
-    const url = whatsappUrl(message);
+    const url = typeof message === 'string' && message.startsWith('https://wa.me/')
+      ? message
+      : whatsappUrl(message);
     if (sourceForm) sourceForm.dataset.whatsappUrl = url;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
@@ -678,79 +714,108 @@
     document.getElementById('booking-form')?.addEventListener('submit', event => {
       event.preventDefault();
       const form = new FormData(event.currentTarget);
+      const name = String(form.get('name') || '').trim();
+      const email = String(form.get('email') || '').trim();
+      const service = String(form.get('service') || '').trim();
+      const date = String(form.get('date') || '').trim();
+      const budget = String(form.get('budget') || '').trim();
+      const location = String(form.get('location') || '').trim();
+      const details = String(form.get('details') || '').trim();
+
       persistIntake({
         kind: 'project',
-        name: form.get('name'),
-        email: form.get('email') || '',
-        title: `${form.get('service')} enquiry`,
-        service: form.get('service'),
-        budget: form.get('budget') || null,
-        timeline: form.get('date') || null,
-        message: form.get('details'),
-        payload: { location: form.get('location') || null }
+        name,
+        email,
+        title: `${service || 'Creative'} enquiry`,
+        service,
+        budget: budget || null,
+        timeline: date || null,
+        message: details,
+        payload: { location: location || null }
       }, 'booking-form-status');
-      openWhatsapp([
-        'Hello Olympus Atelier, I would like to discuss a project.',
-        '',
-        `Name: ${form.get('name')}`,
-        `Email: ${form.get('email') || 'Not provided'}`,
-        `Service: ${form.get('service')}`,
-        `Preferred date: ${form.get('date') || 'Flexible'}`,
-        `Budget: ${form.get('budget') || 'To discuss'}`,
-        `Location: ${form.get('location') || 'To discuss'}`,
-        '',
-        `Brief: ${form.get('details')}`
-      ].join('\n'), event.currentTarget);
+
+      const waMessage = buildEnquiryWhatsappMessage({
+        name,
+        email,
+        phone: '',
+        service,
+        budget,
+        timeline: date,
+        location,
+        message: details,
+        intent: 'project'
+      });
+      openWhatsapp(waMessage, event.currentTarget);
     });
 
     document.getElementById('contact-form')?.addEventListener('submit', event => {
       event.preventDefault();
+      const name = document.getElementById('contact-name')?.value.trim() || '';
+      const email = document.getElementById('contact-email')?.value.trim() || '';
+      const message = document.getElementById('contact-message')?.value.trim() || '';
+
       persistIntake({
         kind: 'contact',
-        name: document.getElementById('contact-name')?.value.trim(),
-        email: document.getElementById('contact-email')?.value.trim(),
-        message: document.getElementById('contact-message')?.value.trim()
+        name,
+        email,
+        message
       }, 'contact-form-status');
-      openWhatsapp([
-        'Hello Olympus Atelier, I have an enquiry.',
-        '',
-        `Name: ${document.getElementById('contact-name')?.value.trim()}`,
-        `Email: ${document.getElementById('contact-email')?.value.trim()}`,
-        '',
-        document.getElementById('contact-message')?.value.trim()
-      ].join('\n'), event.currentTarget);
+
+      const waMessage = buildEnquiryWhatsappMessage({
+        name,
+        email,
+        phone: '',
+        message,
+        intent: 'general'
+      });
+      openWhatsapp(waMessage, event.currentTarget);
     });
 
     document.getElementById('scale-proposal-form')?.addEventListener('submit', event => {
       event.preventDefault();
       event.stopImmediatePropagation();
       const isEvent = typeof scaleFormPath === 'undefined' || scaleFormPath === 'event';
-      const details = [
-        'Hello Olympus Atelier, I would like to start a project.',
-        '',
-        `Name: ${document.getElementById('proposal-name')?.value.trim()}`,
-        `Email: ${document.getElementById('proposal-email')?.value.trim()}`,
-        `Project type: ${isEvent ? 'Event / production coverage' : 'Design / creative project'}`,
-        isEvent ? `Date: ${document.getElementById('event-date')?.value || 'Flexible'}` : `Budget: ${document.getElementById('project-budget')?.value.trim() || 'To discuss'}`,
-        isEvent ? `Location: ${document.getElementById('event-location')?.value.trim() || 'To discuss'}` : `Timeline: ${document.getElementById('project-timeline')?.value || 'Flexible'}`,
-        '',
-        `Brief: ${document.getElementById('proposal-details')?.value.trim()}`
-      ];
+      const name = document.getElementById('proposal-name')?.value.trim() || '';
+      const email = document.getElementById('proposal-email')?.value.trim() || '';
+      const message = document.getElementById('proposal-details')?.value.trim() || '';
+      const eventDate = document.getElementById('event-date')?.value || '';
+      const eventLocation = document.getElementById('event-location')?.value.trim() || '';
+      const projectBudget = document.getElementById('project-budget')?.value.trim() || '';
+      const projectArea = document.querySelector('#select-area-container .select-label')?.textContent.trim()
+        || document.getElementById('project-area')?.value
+        || (isEvent ? 'Event / production coverage' : 'Design / creative project');
+      const projectTimeline = document.querySelector('#select-timeline-container .select-label')?.textContent.trim()
+        || document.getElementById('project-timeline')?.value
+        || (isEvent ? eventDate : '');
+
+      const waMessage = buildEnquiryWhatsappMessage({
+        name,
+        email,
+        phone: '',
+        service: projectArea,
+        budget: projectBudget,
+        timeline: projectTimeline,
+        location: eventLocation,
+        message,
+        intent: isEvent ? 'event' : 'project'
+      });
+
       persistIntake({
         kind: isEvent ? 'event' : 'project',
-        name: document.getElementById('proposal-name')?.value.trim(),
-        email: document.getElementById('proposal-email')?.value.trim(),
+        name,
+        email,
         title: isEvent ? 'Event coverage request' : 'Design project request',
-        service: isEvent ? 'Event / production coverage' : document.getElementById('project-area')?.value,
-        budget: isEvent ? null : document.getElementById('project-budget')?.value.trim(),
-        timeline: isEvent ? document.getElementById('event-date')?.value : document.getElementById('project-timeline')?.value,
-        message: document.getElementById('proposal-details')?.value.trim(),
+        service: projectArea,
+        budget: isEvent ? null : projectBudget,
+        timeline: isEvent ? eventDate : projectTimeline,
+        message,
         payload: isEvent ? {
           event_hours: document.getElementById('event-hours')?.value,
-          event_location: document.getElementById('event-location')?.value.trim()
+          event_location: eventLocation
         } : {}
       }, 'proposal-form-status');
-      openWhatsapp(details.join('\n'), event.currentTarget);
+
+      openWhatsapp(waMessage, event.currentTarget);
     }, true);
   };
 
@@ -971,26 +1036,6 @@
       script.addEventListener('load', renderWidget, { once: true });
       document.head.append(script);
     };
-    const buildEnquiryWhatsappMessage = ({ name, email, phone, service, budget, timeline, location, message, intent }) => {
-      const lines = [];
-      lines.push('🌟 *NEW REQUEST — OLYMPUS ATELIER*');
-      lines.push('');
-      if (name) lines.push(`👤 *Client Name:* ${name}`);
-      if (phone) lines.push(`📱 *WhatsApp / Phone:* ${phone}`);
-      if (email) lines.push(`📧 *Email:* ${email}`);
-      lines.push('');
-      if (service) lines.push(`🎯 *Service Requested:* ${service}`);
-      if (budget) lines.push(`💰 *Budget / Selected Package:* ${budget}`);
-      if (timeline) lines.push(`📅 *Preferred Date / Timeline:* ${timeline}`);
-      if (location) lines.push(`📍 *Location / Venue:* ${location}`);
-      if (intent && intent !== 'general') lines.push(`🏷️ *Request Type:* ${intent === 'project' ? 'Start a Project' : intent === 'event' ? 'Event Coverage' : 'General Enquiry'}`);
-      lines.push('');
-      if (message) {
-        lines.push('📝 *Project Brief & Details:*');
-        lines.push(message);
-      }
-      return lines.join('\n');
-    };
 
     form.addEventListener('submit', async event => {
       event.preventDefault();
@@ -1000,10 +1045,11 @@
       const phone = String(values.get('phone') || '').trim();
       const service = String(values.get('service') || '').trim();
       const budget = String(values.get('budget') || '').trim();
-      const timeline = String(values.get('timeline') || '').trim();
+      const timeline = String(values.get('timeline') || values.get('preferred_date') || '').trim();
       const location = String(values.get('location') || '').trim();
       const message = String(values.get('message') || '').trim();
       const intent = String(values.get('intent') || 'general');
+      const preferred_channel = String(values.get('preferred_channel') || 'whatsapp');
 
       if (!name) {
         status.textContent = 'Please enter your name.';
@@ -1021,7 +1067,7 @@
 
       status.classList.add('hidden');
 
-      // 1. Build formatted WhatsApp message
+      // 1. Build formatted WhatsApp message with customer intro and selected details
       const waMessage = buildEnquiryWhatsappMessage({
         name,
         email,
@@ -1031,7 +1077,8 @@
         timeline,
         location,
         message,
-        intent
+        intent,
+        preferred_channel
       });
       const waUrl = whatsappUrl(waMessage);
 
