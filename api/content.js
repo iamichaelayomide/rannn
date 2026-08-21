@@ -52,10 +52,21 @@ export default async function handler(request, response) {
     return response.status(502).json({ error: "Published content could not be loaded" });
   }
 
-  // Fallback content.js is the authoritative master for pages copy and 9-service hierarchy
+  const fallbackPortfolio = fallback?.portfolioItems || [];
+  const upstreamPortfolioList = Array.isArray(upstreamPortfolio) ? upstreamPortfolio : [];
+
+  const mergedPortfolio = [...fallbackPortfolio];
+  upstreamPortfolioList.forEach((up) => {
+    const id = up.legacy_id || up.id;
+    if (!mergedPortfolio.some((fp) => fp.id === id || fp.id === up.slug)) {
+      mergedPortfolio.push(up);
+    }
+  });
+
+  // Fallback content.js is the authoritative master for pages copy, services hierarchy, and curated portfolio
   const payload = {
     ...fallback,
-    portfolioItems: upstreamPortfolio || fallback.portfolioItems || [],
+    portfolioItems: mergedPortfolio,
   };
 
   response.setHeader("Cache-Control", "private, no-store, max-age=0, must-revalidate");
