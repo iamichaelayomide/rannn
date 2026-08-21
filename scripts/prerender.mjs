@@ -42,7 +42,7 @@ const serviceCardsHtml = content.services.map((service, index) => `
             <p class="text-sm text-neutral-400 leading-relaxed mt-4">${escapeHtml(service.summary)}</p>
             ${service.description ? `<p class="text-xs text-neutral-500 leading-relaxed mt-3">${escapeHtml(service.description)}</p>` : ''}
             <ul class="mt-6 space-y-2 text-xs text-neutral-300">
-              ${(service.deliverables || []).map(item => `<li class="flex items-center gap-2"><span class="text-amber-400">✓</span>${escapeHtml(item)}</li>`).join('')}
+              ${(service.deliverables || []).map(item => `<li class="flex items-center gap-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400 text-sm flex-shrink-0"></iconify-icon><span>${escapeHtml(item)}</span></li>`).join('')}
             </ul>
             ${(service.title || '').toLowerCase().includes('wedding') ? `
               <button type="button" class="wedding-package-trigger inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-5 py-3 rounded-full text-xs uppercase tracking-wider mt-6 hover:scale-105 transition-transform" data-open-wedding-modal="true">

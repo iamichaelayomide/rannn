@@ -396,7 +396,7 @@ export default async function handler(request, response) {
 
     if (normalizedMessage) {
       whatsappLines.push("");
-      whatsappLines.push("📝 *Project Brief & Details:*");
+      whatsappLines.push("*Project Brief & Details:*");
       whatsappLines.push(normalizedMessage);
     }
     const whatsappMessage = whatsappLines.join("\n");
