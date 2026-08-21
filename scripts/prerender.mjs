@@ -428,17 +428,76 @@ if (!html.includes('data-card-idx="0"') || html.includes('Photography & Video'))
   );
 }
 
+// PAGE 4: ABOUT Section without team headshots
+const aboutSection = `
+    <!-- PAGE 4: ABOUT -->
+    <section id="page-about" class="spa-page">
+      <div class="max-w-7xl mx-auto px-6 py-16 lg:py-24">
+        <!-- How We Work / Visual Practice Hero Block -->
+        <div class="glass-card border-gold-gradient rounded-3xl p-8 md:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div class="lg:col-span-5 aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-white/5">
+            <img src="assets/media/prefooter-stage.webp" alt="Olympus Atelier visual practice in motion" class="w-full h-full object-cover" loading="lazy">
+          </div>
+          <div class="lg:col-span-7">
+            <div class="inline-flex items-center gap-2 mb-3">
+              <span class="w-2 h-2 bg-amber-400 rounded-full"></span>
+              <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">The Atelier</span>
+            </div>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-white mt-2 font-display leading-tight">One visual language, from concept to delivery.</h2>
+            <p class="text-neutral-300 text-base md:text-lg mt-6 leading-relaxed">
+              Olympus Atelier is a dedicated cinema and visual production house. We direct, film, and edit timeless visual stories—specializing in luxury weddings, multi-camera event coverage, and high-end video post-production.
+            </p>
+            <p class="text-neutral-400 text-sm md:text-base mt-4 leading-relaxed">
+              Every project begins with the audience and the moment that matters. We shape the concept, capture the material with cinema-grade optics, refine it with precision color and sound in post, and deliver films and assets that outlive the moment.
+            </p>
+            <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-4">
+              <a href="#contact?intent=project" class="spa-nav-link inline-flex items-center gap-2 bg-gold-gradient text-neutral-950 font-bold px-6 py-3.5 rounded-full text-xs uppercase tracking-wider hover:scale-105 transition-transform" data-page="contact">
+                <span>Start a Project</span>
+                <span>→</span>
+              </a>
+              <a href="#services" class="spa-nav-link inline-flex items-center gap-2 border border-white/20 text-white hover:border-amber-400 hover:text-amber-400 font-bold px-6 py-3.5 rounded-full text-xs uppercase tracking-wider transition-colors" data-page="services">
+                <span>Explore Services</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Atelier Standards / Production Pillars -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+          <div class="glass-card border border-white/5 rounded-3xl p-8 space-y-4">
+            <div class="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400">
+              <iconify-icon icon="solar:videocamera-record-bold-duotone" class="text-xl"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-bold text-white uppercase font-display">Cinema Direction</h3>
+            <p class="text-xs text-neutral-400 leading-relaxed">Intentional framing, multi-camera coordination, and natural light capture planned to preserve authentic emotion and event atmosphere.</p>
+          </div>
+          <div class="glass-card border border-white/5 rounded-3xl p-8 space-y-4">
+            <div class="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400">
+              <iconify-icon icon="solar:clapperboard-edit-bold-duotone" class="text-xl"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-bold text-white uppercase font-display">Post-Production Craft</h3>
+            <p class="text-xs text-neutral-400 leading-relaxed">Bespoke color grading, rhythm-matched editing, and speech audio mix tuned for lasting screen impact and luxury finish.</p>
+          </div>
+          <div class="glass-card border border-white/5 rounded-3xl p-8 space-y-4">
+            <div class="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400">
+              <iconify-icon icon="solar:chat-round-dots-bold-duotone" class="text-xl"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-bold text-white uppercase font-display">Direct WhatsApp Delivery</h3>
+            <p class="text-xs text-neutral-400 leading-relaxed">Direct atelier communication, transparent quoting, teaser delivery in 7–14 days, and full private Drive delivery.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+`;
+
 // Replace PAGE 2 in baseHtml
 html = html.replace(/<!-- PAGE 2: SERVICES -->[\s\S]*?<\/section>/, servicesSection.trim());
 
 // Replace PAGE 3 in baseHtml
 html = html.replace(/<!-- PAGE 3: PORTFOLIO -->[\s\S]*?<\/section>/, portfolioSection.trim());
 
-// Replace team-grid
-html = html.replace(
-  /<div id="team-grid"[^>]*>[\s\S]*?<\/div>/,
-  `<div id="team-grid" class="team-grid" aria-label="Olympus Atelier team">\n${teamHtml}\n        </div>`
-);
+// Replace PAGE 4 in baseHtml
+html = html.replace(/<!-- PAGE 4: ABOUT -->[\s\S]*?<\/section>/, aboutSection.trim());
 
 // Update WhatsApp Enquiry Button in Contact Form
 html = html.replace(
