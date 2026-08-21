@@ -94,10 +94,77 @@
       border: 1px solid rgba(212, 175, 55, 0.25);
     }
 
+    .tab-btn {
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .tab-btn:active {
+      transform: scale(0.97);
+    }
+
     .tab-btn.active {
       background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      color: #050505;
+      color: #050505 !important;
       font-weight: 700;
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
+    }
+
+    /* White Paper Document (Receipt Mode) */
+    #invoice-sheet.sheet-receipt-white {
+      background: #ffffff !important;
+      color: #0f172a !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    #invoice-sheet.sheet-receipt-white h2,
+    #invoice-sheet.sheet-receipt-white h3,
+    #invoice-sheet.sheet-receipt-white h4,
+    #invoice-sheet.sheet-receipt-white strong,
+    #invoice-sheet.sheet-receipt-white .text-white {
+      color: #09090b !important;
+    }
+
+    #invoice-sheet.sheet-receipt-white .text-neutral-200,
+    #invoice-sheet.sheet-receipt-white .text-neutral-300 {
+      color: #27272a !important;
+    }
+
+    #invoice-sheet.sheet-receipt-white .text-neutral-400 {
+      color: #52525b !important;
+    }
+
+    #invoice-sheet.sheet-receipt-white .text-neutral-500 {
+      color: #71717a !important;
+    }
+
+    #invoice-sheet.sheet-receipt-white .text-amber-400,
+    #invoice-sheet.sheet-receipt-white .text-amber-300 {
+      color: #b45309 !important;
+      font-weight: 700 !important;
+    }
+
+    #invoice-sheet.sheet-receipt-white .border-white\/10,
+    #invoice-sheet.sheet-receipt-white .border-white\/5,
+    #invoice-sheet.sheet-receipt-white .divide-white\/5 > * {
+      border-color: #e4e4e7 !important;
+    }
+
+    #invoice-sheet.sheet-receipt-white .bg-white\/5 {
+      background: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+    }
+
+    #invoice-sheet.sheet-receipt-white #preview-badge-status {
+      background: #ecfdf5 !important;
+      border: 1px solid #10b981 !important;
+      color: #047857 !important;
+    }
+
+    #invoice-sheet.sheet-receipt-white .text-emerald-400 {
+      color: #059669 !important;
     }
 
     /* Print & PDF styling */
@@ -180,17 +247,17 @@
 
       <!-- Action Buttons -->
       <div class="flex flex-wrap items-center gap-2.5">
-        <button id="btn-save-doc" type="button" class="inline-flex items-center gap-2 bg-neutral-900 border border-white/10 text-neutral-200 font-semibold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:text-white hover:border-amber-400/40 transition-all">
+        <button id="btn-save-doc" type="button" class="inline-flex items-center gap-2 bg-neutral-900 border border-white/10 text-neutral-200 font-semibold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:text-white hover:border-amber-400/40 active:scale-[0.98] transition-all cursor-pointer">
           <iconify-icon icon="solar:diskette-bold" class="text-base text-amber-400"></iconify-icon>
           <span>Save Document</span>
         </button>
-        <button id="btn-download-pdf" type="button" class="inline-flex items-center gap-2 bg-white text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:bg-neutral-200 transition-colors shadow-lg shadow-white/5">
+        <button id="btn-download-pdf" type="button" class="inline-flex items-center gap-2 bg-white text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:bg-neutral-200 active:scale-[0.98] transition-all shadow-lg shadow-white/5 cursor-pointer">
           <iconify-icon icon="solar:download-square-bold" class="text-base"></iconify-icon>
           <span>Download PDF</span>
         </button>
-        <button id="btn-whatsapp-share" type="button" class="inline-flex items-center gap-2 bg-gold-gradient text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:scale-[1.02] transition-transform shadow-lg shadow-amber-500/10">
-          <iconify-icon icon="logos:whatsapp-icon" class="text-base"></iconify-icon>
+        <button id="btn-whatsapp-share" type="button" class="inline-flex items-center gap-2 bg-gold-gradient text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-amber-500/10 cursor-pointer">
           <span>Send PDF via WhatsApp</span>
+          <iconify-icon icon="solar:arrow-right-linear" class="text-base"></iconify-icon>
         </button>
       </div>
     </div>
@@ -758,6 +825,11 @@
         document.getElementById('preview-payment-method-row').classList.toggle('hidden', !isReceipt);
         document.getElementById('preview-reason-box').classList.toggle('hidden', !isNote);
 
+        const sheet = document.getElementById('invoice-sheet');
+        if (sheet) {
+          sheet.classList.toggle('sheet-receipt-white', isReceipt);
+        }
+
         if (isReceipt) {
           document.getElementById('doc-status').value = 'PAID IN FULL';
           document.getElementById('preview-badge-status').textContent = 'PAYMENT RECEIVED';
@@ -1103,11 +1175,12 @@
 
         try {
           const element = document.getElementById('invoice-sheet');
+          const isWhite = element.classList.contains('sheet-receipt-white');
           const opt = {
             margin: [8, 8, 8, 8],
             filename: filename,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: '#050505' },
+            html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: isWhite ? '#ffffff' : '#050505' },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
           };
           await html2pdf().set(opt).from(element).save();
@@ -1125,12 +1198,13 @@
         const element = document.getElementById('invoice-sheet');
         const docNumber = document.getElementById('doc-number').value.trim() || 'OLY-DOC-001';
         const filename = `Olympus-${currentDocType.toUpperCase()}-${docNumber}.pdf`;
+        const isWhite = element.classList.contains('sheet-receipt-white');
 
         const opt = {
           margin: [8, 8, 8, 8],
           filename: filename,
           image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: '#050505' },
+          html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: isWhite ? '#ffffff' : '#050505' },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
@@ -1165,23 +1239,23 @@
           currentDocType === 'credit' ? 'OFFICIAL CREDIT NOTE' : 'OFFICIAL INVOICE';
 
         const lines = [
-          `🏛️ *OLYMPUS ATELIER — ${titleText}*`,
-          `📄 *Document Ref:* ${docNumber}`,
-          `👤 *Client:* ${clientName}`,
-          currentDocType !== 'receipt' ? `📅 *Due Date:* ${dueDate ? new Date(dueDate).toLocaleDateString('en-GB') : 'Immediate'}` : '✅ *Payment Status:* Full Payment Received',
+          `*OLYMPUS ATELIER — ${titleText}*`,
+          `• *Document Ref:* ${docNumber}`,
+          `• *Client:* ${clientName}`,
+          currentDocType !== 'receipt' ? `• *Due Date:* ${dueDate ? new Date(dueDate).toLocaleDateString('en-GB') : 'Immediate'}` : '• *Payment Status:* Full Payment Received',
           '',
-          '📋 *DELIVERABLES & SCOPE:*',
+          '*DELIVERABLES & SCOPE:*',
           ...itemLines,
           '',
-          `💵 *Total Amount:* ${formatMoney(grandTotal, currency)}`,
-          depositVal > 0 && currentDocType !== 'receipt' ? `✅ *Deposit Paid:* ${formatMoney(depositVal, currency)}\n⏳ *Balance Remaining:* ${formatMoney(balance, currency)}` : '',
+          `*Total Amount:* ${formatMoney(grandTotal, currency)}`,
+          depositVal > 0 && currentDocType !== 'receipt' ? `*Deposit Paid:* ${formatMoney(depositVal, currency)}\n*Balance Remaining:* ${formatMoney(balance, currency)}` : '',
           '',
-          '🏦 *SETTLEMENT DETAILS:*',
+          '*SETTLEMENT DETAILS:*',
           `• Bank: ${bankName}`,
           `• Account Number: ${bankAccount}`,
           `• Account Name: ${bankBeneficiary}`,
           '',
-          `✨ _Thank you for choosing Olympus Atelier. Please find your official ${currentDocType.toUpperCase()} attached._`
+          `_Thank you for choosing Olympus Atelier. Please find your official ${currentDocType.toUpperCase()} attached._`
         ].filter(Boolean);
 
         return lines.join('\n');
