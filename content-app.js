@@ -113,7 +113,8 @@
   };
 
   const serviceToCategoryMap = {
-    'wedding-highlights': 'wedding-highlights',
+    'wedding': 'wedding',
+    'wedding-highlights': 'wedding',
     'editing-alone': 'editing-alone',
     'video-editing': 'editing-alone',
     'videography-editing': 'editing-alone',
@@ -573,7 +574,7 @@
 
     const filterList = content.filters || [
       { id: 'all', label: 'All Work' },
-      { id: 'wedding-highlights', label: 'Wedding Highlights' },
+      { id: 'wedding', label: 'Weddings' },
       { id: 'editing-alone', label: 'Video Editing Alone' },
       { id: 'film', label: 'Film & Photography' },
       { id: 'events', label: 'Events & Conferences' },
@@ -588,6 +589,7 @@
       const params = new URLSearchParams(query);
       const catParam = params.get('category') || params.get('tab');
       if (catParam) {
+        if (catParam === 'wedding-highlights' || catParam === 'wedding') return 'wedding';
         const found = filterList.find(f => f.id === catParam || f.id.includes(catParam));
         if (found) return found.id;
       }

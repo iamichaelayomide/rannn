@@ -235,15 +235,16 @@ window.OLYMPUS_CONTENT = {
   },
   "services": [
     {
-      "id": "wedding-highlights",
-      "title": "Wedding Highlights",
+      "id": "wedding",
+      "title": "Weddings",
       "summary": "Full-day wedding cinema capture, highlight films, cinematic editing, and online sharing prepared for memory and celebration.",
       "description": "Capture every emotion, atmosphere, and key moment with dedicated videography, professional audio, and polished post-production.",
-      "portfolioCategory": "wedding-highlights",
+      "portfolioCategory": "wedding",
       "icon": "solar:videocamera-record-bold-duotone",
       "deliverables": [
         "Full-day wedding coverage",
-        "Highlight & teaser cinematic films",
+        "Cinematic 4K highlight film",
+        "Social teaser reel (60s)",
         "Colour-graded delivery"
       ]
     },
@@ -483,18 +484,60 @@ window.OLYMPUS_CONTENT = {
   },
   "portfolioItems": [
     {
+      "id": "1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO",
+      "title": "Bride Shoot — TheGoodWill '26",
+      "description": "Luxury bridal visual story, portrait pacing, and bespoke cinema color grading.",
+      "category": "wedding",
+      "collection": "Weddings",
+      "year": "2026",
+      "mediaType": "video",
+      "thumbnailSrc": "assets/portfolio/1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO.webp",
+      "previewSrc": "assets/portfolio/1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO.webp",
+      "originalUrl": "https://drive.google.com/file/d/1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO/view",
+      "alt": "Bride Shoot TheGoodWill '26 Wedding Cinema by Olympus Atelier",
+      "featured": true
+    },
+    {
+      "id": "1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG",
+      "title": "Couple Shoot — TheGoodWill '26",
+      "description": "Emotional wedding storytelling, golden hour cinematography, and intentional editing.",
+      "category": "wedding",
+      "collection": "Weddings",
+      "year": "2026",
+      "mediaType": "video",
+      "thumbnailSrc": "assets/portfolio/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG.webp",
+      "previewSrc": "assets/portfolio/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG.webp",
+      "originalUrl": "https://drive.google.com/file/d/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG/view",
+      "alt": "Couple Shoot TheGoodWill '26 Wedding Cinema by Olympus Atelier",
+      "featured": true
+    },
+    {
+      "id": "1P2XpuunkXAX9k4Jttgv4ESqAqVAmDKIX",
+      "title": "TheGoodWill '26 Wedding Collection (Full Folder)",
+      "description": "Complete wedding film gallery, ceremony reels, and couple sessions in 4K.",
+      "category": "wedding",
+      "collection": "Weddings",
+      "year": "2026",
+      "mediaType": "video",
+      "thumbnailSrc": "assets/portfolio/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG.webp",
+      "previewSrc": "assets/portfolio/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG.webp",
+      "originalUrl": "https://drive.google.com/drive/folders/1P2XpuunkXAX9k4Jttgv4ESqAqVAmDKIX",
+      "alt": "TheGoodWill '26 Wedding Collection by Olympus Atelier",
+      "featured": true
+    },
+    {
       "id": "1V3iS3FUXxQBentD7IZ7gfZhLEvienxAU",
-      "title": "Wedding Highlights Collection (Full Folder)",
-      "description": "Complete archive of wedding highlight films, ceremony moments, and reception reels.",
-      "category": "wedding-highlights",
-      "collection": "Wedding Highlights",
+      "title": "Weddings Collection Archive (Full Folder)",
+      "description": "Complete archive of wedding films, ceremony moments, and reception reels.",
+      "category": "wedding",
+      "collection": "Weddings",
       "year": "2025",
       "mediaType": "video",
       "thumbnailSrc": "assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp",
       "previewSrc": "assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp",
       "originalUrl": "https://drive.google.com/drive/folders/1V3iS3FUXxQBentD7IZ7gfZhLEvienxAU",
-      "alt": "Wedding Highlights Collection by Olympus Atelier",
-      "featured": true
+      "alt": "Weddings Collection Archive by Olympus Atelier",
+      "featured": false
     },
     {
       "id": "1HvMxfpX5YIa2YRW4NFr2i069FcldvfUL",

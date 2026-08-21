@@ -82,7 +82,7 @@ const teamHtml = content.teamMembers.map((member, index) => `
 
 const filterList = [
   { id: 'all', label: 'All Work' },
-  { id: 'wedding-highlights', label: 'Wedding Highlights' },
+  { id: 'wedding', label: 'Weddings' },
   { id: 'editing-alone', label: 'Video Editing Alone' },
   { id: 'film', label: 'Film & Photography' },
   { id: 'events', label: 'Events & Conferences' },
@@ -183,7 +183,7 @@ const capabilitiesDeckHtml = `
             <span>Restack Deck</span>
           </button>
 
-          <!-- Card 1: Wedding Highlights -->
+          <!-- Card 1: Weddings -->
           <div class="capabilities-card bg-blur-gradient-1 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="0">
             <div class="sweep-shine"></div>
             <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
@@ -197,7 +197,7 @@ const capabilitiesDeckHtml = `
                 </div>
                 <div class="relative h-[200px] overflow-hidden">
                   <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
-                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Wedding Highlights</h3>
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Weddings</h3>
                     <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
                       Full-day wedding cinema capture, emotional narrative flow, ceremony highlights, and color grading.
                     </p>
