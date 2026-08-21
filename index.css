@@ -1543,6 +1543,72 @@ html.lenis {
   max-width: 47rem;
 }
 
+/* Policy / Terms Modal */
+.policy-modal {
+  align-items: flex-start;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain;
+  padding: clamp(1rem, 4vw, 3rem);
+  position: fixed;
+  z-index: 90;
+}
+
+.policy-modal.hidden {
+  display: none;
+}
+
+.policy-backdrop {
+  background: rgba(2, 2, 2, 0.92);
+  backdrop-filter: blur(18px);
+  inset: 0;
+  position: fixed;
+  z-index: 1;
+}
+
+.policy-panel {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.12), transparent 45%),
+    #0a0a0a;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: clamp(1.25rem, 3vw, 2rem);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.9);
+  max-width: 52rem;
+  overflow: visible !important;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+  position: relative;
+  margin: 2rem auto;
+  width: 100%;
+  z-index: 2;
+}
+
+.policy-close {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  width: 2.5rem;
+  font-size: 1.25rem;
+  position: absolute;
+  right: 1.25rem;
+  top: 1.25rem;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.policy-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
 .wedding-packages-intro {
   color: rgba(255, 255, 255, 0.52);
   line-height: 1.7;

@@ -474,5 +474,34 @@ html = html.replace(
             <p class="text-xs text-neutral-400 text-center">Your details will be pre-filled automatically on WhatsApp for instant messaging.</p>`
 );
 
+// Update Footer with Refund Policy & Legal links
+html = html.replace(
+  /<div class="col-span-6 md:col-span-2">\s*<h5 class="text-xs font-bold uppercase tracking-wider text-neutral-300 mb-5 font-mono">Atelier<\/h5>[\s\S]*?<\/ul>\s*<\/div>/,
+  `<div class="col-span-6 md:col-span-2">
+          <h5 class="text-xs font-bold uppercase tracking-wider text-neutral-300 mb-5 font-mono">Atelier</h5>
+          <ul class="space-y-3 text-xs md:text-sm text-neutral-400">
+            <li><a href="#home" class="hover:text-white transition-colors spa-nav-link" data-page="home">Home</a></li>
+            <li><a href="#services" class="hover:text-white transition-colors spa-nav-link" data-page="services">Services</a></li>
+            <li><a href="#portfolio" class="hover:text-white transition-colors spa-nav-link" data-page="portfolio">Portfolio</a></li>
+            <li><a href="#about" class="hover:text-white transition-colors spa-nav-link" data-page="about">About Us</a></li>
+            <li><a href="#refund-policy" class="hover:text-amber-400 transition-colors text-amber-400/90 font-medium" data-open-refund-modal="true">Refund Policy</a></li>
+          </ul>
+        </div>`
+);
+
+html = html.replace(
+  /<div class="border-t border-white\/5 pt-6 text-\[11px\] text-neutral-500 font-mono">[\s\S]*?<\/div>/,
+  `<div class="flex flex-wrap items-center justify-between gap-4 border-t border-white/5 pt-6 text-[11px] text-neutral-500 font-mono">
+        <div class="flex flex-wrap items-center gap-5">
+          <span>&copy; 2026 Olympus Atelier. All rights reserved.</span>
+          <button type="button" class="hover:text-amber-400 transition-colors text-neutral-400 font-medium cursor-pointer" data-open-refund-modal="true">Refund Policy</button>
+          <a href="#contact?intent=general" class="hover:text-amber-400 transition-colors text-neutral-400 spa-nav-link" data-page="contact">Support &amp; Enquiries</a>
+        </div>
+        <div>
+          <span>Designed by <a href="https://ayodsgn.com/" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors font-bold text-amber-400/90">Ayo.dsgn</a></span>
+        </div>
+      </div>`
+);
+
 fs.writeFileSync('index.html', html);
 console.log('Successfully pre-rendered pristine index.html with interactive onclick triggers!');
