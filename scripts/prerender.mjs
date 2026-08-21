@@ -509,8 +509,8 @@ const bookSection = `
             <textarea id="booking-details" name="details" rows="5" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" required placeholder="Tell us what you need, key deliverables, event timeline, or specific creative direction."></textarea>
           </div>
           <button type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2 text-sm uppercase tracking-wider cursor-pointer">
-            <iconify-icon icon="logos:whatsapp-icon" class="text-xl"></iconify-icon>
             <span>Send Request via WhatsApp</span>
+            <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
           </button>
           <p id="booking-form-status" class="text-xs text-neutral-400 text-center" role="status"></p>
           <p class="text-xs text-neutral-400 text-center font-light">Your brief opens directly on WhatsApp with your selections pre-filled for immediate review.</p>
@@ -617,14 +617,14 @@ const contactSection = `
             
             <button id="enquiry-submit" type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2 text-sm uppercase tracking-wider cursor-pointer">
               <span>Send Request via WhatsApp</span>
-              <iconify-icon icon="logos:whatsapp-icon" class="text-xl"></iconify-icon>
+              <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
             </button>
             <p class="text-xs text-neutral-400 text-center font-light">Your brief opens directly in WhatsApp with all selected details pre-filled for immediate response.</p>
           </form>
 
           <section id="enquiry-success" class="enquiry-success hidden text-center py-8 space-y-4" aria-live="polite" tabindex="-1">
             <div class="w-16 h-16 rounded-full bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 mx-auto text-3xl">
-              <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+              <iconify-icon icon="solar:chat-round-dots-bold"></iconify-icon>
             </div>
             <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400">Brief Prepared</span>
             <h3 class="text-2xl md:text-3xl font-bold text-white font-display">Opening WhatsApp…</h3>
@@ -633,8 +633,8 @@ const contactSection = `
             <span id="enquiry-email-status" class="hidden"></span>
             <div class="pt-4 flex flex-wrap justify-center gap-4">
               <a id="enquiry-whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-gold-gradient text-neutral-950 font-bold px-8 py-3.5 rounded-full hover:scale-105 transition-transform text-xs uppercase tracking-wider">
-                <iconify-icon icon="logos:whatsapp-icon" class="text-lg"></iconify-icon>
                 <span>Continue on WhatsApp</span>
+                <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
               </a>
               <button id="enquiry-start-again" type="button" class="inline-flex items-center gap-2 border border-white/20 text-white hover:border-amber-400 hover:text-amber-400 font-bold px-6 py-3.5 rounded-full text-xs uppercase tracking-wider transition-colors cursor-pointer">
                 <span>Start New Enquiry</span>
@@ -663,6 +663,10 @@ html = html.replace(/<!-- PAGE 5: BOOK NOW -->[\s\S]*?<\/section>/, bookSection.
 // Replace PAGE 6 in baseHtml
 html = html.replace(/<!-- PAGE 6: CONTACT[^>]*-->[\s\S]*?<\/section>/, contactSection.trim());
 
+// Remove Partners / Collaborators section completely
+html = html.replace(/<!-- Partners Grid Section[\s\S]*?<\/section>/, '');
+
+
 
 // Update Footer
 html = html.replace(
@@ -684,6 +688,9 @@ html = html.replace(
         <span>Designed by <a href="https://ayodsgn.com/" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors font-bold text-amber-400/90">Ayo.dsgn</a></span>
       </div>`
 );
+
+// Remove all logos:whatsapp-icon instances completely
+html = html.replace(/<iconify-icon icon="logos:whatsapp-icon"[^>]*><\/iconify-icon>/g, '');
 
 fs.writeFileSync('index.html', html);
 console.log('Successfully pre-rendered pristine index.html with interactive onclick triggers!');

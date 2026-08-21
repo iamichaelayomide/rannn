@@ -1164,7 +1164,7 @@
         .map(([network, url]) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(titleCase(network))}" class="w-9 h-9 rounded-full border border-white/10 inline-flex items-center justify-center text-neutral-400 hover:text-amber-400 hover:border-amber-400/30"><iconify-icon icon="${socialIcons[network]}"></iconify-icon></a>`)
         .join('');
       const whatsappLink = content.siteConfig.whatsappNumber && content.siteConfig.whatsappDisplay
-        ? `<a href="#contact?intent=general&preferred_channel=whatsapp&source_cta=Footer%20WhatsApp" data-page="contact" class="spa-nav-link inline-flex items-center gap-2 rounded-full border border-amber-400/30 px-4 py-2 text-xs font-bold text-amber-400 hover:bg-amber-400/10"><iconify-icon icon="logos:whatsapp-icon"></iconify-icon>${escapeHtml(content.siteConfig.whatsappDisplay)}</a>`
+        ? `<a href="#contact?intent=general&preferred_channel=whatsapp&source_cta=Footer%20WhatsApp" data-page="contact" class="spa-nav-link inline-flex items-center gap-2 rounded-full border border-amber-400/30 px-4 py-2 text-xs font-bold text-amber-400 hover:bg-amber-400/10"><span>${escapeHtml(content.siteConfig.whatsappDisplay)}</span></a>`
         : '';
       const callLink = content.siteConfig.callNumber && content.siteConfig.callDisplay
         ? `<a href="tel:${escapeHtml(content.siteConfig.callNumber)}" class="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs font-bold text-neutral-300 hover:border-amber-400/30 hover:text-amber-400"><iconify-icon icon="solar:phone-calling-linear"></iconify-icon>${escapeHtml(content.siteConfig.callDisplay)}</a>`
