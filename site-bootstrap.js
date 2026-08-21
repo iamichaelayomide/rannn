@@ -39,30 +39,7 @@ const mergePublishedContent = (published) => {
     };
   });
 
-  const servicesList = fallback.services.map((fs) => {
-    const ms = managedServices.find((s) => (s.slug || s.id) === fs.id);
-    return {
-      ...fs,
-      deliverables: (ms?.deliverables && ms.deliverables.length > 0) ? ms.deliverables : fs.deliverables,
-      summary: fs.summary,
-      description: fs.description || ms?.description || "",
-    };
-  });
-
-  if (hasManagedServices) {
-    managedServices.forEach((ms) => {
-      const slug = ms.slug || ms.id;
-      if (!servicesList.some((s) => s.id === slug) && ms.status === 'published') {
-        servicesList.push({
-          id: slug,
-          title: ms.title,
-          summary: ms.summary || ms.description || "",
-          description: ms.description || "",
-          deliverables: ms.deliverables || [],
-        });
-      }
-    });
-  }
+  const servicesList = [...fallback.services];
 
   const portfolioList = hasManagedPortfolio
     ? managedPortfolio.map(toPortfolioItem)
@@ -74,28 +51,9 @@ const mergePublishedContent = (published) => {
     }
   });
 
-  const mergedHome = {
-    ...fallback.pages.home,
-    ...(pages.home || {}),
-    content: {
-      ...fallback.pages.home.content,
-      ...(pages.home?.content || {}),
-      hero: {
-        ...fallback.pages.home.content.hero,
-        ...(pages.home?.content?.hero || {}),
-      },
-      vision: fallback.pages.home.content.vision,
-      manifesto: fallback.pages.home.content.manifesto,
-    },
-  };
-
   return {
     ...fallback,
-    pages: {
-      ...fallback.pages,
-      ...pages,
-      home: mergedHome,
-    },
+    pages: fallback.pages,
     siteConfig: {
       ...fallback.siteConfig,
       brandName: globalContent.site?.brand_name ?? fallback.siteConfig.brandName,

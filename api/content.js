@@ -1,41 +1,65 @@
+import fs from "node:fs";
+import path from "node:path";
+
+function getFallbackContent() {
+  try {
+    const filePath = path.join(process.cwd(), "content.js");
+    const code = fs.readFileSync(filePath, "utf8");
+    const sandbox = {};
+    new Function("window", code)(sandbox);
+    return sandbox.OLYMPUS_CONTENT;
+  } catch (err) {
+    console.error("Failed to read content.js", err);
+    return null;
+  }
+}
+
 export default async function handler(request, response) {
   if (request.method !== "GET") {
     response.setHeader("Allow", "GET");
     return response.status(405).json({ error: "Method not allowed" });
   }
 
+  const fallback = getFallbackContent();
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_ANON_KEY;
-  if (!url || !key) {
-    return response.status(503).json({ error: "Content service is unavailable" });
+
+  let upstreamPortfolio = null;
+  if (url && key) {
+    try {
+      const upstream = await fetch(`${url}/rest/v1/rpc/get_public_site_content`, {
+        method: "POST",
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+          "Content-Type": "application/json",
+        },
+        body: "{}",
+      });
+
+      if (upstream.ok) {
+        const upstreamData = await upstream.json();
+        if (Array.isArray(upstreamData?.portfolioItems) && upstreamData.portfolioItems.length > 0) {
+          upstreamPortfolio = upstreamData.portfolioItems;
+        }
+      }
+    } catch (error) {
+      console.error("Public content service error", error instanceof Error ? error.message : error);
+    }
   }
 
-  try {
-    const upstream = await fetch(`${url}/rest/v1/rpc/get_public_site_content`, {
-      method: "POST",
-      headers: {
-        apikey: key,
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: "{}",
-    });
-
-    if (!upstream.ok) {
-      const detail = await upstream.text();
-      console.error("Public content request failed", upstream.status, detail.slice(0, 300));
-      return response.status(502).json({ error: "Published content could not be loaded" });
-    }
-
-    const content = await upstream.json();
-    // CMS publishes must be visible on the next public refresh. Do not let the
-    // browser or Vercel's edge cache serve an older published snapshot.
-    response.setHeader("Cache-Control", "private, no-store, max-age=0, must-revalidate");
-    response.setHeader("CDN-Cache-Control", "no-store");
-    response.setHeader("Vercel-CDN-Cache-Control", "no-store");
-    return response.status(200).json(content);
-  } catch (error) {
-    console.error("Public content service error", error instanceof Error ? error.message : error);
+  if (!fallback) {
     return response.status(502).json({ error: "Published content could not be loaded" });
   }
+
+  // Fallback content.js is the authoritative master for pages copy and 9-service hierarchy
+  const payload = {
+    ...fallback,
+    portfolioItems: upstreamPortfolio || fallback.portfolioItems || [],
+  };
+
+  response.setHeader("Cache-Control", "private, no-store, max-age=0, must-revalidate");
+  response.setHeader("CDN-Cache-Control", "no-store");
+  response.setHeader("Vercel-CDN-Cache-Control", "no-store");
+  return response.status(200).json(payload);
 }
