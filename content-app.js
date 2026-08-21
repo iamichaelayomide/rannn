@@ -307,9 +307,9 @@
       const header = content.pages?.[slug]?.content?.header;
       const container = document.querySelector(selector);
       if (!header || !container) return;
-      const eyebrow = container.querySelector('span');
-      const title = container.querySelector('h2');
-      const body = container.querySelector('p');
+      const eyebrow = container.querySelector('.header-eyebrow-text') || container.querySelector('span.font-mono') || container.querySelector('span');
+      const title = container.querySelector('.header-title-text') || container.querySelector('h2');
+      const body = container.querySelector('.header-body-text') || container.querySelector('p');
       if (eyebrow && header.eyebrow) eyebrow.textContent = header.eyebrow;
       if (title && header.title) title.textContent = header.title;
       if (body && header.body) body.textContent = header.body;
@@ -322,29 +322,11 @@
   };
 
   const hydrateContactDetails = () => {
-    const contact = content.pages?.contact?.content?.contact || {};
-    const callDisplay = content.siteConfig.callDisplay || contact.phone || '';
-    const callNumber = content.siteConfig.callNumber || callDisplay;
-    const details = [
-      contact.email || content.siteConfig.email
-        ? ['solar:letter-linear', 'Email', contact.email || content.siteConfig.email, `mailto:${contact.email || content.siteConfig.email}`]
-        : null,
-      callDisplay
-        ? ['solar:phone-linear', 'Call', callDisplay, `tel:${String(callNumber).replace(/[^\d+]/g, '')}`]
-        : null,
-      contact.location || content.siteConfig.location
-        ? ['solar:map-point-linear', 'Location', contact.location || content.siteConfig.location, '']
-        : null,
-    ].filter(Boolean);
     const container = document.getElementById('managed-contact-details');
-    if (!container) return;
-    container.classList.toggle('hidden', !details.length);
-    container.innerHTML = details.map(([iconName, label, value, href]) => {
-      const body = `<iconify-icon icon="${iconName}" class="text-xl text-amber-400"></iconify-icon><span><small class="block text-[9px] uppercase tracking-widest text-neutral-500">${escapeHtml(label)}</small><strong class="block text-sm text-white mt-1">${escapeHtml(value)}</strong></span>`;
-      return href
-        ? `<a href="${escapeHtml(href)}" class="glass-card border border-white/10 rounded-2xl p-4 flex items-center gap-3 hover:border-amber-400/30">${body}</a>`
-        : `<div class="glass-card border border-white/10 rounded-2xl p-4 flex items-center gap-3">${body}</div>`;
-    }).join('');
+    if (container) {
+      container.classList.add('hidden');
+      container.innerHTML = '';
+    }
   };
 
   const hydrateFaqs = () => {

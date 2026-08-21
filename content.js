@@ -3,8 +3,8 @@ window.OLYMPUS_CONTENT = {
     "brandName": "Olympus Atelier",
     "whatsappNumber": "2348087172313",
     "whatsappDisplay": "+234 808 717 2313",
-    "callNumber": "2347026456357",
-    "callDisplay": "07026456357",
+    "callNumber": null,
+    "callDisplay": null,
     "email": "hello@theolympusatelier.com",
     "location": "Lagos · London",
     "socials": {
@@ -17,16 +17,16 @@ window.OLYMPUS_CONTENT = {
   "pages": {
     "book": {
       "slug": "book",
-      "title": "Book a session",
+      "title": "Start a Project",
       "content": {
         "header": {
-          "body": "Give us the useful context—audience, deadline, deliverables, and budget range—and we will help define the clearest next step.",
-          "title": "Turn your idea into a workable production plan.",
-          "eyebrow": "Tell us the outcome"
+          "body": "Tell us what you need and we will prepare a personalized brief directly on WhatsApp for instant review and pricing.",
+          "title": "Start a Project",
+          "eyebrow": "Direct Atelier Line"
         }
       },
-      "seo_title": "Plan a Creative Project | Olympus Atelier",
-      "seo_description": "Share your audience, deadline, deliverables, and budget range to start planning a creative production with Olympus Atelier."
+      "seo_title": "Start a Project | Olympus Atelier",
+      "seo_description": "Direct line to Olympus Atelier on WhatsApp for weddings, event cinematography, and post-production."
     },
     "home": {
       "slug": "home",
@@ -187,18 +187,18 @@ window.OLYMPUS_CONTENT = {
       "title": "Contact",
       "content": {
         "header": {
-          "body": "Share the audience, deadline, and outcome. We will respond within one business day with availability, useful questions, and the clearest next step.",
-          "title": "Tell us what success should look like.",
-          "eyebrow": "Start with your brief"
+          "body": "Direct line to our creative lead and production desk. We connect directly on WhatsApp to discuss concept, dates, and delivery.",
+          "title": "Start a Conversation",
+          "eyebrow": "Direct Atelier Line"
         },
         "contact": {
-          "email": "",
-          "phone": "",
-          "location": ""
+          "email": "hello@theolympusatelier.com",
+          "phone": "+234 808 717 2313",
+          "location": "Lagos · London"
         }
       },
-      "seo_title": "Contact Olympus Atelier | Plan Your Project",
-      "seo_description": "Tell Olympus Atelier about your audience, deadline, and desired outcome to start planning your event, campaign, publication, or website."
+      "seo_title": "Contact Olympus Atelier | Direct WhatsApp Briefing",
+      "seo_description": "Direct line to Olympus Atelier on WhatsApp for weddings, event cinematography, and post-production."
     },
     "services": {
       "slug": "services",
