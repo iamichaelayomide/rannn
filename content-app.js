@@ -848,7 +848,15 @@
       return new URLSearchParams(query);
     };
 
-    if (serviceSelect) {
+    const bookingServiceSelect = document.getElementById('booking-service');
+    if (bookingServiceSelect && bookingServiceSelect.options.length <= 1) {
+      bookingServiceSelect.insertAdjacentHTML(
+        'beforeend',
+        serviceChoices.map(service => `<option value="${escapeHtml(service.title)}">${escapeHtml(service.title)}</option>`).join('')
+      );
+    }
+
+    if (serviceSelect && serviceSelect.options.length <= 1) {
       serviceSelect.insertAdjacentHTML(
         'beforeend',
         serviceChoices.map(service => `<option value="${escapeHtml(service.title)}">${escapeHtml(service.title)}</option>`).join('')
@@ -856,15 +864,16 @@
     }
 
     const selectIntent = value => {
-      const intent = ['general', 'project', 'event'].includes(value) ? value : 'general';
+      const intent = ['general', 'project', 'event'].includes(value) ? value : 'project';
       if (intentInput) intentInput.value = intent;
       intentButtons.forEach(button => {
         const active = button.dataset.enquiryIntent === intent;
         button.classList.toggle('active', active);
         button.setAttribute('aria-pressed', String(active));
       });
-      if (projectFields) projectFields.classList.toggle('hidden', intent === 'general');
-      if (intent === 'event' && serviceSelect && !serviceSelect.value) serviceSelect.value = 'Event coverage';
+      if (intent === 'event' && serviceSelect && !serviceSelect.value) {
+        serviceSelect.value = 'Events & Conferences';
+      }
     };
 
     const hydrateContext = () => {
@@ -874,7 +883,7 @@
       const message = params.get('message') || params.get('details');
       const timeline = params.get('timeline') || params.get('date');
 
-      selectIntent(params.get('intent') || (service || budget ? 'project' : intentInput?.value || 'general'));
+      selectIntent(params.get('intent') || (service || budget ? 'project' : intentInput?.value || 'project'));
 
       if (serviceSelect && service) {
         let matchingOption = [...serviceSelect.options].find(option => option.value.toLowerCase() === service.toLowerCase());
@@ -883,6 +892,15 @@
           matchingOption = serviceSelect.options[serviceSelect.options.length - 1];
         }
         serviceSelect.value = matchingOption.value;
+      }
+
+      if (bookingServiceSelect && service) {
+        let matchingOption = [...bookingServiceSelect.options].find(option => option.value.toLowerCase() === service.toLowerCase());
+        if (!matchingOption) {
+          bookingServiceSelect.insertAdjacentHTML('beforeend', `<option value="${escapeHtml(service)}">${escapeHtml(service)}</option>`);
+          matchingOption = bookingServiceSelect.options[bookingServiceSelect.options.length - 1];
+        }
+        bookingServiceSelect.value = matchingOption.value;
       }
 
       const enquiryBudget = document.getElementById('enquiry-budget');
@@ -903,9 +921,6 @@
       const bookingDate = document.getElementById('booking-date');
       if (bookingDate && timeline) bookingDate.value = timeline;
 
-      const preferred = params.get('preferred_channel');
-      const preferredSelect = document.getElementById('enquiry-channel');
-      if (preferredSelect && ['email', 'whatsapp', 'phone'].includes(preferred)) preferredSelect.value = preferred;
       if (sourceCtaInput) sourceCtaInput.value = params.get('source_cta') || '';
     };
 

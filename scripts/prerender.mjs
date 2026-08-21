@@ -455,6 +455,200 @@ ${teamHtml}
     </section>
 `;
 
+// PAGE 5: BOOK NOW Section
+const bookSection = `
+    <!-- PAGE 5: BOOK NOW -->
+    <section id="page-book" class="spa-page">
+      <div class="max-w-4xl mx-auto px-6 py-16 lg:py-24">
+        <div class="text-center mb-12">
+          <div class="inline-flex items-center gap-2 mb-3">
+            <span class="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></span>
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Direct Atelier Line</span>
+          </div>
+          <h2 class="h2-editorial font-extrabold text-white mt-2">Start a Conversation</h2>
+          <p class="text-neutral-400 text-sm md:text-base mt-4 max-w-2xl mx-auto font-light leading-relaxed">Tell us what you need and we will prepare a personalized brief directly on WhatsApp for instant review and pricing.</p>
+        </div>
+        <form id="booking-form" class="glass-card border-gold-gradient p-6 md:p-10 rounded-3xl space-y-6 shadow-2xl">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label for="booking-name" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Full Name <span class="text-amber-400">*</span></label>
+              <input id="booking-name" name="name" type="text" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" required placeholder="Your full name">
+            </div>
+            <div>
+              <label for="booking-phone" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Phone or WhatsApp <span class="text-amber-400">*</span></label>
+              <input id="booking-phone" name="phone" type="tel" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" required placeholder="+234 ...">
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label for="booking-email" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Email Address <span class="text-neutral-600 normal-case">(optional)</span></label>
+              <input id="booking-email" name="email" type="email" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" placeholder="you@example.com">
+            </div>
+            <div>
+              <label for="booking-service" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Service Requested <span class="text-amber-400">*</span></label>
+              <select id="booking-service" name="service" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm focus:border-amber-400" required>
+                <option value="">Choose a service</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div>
+              <label for="booking-date" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Preferred Date <span class="text-neutral-600 normal-case">(optional)</span></label>
+              <input id="booking-date" name="date" type="text" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" placeholder="e.g. November 2026">
+            </div>
+            <div>
+              <label for="booking-budget" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Budget Range <span class="text-neutral-600 normal-case">(optional)</span></label>
+              <input id="booking-budget" name="budget" type="text" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" placeholder="e.g. ₦850,000">
+            </div>
+            <div>
+              <label for="booking-location" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Location / Venue <span class="text-neutral-600 normal-case">(optional)</span></label>
+              <input id="booking-location" name="location" type="text" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" placeholder="City, venue, or remote">
+            </div>
+          </div>
+          <div>
+            <label for="booking-details" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Project Brief &amp; Notes <span class="text-amber-400">*</span></label>
+            <textarea id="booking-details" name="details" rows="5" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" required placeholder="Tell us what you need, key deliverables, event timeline, or specific creative direction."></textarea>
+          </div>
+          <button type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2 text-sm uppercase tracking-wider cursor-pointer">
+            <iconify-icon icon="logos:whatsapp-icon" class="text-xl"></iconify-icon>
+            <span>Send Request via WhatsApp</span>
+          </button>
+          <p id="booking-form-status" class="text-xs text-neutral-400 text-center" role="status"></p>
+          <p class="text-xs text-neutral-400 text-center font-light">Your brief opens directly on WhatsApp with your selections pre-filled for immediate review.</p>
+        </form>
+      </div>
+    </section>
+`;
+
+// PAGE 6: CONTACT Section
+const contactSection = `
+    <!-- PAGE 6: CONTACT -->
+    <section id="page-contact" class="spa-page">
+      
+      <div class="max-w-4xl mx-auto px-6 py-16 lg:py-24">
+        
+        <div class="text-center mb-12">
+          <div class="inline-flex items-center gap-2 mb-3">
+            <span class="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></span>
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Direct Atelier Line</span>
+          </div>
+          <h2 class="h2-editorial font-extrabold uppercase text-white mt-2">Get in Touch</h2>
+          <p class="text-neutral-400 text-sm md:text-base mt-3 max-w-xl mx-auto font-light leading-relaxed">Direct line to our creative lead and production desk. We connect directly on WhatsApp to discuss concept, dates, and delivery.</p>
+        </div>
+
+        <div id="managed-contact-details" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl mx-auto mb-8" aria-label="Atelier contact details"></div>
+
+        <div class="glass-card border-gold-gradient p-6 md:p-10 rounded-3xl max-w-3xl mx-auto shadow-2xl">
+          <div class="text-center mb-8">
+            <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400">Direct WhatsApp Briefing</span>
+            <h3 class="text-2xl md:text-3xl font-bold uppercase text-white mt-2 font-display">Brief Olympus Atelier</h3>
+            <p class="text-sm text-neutral-400 mt-2">Choose your project type below. Your details will be prefilled directly into WhatsApp.</p>
+          </div>
+          
+          <form id="unified-enquiry-form" class="space-y-6" novalidate>
+            <input type="hidden" name="intent" id="enquiry-intent" value="project">
+            <input type="hidden" name="turnstile_token" id="turnstile-token">
+            <input type="hidden" name="source_cta" id="enquiry-source-cta">
+            <input type="hidden" name="idempotency_key" id="enquiry-idempotency-key">
+            <input type="text" name="website" class="enquiry-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <div class="enquiry-intent-grid" role="radiogroup" aria-label="Enquiry type">
+              <button type="button" class="enquiry-intent active" data-enquiry-intent="project" aria-pressed="true">
+                <iconify-icon icon="solar:clipboard-list-linear"></iconify-icon>
+                <span>Start a Project</span>
+              </button>
+              <button type="button" class="enquiry-intent" data-enquiry-intent="event" aria-pressed="false">
+                <iconify-icon icon="solar:calendar-linear"></iconify-icon>
+                <span>Wedding / Event</span>
+              </button>
+              <button type="button" class="enquiry-intent" data-enquiry-intent="general" aria-pressed="false">
+                <iconify-icon icon="solar:chat-round-dots-linear"></iconify-icon>
+                <span>General Enquiry</span>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label for="enquiry-name" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Full name <span class="text-amber-400">*</span></label>
+                <input id="enquiry-name" name="name" type="text" maxlength="120" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" placeholder="Your full name" required>
+              </div>
+              <div>
+                <label for="enquiry-phone" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Phone or WhatsApp <span class="text-amber-400">*</span></label>
+                <input id="enquiry-phone" name="phone" type="tel" maxlength="40" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" placeholder="+234 ..." required>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label for="enquiry-email" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Email address <span class="text-neutral-600 normal-case">(optional)</span></label>
+                <input id="enquiry-email" name="email" type="email" maxlength="254" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" placeholder="you@example.com">
+              </div>
+              <div>
+                <label for="enquiry-service" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Service requested <span class="text-amber-400">*</span></label>
+                <select id="enquiry-service" name="service" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm focus:border-amber-400">
+                  <option value="">Choose a service</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="enquiry-project-fields" class="space-y-5">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label for="enquiry-timeline" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Preferred date or timeline <span class="text-neutral-600 normal-case">(optional)</span></label>
+                  <input id="enquiry-timeline" name="timeline" type="text" maxlength="120" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" placeholder="e.g. November 2026 or flexible">
+                </div>
+                <div>
+                  <label for="enquiry-budget" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Budget range <span class="text-neutral-600 normal-case">(optional)</span></label>
+                  <input id="enquiry-budget" name="budget" type="text" maxlength="120" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" placeholder="e.g. ₦850,000">
+                </div>
+              </div>
+              <div>
+                <label for="enquiry-location" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Location or venue <span class="text-neutral-600 normal-case">(optional)</span></label>
+                <input id="enquiry-location" name="location" type="text" maxlength="240" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" placeholder="City, venue, or remote">
+              </div>
+            </div>
+
+            <div>
+              <label for="enquiry-message" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Project brief &amp; details <span class="text-amber-400">*</span></label>
+              <textarea id="enquiry-message" name="message" rows="5" minlength="5" maxlength="5000" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" placeholder="Tell us what you need, key deliverables, event timeline, or specific creative direction." required></textarea>
+            </div>
+
+            <div id="turnstile-container" class="flex justify-center"></div>
+            <div id="enquiry-form-error" class="enquiry-form-error hidden text-red-400 text-xs font-mono text-center" role="alert"></div>
+            
+            <button id="enquiry-submit" type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2 text-sm uppercase tracking-wider cursor-pointer">
+              <span>Send Request via WhatsApp</span>
+              <iconify-icon icon="logos:whatsapp-icon" class="text-xl"></iconify-icon>
+            </button>
+            <p class="text-xs text-neutral-400 text-center font-light">Your brief opens directly in WhatsApp with all selected details pre-filled for immediate response.</p>
+          </form>
+
+          <section id="enquiry-success" class="enquiry-success hidden text-center py-8 space-y-4" aria-live="polite" tabindex="-1">
+            <div class="w-16 h-16 rounded-full bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 mx-auto text-3xl">
+              <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+            </div>
+            <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400">Brief Prepared</span>
+            <h3 class="text-2xl md:text-3xl font-bold text-white font-display">Opening WhatsApp…</h3>
+            <p class="text-neutral-400 text-sm max-w-md mx-auto leading-relaxed">Your message has been compiled with all project details. If WhatsApp did not open automatically, click the button below to continue directly with the atelier.</p>
+            <span id="enquiry-ticket-number" class="hidden"></span>
+            <span id="enquiry-email-status" class="hidden"></span>
+            <div class="pt-4 flex flex-wrap justify-center gap-4">
+              <a id="enquiry-whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-gold-gradient text-neutral-950 font-bold px-8 py-3.5 rounded-full hover:scale-105 transition-transform text-xs uppercase tracking-wider">
+                <iconify-icon icon="logos:whatsapp-icon" class="text-lg"></iconify-icon>
+                <span>Continue on WhatsApp</span>
+              </a>
+              <button id="enquiry-start-again" type="button" class="inline-flex items-center gap-2 border border-white/20 text-white hover:border-amber-400 hover:text-amber-400 font-bold px-6 py-3.5 rounded-full text-xs uppercase tracking-wider transition-colors cursor-pointer">
+                <span>Start New Enquiry</span>
+              </button>
+            </div>
+          </section>
+        </div>
+
+      </div>
+
+    </section>
+`;
+
 // Replace PAGE 2 in baseHtml
 html = html.replace(/<!-- PAGE 2: SERVICES -->[\s\S]*?<\/section>/, servicesSection.trim());
 
@@ -464,15 +658,12 @@ html = html.replace(/<!-- PAGE 3: PORTFOLIO -->[\s\S]*?<\/section>/, portfolioSe
 // Replace PAGE 4 in baseHtml
 html = html.replace(/<!-- PAGE 4: ABOUT -->[\s\S]*?<\/section>/, aboutSection.trim());
 
-// Update WhatsApp Enquiry Button in Contact Form
-html = html.replace(
-  /<button id="enquiry-submit"[^>]*>[\s\S]*?<\/button>\s*<p class="text-xs text-neutral-500 text-center">[\s\S]*?<\/p>/,
-  `<button id="enquiry-submit" type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] transition-transform duration-300 shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
-              <span>Send Request via WhatsApp</span>
-              <iconify-icon icon="logos:whatsapp-icon" class="text-xl"></iconify-icon>
-            </button>
-            <p class="text-xs text-neutral-400 text-center">Your details will be pre-filled automatically on WhatsApp for instant messaging.</p>`
-);
+// Replace PAGE 5 in baseHtml
+html = html.replace(/<!-- PAGE 5: BOOK NOW -->[\s\S]*?<\/section>/, bookSection.trim());
+
+// Replace PAGE 6 in baseHtml
+html = html.replace(/<!-- PAGE 6: CONTACT[^>]*-->[\s\S]*?<\/section>/, contactSection.trim());
+
 
 // Update Footer
 html = html.replace(
