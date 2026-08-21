@@ -22,7 +22,7 @@
   ];
   const serviceChoices = [...new Map([
     { id: 'videography-editing', title: 'Videography/Video Editing' },
-    { id: 'video-editing', title: 'Video Editing Alone' },
+    { id: 'video-editing', title: 'Video Editing' },
     { id: 'photography', title: 'Photography' },
     ...(content.services || []).filter(service => service.id !== 'photo-film')
   ].map(service => [service.title.toLowerCase(), service])).values()];
@@ -593,7 +593,7 @@
     const filterList = content.filters || [
       { id: 'all', label: 'All Work' },
       { id: 'wedding', label: 'Weddings' },
-      { id: 'editing-alone', label: 'Video Editing Alone' },
+      { id: 'editing-alone', label: 'Video Editing' },
       { id: 'film', label: 'Film & Photography' },
       { id: 'events', label: 'Events & Conferences' },
       { id: 'graphics', label: 'Graphics & Branding' },

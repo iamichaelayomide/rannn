@@ -73,8 +73,8 @@ window.OLYMPUS_CONTENT = {
             "question": "What should I include in my first enquiry?"
           },
           {
-            "answer": "Yes. We offer dedicated Video Editing Alone where you provide raw media from your cameras or phones, and we shape pacing, DaVinci Resolve color grading, audio design, and export broadcast-ready files.",
-            "question": "Can I hire Olympus for video editing alone?"
+            "answer": "Yes. We offer dedicated Video Editing services where you provide raw media from your cameras or phones, and we shape pacing, DaVinci Resolve color grading, audio design, and export broadcast-ready files.",
+            "question": "Can I hire Olympus for video editing?"
           },
           {
             "answer": "Yes. We travel across Nigeria, the UK, and internationally for destination weddings, summits, and client productions. Travel and logistics are transparently scoped into the quote.",
@@ -257,7 +257,7 @@ window.OLYMPUS_CONTENT = {
     },
     {
       "id": "editing-alone",
-      "title": "Video Editing Alone",
+      "title": "Video Editing",
       "summary": "Bring your existing footage. Olympus shapes the pacing, color grading, audio design, and platform-ready final exports.",
       "description": "High-end post-production for creators, brands, and agencies with raw media seeking professional editorial direction.",
       "portfolioCategory": "editing-alone",
@@ -531,7 +531,7 @@ window.OLYMPUS_CONTENT = {
       "title": "Post-Production Cut — IMG 1072",
       "description": "Cinematic pacing, color grading, and audio design for commercial production.",
       "category": "editing-alone",
-      "collection": "Video Editing Alone",
+      "collection": "Video Editing",
       "year": "2025",
       "mediaType": "video",
       "thumbnailSrc": "assets/portfolio/1HvMxfpX5YIa2YRW4NFr2i069FcldvfUL.webp",
@@ -545,7 +545,7 @@ window.OLYMPUS_CONTENT = {
       "title": "Commercial Cut — IMG 3968",
       "description": "High-impact visual cut, rhythm matching, and brand color grading.",
       "category": "editing-alone",
-      "collection": "Video Editing Alone",
+      "collection": "Video Editing",
       "year": "2025",
       "mediaType": "video",
       "thumbnailSrc": "assets/portfolio/1ASkxeGMdRTH9KmI8uDXWrH_13GwYykZh.webp",
@@ -559,7 +559,7 @@ window.OLYMPUS_CONTENT = {
       "title": "Editorial Story Edit — IMG 4065",
       "description": "Documentary style narrative assembly, audio balancing, and finishing.",
       "category": "editing-alone",
-      "collection": "Video Editing Alone",
+      "collection": "Video Editing",
       "year": "2025",
       "mediaType": "video",
       "thumbnailSrc": "assets/portfolio/1J04gH2wPUZnG67mEZgfaJBVUCxIcWOsR.webp",
@@ -573,7 +573,7 @@ window.OLYMPUS_CONTENT = {
       "title": "Campaign Edit — Kida 2",
       "description": "Dynamic pacing, transitions, and audio sync for campaign launch.",
       "category": "editing-alone",
-      "collection": "Video Editing Alone",
+      "collection": "Video Editing",
       "year": "2025",
       "mediaType": "video",
       "thumbnailSrc": "assets/portfolio/10tIPdMuMU_6JxN2_X2m4n00KK3SMp91q.webp",
@@ -587,7 +587,7 @@ window.OLYMPUS_CONTENT = {
       "title": "Brand Film Edit — Kida Metroprime New",
       "description": "High-end brand film post-production, sound engineering, and colour delivery.",
       "category": "editing-alone",
-      "collection": "Video Editing Alone",
+      "collection": "Video Editing",
       "year": "2025",
       "mediaType": "video",
       "thumbnailSrc": "assets/portfolio/1ZTb4jeJnK9YTu3t_ZXXAi2f3i9t-u9ly.webp",
@@ -598,16 +598,16 @@ window.OLYMPUS_CONTENT = {
     },
     {
       "id": "1j_D4ePzhUsHBXyORwNFJoTbMrjSFgvCU",
-      "title": "Video Editing Alone (Full Production Folder)",
+      "title": "Video Editing (Full Production Folder)",
       "description": "Complete post-production folder with raw cuts, finished grades, and platform exports.",
       "category": "editing-alone",
-      "collection": "Video Editing Alone",
+      "collection": "Video Editing",
       "year": "2025",
       "mediaType": "video",
       "thumbnailSrc": "assets/portfolio/1ZTb4jeJnK9YTu3t_ZXXAi2f3i9t-u9ly.webp",
       "previewSrc": "assets/portfolio/1ZTb4jeJnK9YTu3t_ZXXAi2f3i9t-u9ly.webp",
       "originalUrl": "https://drive.google.com/drive/folders/1j_D4ePzhUsHBXyORwNFJoTbMrjSFgvCU",
-      "alt": "Video Editing Alone Collection by Olympus Atelier",
+      "alt": "Video Editing Collection by Olympus Atelier",
       "featured": true
     },
     {
