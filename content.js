@@ -512,20 +512,6 @@ window.OLYMPUS_CONTENT = {
       "featured": true
     },
     {
-      "id": "1P2XpuunkXAX9k4Jttgv4ESqAqVAmDKIX",
-      "title": "TheGoodWill '26 Wedding Collection (Full Folder)",
-      "description": "Complete wedding film gallery, ceremony reels, and couple sessions in 4K.",
-      "category": "wedding",
-      "collection": "Weddings",
-      "year": "2026",
-      "mediaType": "video",
-      "thumbnailSrc": "assets/portfolio/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG.webp",
-      "previewSrc": "assets/portfolio/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG.webp",
-      "originalUrl": "https://drive.google.com/drive/folders/1P2XpuunkXAX9k4Jttgv4ESqAqVAmDKIX",
-      "alt": "TheGoodWill '26 Wedding Collection by Olympus Atelier",
-      "featured": true
-    },
-    {
       "id": "1V3iS3FUXxQBentD7IZ7gfZhLEvienxAU",
       "title": "Weddings Collection Archive (Full Folder)",
       "description": "Complete archive of wedding films, ceremony moments, and reception reels.",
