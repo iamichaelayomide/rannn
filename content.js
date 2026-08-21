@@ -350,7 +350,7 @@ window.OLYMPUS_CONTENT = {
   "weddingPackages": [
     {
       "name": "Silver",
-      "price": "₦250,000",
+      "price": "₦300,000",
       "features": [
         "Full-day wedding videography coverage",
         "One videographer",
@@ -359,7 +359,7 @@ window.OLYMPUS_CONTENT = {
     },
     {
       "name": "Gold",
-      "price": "₦400,000",
+      "price": "₦500,000",
       "features": [
         "Full-day wedding videography coverage",
         "Two videographers",
@@ -370,7 +370,7 @@ window.OLYMPUS_CONTENT = {
     },
     {
       "name": "Platinum",
-      "price": "₦800,000",
+      "price": "₦1,000,000",
       "features": [
         "Full-day wedding videography coverage",
         "Two videographers",
