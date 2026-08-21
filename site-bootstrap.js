@@ -28,7 +28,7 @@ const mergePublishedContent = (published) => {
     : fallback.teamMembers;
   const teamMembers = managedTeam.filter((member) => {
     const name = (member.name || "").toLowerCase();
-    return !name.includes("kojo") && !name.includes("akinola") && !name.includes("coming soon");
+    return !name.includes("akinola") && !name.includes("coming soon");
   }).map((member) => {
     if (!/^john\b/i.test(member.name || "")) return member;
     return {

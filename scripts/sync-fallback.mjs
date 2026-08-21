@@ -21,7 +21,7 @@ async function syncFallback() {
 
   let teamMembers = (globalContent.team || []).filter((member) => {
     const name = (member.name || "").toLowerCase();
-    return !name.includes("kojo") && !name.includes("akinola") && !name.includes("coming soon");
+    return !name.includes("akinola") && !name.includes("coming soon");
   });
 
   const portfolioItems = (supabaseData.portfolioItems || []).map((item) => ({
