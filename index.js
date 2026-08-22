@@ -3,12 +3,16 @@ const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 // lenis smooth scroll instance (disabled on touch devices to avoid rubber-banding and scroll fight issues)
 let lenis = null;
-if (!isTouchDevice) {
+if (!isTouchDevice && typeof Lenis !== 'undefined') {
   lenis = new Lenis({
     duration: prefersReducedMotion ? 0 : 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: !prefersReducedMotion
   });
+
+  if (typeof ScrollTrigger !== 'undefined') {
+    lenis.on('scroll', ScrollTrigger.update);
+  }
 
   const raf = (time) => {
     if (lenis) lenis.raf(time);
@@ -78,40 +82,51 @@ const animateBackdrop = () => {
   }
 };
 
-// Word-by-word reveal for mission statement (Image 1 style)
+// Word-by-word reveal for mission statement
 const initWordReveal = () => {
   const ids = ['word-reveal-paragraph', 'manifesto-word-reveal'];
   ids.forEach(id => {
     const paragraph = document.getElementById(id);
     if (!paragraph) return;
 
-    const words = paragraph.textContent.trim().split(/\s+/);
-    paragraph.innerHTML = words.map(word => `<span class="word-reveal-span">${word}</span>`).join(' ');
+    const rawText = paragraph.innerText || paragraph.textContent;
+    const words = rawText.trim().split(/\s+/);
+    if (!words.length || (words.length === 1 && words[0] === '')) return;
 
+    paragraph.innerHTML = words.map(word => `<span class="word-reveal-span">${word}</span>`).join(' ');
     const spans = paragraph.querySelectorAll('.word-reveal-span');
 
-    gsap.registerPlugin(ScrollTrigger);
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
 
-    const isMobileReveal = window.matchMedia('(max-width: 639px)').matches;
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: paragraph,
-        start: isMobileReveal ? 'top 94%' : 'top 85%',
-        end: isMobileReveal ? 'top 58%' : 'bottom 40%',
-        scrub: isMobileReveal ? 0.12 : 0.4,
-        invalidateOnRefresh: true
-      }
-    }).to(spans, {
-      opacity: 1,
-      y: 0,
-      stagger: isMobileReveal ? 0.025 : 0.04,
-      ease: 'power1.out',
-      className: 'word-reveal-span revealed'
-    });
+      ScrollTrigger.getAll().forEach(st => {
+        if (st.trigger === paragraph) st.kill();
+      });
 
-    ScrollTrigger.refresh();
+      const isMobileReveal = window.matchMedia('(max-width: 639px)').matches;
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: paragraph,
+          start: isMobileReveal ? 'top 94%' : 'top 85%',
+          end: isMobileReveal ? 'top 58%' : 'bottom 40%',
+          scrub: isMobileReveal ? 0.12 : 0.4,
+          invalidateOnRefresh: true
+        }
+      }).to(spans, {
+        opacity: 1,
+        y: 0,
+        stagger: isMobileReveal ? 0.025 : 0.04,
+        ease: 'power1.out',
+        className: 'word-reveal-span revealed'
+      });
+    }
   });
+
+  if (typeof ScrollTrigger !== 'undefined') {
+    ScrollTrigger.refresh();
+  }
 };
+window.initWordReveal = initWordReveal;
 
 // London Ticker Clock (GMT) (Image 7 style)
 const initLondonClock = () => {
@@ -1074,7 +1089,18 @@ const initSPARouter = () => {
     pages.forEach(p => {
       if (p.id === `page-${pageId}`) {
         p.classList.add('active');
-        gsap.fromTo(p, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', onComplete: () => { gsap.set(p, { clearProps: 'transform' }); } });
+        gsap.fromTo(p, { opacity: 0, y: 15 }, {
+          opacity: 1,
+          y: 0,
+          duration: 0.45,
+          ease: 'power2.out',
+          onComplete: () => {
+            gsap.set(p, { clearProps: 'transform' });
+            window.observeScrollReveals?.();
+            window.initWordReveal?.();
+            if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+          }
+        });
       } else {
         p.classList.remove('active');
       }
@@ -1196,20 +1222,23 @@ const initBookingPaths = () => {
 
 // GSAP & Emil Design Engineering lightweight scroll reveals
 const initScrollRevealClasses = () => {
-  const elements = document.querySelectorAll('.gsap-reveal');
-  elements.forEach(el => {
-    gsap.to(el, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 88%',
-        toggleActions: 'play none none none'
-      }
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    const elements = document.querySelectorAll('.gsap-reveal:not(.gsap-init)');
+    elements.forEach(el => {
+      el.classList.add('gsap-init');
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 90%',
+          toggleActions: 'play none none none'
+        }
+      });
     });
-  });
+  }
 
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries, obs) => {
@@ -1220,12 +1249,23 @@ const initScrollRevealClasses = () => {
         }
       });
     }, {
-      threshold: 0.08,
-      rootMargin: '0px 0px -40px 0px'
+      threshold: 0.05,
+      rootMargin: '0px 0px 50px 0px'
     });
 
     const observeReveals = () => {
-      document.querySelectorAll('.reveal-on-scroll:not(.is-revealed)').forEach(el => observer.observe(el));
+      const unrevealed = document.querySelectorAll('.reveal-on-scroll:not(.is-revealed)');
+      unrevealed.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          el.classList.add('is-revealed');
+        } else {
+          observer.observe(el);
+        }
+      });
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
+      }
     };
 
     observeReveals();
@@ -1234,6 +1274,7 @@ const initScrollRevealClasses = () => {
     document.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-revealed'));
   }
 };
+window.initScrollRevealClasses = initScrollRevealClasses;
 
 // Hero Title Liquid Warp coordinates tracking
 const initHeroLiquidWarp = () => {

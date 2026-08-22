@@ -244,7 +244,7 @@
     const grid = document.getElementById('team-grid');
     if (!grid) return;
     grid.innerHTML = (content.teamMembers || []).map((member, index) => `
-      <article class="team-card glass-card rounded-3xl overflow-hidden border border-white/10">
+      <article class="team-card glass-card rounded-3xl overflow-hidden border border-white/10 reveal-on-scroll stagger-${(index % 3) + 1}">
         <div class="aspect-[4/5] overflow-hidden bg-neutral-900">
           <img src="${escapeHtml(member.image)}" alt="${escapeHtml(member.name)} — ${escapeHtml(member.role)} at Olympus Atelier" class="w-full h-full object-cover" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/team/photographer.webp'">
         </div>
@@ -265,10 +265,16 @@
     if (heroBody && homeContent.hero?.body) heroBody.textContent = homeContent.hero.body;
 
     const vision = document.getElementById('word-reveal-paragraph');
-    if (vision && homeContent.vision?.body) vision.textContent = homeContent.vision.body;
+    if (vision && homeContent.vision?.body) {
+      vision.textContent = homeContent.vision.body;
+      window.initWordReveal?.();
+    }
 
     const manifesto = document.getElementById('manifesto-word-reveal');
-    if (manifesto && homeContent.manifesto?.body) manifesto.textContent = homeContent.manifesto.body;
+    if (manifesto && homeContent.manifesto?.body) {
+      manifesto.textContent = homeContent.manifesto.body;
+      window.initWordReveal?.();
+    }
 
     const capabilityIndexes = [0, 1, 2, 3];
     document.querySelectorAll('.capabilities-card').forEach((card, cardIndex) => {
@@ -1218,6 +1224,12 @@
     hydrateFooter();
     hydrateMetadata();
     window.addEventListener('hashchange', hydrateMetadata);
+
+    window.initWordReveal?.();
+    window.observeScrollReveals?.();
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.refresh();
+    }
   };
 
   window.initOlympusContentApp = initializeManagedContent;
