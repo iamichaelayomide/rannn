@@ -127,6 +127,8 @@
       previousFocus = document.activeElement;
       modal.classList.remove('hidden');
       modal.scrollTop = 0;
+      const panel = modal.querySelector('.wedding-packages-panel');
+      if (panel) panel.scrollTop = 0;
       document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
       modal.querySelector('.wedding-packages-close')?.focus();
