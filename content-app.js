@@ -120,15 +120,23 @@
     const close = () => {
       modal.classList.add('hidden');
       document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
       previousFocus?.focus?.();
     };
     const open = () => {
       previousFocus = document.activeElement;
       modal.classList.remove('hidden');
+      modal.scrollTop = 0;
       document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
       modal.querySelector('.wedding-packages-close')?.focus();
     };
     modal.querySelectorAll('[data-wedding-close]').forEach(button => button.addEventListener('click', close));
+    modal.addEventListener('click', event => {
+      if (event.target === modal || event.target.hasAttribute('data-wedding-close')) {
+        close();
+      }
+    });
     modal.addEventListener('keydown', event => {
       if (event.key === 'Escape') close();
       if (event.key !== 'Tab') return;
