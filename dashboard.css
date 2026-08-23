@@ -372,7 +372,7 @@ dialog::backdrop { background: #000c; backdrop-filter: blur(5px); }
 .live-total strong { color: var(--text); font-size: 22px; }
 .invoice-sheet { padding: clamp(24px, 5vw, 64px); border: 1px solid #dedede; border-radius: 24px; background: #fff; color: #0a0a0a; }
 .invoice-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 50px; }
-.invoice-brand img { width: 58px; height: 32px; filter: grayscale(1) brightness(0); object-fit: contain; }
+.invoice-brand img { width: auto; height: 36px; max-width: 140px; object-fit: contain; }
 .invoice-brand strong, .invoice-brand small { display: block; }
 .invoice-brand small { margin-top: 4px; color: #6d6b63; }
 .invoice-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px; }

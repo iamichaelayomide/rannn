@@ -468,7 +468,9 @@
 
       const isMp4 = item.mediaType === 'video' && item.previewSrc && item.previewSrc.endsWith('.mp4');
       const isPdf = item.mediaType === 'pdf' && item.previewSrc && item.previewSrc.endsWith('.pdf');
-      const driveFileId = item.originalUrl ? (item.originalUrl.match(/\/file\/d\/([^/]+)/)?.[1] || item.originalUrl.match(/id=([^&]+)/)?.[1]) : null;
+      const driveFileId = item.originalUrl
+        ? (item.originalUrl.match(/\/file\/d\/([^/]+)/)?.[1] || item.originalUrl.match(/id=([^&]+)/)?.[1])
+        : (item.id && !item.id.includes('.') && item.id.length > 20 ? item.id : null);
       const driveFolderId = item.originalUrl ? item.originalUrl.match(/\/folders\/([^/?]+)/)?.[1] : null;
 
       if (isMp4) {
@@ -558,11 +560,16 @@
       }
     });
 
-    document.getElementById('card-center')?.addEventListener('click', event => {
+    const handleSliderCardClick = event => {
       if (event.target.closest('a,button')) return;
-      const project = typeof sliderProjects !== 'undefined' ? sliderProjects[currentSliderIndex] : null;
+      const project = window.sliderProjects?.[window.currentSliderIndex || 0]
+        || (typeof sliderProjects !== 'undefined' ? sliderProjects[currentSliderIndex] : null)
+        || portfolioItems.find(p => p.featured)
+        || portfolioItems[0];
       if (project?.id) window.openOlympusPortfolioItem(project.id);
-    });
+    };
+
+    document.getElementById('card-center')?.addEventListener('click', handleSliderCardClick);
   };
 
   const renderPortfolio = () => {

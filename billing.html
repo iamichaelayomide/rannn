@@ -111,59 +111,75 @@
       box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
     }
 
-    /* White Paper Document (Receipt Mode) */
-    #invoice-sheet.sheet-receipt-white {
+    /* White Paper Document (All Billing Modes: Invoices, Receipts, Debit Notes, Credit Notes) */
+    #invoice-sheet {
       background: #ffffff !important;
       color: #0f172a !important;
       border: 1px solid #e2e8f0 !important;
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
     }
 
-    #invoice-sheet.sheet-receipt-white h2,
-    #invoice-sheet.sheet-receipt-white h3,
-    #invoice-sheet.sheet-receipt-white h4,
-    #invoice-sheet.sheet-receipt-white strong,
-    #invoice-sheet.sheet-receipt-white .text-white {
+    #invoice-sheet h2,
+    #invoice-sheet h3,
+    #invoice-sheet h4,
+    #invoice-sheet strong,
+    #invoice-sheet .text-white {
       color: #09090b !important;
     }
 
-    #invoice-sheet.sheet-receipt-white .text-neutral-200,
-    #invoice-sheet.sheet-receipt-white .text-neutral-300 {
-      color: #27272a !important;
+    #invoice-sheet .text-neutral-200,
+    #invoice-sheet .text-neutral-300 {
+      color: #1e293b !important;
     }
 
-    #invoice-sheet.sheet-receipt-white .text-neutral-400 {
-      color: #52525b !important;
+    #invoice-sheet .text-neutral-400 {
+      color: #475569 !important;
     }
 
-    #invoice-sheet.sheet-receipt-white .text-neutral-500 {
-      color: #71717a !important;
+    #invoice-sheet .text-neutral-500 {
+      color: #64748b !important;
     }
 
-    #invoice-sheet.sheet-receipt-white .text-amber-400,
-    #invoice-sheet.sheet-receipt-white .text-amber-300 {
+    #invoice-sheet .text-amber-400,
+    #invoice-sheet .text-amber-300 {
       color: #b45309 !important;
       font-weight: 700 !important;
     }
 
-    #invoice-sheet.sheet-receipt-white .border-white\/10,
-    #invoice-sheet.sheet-receipt-white .border-white\/5,
-    #invoice-sheet.sheet-receipt-white .divide-white\/5 > * {
-      border-color: #e4e4e7 !important;
+    #invoice-sheet .border-white\/10,
+    #invoice-sheet .border-white\/5,
+    #invoice-sheet .divide-white\/5 > * {
+      border-color: #e2e8f0 !important;
     }
 
-    #invoice-sheet.sheet-receipt-white .bg-white\/5 {
+    #invoice-sheet .bg-white\/5 {
       background: #f8fafc !important;
       border-color: #e2e8f0 !important;
     }
 
-    #invoice-sheet.sheet-receipt-white #preview-badge-status {
+    #invoice-sheet tr:hover {
+      background-color: #f8fafc !important;
+    }
+
+    #invoice-sheet #preview-badge-status {
+      background: #fffbeb !important;
+      border: 1px solid #f59e0b !important;
+      color: #b45309 !important;
+    }
+
+    #invoice-sheet #preview-badge-status.badge-paid {
       background: #ecfdf5 !important;
       border: 1px solid #10b981 !important;
       color: #047857 !important;
     }
 
-    #invoice-sheet.sheet-receipt-white .text-emerald-400 {
+    #invoice-sheet #preview-badge-status.badge-overdue {
+      background: #fef2f2 !important;
+      border: 1px solid #ef4444 !important;
+      color: #b91c1c !important;
+    }
+
+    #invoice-sheet .text-emerald-400 {
       color: #059669 !important;
     }
 
@@ -202,7 +218,7 @@
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
       <div class="flex items-center gap-4">
         <a href="/" class="flex items-center gap-3 text-white hover:opacity-80 transition-opacity">
-          <img src="assets/olympus-logo.svg" alt="Olympus Atelier" class="w-8 h-8">
+          <img src="assets/olympus-logo.svg" alt="Olympus Atelier" class="h-8 w-auto object-contain">
           <span class="font-serif font-bold tracking-[0.18em] text-sm uppercase">Olympus Atelier</span>
         </a>
         <span class="text-neutral-600 text-sm">/</span>
@@ -501,36 +517,35 @@
           <span class="text-[11px] font-mono text-neutral-500">Official A4 Vector Output</span>
         </div>
 
-        <div id="invoice-sheet" class="glass-card-gold rounded-3xl p-6 sm:p-10 shadow-2xl text-neutral-200 border border-amber-500/25 bg-neutral-950 relative overflow-hidden">
+        <div id="invoice-sheet" class="rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
           
           <!-- Document Background Watermark -->
-          <div class="absolute -right-12 -top-12 opacity-[0.03] pointer-events-none select-none">
-            <img src="assets/olympus-logo.svg" alt="" class="w-96 h-96">
+          <div class="absolute -right-12 -top-12 opacity-[0.035] pointer-events-none select-none">
+            <img src="assets/olympus-logo.svg" alt="" class="w-96 h-auto">
           </div>
 
           <!-- Document Header -->
-          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-6 border-b border-white/10 pb-8 relative z-10">
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-6 border-b border-slate-200 pb-8 relative z-10">
             <div>
-              <div class="flex items-center gap-3">
-                <img src="assets/olympus-logo.svg" alt="Olympus Atelier" class="w-10 h-10">
-                <div>
-                  <h3 class="font-serif text-lg sm:text-xl font-extrabold uppercase tracking-[0.16em] text-white">Olympus Atelier</h3>
-                  <p class="text-[10px] font-mono uppercase tracking-widest text-amber-400">Film · Photography · Brand Systems</p>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                <img src="assets/olympus-logo.svg" alt="Olympus Atelier" class="h-10 sm:h-12 w-auto object-contain max-w-[200px]">
+                <div class="sm:border-l sm:border-slate-200 sm:pl-4">
+                  <p class="text-[10px] font-mono uppercase tracking-widest text-amber-700 font-bold">Film · Photography · Brand Systems</p>
+                  <p class="text-[11px] text-slate-500 font-medium">Lagos, Nigeria · Global Commissions</p>
                 </div>
               </div>
-              <div class="text-[11px] text-neutral-400 mt-4 space-y-0.5">
-                <p>Lagos, Nigeria · Global Commissions</p>
+              <div class="text-[11px] text-slate-500 mt-4 space-y-0.5">
                 <p>hello@theolympusatelier.com · +234 808 717 2313</p>
-                <p class="font-mono text-[10px] text-neutral-500">Registered Enterprise · RC 7445892</p>
+                <p class="font-mono text-[10px] text-slate-400">Registered Enterprise · RC 7445892</p>
               </div>
             </div>
 
             <div class="sm:text-right">
-              <span id="preview-badge-status" class="inline-block font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 mb-3">
+              <span id="preview-badge-status" class="inline-block font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
                 PENDING PAYMENT
               </span>
-              <h2 id="preview-doc-title" class="text-3xl font-extrabold text-white font-display tracking-tight">INVOICE</h2>
-              <p id="preview-doc-number" class="text-sm font-mono text-amber-400 font-semibold mt-1">OLY-INV-001</p>
+              <h2 id="preview-doc-title" class="text-3xl font-extrabold font-display tracking-tight text-slate-900">INVOICE</h2>
+              <p id="preview-doc-number" class="text-sm font-mono text-amber-700 font-semibold mt-1">OLY-INV-001</p>
             </div>
           </div>
 
@@ -825,14 +840,8 @@
         document.getElementById('preview-payment-method-row').classList.toggle('hidden', !isReceipt);
         document.getElementById('preview-reason-box').classList.toggle('hidden', !isNote);
 
-        const sheet = document.getElementById('invoice-sheet');
-        if (sheet) {
-          sheet.classList.toggle('sheet-receipt-white', isReceipt);
-        }
-
         if (isReceipt) {
           document.getElementById('doc-status').value = 'PAID IN FULL';
-          document.getElementById('preview-badge-status').textContent = 'PAYMENT RECEIVED';
           document.getElementById('preview-total-label').textContent = 'Total Amount Received';
         } else {
           document.getElementById('preview-total-label').textContent = 'Total Amount';
@@ -869,8 +878,23 @@
         // Meta headers
         document.getElementById('preview-doc-number').textContent = docNumber;
         document.getElementById('preview-doc-number-meta').textContent = docNumber;
-        if (currentDocType !== 'receipt') {
-          document.getElementById('preview-badge-status').textContent = status;
+        
+        const badge = document.getElementById('preview-badge-status');
+        if (currentDocType === 'receipt' || status === 'PAID IN FULL' || status === 'PAID') {
+          badge.textContent = 'PAYMENT RECEIVED';
+          badge.className = 'inline-block font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full badge-paid mb-3';
+        } else if (status === 'OVERDUE') {
+          badge.textContent = 'OVERDUE';
+          badge.className = 'inline-block font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full badge-overdue mb-3';
+        } else if (currentDocType === 'debit') {
+          badge.textContent = status === 'PENDING PAYMENT' ? 'DEBIT ADJUSTMENT' : status;
+          badge.className = 'inline-block font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3';
+        } else if (currentDocType === 'credit') {
+          badge.textContent = status === 'PENDING PAYMENT' ? 'CREDIT ADJUSTMENT' : status;
+          badge.className = 'inline-block font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3';
+        } else {
+          badge.textContent = status || 'PENDING PAYMENT';
+          badge.className = 'inline-block font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3';
         }
         document.getElementById('preview-doc-currency').textContent = `${currency} (${currencySymbols[currency] || ''})`;
         document.getElementById('preview-doc-date').textContent = date ? new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
@@ -1175,12 +1199,11 @@
 
         try {
           const element = document.getElementById('invoice-sheet');
-          const isWhite = element.classList.contains('sheet-receipt-white');
           const opt = {
             margin: [8, 8, 8, 8],
             filename: filename,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: isWhite ? '#ffffff' : '#050505' },
+            html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: '#ffffff' },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
           };
           await html2pdf().set(opt).from(element).save();
@@ -1198,13 +1221,12 @@
         const element = document.getElementById('invoice-sheet');
         const docNumber = document.getElementById('doc-number').value.trim() || 'OLY-DOC-001';
         const filename = `Olympus-${currentDocType.toUpperCase()}-${docNumber}.pdf`;
-        const isWhite = element.classList.contains('sheet-receipt-white');
 
         const opt = {
           margin: [8, 8, 8, 8],
           filename: filename,
           image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: isWhite ? '#ffffff' : '#050505' },
+          html2canvas: { scale: 2, useCORS: true, letterRendering: true, backgroundColor: '#ffffff' },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 

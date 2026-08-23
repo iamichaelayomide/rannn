@@ -1228,11 +1228,14 @@
         </p>
       </div>
 
-      <!-- Interactive Showcase: Liquid 3-Card Carousel Slider -->
+      <!-- Interactive Showcase: Featured Selected Works Carousel Slider -->
       <div class="max-w-7xl mx-auto px-6 py-24 border-y border-white/5 relative" id="portfolio-slider-section">
         <div class="text-center mb-12">
-          <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Interactive Showcase</span>
-          <h2 class="h2-editorial font-extrabold uppercase text-white mt-2">Liquid Showcase</h2>
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Selected Works · Interactive Showcase</span>
+          <h2 class="h2-editorial font-extrabold uppercase text-white mt-2">Featured Film &amp; Visual Showcase</h2>
+          <p class="text-neutral-400 text-sm md:text-base mt-3 leading-relaxed font-light max-w-2xl mx-auto">
+            Interactive preview of our wedding cinema, high-profile event coverage, video editing cuts, and visual direction. Click any project to open and play the media.
+          </p>
         </div>
 
         <!-- 3-Card Slider Track Wrapper -->
@@ -1246,34 +1249,41 @@
           <div class="relative w-full h-[450px] flex items-center justify-center" id="carousel-track">
             
             <!-- Left Card -->
-            <div class="carousel-card absolute w-[260px] md:w-[480px] h-[300px] md:h-[380px] rounded-3xl overflow-hidden border border-white/5 transition-all duration-500 scale-90 opacity-40 z-10 cursor-pointer pointer-events-auto" id="card-left">
-              <img src="" class="w-full h-full object-cover filter brightness-50" id="img-left">
+            <div class="carousel-card absolute w-[260px] md:w-[480px] h-[300px] md:h-[380px] rounded-3xl overflow-hidden border border-white/5 transition-all duration-500 scale-90 opacity-40 z-10 cursor-pointer pointer-events-auto" id="card-left" title="Previous project">
+              <img src="" class="w-full h-full object-cover filter brightness-50" id="img-left" alt="Previous project preview">
               <div class="absolute inset-0 bg-neutral-950/30"></div>
             </div>
 
             <!-- Center Card (WebGL Canvas with ripple effects, focal point) -->
-            <div class="carousel-card absolute w-[300px] md:w-[560px] h-[340px] md:h-[430px] rounded-3xl overflow-hidden border border-amber-400/20 shadow-[0_0_50px_rgba(0,0,0,0.8)] transition-all duration-500 scale-100 opacity-100 z-30 cursor-pointer" id="card-center">
+            <div class="carousel-card absolute w-[300px] md:w-[560px] h-[340px] md:h-[430px] rounded-3xl overflow-hidden border border-amber-400/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] transition-all duration-500 scale-100 opacity-100 z-30 cursor-pointer group" id="card-center" title="Click to open and play this project">
               <canvas id="liquid-slider-canvas" class="w-full h-full object-cover"></canvas>
               
               <!-- Center Card details overlay -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent flex flex-col justify-end p-6 pointer-events-none">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent flex flex-col justify-end p-6 pointer-events-none">
                 <span class="text-xs font-mono text-gold-gradient uppercase tracking-widest" id="slider-project-category">Photography</span>
                 <h3 class="text-2xl md:text-3xl font-extrabold uppercase text-white mt-1" id="slider-project-title">Ethereal Capture</h3>
-                <p class="text-neutral-400 text-[10px] md:text-xs font-light max-w-sm mt-1" id="slider-project-desc">
+                <p class="text-neutral-300 text-[10px] md:text-xs font-light max-w-sm mt-1 leading-relaxed" id="slider-project-desc">
                   Stylized editorial campaign shot with cinema-grade high-contrast lighting.
                 </p>
               </div>
 
-              <!-- Click to enlarge indicator -->
-              <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[9px] font-mono uppercase tracking-widest text-neutral-400 flex items-center gap-1.5 pointer-events-none">
-                <iconify-icon icon="solar:maximize-linear" class="text-xs text-amber-400"></iconify-icon>
-                <span>Click to view</span>
+              <!-- Click to play / view indicator -->
+              <div class="absolute top-4 right-4 bg-neutral-950/80 backdrop-blur-md border border-amber-400/40 px-3.5 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest text-amber-300 flex items-center gap-1.5 pointer-events-none shadow-lg group-hover:bg-amber-400 group-hover:text-neutral-950 transition-all duration-300">
+                <iconify-icon icon="solar:play-circle-bold" class="text-sm text-amber-400 group-hover:text-neutral-950"></iconify-icon>
+                <span>Click to play / view</span>
+              </div>
+
+              <!-- Hover Play Overlay -->
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                <div class="w-16 h-16 rounded-full bg-neutral-950/80 backdrop-blur-md border border-amber-400/60 flex items-center justify-center text-amber-400 text-2xl shadow-[0_0_30px_rgba(212,175,55,0.4)] transform group-hover:scale-110 transition-transform">
+                  <iconify-icon icon="solar:play-bold"></iconify-icon>
+                </div>
               </div>
             </div>
 
             <!-- Right Card -->
-            <div class="carousel-card absolute w-[260px] md:w-[480px] h-[300px] md:h-[380px] rounded-3xl overflow-hidden border border-white/5 transition-all duration-500 scale-90 opacity-40 z-10 cursor-pointer pointer-events-auto" id="card-right">
-              <img src="" class="w-full h-full object-cover filter brightness-50" id="img-right">
+            <div class="carousel-card absolute w-[260px] md:w-[480px] h-[300px] md:h-[380px] rounded-3xl overflow-hidden border border-white/5 transition-all duration-500 scale-90 opacity-40 z-10 cursor-pointer pointer-events-auto" id="card-right" title="Next project">
+              <img src="" class="w-full h-full object-cover filter brightness-50" id="img-right" alt="Next project preview">
               <div class="absolute inset-0 bg-neutral-950/30"></div>
             </div>
 

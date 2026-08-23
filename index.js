@@ -396,6 +396,9 @@ const sliderProjects = sliderProjectSource
     isVideo: project.mediaType === 'video' && Boolean(project.previewSrc)
   }));
 
+window.sliderProjects = sliderProjects;
+window.currentSliderIndex = currentSliderIndex;
+
 const initLiquidSlider = () => {
   const container = document.getElementById('card-center');
   const canvas = document.getElementById('liquid-slider-canvas');
@@ -522,6 +525,7 @@ const initLiquidSlider = () => {
         ease: 'power2.inOut',
         onComplete: () => {
           currentSliderIndex = nextIdx;
+          window.currentSliderIndex = nextIdx;
           sliderMaterial.uniforms.texture1.value = textures[nextIdx];
           sliderMaterial.uniforms.progress.value = 0;
           updateCardBorders();
@@ -553,6 +557,22 @@ const initLiquidSlider = () => {
     const next = (currentSliderIndex + 1) % sliderProjects.length;
     transitionTo(next);
   });
+
+  // Clicking center card directly opens the project in the media player
+  container.addEventListener('click', (e) => {
+    if (e.target.closest('a') || e.target.closest('button')) return;
+    const project = sliderProjects[currentSliderIndex];
+    if (project?.id && window.openOlympusPortfolioItem) {
+      window.openOlympusPortfolioItem(project.id);
+    }
+  });
+
+  window.openActiveSliderProject = () => {
+    const project = sliderProjects[currentSliderIndex];
+    if (project?.id && window.openOlympusPortfolioItem) {
+      window.openOlympusPortfolioItem(project.id);
+    }
+  };
 
   // Swipe gesture tracking on center card
   let touchStartX = 0;
