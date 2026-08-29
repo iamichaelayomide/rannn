@@ -71,7 +71,7 @@ const teamHtml = content.teamMembers.map((member, index) => `
             <div class="aspect-[4/5] overflow-hidden bg-neutral-900">
               <img src="${escapeHtml(member.image)}" alt="${escapeHtml(member.name)} — ${escapeHtml(member.role)} at Olympus Atelier" class="w-full h-full object-cover" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/team/photographer.webp'">
             </div>
-            <div class="p-6">
+            <div class="p-6 flex flex-col flex-1">
               <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400">${index < 2 ? 'Creative leadership' : 'Atelier team'}</span>
               <h3 class="text-2xl font-bold text-white mt-2">${escapeHtml(member.name)}</h3>
               <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400 mt-1">${escapeHtml(member.role)}</p>
