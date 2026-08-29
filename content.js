@@ -411,6 +411,13 @@ window.OLYMPUS_CONTENT = {
       "qualification": "BDS (In View)"
     },
     {
+      "bio": "Coordinates content strategies, client project roadmaps, and cross-functional operations across Olympus Atelier productions.",
+      "name": "Dayo",
+      "role": "Content and Project Manager",
+      "image": "assets/team/dayo.jpg",
+      "qualification": "B.Sc Nursing (In view)"
+    },
+    {
       "bio": "Designs and develops responsive digital experiences that extend Olympus Atelier's visual direction onto the web.",
       "name": "Ayomide",
       "role": "Website Designer",

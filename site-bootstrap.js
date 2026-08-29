@@ -23,9 +23,7 @@ const mergePublishedContent = (published) => {
   const hasManagedServices = Array.isArray(published?.services);
   const hasManagedPortfolio = Array.isArray(published?.portfolioItems);
   const hasManagedGlobal = Boolean(pages.global?.content);
-  const managedTeam = hasManagedGlobal && Array.isArray(globalContent.team)
-    ? globalContent.team
-    : fallback.teamMembers;
+  const managedTeam = fallback.teamMembers || [];
   const teamMembers = managedTeam.filter((member) => {
     const name = (member.name || "").toLowerCase();
     return !name.includes("akinola") && !name.includes("coming soon");
