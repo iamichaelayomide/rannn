@@ -412,7 +412,7 @@ window.OLYMPUS_CONTENT = {
     },
     {
       "bio": "Coordinates content strategies, client project roadmaps, and cross-functional operations across Olympus Atelier productions.",
-      "name": "Dayo",
+      "name": "Oluwabojutomi Adebayo",
       "role": "Content and Project Manager",
       "image": "assets/team/dayo.jpg",
       "qualification": "B.Sc Nursing (In view)"
