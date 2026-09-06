@@ -297,6 +297,126 @@ h3, h4, .font-display {
   pointer-events: none;
 }
 
+/* Canva Aurora Luminous Gradients (Emil Kowalski Design Engineering) */
+:root {
+  --canva-aurora-cyan: #38bdf8;
+  --canva-aurora-indigo: #6366f1;
+  --canva-aurora-violet: #a855f7;
+  --canva-aurora-magenta: #ec4899;
+  --gradient-canva-aurora: linear-gradient(90deg, #38bdf8 0%, #6366f1 35%, #a855f7 70%, #ec4899 100%);
+  --gradient-canva-aurora-diagonal: linear-gradient(135deg, #38bdf8 0%, #6366f1 35%, #a855f7 70%, #ec4899 100%);
+  --gradient-canva-aurora-soft: linear-gradient(90deg, rgba(56, 189, 248, 0.12) 0%, rgba(99, 102, 241, 0.16) 35%, rgba(168, 85, 247, 0.16) 70%, rgba(236, 72, 153, 0.12) 100%);
+  --gradient-canva-aurora-border: linear-gradient(135deg, rgba(56, 189, 248, 0.5) 0%, rgba(99, 102, 241, 0.6) 35%, rgba(168, 85, 247, 0.6) 70%, rgba(236, 72, 153, 0.5) 100%);
+}
+
+.text-canva-aurora {
+  background: linear-gradient(90deg, #38bdf8 0%, #818cf8 32%, #c084fc 68%, #f472b6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-canva-aurora {
+  background: var(--gradient-canva-aurora);
+}
+
+.border-canva-aurora {
+  position: relative;
+  border-radius: inherit;
+}
+
+.border-canva-aurora::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--gradient-canva-aurora-border);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.canva-aurora-glow-card {
+  position: relative;
+  background: rgba(12, 12, 14, 0.85);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7),
+              0 0 40px -10px rgba(99, 102, 241, 0.15),
+              0 0 60px -15px rgba(168, 85, 247, 0.12);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.canva-aurora-glow-card:hover {
+  border-color: rgba(168, 85, 247, 0.25);
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.8),
+              0 0 50px -5px rgba(99, 102, 241, 0.2),
+              0 0 70px -10px rgba(168, 85, 247, 0.18);
+}
+
+/* Canva-style Pills */
+.canva-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.95rem;
+  font-size: 0.75rem;
+  font-family: var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: #e2e8f0;
+  transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer;
+}
+
+.canva-pill:hover {
+  border-color: rgba(168, 85, 247, 0.7);
+  background: rgba(168, 85, 247, 0.1);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
+}
+
+.canva-pill.active {
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.2) 0%, rgba(99, 102, 241, 0.25) 50%, rgba(168, 85, 247, 0.25) 100%);
+  border-color: #a855f7;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+}
+
+/* Canva Search Input */
+.canva-search-bar {
+  position: relative;
+  border-radius: 9999px;
+  background: rgba(18, 18, 22, 0.75);
+  border: 1.5px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s ease;
+}
+
+.canva-search-bar:focus-within {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2), 0 0 25px rgba(168, 85, 247, 0.25);
+  background: rgba(22, 22, 28, 0.95);
+}
+
+/* Aurora Underlay Glow */
+.canva-aurora-glow-underlay {
+  position: absolute;
+  inset: -15px;
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.15) 0%, rgba(99, 102, 241, 0.18) 35%, rgba(168, 85, 247, 0.18) 70%, rgba(236, 72, 153, 0.15) 100%);
+  filter: blur(45px);
+  border-radius: 2rem;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.75;
+}
+
 /* Fixed background WebGL canvas */
 #bg-webgl-canvas {
   position: fixed;

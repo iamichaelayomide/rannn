@@ -1310,6 +1310,48 @@
     description.content = page?.seo_description || page?.content?.header?.body || page?.content?.hero?.body || '';
   };
 
+  const initTermsFiltering = () => {
+    const searchInput = document.getElementById('spa-terms-search-input');
+    const filterButtons = document.querySelectorAll('#page-terms .canva-filter-pill');
+    const clauseItems = document.querySelectorAll('#page-terms .terms-clause-item');
+
+    if (!clauseItems.length) return;
+
+    let currentCategory = 'all';
+    let searchQuery = '';
+
+    const filterClauses = () => {
+      clauseItems.forEach(item => {
+        const category = item.getAttribute('data-category');
+        const text = item.innerText.toLowerCase();
+        const matchesCategory = currentCategory === 'all' || category === currentCategory;
+        const matchesSearch = !searchQuery || text.includes(searchQuery);
+
+        if (matchesCategory && matchesSearch) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    };
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        filterClauses();
+      });
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-filter') || 'all';
+        filterClauses();
+      });
+    });
+  };
+
   const initializeManagedContent = () => {
     renderServices();
     renderTeam();
@@ -1324,6 +1366,7 @@
       window.openOlympusPortfolioItem?.('157ouUK40lbUfM4xSL2Sc0E0gPQ4wnqcd');
     });
     initUnifiedEnquiryFlow();
+    initTermsFiltering();
     hydrateFooter();
     hydrateMetadata();
     window.addEventListener('hashchange', hydrateMetadata);

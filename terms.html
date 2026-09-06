@@ -45,6 +45,12 @@
       --font-display: 'Space Grotesk', sans-serif;
       --font-serif: 'Cinzel', serif;
       --font-mono: 'JetBrains Mono', monospace;
+      --canva-aurora-cyan: #38bdf8;
+      --canva-aurora-indigo: #6366f1;
+      --canva-aurora-violet: #a855f7;
+      --canva-aurora-magenta: #ec4899;
+      --gradient-canva-aurora: linear-gradient(90deg, #38bdf8 0%, #6366f1 35%, #a855f7 70%, #ec4899 100%);
+      --gradient-canva-aurora-diagonal: linear-gradient(135deg, #38bdf8 0%, #6366f1 35%, #a855f7 70%, #ec4899 100%);
     }
 
     body {
@@ -56,9 +62,9 @@
     }
 
     .glass-card {
-      background: rgba(14, 14, 14, 0.78);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      background: rgba(12, 12, 14, 0.82);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
@@ -75,9 +81,101 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
+    /* Canva Aurora Luminous Gradients (Emil Kowalski Design Engineering) */
+    .text-canva-aurora {
+      background: linear-gradient(90deg, #38bdf8 0%, #818cf8 32%, #c084fc 68%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .bg-canva-aurora {
+      background: var(--gradient-canva-aurora);
+    }
+
+    .canva-aurora-glow-card {
+      position: relative;
+      background: rgba(12, 12, 14, 0.85);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7),
+                  0 0 40px -10px rgba(99, 102, 241, 0.15),
+                  0 0 60px -15px rgba(168, 85, 247, 0.12);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .canva-aurora-glow-card:hover {
+      border-color: rgba(168, 85, 247, 0.25);
+      box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.8),
+                  0 0 50px -5px rgba(99, 102, 241, 0.2),
+                  0 0 70px -10px rgba(168, 85, 247, 0.18);
+    }
+
+    .canva-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.95rem;
+      font-size: 0.75rem;
+      font-family: var(--font-mono, monospace);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: #e2e8f0;
+      transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+      cursor: pointer;
+    }
+
+    .canva-pill:hover {
+      border-color: rgba(168, 85, 247, 0.7);
+      background: rgba(168, 85, 247, 0.1);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
+    }
+
+    .canva-pill.active {
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.2) 0%, rgba(99, 102, 241, 0.25) 50%, rgba(168, 85, 247, 0.25) 100%);
+      border-color: #a855f7;
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+    }
+
+    .canva-search-bar {
+      position: relative;
+      border-radius: 9999px;
+      background: rgba(18, 18, 22, 0.75);
+      border: 1.5px solid rgba(168, 85, 247, 0.35);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.25s ease;
+    }
+
+    .canva-search-bar:focus-within {
+      border-color: #a855f7;
+      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2), 0 0 25px rgba(168, 85, 247, 0.25);
+      background: rgba(22, 22, 28, 0.95);
+    }
+
+    .canva-aurora-glow-underlay {
+      position: absolute;
+      inset: -15px;
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.15) 0%, rgba(99, 102, 241, 0.18) 35%, rgba(168, 85, 247, 0.18) 70%, rgba(236, 72, 153, 0.15) 100%);
+      filter: blur(45px);
+      border-radius: 2.5rem;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.75;
+    }
+
+    .terms-clause-item {
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
   </style>
 </head>
-<body class="selection:bg-amber-500/30 selection:text-amber-200">
+<body class="selection:bg-purple-500/30 selection:text-purple-200">
 
   <!-- Header -->
   <header class="border-b border-white/5 bg-neutral-950/80 backdrop-blur-xl sticky top-0 z-40">
@@ -88,7 +186,7 @@
           <span class="font-serif font-bold tracking-[0.18em] text-sm uppercase">Olympus Atelier</span>
         </a>
         <span class="text-neutral-600 text-sm hidden sm:inline">/</span>
-        <span class="text-amber-400 font-mono text-xs uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full hidden sm:inline-block">Terms &amp; Conditions</span>
+        <span class="text-canva-aurora font-mono text-xs uppercase tracking-widest bg-purple-500/10 border border-purple-500/20 px-2.5 py-1 rounded-full hidden sm:inline-block">Terms &amp; Conditions</span>
       </div>
 
       <div class="flex items-center gap-3 sm:gap-5">
@@ -104,7 +202,7 @@
         <a href="/#contact" class="hidden sm:inline-flex text-xs font-mono uppercase tracking-wider text-neutral-400 hover:text-white transition-colors">
           Contact
         </a>
-        <a href="/" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border border-white/20 text-white hover:border-amber-400 hover:text-amber-400 transition-colors">
+        <a href="/" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border border-white/20 text-white hover:border-purple-400 hover:text-purple-300 transition-colors">
           <span>← Atelier Home</span>
         </a>
       </div>
@@ -112,283 +210,344 @@
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-12 lg:py-20">
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-12 lg:py-20">
 
-    <!-- Header Section -->
-    <div class="text-center max-w-3xl mx-auto mb-12">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/20 bg-amber-500/10 mb-4">
-        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-        <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Contract &amp; Settlement Policy</span>
+    <!-- Header Section with Canva Aurora Theme -->
+    <div class="text-center max-w-3xl mx-auto mb-10">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 mb-4 shadow-lg shadow-purple-500/5">
+        <span class="w-2 h-2 rounded-full bg-gradient-to-r from-sky-400 via-indigo-500 to-pink-500 animate-pulse"></span>
+        <span class="text-xs font-bold text-canva-aurora uppercase tracking-[0.2em] font-mono">Contract &amp; Settlement Policy</span>
       </div>
       <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase text-white font-display tracking-tight mt-2">Terms &amp; Conditions</h1>
       <p class="text-neutral-400 text-sm sm:text-base mt-4 max-w-2xl mx-auto font-light leading-relaxed">
-        Please read carefully before making payment. By making payment for any service provided by Olympus Atelier, the client confirms that they have read, understood, and agreed to the following terms.
+        Please read carefully before making payment. By making payment for any service provided by Olympus Atelier, the client confirms that they have read, understood, and agreed to the following terms without exception.
       </p>
-    </div>
 
-    <!-- Binding Agreement Notice -->
-    <div class="glass-card border-gold-gradient rounded-3xl p-6 sm:p-8 mb-10 bg-amber-500/5 border-amber-400/30">
-      <div class="flex items-start gap-4">
-        <div class="w-10 h-10 rounded-2xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 text-xl flex-shrink-0 mt-0.5">
-          <iconify-icon icon="solar:shield-warning-bold"></iconify-icon>
+      <!-- Canva-style Pills Filter (Adapted from Canva UI) -->
+      <div class="flex flex-wrap items-center justify-center gap-2.5 mt-8">
+        <button type="button" class="canva-pill canva-filter-pill active" data-filter="all">
+          <iconify-icon icon="solar:widget-2-bold" class="text-xs text-sky-400"></iconify-icon>
+          <span>All Clauses</span>
+        </button>
+        <button type="button" class="canva-pill canva-filter-pill" data-filter="booking">
+          <iconify-icon icon="solar:card-check-bold" class="text-xs text-indigo-400"></iconify-icon>
+          <span>Booking &amp; Payment</span>
+        </button>
+        <button type="button" class="canva-pill canva-filter-pill" data-filter="production">
+          <iconify-icon icon="solar:clapperboard-play-bold" class="text-xs text-purple-400"></iconify-icon>
+          <span>Production &amp; Delivery</span>
+        </button>
+        <button type="button" class="canva-pill canva-filter-pill" data-filter="rights">
+          <iconify-icon icon="solar:shield-check-bold" class="text-xs text-pink-400"></iconify-icon>
+          <span>Rights &amp; Direction</span>
+        </button>
+      </div>
+
+      <!-- Canva-style Pill Search Bar (Directly adapted from Canva Hero) -->
+      <div class="relative max-w-xl mx-auto mt-5">
+        <div class="canva-search-bar flex items-center px-4 py-2.5">
+          <iconify-icon icon="solar:magnifer-linear" class="text-purple-400 text-lg flex-shrink-0 mr-3"></iconify-icon>
+          <input 
+            id="terms-search-input" 
+            type="text" 
+            placeholder="Search clauses (e.g. deposit, reschedule, revisions, raw footage)..." 
+            class="w-full bg-transparent text-xs sm:text-sm text-neutral-200 placeholder-neutral-500 focus:outline-none"
+          />
         </div>
-        <div>
-          <h2 class="text-sm sm:text-base font-bold text-white uppercase tracking-wider font-mono">Binding Agreement</h2>
-          <p class="text-xs sm:text-sm text-neutral-300 mt-1 leading-relaxed">
-            By making payment for any service provided by Olympus Atelier, the client confirms that they have read, understood, and agreed to the terms outlined below.
-          </p>
-        </div>
+        <div id="terms-clause-count" class="text-[11px] font-mono text-neutral-500 mt-2 text-right">Showing all 14 clauses</div>
       </div>
     </div>
 
-    <!-- 14 Articles -->
-    <div class="space-y-6">
+    <!-- SINGLE UNIFIED MASTER CARD -->
+    <div class="relative mt-8">
+      <!-- Canva Aurora Ambient Glow Underlay -->
+      <div class="canva-aurora-glow-underlay"></div>
 
-      <!-- 01 BOOKING -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">01</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Booking</h2>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <p>A booking is only confirmed after payment of the required booking fee/deposit.</p>
-          <p>The booking fee secures your date and is non-refundable.</p>
-          <p>Until payment is received, your requested date remains available to other clients.</p>
-        </div>
-      </article>
+      <!-- Master Card Container -->
+      <div class="canva-aurora-glow-card rounded-3xl p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden backdrop-blur-2xl">
+        <!-- 2px Luminous Top Border with Canva Aurora Mesh -->
+        <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-sky-400 via-indigo-500 via-purple-500 to-pink-500"></div>
 
-      <!-- 02 PAYMENT -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">02</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Payment</h2>
+        <!-- Master Card Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-8 mb-8 border-b border-white/10 gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl flex-shrink-0">
+              <iconify-icon icon="solar:document-text-bold"></iconify-icon>
+            </div>
+            <div>
+              <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Client Accord &amp; Legal Policies</h2>
+              <p class="text-xs text-neutral-400 font-mono mt-0.5">Firm Contractual Provisions &bull; Olympus Atelier</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 text-xs font-mono text-purple-300 bg-purple-500/10 border border-purple-500/20 rounded-full px-4 py-1.5 self-start sm:self-auto">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Binding Upon Payment</span>
+          </div>
         </div>
-        <ul class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <li class="flex items-start gap-2.5">
-            <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
-            <span>70% booking fee is required to secure a date.</span>
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
-            <span>The remaining 30% balance must be paid before filming begins.</span>
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
-            <span>No final video will be delivered until full payment has been received.</span>
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
-            <span>Additional services requested after confirmation may attract additional charges.</span>
-          </li>
-        </ul>
-      </article>
 
-      <!-- 03 CANCELLATION & RESCHEDULING -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">03</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Cancellation &amp; Rescheduling</h2>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <p>Cancellation by the client does not qualify for a refund of the booking fee.</p>
-          <p>Rescheduling may be allowed once, subject to our availability, provided at least 7 days’ notice is given.</p>
-          <p>If the requested new date is unavailable, the booking may be treated as cancelled.</p>
-        </div>
-      </article>
+        <!-- 14 Clauses Grid: 2 Columns on desktop, fully unified inside this single card -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
 
-      <!-- 04 SHOOTING TIME -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">04</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Shooting Time</h2>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <p>Your package covers only the agreed shooting period.</p>
-          <p>Client delays do not automatically extend the booking.</p>
-          <p>Additional shooting time will attract an overtime charge of <strong class="text-amber-400 font-bold">₦30,000/hour</strong>.</p>
-          <p>The client is responsible for ensuring that the videographer/crew has access to the location at the agreed call time.</p>
-        </div>
-      </article>
+          <!-- BOOKING -->
+          <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="booking">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+              <span>Booking</span>
+            </h3>
+            <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <p>A booking is only confirmed after payment of the required booking fee/deposit.</p>
+              <p>The booking fee secures your date and is strictly non-refundable.</p>
+              <p>Until payment is received, your requested date remains available to other clients.</p>
+            </div>
+          </div>
 
-      <!-- 05 TRAVEL & EXTRA EXPENSES -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">05</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Travel &amp; Extra Expenses</h2>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <p>Transportation within the agreed service area is specified in your package quote.</p>
-          <p>Travel outside the agreed service area, accommodation, parking, location fees, permits, special equipment, or other project-related expenses may be charged separately.</p>
-          <p>The client will be informed of applicable additional costs before they are incurred whenever reasonably possible.</p>
-        </div>
-      </article>
+          <!-- PAYMENT -->
+          <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="booking">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0"></span>
+              <span>Payment</span>
+            </h3>
+            <ul class="space-y-2 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 mt-1 flex-shrink-0">•</span>
+                <span>70% booking fee is required to secure a date.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 mt-1 flex-shrink-0">•</span>
+                <span>The remaining 30% balance must be paid before filming begins.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 mt-1 flex-shrink-0">•</span>
+                <span>No final video will be delivered until full payment has been received.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 mt-1 flex-shrink-0">•</span>
+                <span>Additional services requested after confirmation will attract additional charges.</span>
+              </li>
+            </ul>
+          </div>
 
-      <!-- 06 EDITING & DELIVERY -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">06</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Editing &amp; Delivery</h2>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <p>Final edited videos are delivered within <strong class="text-white font-semibold">7–21 working days</strong>, depending on the project.</p>
-          <p>Delivery time begins after:</p>
-          <ul class="space-y-2 pl-4">
-            <li class="flex items-start gap-2">
-              <span class="text-amber-400">•</span>
-              <span>The shoot has been completed; and</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="text-amber-400">•</span>
-              <span>All required materials/information have been provided by the client.</span>
-            </li>
-          </ul>
-          <p>Urgent/express delivery may be available at an additional fee.</p>
-        </div>
-      </article>
+          <!-- CANCELLATION & RESCHEDULING -->
+          <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="booking">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-400 flex-shrink-0"></span>
+              <span>Cancellation &amp; Rescheduling</span>
+            </h3>
+            <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <p>Cancellation by the client does not qualify for a refund of the booking fee.</p>
+              <p>Rescheduling will only be permitted once, subject to our availability, provided at least 7 days’ written notice is given.</p>
+              <p>If the requested new date is unavailable, the booking will be treated as cancelled.</p>
+            </div>
+          </div>
 
-      <!-- 07 REVISIONS -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">07</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Revisions</h2>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <p>Your package includes agreed rounds of revisions (typically 1–2 rounds as outlined in your brief).</p>
-          <p>Revision requests must be submitted within 7 days of receiving the first draft.</p>
-          <p>Changes that significantly alter the original creative brief or require extensive re-editing may attract additional charges.</p>
-        </div>
-      </article>
+          <!-- SHOOTING TIME -->
+          <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="production">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-pink-400 flex-shrink-0"></span>
+              <span>Shooting Time</span>
+            </h3>
+            <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <p>Your package covers only the agreed shooting period.</p>
+              <p>Client delays will not extend the agreed booking duration.</p>
+              <p>Additional shooting time will attract an overtime charge of <strong class="text-white font-semibold">₦30,000/hour</strong>.</p>
+              <p>The client must ensure that the videographer and crew have complete access to the location at the agreed call time.</p>
+            </div>
+          </div>
 
-      <!-- 08 RAW FOOTAGE -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">08</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Raw Footage</h2>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <p>Raw footage is not included in standard packages.</p>
-          <p>If the client requires the raw footage, this must be requested and agreed upon before delivery. Additional charges may apply.</p>
-        </div>
-      </article>
+          <!-- TRAVEL & EXTRA EXPENSES -->
+          <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="production">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+              <span>Travel &amp; Extra Expenses</span>
+            </h3>
+            <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <p>Transportation within the agreed service area is specified in your package quote.</p>
+              <p>Travel outside the agreed service area, accommodation, parking, location fees, permits, special equipment, or other project-related expenses will be charged separately.</p>
+              <p>The client will be informed of all applicable additional costs before they are incurred.</p>
+            </div>
+          </div>
 
-      <!-- 09 CREATIVE DIRECTION -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">09</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Creative Direction</h2>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <p>Videography is a creative service.</p>
-          <p>The videographer retains reasonable creative control over cinematography, framing, editing, colour grading, transitions, music selection, and storytelling, while taking the client’s agreed creative brief into consideration.</p>
-          <p>Specific references or creative expectations should be communicated before production begins.</p>
-        </div>
-      </article>
+          <!-- EDITING & DELIVERY -->
+          <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="production">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0"></span>
+              <span>Editing &amp; Delivery</span>
+            </h3>
+            <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <p>Final edited videos will be delivered within <strong class="text-white font-semibold">7–21 working days</strong>, depending on project specifications.</p>
+              <p>Delivery timeline commences only after:</p>
+              <ul class="space-y-1.5 pl-3">
+                <li class="flex items-start gap-2">
+                  <span class="text-purple-400">•</span>
+                  <span>The shoot has been fully concluded; and</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-purple-400">•</span>
+                  <span>All required brand assets, audio, and client materials have been provided in full.</span>
+                </li>
+              </ul>
+              <p>Urgent or express delivery will incur an additional priority fee.</p>
+            </div>
+          </div>
 
-      <!-- 10 COPYRIGHT & USAGE -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">10</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Copyright &amp; Usage</h2>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <p>The videographer retains copyright and ownership of the original footage and creative work unless otherwise agreed in writing.</p>
-          <p>After full payment, the client receives the agreed right to use the final delivered video for the purpose stated in the booking.</p>
-          <p>The client may not resell, redistribute, sublicense, or substantially modify the work without prior written permission.</p>
-        </div>
-      </article>
+          <!-- REVISIONS -->
+          <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="production">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-400 flex-shrink-0"></span>
+              <span>Revisions</span>
+            </h3>
+            <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <p>Your package includes agreed rounds of revisions (typically 1–2 rounds as outlined in your brief).</p>
+              <p>Revision requests must be submitted in writing within 7 days of receiving the first draft.</p>
+              <p>Changes that significantly alter the original creative brief or require extensive re-editing will attract additional charges.</p>
+            </div>
+          </div>
 
-      <!-- 11 PORTFOLIO USE -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">11</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Portfolio Use</h2>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <p>Unless the client requests confidentiality before the project begins, Olympus reserves the right to use selected footage from completed projects for its portfolio, website, social media, showreels, advertising, and promotional purposes.</p>
-        </div>
-      </article>
+          <!-- RAW FOOTAGE -->
+          <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="production">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-pink-400 flex-shrink-0"></span>
+              <span>Raw Footage</span>
+            </h3>
+            <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <p>Raw footage is not included in standard packages.</p>
+              <p>If the client requires raw footage, this must be requested and contracted before delivery. Additional charges will apply.</p>
+            </div>
+          </div>
 
-      <!-- 12 UNFORESEEN CIRCUMSTANCES -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">12</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Unforeseen Circumstances</h2>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <p>We will make every reasonable effort to fulfil your booking.</p>
-          <p>However, circumstances beyond our reasonable control including accidents, severe weather, equipment failure, venue restrictions, emergencies, government restrictions, or other unforeseen events may affect production.</p>
-          <p>Where possible, the booking will be rescheduled or an alternative arrangement will be made.</p>
-        </div>
-      </article>
+          <!-- CREATIVE DIRECTION -->
+          <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="rights">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+              <span>Creative Direction</span>
+            </h3>
+            <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <p>Cinematography is an artistic service.</p>
+              <p>The videographer retains creative control over framing, composition, editing, colour grading, pacing, transitions, music scoring, and storytelling in alignment with the agreed project brief.</p>
+              <p>Specific references or creative expectations must be communicated in writing before production begins.</p>
+            </div>
+          </div>
 
-      <!-- 13 CLIENT RESPONSIBILITY -->
-      <article class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-amber-400/30 transition-colors">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">13</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Client Responsibility</h2>
-        </div>
-        <ul class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <li class="flex items-start gap-2.5">
-            <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
-            <span>Providing accurate booking information.</span>
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
-            <span>Obtaining necessary venue/filming permissions.</span>
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
-            <span>Ensuring access to the filming location.</span>
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
-            <span>Making key participants available when required.</span>
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
-            <span>Communicating special requirements in advance.</span>
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
-            <span>Providing a safe working environment for the videographer and crew.</span>
-          </li>
-        </ul>
-      </article>
+          <!-- COPYRIGHT & USAGE -->
+          <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="rights">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0"></span>
+              <span>Copyright &amp; Usage</span>
+            </h3>
+            <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <p>The atelier retains copyright and legal ownership of all raw footage, project masters, and original creative assets unless otherwise contracted in writing.</p>
+              <p>Upon full settlement of payment, the client is granted the agreed license to use the final delivered video for the purpose stated in the booking.</p>
+              <p>The client must not resell, redistribute, sublicense, or modify the delivered work without prior written authorization.</p>
+            </div>
+          </div>
 
-      <!-- 14 ACCEPTANCE -->
-      <article class="glass-card border-gold-gradient rounded-3xl p-6 sm:p-8 bg-neutral-900/60 shadow-xl">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xs font-mono font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">14</span>
-          <h2 class="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">Acceptance</h2>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed">
-          <p class="font-medium text-white">Payment of the booking fee constitutes the client’s acceptance of these Terms &amp; Conditions.</p>
-          <p>By paying, you confirm that you have read and agreed to our Terms &amp; Conditions.</p>
-        </div>
-      </article>
+          <!-- PORTFOLIO USE -->
+          <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="rights">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-400 flex-shrink-0"></span>
+              <span>Portfolio Use</span>
+            </h3>
+            <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <p>Unless the client requests and secures a formal non-disclosure agreement before production begins, Olympus Atelier will use selected footage from completed projects for its portfolio, website, social media, showreels, advertising, and promotional showcases.</p>
+            </div>
+          </div>
 
+          <!-- UNFORESEEN CIRCUMSTANCES -->
+          <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="rights">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-pink-400 flex-shrink-0"></span>
+              <span>Unforeseen Circumstances</span>
+            </h3>
+            <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <p>The atelier will make every reasonable effort to fulfil your booking.</p>
+              <p>If circumstances beyond reasonable control (such as severe weather, equipment failure, venue restrictions, emergencies, or government directives) affect production, the session will be rescheduled or an alternative arrangement will be provided.</p>
+            </div>
+          </div>
+
+          <!-- CLIENT RESPONSIBILITY -->
+          <div class="terms-clause-item md:col-span-2 border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="booking">
+            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+              <span>Client Responsibility</span>
+            </h3>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
+              <li class="flex items-start gap-2">
+                <span class="text-sky-400 mt-1 flex-shrink-0">•</span>
+                <span>The client must provide accurate and complete booking information.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-sky-400 mt-1 flex-shrink-0">•</span>
+                <span>The client must obtain all necessary venue and filming permissions.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-sky-400 mt-1 flex-shrink-0">•</span>
+                <span>The client must ensure timely and unrestricted access to the filming location.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-sky-400 mt-1 flex-shrink-0">•</span>
+                <span>The client must ensure key participants are present and available on schedule.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-sky-400 mt-1 flex-shrink-0">•</span>
+                <span>The client must communicate all special requirements in writing prior to production.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-sky-400 mt-1 flex-shrink-0">•</span>
+                <span>The client must provide a safe and respectful working environment for the videographer and crew.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- ACCEPTANCE (Anchoring clause inside the single card) -->
+          <div class="terms-clause-item md:col-span-2 p-5 sm:p-7 rounded-2xl bg-white/[0.03] border border-purple-500/20 shadow-inner" data-category="booking">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-lg flex-shrink-0 mt-0.5">
+                <iconify-icon icon="solar:check-read-bold"></iconify-icon>
+              </div>
+              <div>
+                <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display mb-2">Acceptance</h3>
+                <div class="space-y-2 text-xs sm:text-sm text-neutral-200 leading-relaxed font-light">
+                  <p class="font-medium text-white">Payment of the booking fee constitutes the client’s binding acceptance of these Terms &amp; Conditions.</p>
+                  <p class="text-neutral-400">By making payment, the client confirms that they have read, understood, and agreed to all terms outlined herein without exception.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Master Card Footer / Assurance Seal -->
+        <div class="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs font-mono text-neutral-400">
+          <div class="flex items-center gap-2">
+            <iconify-icon icon="solar:shield-check-bold" class="text-emerald-400 text-base"></iconify-icon>
+            <span>Verified Atelier Standard &bull; Validated for all 2026 contracts</span>
+          </div>
+          <span class="text-[11px] text-neutral-500 uppercase tracking-wider">Olympus Atelier &copy; 2026</span>
+        </div>
+
+      </div>
     </div>
 
     <!-- Atelier Sign-Off & Official Contacts -->
-    <div class="glass-card border-gold-gradient rounded-3xl p-8 sm:p-10 mt-12 bg-neutral-900/40 text-center">
-      <span class="text-xs font-mono font-bold uppercase tracking-[0.2em] text-amber-400 block mb-2">Olympus Atelier</span>
+    <div class="glass-card rounded-3xl p-8 sm:p-10 mt-12 bg-neutral-900/40 text-center border border-white/10">
+      <span class="text-xs font-mono font-bold uppercase tracking-[0.2em] text-canva-aurora block mb-2">Olympus Atelier</span>
       <h3 class="text-2xl font-bold text-white font-display">Stories. Frames. Memories.</h3>
       <div class="flex flex-wrap items-center justify-center gap-6 mt-6 text-xs sm:text-sm font-mono text-neutral-300">
-        <a href="mailto:ceo@theolympusatelier.com" class="hover:text-amber-400 transition-colors flex items-center gap-2">
-          <iconify-icon icon="solar:letter-linear" class="text-amber-400"></iconify-icon>
+        <a href="mailto:ceo@theolympusatelier.com" class="hover:text-purple-300 transition-colors flex items-center gap-2">
+          <iconify-icon icon="solar:letter-linear" class="text-purple-400"></iconify-icon>
           <span>ceo@theolympusatelier.com</span>
         </a>
-        <a href="https://wa.me/2347026456357" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors flex items-center gap-2">
-          <iconify-icon icon="solar:phone-linear" class="text-amber-400"></iconify-icon>
+        <a href="https://wa.me/2347026456357" target="_blank" rel="noopener noreferrer" class="hover:text-purple-300 transition-colors flex items-center gap-2">
+          <iconify-icon icon="solar:phone-linear" class="text-purple-400"></iconify-icon>
           <span>07026456357 / 08087172313</span>
         </a>
-        <a href="https://instagram.com/theolympus001" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors flex items-center gap-2">
-          <iconify-icon icon="ri:instagram-line" class="text-amber-400"></iconify-icon>
+        <a href="https://instagram.com/theolympus001" target="_blank" rel="noopener noreferrer" class="hover:text-purple-300 transition-colors flex items-center gap-2">
+          <iconify-icon icon="ri:instagram-line" class="text-purple-400"></iconify-icon>
           <span>@theolympus001</span>
         </a>
       </div>
       <div class="mt-8 pt-6 border-t border-white/5 flex justify-center">
-        <a href="/" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-xs uppercase tracking-wider text-white hover:border-amber-400 hover:text-amber-400 font-bold transition-colors">
+        <a href="/" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-xs uppercase tracking-wider text-white hover:border-purple-400 hover:text-purple-300 font-bold transition-colors">
           <span>← Back to Atelier</span>
         </a>
       </div>
@@ -409,7 +568,7 @@
           <a href="/#portfolio" class="hover:text-white transition-colors">Portfolio</a>
           <a href="/#about" class="hover:text-white transition-colors">About Us</a>
           <a href="/billing" class="hover:text-white transition-colors">Billing</a>
-          <a href="/terms" class="text-amber-400 font-semibold">Terms &amp; Conditions</a>
+          <a href="/terms" class="text-purple-400 font-semibold">Terms &amp; Conditions</a>
         </div>
       </div>
       <div class="border-t border-white/5 mt-8 pt-6 text-[11px] text-neutral-500 font-mono flex flex-col sm:flex-row justify-between gap-4 items-start sm:items-center">
@@ -418,6 +577,58 @@
       </div>
     </div>
   </footer>
+
+  <!-- Interactive Filter & Search Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('terms-search-input');
+      const filterButtons = document.querySelectorAll('.canva-filter-pill');
+      const clauseItems = document.querySelectorAll('.terms-clause-item');
+      const countDisplay = document.getElementById('terms-clause-count');
+
+      let currentCategory = 'all';
+      let searchQuery = '';
+
+      function filterClauses() {
+        let visibleCount = 0;
+        clauseItems.forEach(item => {
+          const category = item.getAttribute('data-category');
+          const text = item.innerText.toLowerCase();
+          const matchesCategory = currentCategory === 'all' || category === currentCategory;
+          const matchesSearch = !searchQuery || text.includes(searchQuery);
+
+          if (matchesCategory && matchesSearch) {
+            item.style.display = '';
+            visibleCount++;
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        if (countDisplay) {
+          countDisplay.textContent = visibleCount === clauseItems.length 
+            ? 'Showing all 14 clauses' 
+            : `Showing ${visibleCount} of ${clauseItems.length} clauses`;
+        }
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          searchQuery = e.target.value.trim().toLowerCase();
+          filterClauses();
+        });
+      }
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCategory = btn.getAttribute('data-filter') || 'all';
+          filterClauses();
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>
