@@ -381,17 +381,33 @@ let isSliderTransitioning = false;
 
 const allPortfolioProjects = window.OLYMPUS_CONTENT?.portfolioItems || [];
 const homeFeaturedIds = window.OLYMPUS_CONTENT?.homeFeaturedIds || [];
+
+const darkThumbnailsBlacklist = [
+  '1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO.webp',
+  '1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG.webp',
+  '1QVxxaIjwOcDxQXRNmyePhQPBEjkZgDry.webp',
+  '1CYrRzdDibyZBnE61j7ET9CMY3ccaqsiD.webp'
+];
+
+const getSafeThumbnail = (src) => {
+  if (!src) return 'assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp';
+  if (darkThumbnailsBlacklist.some(dark => src.includes(dark))) {
+    return 'assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp';
+  }
+  return src;
+};
+
 const sliderProjectSource = homeFeaturedIds.length
   ? homeFeaturedIds.map(id => allPortfolioProjects.find(project => project.id === id)).filter(Boolean)
-  : allPortfolioProjects.filter(project => project.featured).slice(0, 4);
+  : allPortfolioProjects.filter(project => project.featured).slice(0, 7);
 
 const sliderProjects = sliderProjectSource
   .map(project => ({
     id: project.id,
-    category: project.collection,
+    category: project.collection || 'Production',
     title: project.title,
-    desc: project.alt,
-    img: project.thumbnailSrc,
+    desc: project.description || project.alt || 'Cinema-grade visual documentation by Olympus Atelier.',
+    img: getSafeThumbnail(project.thumbnailSrc),
     video: project.previewSrc,
     isVideo: project.mediaType === 'video' && Boolean(project.previewSrc)
   }));
@@ -415,7 +431,11 @@ const initLiquidSlider = () => {
   // Load textures
   const textureLoader = new THREE.TextureLoader();
   const textures = sliderProjects.map(p => {
-    const tex = textureLoader.load(p.img);
+    const tex = textureLoader.load(p.img, () => {
+      if (sliderRenderer && sliderScene && sliderCamera) {
+        sliderRenderer.render(sliderScene, sliderCamera);
+      }
+    });
     tex.minFilter = THREE.LinearFilter;
     tex.generateMipmaps = false;
     return tex;
@@ -560,7 +580,7 @@ const initLiquidSlider = () => {
 
   // Clicking center card directly opens the project in the media player
   container.addEventListener('click', (e) => {
-    if (e.target.closest('a') || e.target.closest('button')) return;
+    if (e.target.closest('a') && !e.target.closest('.slider-play-trigger')) return;
     const project = sliderProjects[currentSliderIndex];
     if (project?.id && window.openOlympusPortfolioItem) {
       window.openOlympusPortfolioItem(project.id);

@@ -562,7 +562,15 @@
     });
 
     const handleSliderCardClick = event => {
-      if (event.target.closest('a,button')) return;
+      if (event.target.closest('a') && !event.target.closest('.slider-play-trigger')) return;
+      const project = window.sliderProjects?.[window.currentSliderIndex || 0]
+        || (typeof sliderProjects !== 'undefined' ? sliderProjects[currentSliderIndex] : null)
+        || portfolioItems.find(p => p.featured)
+        || portfolioItems[0];
+      if (project?.id) window.openOlympusPortfolioItem(project.id);
+    };
+
+    window.openActiveSliderProject = () => {
       const project = window.sliderProjects?.[window.currentSliderIndex || 0]
         || (typeof sliderProjects !== 'undefined' ? sliderProjects[currentSliderIndex] : null)
         || portfolioItems.find(p => p.featured)

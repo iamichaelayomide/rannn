@@ -933,6 +933,125 @@ const termsSection = `
     </section>
 `;
 
+// Interactive Showcase with Landing Page Copy, Prompts & Verified Visible Assets
+const showcaseSectionHtml = `
+      <!-- Interactive Showcase: Cinematic Works in Motion (3-Card WebGL Interactive Reel) -->
+      <div class="max-w-7xl mx-auto px-6 py-24 border-y border-white/5 relative" id="portfolio-slider-section">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-amber-500/20 bg-amber-500/10 mb-4">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] font-mono">Curated Reel · Direct From The Atelier</span>
+          </div>
+          <h2 class="h2-editorial font-extrabold uppercase text-white mt-1 text-3xl sm:text-4xl lg:text-5xl">Cinematic Works in Motion</h2>
+          <p class="text-neutral-400 text-sm md:text-base mt-4 max-w-2xl mx-auto font-light leading-relaxed">
+            Experience our intentional pacing, cinema-grade color, and high-impact visual direction in real-time motion.
+          </p>
+
+          <!-- Interactive Click-to-Preview Prompt -->
+          <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <button type="button" class="group slider-play-trigger inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full glass-card border-gold-gradient text-xs font-mono text-amber-300 shadow-xl shadow-amber-500/10 hover:bg-amber-400/15 hover:border-amber-400 transition-all hover:scale-105 active:scale-95 cursor-pointer" onclick="window.openActiveSliderProject?.()" aria-label="Click to watch featured cinema preview">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400"></span>
+              </span>
+              <span class="font-bold tracking-wide text-white group-hover:text-amber-300">Click Any Card to Preview Works</span>
+              <iconify-icon icon="solar:play-circle-bold" class="text-base text-amber-400 transition-transform group-hover:scale-110"></iconify-icon>
+            </button>
+            <span class="text-[11px] font-mono text-neutral-500 hidden sm:inline-flex items-center gap-1">
+              <span>Drag or click arrows to switch</span>
+              <iconify-icon icon="solar:round-alt-arrow-right-linear" class="text-neutral-400"></iconify-icon>
+            </span>
+          </div>
+        </div>
+
+        <!-- 3-Card Slider Track Wrapper -->
+        <div class="relative w-full h-[500px] overflow-hidden flex items-center justify-center">
+          
+          <!-- Left/Right Faded Edge Overlays to signal more work exists -->
+          <div class="absolute left-0 top-0 bottom-0 w-24 md:w-32 bg-gradient-to-r from-neutral-950 via-neutral-950/70 to-transparent z-20 pointer-events-none"></div>
+          <div class="absolute right-0 top-0 bottom-0 w-24 md:w-32 bg-gradient-to-l from-neutral-950 via-neutral-950/70 to-transparent z-20 pointer-events-none"></div>
+
+          <!-- Carousel Track -->
+          <div class="relative w-full h-[450px] flex items-center justify-center" id="carousel-track">
+            
+            <!-- Left Card -->
+            <div class="carousel-card absolute w-[260px] md:w-[480px] h-[300px] md:h-[380px] rounded-3xl overflow-hidden border border-white/10 hover:border-amber-400/40 transition-all duration-500 scale-90 opacity-40 z-10 cursor-pointer pointer-events-auto group" id="card-left" title="Click to view previous work">
+              <img src="assets/portfolio/1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO.webp" alt="Chuks Ezimadu Interview - Olympus Atelier" class="w-full h-full object-cover filter brightness-75 group-hover:brightness-90 transition-all" id="img-left" loading="lazy">
+              <div class="absolute inset-0 bg-neutral-950/20 group-hover:bg-transparent transition-colors"></div>
+              <div class="absolute bottom-3 left-4 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-mono text-neutral-300 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                ← Previous
+              </div>
+            </div>
+
+            <!-- Center Card (WebGL Canvas with ripple effects, focal point) -->
+            <div class="carousel-card absolute w-[300px] md:w-[560px] h-[340px] md:h-[430px] rounded-3xl overflow-hidden border border-amber-400/30 shadow-[0_0_60px_rgba(0,0,0,0.9)] transition-all duration-500 scale-100 opacity-100 z-30 cursor-pointer group" id="card-center" title="Click to open cinema video preview">
+              <canvas id="liquid-slider-canvas" class="w-full h-full object-cover"></canvas>
+              
+              <!-- Center Card details overlay -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent flex flex-col justify-end p-6 md:p-8 pointer-events-none">
+                <span class="text-xs font-mono text-gold-gradient uppercase tracking-widest" id="slider-project-category">Weddings</span>
+                <h3 class="text-2xl md:text-3xl font-extrabold uppercase text-white mt-1 font-display leading-tight" id="slider-project-title">Bride Shoot — TheGoodWill '26</h3>
+                <p class="text-neutral-300 text-xs md:text-sm font-light max-w-md mt-1.5 leading-relaxed" id="slider-project-desc">
+                  Luxury bridal visual story, portrait pacing, and bespoke cinema color grading.
+                </p>
+
+                <!-- Interactive CTA Button inside Center Card -->
+                <div class="mt-4 flex items-center gap-3">
+                  <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-gradient text-neutral-950 font-bold text-xs uppercase tracking-wider shadow-lg shadow-amber-500/30 group-hover:scale-105 transition-transform">
+                    <iconify-icon icon="solar:play-bold" class="text-sm"></iconify-icon>
+                    <span>Watch Cinema Preview</span>
+                  </span>
+                  <span class="text-[10px] font-mono text-amber-400/80 hidden sm:inline-flex items-center gap-1">
+                    <span>Full Theater Mode</span>
+                    <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Top-right Click to Watch prompt badge -->
+              <div class="absolute top-4 right-4 bg-black/80 backdrop-blur-md border border-amber-400/40 px-3.5 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-wider text-amber-300 flex items-center gap-1.5 shadow-xl shadow-black/80 pointer-events-none">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-400"></span>
+                </span>
+                <span>Click to Preview</span>
+                <iconify-icon icon="solar:play-bold" class="text-xs text-amber-400 ml-0.5"></iconify-icon>
+              </div>
+            </div>
+
+            <!-- Right Card -->
+            <div class="carousel-card absolute w-[260px] md:w-[480px] h-[300px] md:h-[380px] rounded-3xl overflow-hidden border border-white/10 hover:border-amber-400/40 transition-all duration-500 scale-90 opacity-40 z-10 cursor-pointer pointer-events-auto group" id="card-right" title="Click to view next work">
+              <img src="assets/portfolio/1ZTb4jeJnK9YTu3t_ZXXAi2f3i9t-u9ly.webp" alt="Kida Metroprime Brand Film - Olympus Atelier" class="w-full h-full object-cover filter brightness-75 group-hover:brightness-90 transition-all" id="img-right" loading="lazy">
+              <div class="absolute inset-0 bg-neutral-950/20 group-hover:bg-transparent transition-colors"></div>
+              <div class="absolute bottom-3 right-4 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-mono text-neutral-300 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                Next →
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Navigation Arrows -->
+          <button id="slider-prev-btn" class="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full glass-card border border-white/10 hover:border-amber-400/40 text-white flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 z-40 focus:outline-none" aria-label="Previous production">
+            <iconify-icon icon="solar:arrow-left-linear" class="text-xl"></iconify-icon>
+          </button>
+          <button id="slider-next-btn" class="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full glass-card border border-white/10 hover:border-amber-400/40 text-white flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 z-40 focus:outline-none" aria-label="Next production">
+            <iconify-icon icon="solar:arrow-right-linear" class="text-xl"></iconify-icon>
+          </button>
+        </div>
+
+        <!-- View Full Portfolio Button -->
+        <div class="text-center mt-8">
+          <a href="#portfolio" class="inline-flex items-center justify-center bg-white/5 border border-white/10 hover:border-amber-400/40 text-white px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105 spa-nav-link" data-page="portfolio">
+            <span>Explore Complete Atelier Archive (200+ Works)</span>
+            <iconify-icon icon="solar:arrow-right-linear" class="text-sm ml-2 text-gold-gradient"></iconify-icon>
+          </a>
+        </div>
+      </div>
+`;
+
+// Replace Interactive Showcase in baseHtml
+html = html.replace(/<!-- Interactive Showcase: Liquid 3-Card Carousel Slider -->[\s\S]*?<!-- Ready to Scale/, `${showcaseSectionHtml.trim()}\n\n      <!-- Ready to Scale`);
+
 // Replace PAGE 2 in baseHtml
 html = html.replace(/<!-- PAGE 2: SERVICES -->[\s\S]*?<\/section>/, servicesSection.trim());
 

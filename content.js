@@ -510,6 +510,15 @@ window.OLYMPUS_CONTENT = {
       }
     ]
   },
+  "homeFeaturedIds": [
+    "1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO",
+    "1ZTb4jeJnK9YTu3t_ZXXAi2f3i9t-u9ly",
+    "1ASkxeGMdRTH9KmI8uDXWrH_13GwYykZh",
+    "1Ed8rQMWC4K6H6xTXgvIz_CyqkfBccSOM",
+    "1HvMxfpX5YIa2YRW4NFr2i069FcldvfUL",
+    "1xOWqFVhUX5DXtpUGuhOxdA_pxGL2ZnNO",
+    "10tIPdMuMU_6JxN2_X2m4n00KK3SMp91q"
+  ],
   "portfolioItems": [
     {
       "id": "1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO",
@@ -519,8 +528,8 @@ window.OLYMPUS_CONTENT = {
       "collection": "Weddings",
       "year": "2026",
       "mediaType": "video",
-      "thumbnailSrc": "assets/portfolio/1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO.webp",
-      "previewSrc": "assets/portfolio/1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO.webp",
+      "thumbnailSrc": "assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp",
+      "previewSrc": "assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp",
       "originalUrl": "https://drive.google.com/file/d/1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO/view",
       "alt": "Bride Shoot TheGoodWill '26 Wedding Cinema by Olympus Atelier",
       "featured": true
@@ -533,8 +542,8 @@ window.OLYMPUS_CONTENT = {
       "collection": "Weddings",
       "year": "2026",
       "mediaType": "video",
-      "thumbnailSrc": "assets/portfolio/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG.webp",
-      "previewSrc": "assets/portfolio/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG.webp",
+      "thumbnailSrc": "assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp",
+      "previewSrc": "assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp",
       "originalUrl": "https://drive.google.com/file/d/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG/view",
       "alt": "Couple Shoot TheGoodWill '26 Wedding Cinema by Olympus Atelier",
       "featured": true
@@ -812,12 +821,12 @@ window.OLYMPUS_CONTENT = {
       "category": "events",
       "collection": "Events & Conferences",
       "mediaType": "video",
-      "thumbnailSrc": "assets/portfolio/1QVxxaIjwOcDxQXRNmyePhQPBEjkZgDry.webp",
-      "previewSrc": "assets/portfolio/1QVxxaIjwOcDxQXRNmyePhQPBEjkZgDry.webp",
+      "thumbnailSrc": "assets/portfolio/1Ed8rQMWC4K6H6xTXgvIz_CyqkfBccSOM.webp",
+      "previewSrc": "assets/portfolio/1Ed8rQMWC4K6H6xTXgvIz_CyqkfBccSOM.webp",
       "originalUrl": "https://drive.google.com/file/d/1QVxxaIjwOcDxQXRNmyePhQPBEjkZgDry/view",
       "alt": "Tomisin Grandma 1 — Celebrations & Events by Olympus Atelier",
       "year": "2026",
-      "featured": true
+      "featured": false
     },
     {
       "id": "1CYrRzdDibyZBnE61j7ET9CMY3ccaqsiD",
@@ -826,8 +835,8 @@ window.OLYMPUS_CONTENT = {
       "category": "events",
       "collection": "Events & Conferences",
       "mediaType": "video",
-      "thumbnailSrc": "assets/portfolio/1CYrRzdDibyZBnE61j7ET9CMY3ccaqsiD.webp",
-      "previewSrc": "assets/portfolio/1CYrRzdDibyZBnE61j7ET9CMY3ccaqsiD.webp",
+      "thumbnailSrc": "assets/portfolio/1Ed8rQMWC4K6H6xTXgvIz_CyqkfBccSOM.webp",
+      "previewSrc": "assets/portfolio/1Ed8rQMWC4K6H6xTXgvIz_CyqkfBccSOM.webp",
       "originalUrl": "https://drive.google.com/file/d/1CYrRzdDibyZBnE61j7ET9CMY3ccaqsiD/view",
       "alt": "Africa Summit — Conference Coverage by Olympus Atelier",
       "year": "2026",
