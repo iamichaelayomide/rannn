@@ -15,6 +15,19 @@ window.OLYMPUS_CONTENT = {
     }
   },
   "pages": {
+    "terms": {
+      "slug": "terms",
+      "title": "Terms & Conditions",
+      "content": {
+        "header": {
+          "body": "Please read carefully before making payment. By making payment for any service provided by Olympus Atelier, the client confirms that they have read, understood, and agreed to the following terms.",
+          "title": "Terms & Conditions",
+          "eyebrow": "Contract & Settlement Policy"
+        }
+      },
+      "seo_title": "Terms & Conditions | Olympus Atelier",
+      "seo_description": "Official booking, payment, cancellation, editing, creative direction, and copyright terms for Olympus Atelier."
+    },
     "book": {
       "slug": "book",
       "title": "Start a Project",
@@ -129,6 +142,13 @@ window.OLYMPUS_CONTENT = {
             "role": "Photographer",
             "image": "assets/team/ibrahim.jpeg",
             "qualification": "BDS (In View)"
+          },
+          {
+            "bio": "Coordinates content strategies, client project roadmaps, and cross-functional operations across Olympus Atelier productions.",
+            "name": "Oluwabojutomi Adebayo",
+            "role": "Content and Project Manager",
+            "image": "assets/team/dayo.jpg",
+            "qualification": "B.Sc Nursing (In view)"
           },
           {
             "bio": "Designs and develops responsive digital experiences that extend Olympus Atelier's visual direction onto the web.",
@@ -352,9 +372,9 @@ window.OLYMPUS_CONTENT = {
       "name": "Silver",
       "price": "₦300,000",
       "features": [
-        "Full-day wedding videography coverage",
+        "Two bridal transitions",
         "One videographer",
-        "Highlight and full video"
+        "One Highlight"
       ]
     },
     {

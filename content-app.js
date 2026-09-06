@@ -317,6 +317,7 @@
       about: '#page-about > div > div:first-child > div:first-child',
       book: '#page-book > div > div:first-child',
       contact: '#page-contact > div > div:first-child',
+      terms: '#page-terms > div > div:first-child',
     };
 
     Object.entries(targets).forEach(([slug, selector]) => {

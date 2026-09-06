@@ -1129,7 +1129,7 @@ const initSPARouter = () => {
     // Toggle global persistent marketing modules
     const globalModules = document.getElementById('global-persistent-modules');
     if (globalModules) {
-      if (pageId === 'book') {
+      if (pageId === 'book' || pageId === 'terms') {
         globalModules.style.display = 'none';
       } else {
         globalModules.style.display = '';

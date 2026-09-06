@@ -486,15 +486,15 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label for="bank-name" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Bank Name</label>
-              <input id="bank-name" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="OPay / Zenith Bank">
+              <input id="bank-name" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="Moniepoint MFB">
             </div>
             <div>
               <label for="bank-account" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Account Number</label>
-              <input id="bank-account" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="8087172313">
+              <input id="bank-account" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="6801018595">
             </div>
             <div class="sm:col-span-2">
               <label for="bank-beneficiary" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Account Name / Beneficiary</label>
-              <input id="bank-beneficiary" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="Olympus Atelier / Michael Ayomide">
+              <input id="bank-beneficiary" type="text" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" value="Olympus Atelier Ltd">
             </div>
             <div class="sm:col-span-2">
               <label for="doc-notes" class="block text-xs font-mono uppercase text-neutral-400 mb-2">Terms &amp; Settlement Policy</label>
@@ -645,15 +645,15 @@
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 font-mono text-[11px]">
                 <div>
                   <span class="text-neutral-500 block text-[9px] uppercase">Bank</span>
-                  <strong id="preview-bank-name" class="text-white">OPay / Zenith Bank</strong>
+                  <strong id="preview-bank-name" class="text-white">Moniepoint MFB</strong>
                 </div>
                 <div>
                   <span class="text-neutral-500 block text-[9px] uppercase">Account Number</span>
-                  <strong id="preview-bank-account" class="text-amber-400 font-bold text-sm">8087172313</strong>
+                  <strong id="preview-bank-account" class="text-amber-400 font-bold text-sm">6801018595</strong>
                 </div>
                 <div>
                   <span class="text-neutral-500 block text-[9px] uppercase">Beneficiary</span>
-                  <strong id="preview-bank-beneficiary" class="text-white">Michael Ayomide / Olympus</strong>
+                  <strong id="preview-bank-beneficiary" class="text-white">Olympus Atelier Ltd</strong>
                 </div>
               </div>
             </div>
@@ -967,9 +967,9 @@
         }
 
         // Bank info & notes
-        document.getElementById('preview-bank-name').textContent = bankName || 'OPay / Zenith Bank';
-        document.getElementById('preview-bank-account').textContent = bankAccount || '8087172313';
-        document.getElementById('preview-bank-beneficiary').textContent = bankBeneficiary || 'Olympus Atelier';
+        document.getElementById('preview-bank-name').textContent = bankName || 'Moniepoint MFB';
+        document.getElementById('preview-bank-account').textContent = bankAccount || '6801018595';
+        document.getElementById('preview-bank-beneficiary').textContent = bankBeneficiary || 'Olympus Atelier Ltd';
         document.getElementById('preview-notes').textContent = notes || 'Thank you for choosing Olympus Atelier.';
       };
 
@@ -1239,9 +1239,9 @@
         const docNumber = document.getElementById('doc-number').value.trim() || 'OLY-DOC-001';
         const clientName = document.getElementById('client-name').value.trim() || 'Client';
         const dueDate = document.getElementById('doc-due-date').value;
-        const bankName = document.getElementById('bank-name').value.trim() || 'OPay';
-        const bankAccount = document.getElementById('bank-account').value.trim() || '8087172313';
-        const bankBeneficiary = document.getElementById('bank-beneficiary').value.trim() || 'Olympus Atelier';
+        const bankName = document.getElementById('bank-name').value.trim() || 'Moniepoint MFB';
+        const bankAccount = document.getElementById('bank-account').value.trim() || '6801018595';
+        const bankBeneficiary = document.getElementById('bank-beneficiary').value.trim() || 'Olympus Atelier Ltd';
 
         let subtotal = 0;
         const itemLines = items.map((it, idx) => {
