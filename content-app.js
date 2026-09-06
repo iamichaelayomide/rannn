@@ -63,6 +63,9 @@
     if (intent && !['general', 'project', 'event'].includes(intent.toLowerCase().trim())) {
       lines.push(`• *Request Type:* ${intent.trim()}`);
     }
+    if (termsAgreed) {
+      lines.push('• *Terms & Conditions:* Confirmed & agreed');
+    }
     if (message && message.trim()) {
       lines.push('');
       lines.push('*Project Brief & Details:*');
@@ -732,8 +735,48 @@
         });
     };
 
+    const bookingTermsCheckbox = document.getElementById('booking-terms-checkbox');
+    const bookingTermsContainer = document.getElementById('booking-terms-container');
+    const bookingSubmitBtn = document.getElementById('booking-submit-btn');
+
+    const updateBookingSubmitState = () => {
+      if (!bookingSubmitBtn) return;
+      if (bookingTermsCheckbox && !bookingTermsCheckbox.checked) {
+        bookingSubmitBtn.classList.add('opacity-60', 'cursor-not-allowed');
+        bookingSubmitBtn.setAttribute('aria-disabled', 'true');
+      } else {
+        bookingSubmitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+        bookingSubmitBtn.removeAttribute('aria-disabled');
+      }
+    };
+
+    if (bookingTermsCheckbox) {
+      bookingTermsCheckbox.addEventListener('change', () => {
+        updateBookingSubmitState();
+        if (bookingTermsCheckbox.checked) {
+          bookingTermsContainer?.classList.remove('terms-highlight');
+          const bStatus = document.getElementById('booking-form-status');
+          if (bStatus && bStatus.textContent.includes('Terms & Conditions')) {
+            bStatus.textContent = '';
+          }
+        }
+      });
+      updateBookingSubmitState();
+    }
+
     document.getElementById('booking-form')?.addEventListener('submit', event => {
       event.preventDefault();
+      const bStatus = document.getElementById('booking-form-status');
+      if (bookingTermsCheckbox && !bookingTermsCheckbox.checked) {
+        if (bStatus) {
+          bStatus.textContent = 'Please confirm that you have read and agreed to the Terms & Conditions before submitting.';
+          bStatus.classList.add('text-amber-400');
+        }
+        bookingTermsContainer?.classList.add('terms-highlight');
+        bookingTermsCheckbox.focus();
+        bookingTermsContainer?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
       const form = new FormData(event.currentTarget);
       const name = String(form.get('name') || '').trim();
       const email = String(form.get('email') || '').trim();
@@ -752,7 +795,7 @@
         budget: budget || null,
         timeline: date || null,
         message: details,
-        payload: { location: location || null }
+        payload: { location: location || null, terms_agreed: true }
       }, 'booking-form-status');
 
       const waMessage = buildEnquiryWhatsappMessage({
@@ -764,7 +807,8 @@
         timeline: date,
         location,
         message: details,
-        intent: 'project'
+        intent: 'project',
+        termsAgreed: true
       });
       openWhatsapp(waMessage, event.currentTarget);
     });
@@ -857,7 +901,34 @@
     const continueWhatsapp = document.getElementById('enquiry-whatsapp-link');
     const sourceCtaInput = document.getElementById('enquiry-source-cta');
     const idempotencyInput = document.getElementById('enquiry-idempotency-key');
+    const termsCheckbox = document.getElementById('enquiry-terms-checkbox');
+    const termsContainer = document.getElementById('enquiry-terms-container');
     let turnstileWidgetId = null;
+
+    const updateSubmitState = () => {
+      if (!submitButton) return;
+      if (termsCheckbox && !termsCheckbox.checked) {
+        submitButton.classList.add('opacity-60', 'cursor-not-allowed');
+        submitButton.setAttribute('aria-disabled', 'true');
+      } else {
+        submitButton.classList.remove('opacity-60', 'cursor-not-allowed');
+        submitButton.removeAttribute('aria-disabled');
+      }
+    };
+
+    if (termsCheckbox) {
+      termsCheckbox.addEventListener('change', () => {
+        updateSubmitState();
+        if (termsCheckbox.checked) {
+          termsContainer?.classList.remove('terms-highlight');
+          if (status && status.textContent.includes('Terms & Conditions')) {
+            status.textContent = '';
+            status.classList.add('hidden');
+          }
+        }
+      });
+      updateSubmitState();
+    }
 
     const makeIdempotencyKey = () => window.crypto?.randomUUID
       ? window.crypto.randomUUID()
@@ -1101,6 +1172,15 @@
         return;
       }
 
+      if (termsCheckbox && !termsCheckbox.checked) {
+        status.textContent = 'Please confirm that you have read and agreed to the Terms & Conditions before submitting.';
+        status.classList.remove('hidden');
+        termsContainer?.classList.add('terms-highlight');
+        termsCheckbox.focus();
+        termsContainer?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
       status.classList.add('hidden');
 
       // 1. Build formatted WhatsApp message with customer intro and selected details
@@ -1114,7 +1194,8 @@
         location,
         message,
         intent,
-        preferred_channel
+        preferred_channel,
+        termsAgreed: true
       });
       const waUrl = whatsappUrl(waMessage);
 
@@ -1146,7 +1227,7 @@
           timeline: timeline || null,
           location: location || null,
           message,
-          consent: values.get('consent') === 'on',
+          consent: values.get('consent') === 'on' || Boolean(termsCheckbox?.checked),
           source_page: window.location.hash.split('?')[0].replace(/^#/, '') || 'contact',
           source_cta: values.get('source_cta') || 'WhatsApp Enquiry Form',
           source_url: window.location.href,

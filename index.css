@@ -83,6 +83,42 @@ a.spa-nav-link:active,
   accent-color: #fbbf24;
 }
 
+.enquiry-consent a {
+  color: #fbbf24;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.enquiry-consent a:hover {
+  color: #fde68a;
+}
+
+.terms-consent-box {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1rem 1.15rem;
+  transition: all 0.25s ease;
+}
+
+.terms-consent-box:hover {
+  border-color: rgba(251, 191, 36, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.terms-consent-box.terms-highlight {
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.25), 0 0 20px rgba(251, 191, 36, 0.15) !important;
+  animation: termsPulse 1s ease 2;
+}
+
+@keyframes termsPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+}
+
 .enquiry-form-error {
   padding: 0.9rem 1rem;
   color: #fecaca;

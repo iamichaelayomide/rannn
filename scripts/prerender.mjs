@@ -519,7 +519,15 @@ const bookSection = `
             <label for="booking-details" class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2 font-mono">Project Brief &amp; Notes <span class="text-amber-400">*</span></label>
             <textarea id="booking-details" name="details" rows="5" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" required placeholder="Tell us what you need, key deliverables, event timeline, or specific creative direction."></textarea>
           </div>
-          <button type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2 text-sm uppercase tracking-wider cursor-pointer">
+
+          <div id="booking-terms-container" class="terms-consent-box">
+            <label class="enquiry-consent cursor-pointer select-none">
+              <input type="checkbox" id="booking-terms-checkbox" name="terms_consent" required>
+              <span>I confirm that I have read, understood, and agree to the <a href="/terms" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1">Terms &amp; Conditions <iconify-icon icon="solar:arrow-right-up-linear" class="text-xs"></iconify-icon></a> before making payment or booking.</span>
+            </label>
+          </div>
+
+          <button id="booking-submit-btn" type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2 text-sm uppercase tracking-wider cursor-pointer opacity-60">
             <span>Send Request via WhatsApp</span>
             <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
           </button>
@@ -623,10 +631,17 @@ const contactSection = `
               <textarea id="enquiry-message" name="message" rows="5" minlength="5" maxlength="5000" class="w-full glass-input px-4 py-3.5 rounded-xl text-sm placeholder-neutral-600 focus:border-amber-400" placeholder="Tell us what you need, key deliverables, event timeline, or specific creative direction." required></textarea>
             </div>
 
+            <div id="enquiry-terms-container" class="terms-consent-box">
+              <label class="enquiry-consent cursor-pointer select-none">
+                <input type="checkbox" id="enquiry-terms-checkbox" name="terms_consent" required>
+                <span>I confirm that I have read, understood, and agree to the <a href="/terms" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1">Terms &amp; Conditions <iconify-icon icon="solar:arrow-right-up-linear" class="text-xs"></iconify-icon></a> before making payment or booking.</span>
+              </label>
+            </div>
+
             <div id="turnstile-container" class="flex justify-center"></div>
             <div id="enquiry-form-error" class="enquiry-form-error hidden text-red-400 text-xs font-mono text-center" role="alert"></div>
             
-            <button id="enquiry-submit" type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2 text-sm uppercase tracking-wider cursor-pointer">
+            <button id="enquiry-submit" type="submit" class="w-full bg-gold-gradient text-neutral-950 font-bold py-4 rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2 text-sm uppercase tracking-wider cursor-pointer opacity-60">
               <span>Send Request via WhatsApp</span>
               <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
             </button>
