@@ -161,6 +161,7 @@
   const serviceToCategoryMap = {
     'wedding': 'wedding',
     'wedding-highlights': 'wedding',
+    'live-streaming-drone': 'events',
     'editing-alone': 'editing-alone',
     'video-editing': 'editing-alone',
     'videography-editing': 'editing-alone',
@@ -187,7 +188,7 @@
       const cat = service.portfolioCategory || serviceToCategoryMap[service.id] || 'all';
       return `
       <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[340px] reveal-on-scroll stagger-${(index % 3) + 1}">
-        <div class="service-card-icon"><iconify-icon icon="${iconNames[index % iconNames.length]}"></iconify-icon></div>
+        <div class="service-card-icon"><iconify-icon icon="${service.icon || iconNames[index % iconNames.length]}"></iconify-icon></div>
         <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400 mt-8">Service ${String(index + 1).padStart(2, '0')}</span>
         <h3 class="text-2xl font-bold text-white mt-3">${escapeHtml(service.title)}</h3>
         <p class="text-sm text-neutral-400 leading-relaxed mt-4">${escapeHtml(service.summary)}</p>
@@ -286,6 +287,11 @@
       const body = card.querySelector('.primary-content-block p');
       if (title) title.textContent = service.title;
       if (body) body.textContent = service.summary;
+      if (service.icon) {
+        card.querySelectorAll('.hover-icon-topright iconify-icon, .card-icon-wrapper iconify-icon').forEach(iconEl => {
+          iconEl.setAttribute('icon', service.icon);
+        });
+      }
       card.querySelectorAll('.deliverables-content-block li').forEach((li, liIndex) => {
         const icon = li.querySelector('iconify-icon')?.outerHTML || '<iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>';
         if (service.deliverables?.[liIndex]) {

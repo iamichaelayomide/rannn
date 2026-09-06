@@ -34,8 +34,10 @@ const escapeHtml = value => String(value ?? '')
   .replaceAll('"', '&quot;')
   .replaceAll("'", '&#039;');
 
-const serviceCardsHtml = content.services.map((service, index) => `
-          <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[310px] reveal-on-scroll stagger-${(index % 3) + 1}">
+const serviceCardsHtml = content.services.map((service, index) => {
+  const cat = service.portfolioCategory || (service.id === 'wedding' ? 'wedding' : service.id === 'live-streaming-drone' ? 'events' : service.id === 'events' ? 'events' : service.id === 'editing-alone' ? 'editing-alone' : service.id === 'motion' ? 'motion' : service.id === 'web' || service.id === 'graphics' ? 'graphics' : 'film');
+  return `
+          <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[340px] reveal-on-scroll stagger-${(index % 3) + 1}">
             <div class="service-card-icon"><iconify-icon icon="${service.icon || iconNames[index % iconNames.length]}"></iconify-icon></div>
             <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-amber-400 mt-8">Service ${String(index + 1).padStart(2, '0')}</span>
             <h3 class="text-2xl font-bold text-white mt-3">${escapeHtml(service.title)}</h3>
@@ -44,13 +46,22 @@ const serviceCardsHtml = content.services.map((service, index) => `
             <ul class="mt-6 space-y-2 text-xs text-neutral-300">
               ${(service.deliverables || []).map(item => `<li class="flex items-center gap-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400 text-sm flex-shrink-0"></iconify-icon><span>${escapeHtml(item)}</span></li>`).join('')}
             </ul>
-            ${(service.title || '').toLowerCase().includes('wedding') ? `
+            ${(service.title || '').toLowerCase().includes('wedding') || (service.title || '').toLowerCase().includes('videography') ? `
               <button type="button" class="wedding-package-trigger inline-flex items-center justify-center bg-gold-gradient text-neutral-950 font-bold px-5 py-3 rounded-full text-xs uppercase tracking-wider mt-6 hover:scale-105 transition-transform" data-open-wedding-modal="true">
                 View Wedding Packages
               </button>
             ` : ''}
-            <a href="#contact?intent=project&amp;service=${encodeURIComponent(service.title)}&amp;source_cta=Service%20card" data-page="contact" class="spa-nav-link text-xs font-bold uppercase tracking-wider text-amber-400 mt-auto pt-7">Brief this service →</a>
-          </article>`).join('\n');
+            <div class="mt-auto pt-7 flex flex-col gap-2 border-t border-white/5">
+              <a href="#portfolio?category=${encodeURIComponent(cat)}" data-page="portfolio" class="spa-nav-link text-xs font-bold uppercase tracking-wider text-amber-400 hover:text-white transition-colors flex items-center justify-between">
+                <span>View ${escapeHtml(service.title)} Work</span>
+                <span>→</span>
+              </a>
+              <a href="#contact?intent=project&amp;service=${encodeURIComponent(service.title)}&amp;source_cta=Service%20card" data-page="contact" class="spa-nav-link text-[11px] uppercase tracking-wider text-neutral-400 hover:text-amber-400 transition-colors">
+                Brief this service
+              </a>
+            </div>
+          </article>`;
+}).join('\n');
 
 const weddingPackagesHtml = (content.weddingPackages || []).map((item, index) => `
             <article class="wedding-package glass-card border-gold-gradient rounded-3xl p-8 flex flex-col justify-between reveal-on-scroll stagger-${index + 1} ${index === 1 ? 'relative border-amber-400/50 shadow-xl shadow-amber-500/10' : ''}">
@@ -220,8 +231,46 @@ const capabilitiesDeckHtml = `
             </div>
           </div>
 
-          <!-- Card 2: Events & Conferences -->
+          <!-- Card 2: Live Streaming & Drone -->
           <div class="capabilities-card bg-blur-gradient-2 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="1">
+            <div class="sweep-shine"></div>
+            <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
+            <div class="hover-icon-topright text-gold-gradient">
+              <iconify-icon icon="solar:screencast-bold-duotone" class="text-xl"></iconify-icon>
+            </div>
+            <div class="card-content-wrapper h-full flex flex-col justify-between relative z-10 w-full transition-opacity duration-300">
+              <div class="overflow-hidden">
+                <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gold-gradient mb-6 card-icon-wrapper">
+                  <iconify-icon icon="solar:screencast-bold-duotone" class="text-xl"></iconify-icon>
+                </div>
+                <div class="relative h-[200px] overflow-hidden">
+                  <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Live Streaming &amp; Drone</h3>
+                    <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
+                      Multi-camera broadcast streaming and cinema drone aerials for luxury weddings, summits, and landmark events.
+                    </p>
+                  </div>
+                  <div class="deliverables-content-block absolute inset-0 translate-y-[100px] opacity-0 transition-all duration-500 flex flex-col justify-center space-y-3">
+                    <span class="text-[9px] font-mono text-gold-gradient uppercase tracking-widest">Pillar Deliverables:</span>
+                    <ul class="space-y-2 text-[10px] font-mono text-neutral-300">
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>4K/HD Live Broadcast</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Cinema Drone Aerials</li>
+                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Bonded Multi-SIM Stream</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center mt-4 border-t border-white/5 pt-4">
+                <a href="#services" class="text-xs font-bold text-gold-gradient uppercase tracking-widest flex items-center gap-1.5 spa-nav-link" data-page="services">
+                  Learn More <iconify-icon icon="solar:arrow-right-linear" class="text-xs"></iconify-icon>
+                </a>
+                <span class="text-[9px] font-mono text-neutral-500 uppercase select-none text-right">Pillar 02</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Events & Conferences -->
+          <div class="capabilities-card bg-blur-gradient-3 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="2">
             <div class="sweep-shine"></div>
             <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
             <div class="hover-icon-topright text-gold-gradient">
@@ -253,13 +302,13 @@ const capabilitiesDeckHtml = `
                 <a href="#services" class="text-xs font-bold text-gold-gradient uppercase tracking-widest flex items-center gap-1.5 spa-nav-link" data-page="services">
                   Learn More <iconify-icon icon="solar:arrow-right-linear" class="text-xs"></iconify-icon>
                 </a>
-                <span class="text-[9px] font-mono text-neutral-500 uppercase select-none text-right">Pillar 02</span>
+                <span class="text-[9px] font-mono text-neutral-500 uppercase select-none text-right">Pillar 03</span>
               </div>
             </div>
           </div>
 
-          <!-- Card 3: Video Editing -->
-          <div class="capabilities-card bg-blur-gradient-3 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="2">
+          <!-- Card 4: Video Editing -->
+          <div class="capabilities-card bg-blur-gradient-4 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="3">
             <div class="sweep-shine"></div>
             <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
             <div class="hover-icon-topright text-gold-gradient">
@@ -283,44 +332,6 @@ const capabilitiesDeckHtml = `
                       <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Pacing &amp; Narrative Flow</li>
                       <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>DaVinci Color Grading</li>
                       <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Multi-aspect Deliveries</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="flex justify-between items-center mt-4 border-t border-white/5 pt-4">
-                <a href="#services" class="text-xs font-bold text-gold-gradient uppercase tracking-widest flex items-center gap-1.5 spa-nav-link" data-page="services">
-                  Learn More <iconify-icon icon="solar:arrow-right-linear" class="text-xs"></iconify-icon>
-                </a>
-                <span class="text-[9px] font-mono text-neutral-500 uppercase select-none text-right">Pillar 03</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 4: Commercials & Brand Video -->
-          <div class="capabilities-card bg-blur-gradient-4 border-gold-gradient p-6 rounded-3xl flex flex-col justify-between h-[360px] w-[280px] border border-white/5 absolute transition-all duration-300 overflow-hidden cursor-pointer" data-card-idx="3">
-            <div class="sweep-shine"></div>
-            <div class="absolute inset-0 bg-neutral-950/10 pointer-events-none"></div>
-            <div class="hover-icon-topright text-gold-gradient">
-              <iconify-icon icon="solar:clapperboard-play-bold-duotone" class="text-xl"></iconify-icon>
-            </div>
-            <div class="card-content-wrapper h-full flex flex-col justify-between relative z-10 w-full transition-opacity duration-300">
-              <div class="overflow-hidden">
-                <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gold-gradient mb-6 card-icon-wrapper">
-                  <iconify-icon icon="solar:clapperboard-play-bold-duotone" class="text-xl"></iconify-icon>
-                </div>
-                <div class="relative h-[200px] overflow-hidden">
-                  <div class="primary-content-block absolute inset-0 transition-all duration-500 space-y-2">
-                    <h3 class="text-lg font-bold text-white mb-2 uppercase font-display">Commercials &amp; Brand Video</h3>
-                    <p class="text-neutral-400 text-xs font-light leading-relaxed mb-4">
-                      Cinematic brand campaigns, executive interviews, and promotional video designed to captivate your audience.
-                    </p>
-                  </div>
-                  <div class="deliverables-content-block absolute inset-0 translate-y-[100px] opacity-0 transition-all duration-500 flex flex-col justify-center space-y-3">
-                    <span class="text-[9px] font-mono text-gold-gradient uppercase tracking-widest">Pillar Deliverables:</span>
-                    <ul class="space-y-2 text-[10px] font-mono text-neutral-300">
-                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-1"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Scripting &amp; Production</li>
-                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-2"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>4K Cinema Cameras</li>
-                      <li class="flex items-center gap-2 transition-all duration-500 translate-y-3 opacity-0 stagger-3"><iconify-icon icon="solar:check-circle-bold" class="text-amber-400"></iconify-icon>Social &amp; Broadcast Cuts</li>
                     </ul>
                   </div>
                 </div>

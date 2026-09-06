@@ -231,7 +231,7 @@ window.OLYMPUS_CONTENT = {
         }
       },
       "seo_title": "Creative Services for Brands, Events & Institutions | Olympus Atelier",
-      "seo_description": "Choose photography, film, event coverage, branding, editorial, motion, commercial, and website services based on the outcome you need."
+      "seo_description": "Choose wedding cinematography, live streaming & drone coverage, event films, video editing, commercial production, motion, and digital design based on your outcome."
     },
     "portfolio": {
       "slug": "portfolio",
@@ -260,6 +260,21 @@ window.OLYMPUS_CONTENT = {
         "Cinematic 4K highlight film",
         "Social teaser reel (60s)",
         "Colour-graded delivery"
+      ]
+    },
+    {
+      "id": "live-streaming-drone",
+      "title": "Live Streaming & Drone",
+      "summary": "Multi-camera broadcast streaming and high-altitude cinema drone perspectives for luxury weddings, corporate summits, and landmark ceremonies.",
+      "description": "Broadcast in real-time to global audiences across YouTube, Zoom, Facebook, or custom private CDNs with redundant multi-SIM bonding, dedicated live audio mastering, and sweeping aerial 4K cinematography.",
+      "portfolioCategory": "events",
+      "icon": "solar:screencast-bold-duotone",
+      "deliverables": [
+        "Multi-camera 4K/HD live broadcast",
+        "Licensed cinema aerial drone capture",
+        "Redundant multi-SIM bonded streaming",
+        "Live multi-channel audio mixing",
+        "Full ceremony & keynote master exports"
       ]
     },
     {
