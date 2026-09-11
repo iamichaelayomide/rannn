@@ -45,12 +45,15 @@
       --font-display: 'Space Grotesk', sans-serif;
       --font-serif: 'Cinzel', serif;
       --font-mono: 'JetBrains Mono', monospace;
-      --canva-aurora-cyan: #38bdf8;
-      --canva-aurora-indigo: #6366f1;
-      --canva-aurora-violet: #a855f7;
-      --canva-aurora-magenta: #ec4899;
-      --gradient-canva-aurora: linear-gradient(90deg, #38bdf8 0%, #6366f1 35%, #a855f7 70%, #ec4899 100%);
-      --gradient-canva-aurora-diagonal: linear-gradient(135deg, #38bdf8 0%, #6366f1 35%, #a855f7 70%, #ec4899 100%);
+      --color-gold-champagne: #FDF3C7;
+      --color-gold-light: #FFE082;
+      --color-gold-mid: #D4AF37;
+      --color-gold-rich: #F59E0B;
+      --color-gold-dark: #8C6D1F;
+      --gradient-gold: linear-gradient(90deg, #FFE082 0%, #D4AF37 35%, #F59E0B 70%, #B45309 100%);
+      --gradient-gold-diagonal: linear-gradient(135deg, #FDE68A 0%, #D4AF37 40%, #B45309 100%);
+      --gradient-canva-aurora: var(--gradient-gold);
+      --gradient-canva-aurora-diagonal: var(--gradient-gold-diagonal);
     }
 
     body {
@@ -82,34 +85,35 @@
       -webkit-text-fill-color: transparent;
     }
 
-    /* Canva Aurora Luminous Gradients (Emil Kowalski Design Engineering) */
-    .text-canva-aurora {
-      background: linear-gradient(90deg, #38bdf8 0%, #818cf8 32%, #c084fc 68%, #f472b6 100%);
+    /* Olympus Gold Luminous Accents (Emil Design Engineering) */
+    .text-canva-aurora,
+    .text-gold-aurora {
+      background: linear-gradient(90deg, #FFE082 0%, #F59E0B 40%, #D4AF37 70%, #FBBF24 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .bg-canva-aurora {
-      background: var(--gradient-canva-aurora);
+      background: var(--gradient-gold);
     }
 
     .canva-aurora-glow-card {
       position: relative;
-      background: rgba(12, 12, 14, 0.85);
+      background: rgba(12, 12, 14, 0.88);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7),
-                  0 0 40px -10px rgba(99, 102, 241, 0.15),
-                  0 0 60px -15px rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.75),
+                  0 0 35px -5px rgba(245, 158, 11, 0.12),
+                  0 0 60px -15px rgba(212, 175, 55, 0.10);
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .canva-aurora-glow-card:hover {
-      border-color: rgba(168, 85, 247, 0.25);
-      box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.8),
-                  0 0 50px -5px rgba(99, 102, 241, 0.2),
-                  0 0 70px -10px rgba(168, 85, 247, 0.18);
+      border-color: rgba(245, 158, 11, 0.4);
+      box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.85),
+                  0 0 45px -5px rgba(245, 158, 11, 0.22),
+                  0 0 70px -10px rgba(212, 175, 55, 0.18);
     }
 
     .canva-pill {
@@ -123,51 +127,51 @@
       letter-spacing: 0.05em;
       border-radius: 9999px;
       background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(168, 85, 247, 0.3);
+      border: 1px solid rgba(245, 158, 11, 0.25);
       color: #e2e8f0;
       transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
       cursor: pointer;
     }
 
     .canva-pill:hover {
-      border-color: rgba(168, 85, 247, 0.7);
-      background: rgba(168, 85, 247, 0.1);
-      color: #ffffff;
+      border-color: rgba(245, 158, 11, 0.65);
+      background: rgba(245, 158, 11, 0.08);
+      color: #fef3c7;
       transform: translateY(-1px);
-      box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
     }
 
     .canva-pill.active {
-      background: linear-gradient(90deg, rgba(56, 189, 248, 0.2) 0%, rgba(99, 102, 241, 0.25) 50%, rgba(168, 85, 247, 0.25) 100%);
-      border-color: #a855f7;
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.22) 0%, rgba(212, 175, 55, 0.28) 50%, rgba(180, 83, 9, 0.22) 100%);
+      border-color: #f59e0b;
       color: #ffffff;
-      box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.3);
     }
 
     .canva-search-bar {
       position: relative;
       border-radius: 9999px;
       background: rgba(18, 18, 22, 0.75);
-      border: 1.5px solid rgba(168, 85, 247, 0.35);
+      border: 1.5px solid rgba(245, 158, 11, 0.3);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       transition: all 0.25s ease;
     }
 
     .canva-search-bar:focus-within {
-      border-color: #a855f7;
-      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2), 0 0 25px rgba(168, 85, 247, 0.25);
-      background: rgba(22, 22, 28, 0.95);
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18), 0 0 25px rgba(245, 158, 11, 0.22);
+      background: rgba(22, 22, 26, 0.95);
     }
 
     .canva-aurora-glow-underlay {
       position: absolute;
       inset: -15px;
-      background: linear-gradient(90deg, rgba(56, 189, 248, 0.15) 0%, rgba(99, 102, 241, 0.18) 35%, rgba(168, 85, 247, 0.18) 70%, rgba(236, 72, 153, 0.15) 100%);
+      background: linear-gradient(90deg, rgba(254, 243, 199, 0.08) 0%, rgba(245, 158, 11, 0.15) 35%, rgba(212, 175, 55, 0.15) 70%, rgba(180, 83, 9, 0.1) 100%);
       filter: blur(45px);
       border-radius: 2.5rem;
       pointer-events: none;
       z-index: -1;
-      opacity: 0.75;
+      opacity: 0.85;
     }
 
     .terms-clause-item {
@@ -175,7 +179,7 @@
     }
   </style>
 </head>
-<body class="selection:bg-purple-500/30 selection:text-purple-200">
+<body class="selection:bg-amber-500/30 selection:text-amber-200">
 
   <!-- Header -->
   <header class="border-b border-white/5 bg-neutral-950/80 backdrop-blur-xl sticky top-0 z-40">
@@ -186,7 +190,7 @@
           <span class="font-serif font-bold tracking-[0.18em] text-sm uppercase">Olympus Atelier</span>
         </a>
         <span class="text-neutral-600 text-sm hidden sm:inline">/</span>
-        <span class="text-canva-aurora font-mono text-xs uppercase tracking-widest bg-purple-500/10 border border-purple-500/20 px-2.5 py-1 rounded-full hidden sm:inline-block">Terms &amp; Conditions</span>
+        <span class="text-gold-gradient font-mono text-xs uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full hidden sm:inline-block">Terms &amp; Conditions</span>
       </div>
 
       <div class="flex items-center gap-3 sm:gap-5">
@@ -202,7 +206,7 @@
         <a href="/#contact" class="hidden sm:inline-flex text-xs font-mono uppercase tracking-wider text-neutral-400 hover:text-white transition-colors">
           Contact
         </a>
-        <a href="/" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border border-white/20 text-white hover:border-purple-400 hover:text-purple-300 transition-colors">
+        <a href="/" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border border-white/20 text-white hover:border-amber-400 hover:text-amber-300 transition-colors">
           <span>← Atelier Home</span>
         </a>
       </div>
@@ -212,41 +216,41 @@
   <!-- Main Content -->
   <main class="max-w-5xl mx-auto px-4 sm:px-6 py-12 lg:py-20">
 
-    <!-- Header Section with Canva Aurora Theme -->
+    <!-- Header Section with Olympus Gold Luxury Theme -->
     <div class="text-center max-w-3xl mx-auto mb-10">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 mb-4 shadow-lg shadow-purple-500/5">
-        <span class="w-2 h-2 rounded-full bg-gradient-to-r from-sky-400 via-indigo-500 to-pink-500 animate-pulse"></span>
-        <span class="text-xs font-bold text-canva-aurora uppercase tracking-[0.2em] font-mono">Contract &amp; Settlement Policy</span>
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 mb-4 shadow-lg shadow-amber-500/5">
+        <span class="w-2 h-2 rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-amber-600 animate-pulse"></span>
+        <span class="text-xs font-bold text-gold-gradient uppercase tracking-[0.2em] font-mono">Contract &amp; Settlement Policy</span>
       </div>
       <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase text-white font-display tracking-tight mt-2">Terms &amp; Conditions</h1>
       <p class="text-neutral-400 text-sm sm:text-base mt-4 max-w-2xl mx-auto font-light leading-relaxed">
         Please read carefully before making payment. By making payment for any service provided by Olympus Atelier, the client confirms that they have read, understood, and agreed to the following terms without exception.
       </p>
 
-      <!-- Canva-style Pills Filter (Adapted from Canva UI) -->
+      <!-- Gold-style Pills Filter (Emil Design Engineering) -->
       <div class="flex flex-wrap items-center justify-center gap-2.5 mt-8">
         <button type="button" class="canva-pill canva-filter-pill active" data-filter="all">
-          <iconify-icon icon="solar:widget-2-bold" class="text-xs text-sky-400"></iconify-icon>
+          <iconify-icon icon="solar:widget-2-bold" class="text-xs text-amber-300"></iconify-icon>
           <span>All Clauses</span>
         </button>
         <button type="button" class="canva-pill canva-filter-pill" data-filter="booking">
-          <iconify-icon icon="solar:card-check-bold" class="text-xs text-indigo-400"></iconify-icon>
+          <iconify-icon icon="solar:card-check-bold" class="text-xs text-amber-400"></iconify-icon>
           <span>Booking &amp; Payment</span>
         </button>
         <button type="button" class="canva-pill canva-filter-pill" data-filter="production">
-          <iconify-icon icon="solar:clapperboard-play-bold" class="text-xs text-purple-400"></iconify-icon>
+          <iconify-icon icon="solar:clapperboard-play-bold" class="text-xs text-amber-300"></iconify-icon>
           <span>Production &amp; Delivery</span>
         </button>
         <button type="button" class="canva-pill canva-filter-pill" data-filter="rights">
-          <iconify-icon icon="solar:shield-check-bold" class="text-xs text-pink-400"></iconify-icon>
+          <iconify-icon icon="solar:shield-check-bold" class="text-xs text-amber-400"></iconify-icon>
           <span>Rights &amp; Direction</span>
         </button>
       </div>
 
-      <!-- Canva-style Pill Search Bar (Directly adapted from Canva Hero) -->
+      <!-- Gold-accented Pill Search Bar -->
       <div class="relative max-w-xl mx-auto mt-5">
         <div class="canva-search-bar flex items-center px-4 py-2.5">
-          <iconify-icon icon="solar:magnifer-linear" class="text-purple-400 text-lg flex-shrink-0 mr-3"></iconify-icon>
+          <iconify-icon icon="solar:magnifer-linear" class="text-amber-400 text-lg flex-shrink-0 mr-3"></iconify-icon>
           <input 
             id="terms-search-input" 
             type="text" 
@@ -260,18 +264,18 @@
 
     <!-- SINGLE UNIFIED MASTER CARD -->
     <div class="relative mt-8">
-      <!-- Canva Aurora Ambient Glow Underlay -->
+      <!-- Gold Ambient Glow Underlay -->
       <div class="canva-aurora-glow-underlay"></div>
 
       <!-- Master Card Container -->
       <div class="canva-aurora-glow-card rounded-3xl p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden backdrop-blur-2xl">
-        <!-- 2px Luminous Top Border with Canva Aurora Mesh -->
-        <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-sky-400 via-indigo-500 via-purple-500 to-pink-500"></div>
+        <!-- 2px Luminous Top Border with Luxury Gold Ribbon -->
+        <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-200 via-amber-400 via-amber-500 to-amber-600"></div>
 
         <!-- Master Card Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-8 mb-8 border-b border-white/10 gap-4">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl flex-shrink-0">
+            <div class="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl flex-shrink-0">
               <iconify-icon icon="solar:document-text-bold"></iconify-icon>
             </div>
             <div>
@@ -279,7 +283,7 @@
               <p class="text-xs text-neutral-400 font-mono mt-0.5">Firm Contractual Provisions &bull; Olympus Atelier</p>
             </div>
           </div>
-          <div class="flex items-center gap-2 text-xs font-mono text-purple-300 bg-purple-500/10 border border-purple-500/20 rounded-full px-4 py-1.5 self-start sm:self-auto">
+          <div class="flex items-center gap-2 text-xs font-mono text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-full px-4 py-1.5 self-start sm:self-auto">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span>Binding Upon Payment</span>
           </div>
@@ -291,7 +295,7 @@
           <!-- BOOKING -->
           <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="booking">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Booking</span>
             </h3>
             <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
@@ -304,24 +308,24 @@
           <!-- PAYMENT -->
           <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="booking">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Payment</span>
             </h3>
             <ul class="space-y-2 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
               <li class="flex items-start gap-2">
-                <span class="text-indigo-400 mt-1 flex-shrink-0">•</span>
+                <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
                 <span>70% booking fee is required to secure a date.</span>
               </li>
               <li class="flex items-start gap-2">
-                <span class="text-indigo-400 mt-1 flex-shrink-0">•</span>
+                <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
                 <span>The remaining 30% balance must be paid before filming begins.</span>
               </li>
               <li class="flex items-start gap-2">
-                <span class="text-indigo-400 mt-1 flex-shrink-0">•</span>
+                <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
                 <span>No final video will be delivered until full payment has been received.</span>
               </li>
               <li class="flex items-start gap-2">
-                <span class="text-indigo-400 mt-1 flex-shrink-0">•</span>
+                <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
                 <span>Additional services requested after confirmation will attract additional charges.</span>
               </li>
             </ul>
@@ -330,7 +334,7 @@
           <!-- CANCELLATION & RESCHEDULING -->
           <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="booking">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-purple-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Cancellation &amp; Rescheduling</span>
             </h3>
             <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
@@ -343,7 +347,7 @@
           <!-- SHOOTING TIME -->
           <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="production">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-pink-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Shooting Time</span>
             </h3>
             <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
@@ -357,7 +361,7 @@
           <!-- TRAVEL & EXTRA EXPENSES -->
           <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="production">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Travel &amp; Extra Expenses</span>
             </h3>
             <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
@@ -370,7 +374,7 @@
           <!-- EDITING & DELIVERY -->
           <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="production">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Editing &amp; Delivery</span>
             </h3>
             <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
@@ -378,11 +382,11 @@
               <p>Delivery timeline commences only after:</p>
               <ul class="space-y-1.5 pl-3">
                 <li class="flex items-start gap-2">
-                  <span class="text-purple-400">•</span>
+                  <span class="text-amber-400">•</span>
                   <span>The shoot has been fully concluded; and</span>
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="text-purple-400">•</span>
+                  <span class="text-amber-400">•</span>
                   <span>All required brand assets, audio, and client materials have been provided in full.</span>
                 </li>
               </ul>
@@ -393,7 +397,7 @@
           <!-- REVISIONS -->
           <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="production">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-purple-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Revisions</span>
             </h3>
             <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
@@ -406,7 +410,7 @@
           <!-- RAW FOOTAGE -->
           <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="production">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-pink-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Raw Footage</span>
             </h3>
             <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
@@ -418,7 +422,7 @@
           <!-- CREATIVE DIRECTION -->
           <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="rights">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Creative Direction</span>
             </h3>
             <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
@@ -431,7 +435,7 @@
           <!-- COPYRIGHT & USAGE -->
           <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="rights">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Copyright &amp; Usage</span>
             </h3>
             <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
@@ -444,7 +448,7 @@
           <!-- PORTFOLIO USE -->
           <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="rights">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-purple-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Portfolio Use</span>
             </h3>
             <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
@@ -455,7 +459,7 @@
           <!-- UNFORESEEN CIRCUMSTANCES -->
           <div class="terms-clause-item border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="rights">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-pink-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Unforeseen Circumstances</span>
             </h3>
             <div class="space-y-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
@@ -467,41 +471,41 @@
           <!-- CLIENT RESPONSIBILITY -->
           <div class="terms-clause-item md:col-span-2 border-b md:border-b-0 pb-6 md:pb-0 border-white/5" data-category="booking">
             <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-white font-display flex items-center gap-2.5 mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
               <span>Client Responsibility</span>
             </h3>
             <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light">
               <li class="flex items-start gap-2">
-                <span class="text-sky-400 mt-1 flex-shrink-0">•</span>
+                <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
                 <span>The client must provide accurate and complete booking information.</span>
               </li>
               <li class="flex items-start gap-2">
-                <span class="text-sky-400 mt-1 flex-shrink-0">•</span>
+                <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
                 <span>The client must obtain all necessary venue and filming permissions.</span>
               </li>
               <li class="flex items-start gap-2">
-                <span class="text-sky-400 mt-1 flex-shrink-0">•</span>
+                <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
                 <span>The client must ensure timely and unrestricted access to the filming location.</span>
               </li>
               <li class="flex items-start gap-2">
-                <span class="text-sky-400 mt-1 flex-shrink-0">•</span>
+                <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
                 <span>The client must ensure key participants are present and available on schedule.</span>
               </li>
               <li class="flex items-start gap-2">
-                <span class="text-sky-400 mt-1 flex-shrink-0">•</span>
+                <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
                 <span>The client must communicate all special requirements in writing prior to production.</span>
               </li>
               <li class="flex items-start gap-2">
-                <span class="text-sky-400 mt-1 flex-shrink-0">•</span>
+                <span class="text-amber-400 mt-1 flex-shrink-0">•</span>
                 <span>The client must provide a safe and respectful working environment for the videographer and crew.</span>
               </li>
             </ul>
           </div>
 
           <!-- ACCEPTANCE (Anchoring clause inside the single card) -->
-          <div class="terms-clause-item md:col-span-2 p-5 sm:p-7 rounded-2xl bg-white/[0.03] border border-purple-500/20 shadow-inner" data-category="booking">
+          <div class="terms-clause-item md:col-span-2 p-5 sm:p-7 rounded-2xl bg-amber-500/[0.04] border border-amber-500/25 shadow-inner" data-category="booking">
             <div class="flex items-start gap-3.5">
-              <div class="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-lg flex-shrink-0 mt-0.5">
+              <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-lg flex-shrink-0 mt-0.5">
                 <iconify-icon icon="solar:check-read-bold"></iconify-icon>
               </div>
               <div>
@@ -530,24 +534,24 @@
 
     <!-- Atelier Sign-Off & Official Contacts -->
     <div class="glass-card rounded-3xl p-8 sm:p-10 mt-12 bg-neutral-900/40 text-center border border-white/10">
-      <span class="text-xs font-mono font-bold uppercase tracking-[0.2em] text-canva-aurora block mb-2">Olympus Atelier</span>
+      <span class="text-xs font-mono font-bold uppercase tracking-[0.2em] text-gold-gradient block mb-2">Olympus Atelier</span>
       <h3 class="text-2xl font-bold text-white font-display">Stories. Frames. Memories.</h3>
       <div class="flex flex-wrap items-center justify-center gap-6 mt-6 text-xs sm:text-sm font-mono text-neutral-300">
-        <a href="mailto:ceo@theolympusatelier.com" class="hover:text-purple-300 transition-colors flex items-center gap-2">
-          <iconify-icon icon="solar:letter-linear" class="text-purple-400"></iconify-icon>
+        <a href="mailto:ceo@theolympusatelier.com" class="hover:text-amber-300 transition-colors flex items-center gap-2">
+          <iconify-icon icon="solar:letter-linear" class="text-amber-400"></iconify-icon>
           <span>ceo@theolympusatelier.com</span>
         </a>
-        <a href="https://wa.me/2347026456357" target="_blank" rel="noopener noreferrer" class="hover:text-purple-300 transition-colors flex items-center gap-2">
-          <iconify-icon icon="solar:phone-linear" class="text-purple-400"></iconify-icon>
+        <a href="https://wa.me/2347026456357" target="_blank" rel="noopener noreferrer" class="hover:text-amber-300 transition-colors flex items-center gap-2">
+          <iconify-icon icon="solar:phone-linear" class="text-amber-400"></iconify-icon>
           <span>07026456357 / 08087172313</span>
         </a>
-        <a href="https://instagram.com/theolympus001" target="_blank" rel="noopener noreferrer" class="hover:text-purple-300 transition-colors flex items-center gap-2">
-          <iconify-icon icon="ri:instagram-line" class="text-purple-400"></iconify-icon>
+        <a href="https://instagram.com/theolympus001" target="_blank" rel="noopener noreferrer" class="hover:text-amber-300 transition-colors flex items-center gap-2">
+          <iconify-icon icon="ri:instagram-line" class="text-amber-400"></iconify-icon>
           <span>@theolympus001</span>
         </a>
       </div>
       <div class="mt-8 pt-6 border-t border-white/5 flex justify-center">
-        <a href="/" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-xs uppercase tracking-wider text-white hover:border-purple-400 hover:text-purple-300 font-bold transition-colors">
+        <a href="/" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-xs uppercase tracking-wider text-white hover:border-amber-400 hover:text-amber-300 font-bold transition-colors">
           <span>← Back to Atelier</span>
         </a>
       </div>
@@ -568,7 +572,7 @@
           <a href="/#portfolio" class="hover:text-white transition-colors">Portfolio</a>
           <a href="/#about" class="hover:text-white transition-colors">About Us</a>
           <a href="/billing" class="hover:text-white transition-colors">Billing</a>
-          <a href="/terms" class="text-purple-400 font-semibold">Terms &amp; Conditions</a>
+          <a href="/terms" class="text-amber-400 font-semibold">Terms &amp; Conditions</a>
         </div>
       </div>
       <div class="border-t border-white/5 mt-8 pt-6 text-[11px] text-neutral-500 font-mono flex flex-col sm:flex-row justify-between gap-4 items-start sm:items-center">

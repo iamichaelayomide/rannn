@@ -543,8 +543,8 @@ window.OLYMPUS_CONTENT = {
       "collection": "Weddings",
       "year": "2026",
       "mediaType": "video",
-      "thumbnailSrc": "assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp",
-      "previewSrc": "assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp",
+      "thumbnailSrc": "assets/portfolio/1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO.webp",
+      "previewSrc": "assets/portfolio/1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO.webp",
       "originalUrl": "https://drive.google.com/file/d/1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO/view",
       "alt": "Bride Shoot TheGoodWill '26 Wedding Cinema by Olympus Atelier",
       "featured": true
@@ -557,8 +557,8 @@ window.OLYMPUS_CONTENT = {
       "collection": "Weddings",
       "year": "2026",
       "mediaType": "video",
-      "thumbnailSrc": "assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp",
-      "previewSrc": "assets/portfolio/1ST9YlBMn-iHyYTGdVBICXQH49kHoR89y.webp",
+      "thumbnailSrc": "assets/portfolio/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG.webp",
+      "previewSrc": "assets/portfolio/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG.webp",
       "originalUrl": "https://drive.google.com/file/d/1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG/view",
       "alt": "Couple Shoot TheGoodWill '26 Wedding Cinema by Olympus Atelier",
       "featured": true

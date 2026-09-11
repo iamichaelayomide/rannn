@@ -383,8 +383,6 @@ const allPortfolioProjects = window.OLYMPUS_CONTENT?.portfolioItems || [];
 const homeFeaturedIds = window.OLYMPUS_CONTENT?.homeFeaturedIds || [];
 
 const darkThumbnailsBlacklist = [
-  '1ZFods7QpyyCHH0pXu_4kDnO-UiiBSCfO.webp',
-  '1k3uBlBsVMJYj-1F6VfWrGjLmzVOHRWyG.webp',
   '1QVxxaIjwOcDxQXRNmyePhQPBEjkZgDry.webp',
   '1CYrRzdDibyZBnE61j7ET9CMY3ccaqsiD.webp'
 ];
