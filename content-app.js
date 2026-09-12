@@ -180,7 +180,9 @@
     'web': 'graphics',
     'interactive-web': 'graphics',
     'ads-commercial': 'film',
-    'commercials': 'film'
+    'commercials': 'film',
+    'brand-shots': 'brand-shots',
+    'nightlife': 'nightlife'
   };
 
   const renderServices = () => {
@@ -634,6 +636,8 @@
     const filterList = content.filters || [
       { id: 'all', label: 'All Work' },
       { id: 'wedding', label: 'Weddings' },
+      { id: 'brand-shots', label: 'Brand Shoot' },
+      { id: 'nightlife', label: 'Nightlife' },
       { id: 'editing-alone', label: 'Video Editing' },
       { id: 'film', label: 'Film & Photography' },
       { id: 'events', label: 'Events & Conferences' },

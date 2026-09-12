@@ -35,7 +35,7 @@ const escapeHtml = value => String(value ?? '')
   .replaceAll("'", '&#039;');
 
 const serviceCardsHtml = content.services.map((service, index) => {
-  const cat = service.portfolioCategory || (service.id === 'wedding' ? 'wedding' : service.id === 'live-streaming-drone' ? 'events' : service.id === 'events' ? 'events' : service.id === 'editing-alone' ? 'editing-alone' : service.id === 'motion' ? 'motion' : service.id === 'web' || service.id === 'graphics' ? 'graphics' : 'film');
+  const cat = service.portfolioCategory || (service.id === 'wedding' ? 'wedding' : service.id === 'brand-shots' ? 'brand-shots' : service.id === 'nightlife' ? 'nightlife' : service.id === 'live-streaming-drone' ? 'events' : service.id === 'events' ? 'events' : service.id === 'editing-alone' ? 'editing-alone' : service.id === 'motion' ? 'motion' : service.id === 'web' || service.id === 'graphics' ? 'graphics' : 'film');
   return `
           <article class="service-card glass-card border-gold-gradient rounded-3xl p-7 flex flex-col min-h-[340px] reveal-on-scroll stagger-${(index % 3) + 1}">
             <div class="service-card-icon"><iconify-icon icon="${service.icon || iconNames[index % iconNames.length]}"></iconify-icon></div>
@@ -94,6 +94,8 @@ const teamHtml = content.teamMembers.map((member, index) => `
 const filterList = [
   { id: 'all', label: 'All Work' },
   { id: 'wedding', label: 'Weddings' },
+  { id: 'brand-shots', label: 'Brand Shoot' },
+  { id: 'nightlife', label: 'Nightlife' },
   { id: 'editing-alone', label: 'Video Editing' },
   { id: 'film', label: 'Film & Photography' },
   { id: 'events', label: 'Events & Conferences' },
